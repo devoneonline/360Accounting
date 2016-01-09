@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "360Accounting.Data", "360Accounting.Data\360Accounting.Data.csproj", "{64749AA1-2F7F-42F8-817C-4D354BD3580F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "360Accounting.Core", "360Accounting.Core\360Accounting.Core.csproj", "{BAB52CA2-45B3-49E4-B9FC-1F32DAB7D8F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "360Accounting.Common", "360Accounting.Common\360Accounting.Common.csproj", "{BA162B29-CB63-4A4D-9AA7-3D09195E72FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "360Accounting.Service", "360Accounting.Service\360Accounting.Service.csproj", "{51CB8959-1E5D-4453-B6B6-6A32B768E688}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "360Accounting.Web", "360Accounting.Web\360Accounting.Web.csproj", "{35FDE74F-0CE9-40DE-8D98-D22866E67B5D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{64749AA1-2F7F-42F8-817C-4D354BD3580F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64749AA1-2F7F-42F8-817C-4D354BD3580F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64749AA1-2F7F-42F8-817C-4D354BD3580F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64749AA1-2F7F-42F8-817C-4D354BD3580F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAB52CA2-45B3-49E4-B9FC-1F32DAB7D8F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAB52CA2-45B3-49E4-B9FC-1F32DAB7D8F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAB52CA2-45B3-49E4-B9FC-1F32DAB7D8F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAB52CA2-45B3-49E4-B9FC-1F32DAB7D8F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA162B29-CB63-4A4D-9AA7-3D09195E72FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA162B29-CB63-4A4D-9AA7-3D09195E72FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA162B29-CB63-4A4D-9AA7-3D09195E72FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA162B29-CB63-4A4D-9AA7-3D09195E72FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51CB8959-1E5D-4453-B6B6-6A32B768E688}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51CB8959-1E5D-4453-B6B6-6A32B768E688}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51CB8959-1E5D-4453-B6B6-6A32B768E688}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51CB8959-1E5D-4453-B6B6-6A32B768E688}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35FDE74F-0CE9-40DE-8D98-D22866E67B5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35FDE74F-0CE9-40DE-8D98-D22866E67B5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35FDE74F-0CE9-40DE-8D98-D22866E67B5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35FDE74F-0CE9-40DE-8D98-D22866E67B5D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

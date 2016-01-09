@@ -1,0 +1,4 @@
+D:\Khanani\Development\DotNetDevelopment\Kaba\360Accounting\360Accounting.Common\bin\Debug\360Accounting.Common.dll
+D:\Khanani\Development\DotNetDevelopment\Kaba\360Accounting\360Accounting.Common\bin\Debug\360Accounting.Common.pdb
+D:\Khanani\Development\DotNetDevelopment\Kaba\360Accounting\360Accounting.Common\obj\Debug\360Accounting.Common.dll
+D:\Khanani\Development\DotNetDevelopment\Kaba\360Accounting\360Accounting.Common\obj\Debug\360Accounting.Common.pdb
