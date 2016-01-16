@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _360Accounting.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,15 @@ namespace _360Accounting.Core.Entities
 
         public bool IsValid()
         {
-            throw new NotImplementedException();
+            if (this.Name.Length > 30)
+            {
+                ExceptionHelper.AddError(
+                    "Company Name: " + this.Name,
+                    "Should be less than 30 characters!");
+                return false;
+            }
+
+            return true;
         }
     }
 }
