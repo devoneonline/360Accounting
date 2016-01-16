@@ -23,6 +23,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Index()
         {
+            int count = 0;
             IEnumerable<FeatureViewModel> featureList = service.GetAll().Select(x => new FeatureViewModel(x));
             return View(featureList);
         }
