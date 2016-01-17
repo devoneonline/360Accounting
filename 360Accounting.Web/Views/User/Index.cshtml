@@ -1,0 +1,25 @@
+﻿@model IEnumerable<_360Accounting.Web.Models.FeatureViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@ShowTree(Model)
+
+    @helper ShowTree(IEnumerable<_360Accounting.Web.Models.FeatureViewModel> items)
+{
+    <ul>
+        @foreach (var item in items)
+        {
+            <li>
+                @item.Name
+                @if (item.Features!=null)
+                {
+                    @ShowTree(item.Features)
+                }
+            </li>
+        }
+    </ul>
+}
