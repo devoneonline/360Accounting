@@ -14,6 +14,14 @@ namespace _360Accounting.Test
     public class UserTest
     {
         [TestMethod]
+        public void CreateRolesTest()
+        {
+            UserController uc = new UserController();
+            Assert.IsFalse(uc.CreateRole("SuperAdmin"));
+            Assert.IsTrue(uc.CreateRole("User"));
+        }
+
+        [TestMethod]
         public void CreateUserTest()
         {
             UserController uc = new UserController();
@@ -25,7 +33,7 @@ namespace _360Accounting.Test
             model.Email = "faisal.khanani.75@gmail.com";
             model.PasswordQuestion = "What is the name of your first school?";
             model.PasswordAnswer = "KMA";
-            model.RoleName = "Administrator";
+            model.RoleName = "SuperAdmin";
             var result = uc.CreateUser(model);
             Assert.IsTrue(result);
         }

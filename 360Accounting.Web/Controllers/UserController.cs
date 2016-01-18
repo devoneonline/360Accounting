@@ -5,6 +5,7 @@ using _360Accounting.Service;
 using _360Accounting.Web.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Security;
 
@@ -60,8 +61,57 @@ namespace _360Accounting.Web.Controllers
             return RedirectToAction("Login");
         }
 
+        public ActionResult ManageUser()
+        {
+            ManageUserViewModel model = new ManageUserViewModel();
+            UserProfile userProfile = UserProfile.GetProfile(User.Identity.Name);
+            if (userProfile !=null)
+            {
+                model.CompanyId = userProfile.CompanyId;
+                model.Email = userProfile.Email;
+                model.FirstName = userProfile.FirstName;
+                model.LastName = userProfile.LastName;
+                model.PhoneNumer = userProfile.PhoneNumber;
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ManageUser(ManageUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                UserProfile userProfile = UserProfile.GetProfile(User.Identity.Name);
+                if (userProfile !=null)
+                {
+                    userProfile.FirstName = model.FirstName;
+                    userProfile.LastName = model.LastName;
+                    userProfile.PhoneNumber = model.PhoneNumer;
+                    userProfile.Email = model.Email;
+                    userProfile.Save();
+
+                    MembershipUser memUser = Membership.GetUser(userProfile.UserName);
+                    if (memUser.ChangePassword(model.OldPassword, model.NewPassword))
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Failure", "Unable to change password!");
+                    }
+                }
+            }
+            return View(model);
+        }
+
         public bool CreateUser(UserCreateModel model)
         {
+            if (!Roles.RoleExists(model.RoleName))
+            {
+                return false;
+            }
+
             MembershipUser user = Membership.GetUser(model.Credentials.UserName);
             if (user == null)
             {
@@ -73,12 +123,8 @@ namespace _360Accounting.Web.Controllers
                     up.FirstName = model.FirstName;
                     up.LastName = model.LastName;
                     up.PhoneNumber = model.PhoneNumber;
+                    up.Email = model.Email;
                     up.Save();
-
-                    if (!Roles.RoleExists(model.RoleName))
-                    {
-                        Roles.CreateRole(model.RoleName);
-                    }
 
                     if (!Roles.GetRolesForUser(model.Credentials.UserName).Contains(model.RoleName))
                     {

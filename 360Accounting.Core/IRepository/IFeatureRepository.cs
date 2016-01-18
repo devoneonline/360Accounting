@@ -9,5 +9,6 @@ namespace _360Accounting.Core.Interfaces
 {
     public interface IFeatureRepository : IRepository<Feature>
     {
+        string Insert()
     }
 }

@@ -34,4 +34,26 @@ namespace _360Accounting.Core.Entities
             return true;
         }
     }
+
+    public class FeatureSet : EntityBase
+    {
+        [Key]
+        public long Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string AccessType { get; set; }
+
+    }
+
+    public class FeatureSetList
+    {
+        [Key]
+        public long Id { get; set; }
+
+        public long FeatureSetId { get; set; }
+
+        public long FeatureId { get; set; }
+
+    }
 }
