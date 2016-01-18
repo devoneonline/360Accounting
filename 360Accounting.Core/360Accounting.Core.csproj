@@ -50,15 +50,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Account.cs" />
     <Compile Include="Entities\Company.cs" />
     <Compile Include="Entities\EntityBase.cs" />
     <Compile Include="Entities\Feature.cs" />
     <Compile Include="Interfaces\ICore360.cs" />
     <Compile Include="IoC.cs" />
+    <Compile Include="IRepository\IAccountRepository.cs" />
     <Compile Include="IRepository\ICompanyRepository.cs" />
     <Compile Include="IRepository\IFeatureRepository.cs" />
     <Compile Include="IRepository\IRepository.cs" />
     <Compile Include="Interfaces\IService.cs" />
+    <Compile Include="IService\IAccountService.cs" />
     <Compile Include="IService\ICompanyService.cs" />
     <Compile Include="IService\IFeatureService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

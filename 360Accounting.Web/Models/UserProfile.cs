@@ -27,9 +27,17 @@ namespace _360Accounting.Web.Models
             set { base["PhoneNumber"] = value; }
         }
 
-        public string Email { get; set; }
+        public string Email
+        {
+            get { return (string)base["Email"]; }
+            set { base["Email"] = value; }
+        }
 
-        public int? CompanyId { get; set; }
+        public long CompanyId 
+        {
+            get { return 1; }   //TODO: Need to change when actual user will be available.
+            set { base["CompanyId"] = value; }
+        }
 
         public static UserProfile GetProfile(string userName)
         {
@@ -52,7 +60,7 @@ namespace _360Accounting.Web.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        public int? CompanyId { get; set; }
+        public long CompanyId { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

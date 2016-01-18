@@ -20,6 +20,8 @@ namespace _360Accounting.Data
 
         public DbSet<Company> Companies { get; set; }
 
+        public DbSet<Account> Accounts { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ////base.OnModelCreating(modelBuilder);
@@ -29,6 +31,9 @@ namespace _360Accounting.Data
 
             modelBuilder.Entity<Company>().ToTable("tbCompany");
             modelBuilder.Entity<Company>().HasKey(t => new { t.Id });
+
+            ////modelBuilder.Entity<Account>().ToTable("tbChartOfAccount");
+            ////modelBuilder.Entity<Account>().HasKey(t => new { t.Id });
         }
     }
 }

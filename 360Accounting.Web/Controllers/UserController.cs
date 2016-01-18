@@ -24,7 +24,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Index()
         {
-            List<Feature> featureList = service.GetAll().ToList();
+            IEnumerable<Feature> featureList = service.GetAll().ToList();
             var modelList = featureList.Select(x => new FeatureViewModel(x)).ToList();
             return View(modelList.Where(x => x.ParentId == null));
         }

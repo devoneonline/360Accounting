@@ -43,7 +43,6 @@ namespace _360Accounting.Core.Entities
         public string Name { get; set; }
 
         public string AccessType { get; set; }
-
     }
 
     public class FeatureSetList
@@ -54,6 +53,5 @@ namespace _360Accounting.Core.Entities
         public long FeatureSetId { get; set; }
 
         public long FeatureId { get; set; }
-
     }
 }

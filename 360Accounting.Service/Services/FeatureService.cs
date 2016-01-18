@@ -30,8 +30,7 @@ namespace _360Accounting.Service
 
         public string Insert(Feature entity)
         {
-            return
-                this.repository.Insert(entity);
+            return this.repository.Insert(entity);
         }
 
         public string Update(Feature entity)
