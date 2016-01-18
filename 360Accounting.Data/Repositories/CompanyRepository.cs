@@ -1,7 +1,8 @@
 ﻿using _360Accounting.Core.Entities;
-using _360Accounting.Core.IRepository;
+using _360Accounting.Core.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace _360Accounting.Data.Repositories
@@ -20,22 +21,33 @@ namespace _360Accounting.Data.Repositories
 
         public string Insert(Company entity)
         {
-            throw new NotImplementedException();
+            this.Context.Companies.Add(entity);
+            this.Commit();
+            return entity.Id.ToString();
         }
 
         public string Update(Company entity)
         {
-            throw new NotImplementedException();
+            this.Context.Companies.Attach(entity);
+            this.Context.Entry(entity).State = EntityState.Modified;
+            this.Commit();
+            return entity.Id.ToString();
         }
 
         public void Delete(string id)
         {
-            throw new NotImplementedException();
+            this.Context.Companies.Remove(this.GetSingle(id));
+            this.Commit();
         }
 
         public int Count()
         {
-            throw new NotImplementedException();
+            return this.GetAll().Count();
+        }
+
+        public int Commit()
+        {
+            return this.Context.SaveChanges();
         }
     }
 }

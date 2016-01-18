@@ -19,5 +19,7 @@ namespace _360Accounting.Core.Interfaces
         void Delete(string id);
 
         int Count();
+
+        int Commit();
     }
 }

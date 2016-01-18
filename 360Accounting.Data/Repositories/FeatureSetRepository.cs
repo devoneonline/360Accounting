@@ -7,30 +7,30 @@ using System.Linq;
 
 namespace _360Accounting.Data.Repositories
 {
-    public class FeatureRepository : Repository, IFeatureRepository
+    public class FeatureSetRepository : Repository, IFeatureSetRepository
     {
-        public Feature GetSingle(string id)
+        public FeatureSet GetSingle(string id)
         {
-            Feature feature = this.GetAll().FirstOrDefault(x => x.Id == Convert.ToInt32(id));
-            return feature;
+            FeatureSet featureSet = this.GetAll().FirstOrDefault(x => x.Id == Convert.ToInt64(id));
+            return featureSet;
         }
 
-        public IEnumerable<Feature> GetAll()
+        public IEnumerable<FeatureSet> GetAll()
         {
-            IEnumerable<Feature> featureList = this.Context.Features;
-            return featureList;
+            IEnumerable<FeatureSet> featureSets = this.Context.FeatureSets;
+            return featureSets;
         }
 
-        public string Insert(Feature entity)
+        public string Insert(FeatureSet entity)
         {
-            this.Context.Features.Add(entity);
+            this.Context.FeatureSets.Add(entity);
             this.Commit();
             return entity.Id.ToString();
         }
 
-        public string Update(Feature entity)
+        public string Update(FeatureSet entity)
         {
-            this.Context.Features.Attach(entity);
+            this.Context.FeatureSets.Attach(entity);
             this.Context.Entry(entity).State = EntityState.Modified;
             this.Commit();
             return entity.Id.ToString();
@@ -38,7 +38,7 @@ namespace _360Accounting.Data.Repositories
 
         public void Delete(string id)
         {
-            this.Context.Features.Remove(this.GetSingle(id));
+            this.Context.FeatureSets.Remove(this.GetSingle(id));
             this.Commit();
         }
 

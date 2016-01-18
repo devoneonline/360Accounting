@@ -1,37 +1,38 @@
 ﻿using _360Accounting.Core.Entities;
 using _360Accounting.Core.Interfaces;
-using _360Accounting.Core.IService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace _360Accounting.Service.Services
+namespace _360Accounting.Service
 {
-    public class CompanyService : ICompanyService
+    public class FeatureSetService : IService<FeatureSet>
     {
-        private ICompanyRepository repository;
+        private IFeatureSetRepository repository;
 
-        public CompanyService(ICompanyRepository repo)
+        public FeatureSetService(IFeatureSetRepository featureSetRepository)
         {
-            this.repository = repo;
+            this.repository = featureSetRepository;
         }
 
-        public Company GetSingle(string id)
+        public FeatureSet GetSingle(string id)
         {
             return this.repository.GetSingle(id);
         }
 
-        public IEnumerable<Company> GetAll()
+        public IEnumerable<FeatureSet> GetAll()
         {
             return this.repository.GetAll();
         }
 
-        public string Insert(Company entity)
+        public string Insert(FeatureSet entity)
         {
             return this.repository.Insert(entity);
         }
 
-        public string Update(Company entity)
+        public string Update(FeatureSet entity)
         {
             return this.repository.Update(entity);
         }

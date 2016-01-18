@@ -11,16 +11,30 @@ namespace _360Accounting.Data
 {
     public class ApplicationDbContext : DbContext
     {
+        #region Constructor
         public ApplicationDbContext()
             : base("_360Accounting")
         {
         }
+        #endregion
+
+        #region DbSets
 
         public DbSet<Feature> Features { get; set; }
 
         public DbSet<Company> Companies { get; set; }
 
         public DbSet<Account> Accounts { get; set; }
+
+        public DbSet<FeatureSet> FeatureSets { get; set; }
+
+        public DbSet<FeatureSetList> FeatureSetLists { get; set; }
+
+        public DbSet<FeatureSetAccess> FeatureSetAccesses { get; set; }
+
+        #endregion
+
+        #region Binders
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -34,6 +48,17 @@ namespace _360Accounting.Data
 
             ////modelBuilder.Entity<Account>().ToTable("tbChartOfAccount");
             ////modelBuilder.Entity<Account>().HasKey(t => new { t.Id });
+
+            modelBuilder.Entity<FeatureSet>().ToTable("tbFeatureSet");
+            modelBuilder.Entity<FeatureSet>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<FeatureSetList>().ToTable("tbFeatureSetList");
+            modelBuilder.Entity<FeatureSetList>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<FeatureSetAccess>().ToTable("dbo.tbFeatureSetAccess");
+            modelBuilder.Entity<FeatureSetAccess>().HasKey(t => t.Id);
         }
+
+        #endregion
     }
 }

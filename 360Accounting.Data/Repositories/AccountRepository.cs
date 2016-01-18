@@ -39,5 +39,10 @@ namespace _360Accounting.Data.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public int Commit()
+        {
+            return this.Context.SaveChanges();
+        }
     }
 }

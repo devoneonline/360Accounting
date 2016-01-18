@@ -4,33 +4,35 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace _360Accounting.Data.Repositories
 {
-    public class FeatureRepository : Repository, IFeatureRepository
+    public class FeatureSetAccessRepository : Repository, IFeatureSetAccessRepository
     {
-        public Feature GetSingle(string id)
+        public FeatureSetAccess GetSingle(string id)
         {
-            Feature feature = this.GetAll().FirstOrDefault(x => x.Id == Convert.ToInt32(id));
-            return feature;
+            FeatureSetAccess entity = this.GetAll().FirstOrDefault(x => x.Id == Convert.ToInt64(id));
+            return entity;
         }
 
-        public IEnumerable<Feature> GetAll()
+        public IEnumerable<FeatureSetAccess> GetAll()
         {
-            IEnumerable<Feature> featureList = this.Context.Features;
-            return featureList;
+            IEnumerable<FeatureSetAccess> list = this.Context.FeatureSetAccesses;
+            return list;
         }
 
-        public string Insert(Feature entity)
+        public string Insert(FeatureSetAccess entity)
         {
-            this.Context.Features.Add(entity);
+            this.Context.FeatureSetAccesses.Add(entity);
             this.Commit();
             return entity.Id.ToString();
         }
 
-        public string Update(Feature entity)
+        public string Update(FeatureSetAccess entity)
         {
-            this.Context.Features.Attach(entity);
+            this.Context.FeatureSetAccesses.Attach(entity);
             this.Context.Entry(entity).State = EntityState.Modified;
             this.Commit();
             return entity.Id.ToString();
@@ -38,7 +40,7 @@ namespace _360Accounting.Data.Repositories
 
         public void Delete(string id)
         {
-            this.Context.Features.Remove(this.GetSingle(id));
+            this.Context.FeatureSetAccesses.Remove(this.GetSingle(id));
             this.Commit();
         }
 

@@ -60,6 +60,9 @@
     <Compile Include="Repositories\AccountRepository.cs" />
     <Compile Include="Repositories\CompanyRepository.cs" />
     <Compile Include="Repositories\FeatureRepository.cs" />
+    <Compile Include="Repositories\FeatureSetAccessRepository.cs" />
+    <Compile Include="Repositories\FeatureSetListRepository.cs" />
+    <Compile Include="Repositories\FeatureSetRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />
   </ItemGroup>
   <ItemGroup>

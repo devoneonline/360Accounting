@@ -19,7 +19,7 @@ namespace _360Accounting.Core.Entities
 
         public Guid? UpdateBy { get; set; }
 
-        public DateTime UpdateDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
 
         public virtual bool IsValid()
         {

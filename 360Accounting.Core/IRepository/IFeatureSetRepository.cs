@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace _360Accounting.Core.Interfaces
 {
-    public interface ICompanyRepository : IRepository<Company>
+    public interface IFeatureSetRepository : IRepository<FeatureSet>
     {
     }
 }
