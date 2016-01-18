@@ -54,6 +54,8 @@
     <Compile Include="Entities\Company.cs" />
     <Compile Include="Entities\EntityBase.cs" />
     <Compile Include="Entities\Feature.cs" />
+    <Compile Include="Entities\FeatureSet.cs" />
+    <Compile Include="Entities\FeatureSetList.cs" />
     <Compile Include="Interfaces\ICore360.cs" />
     <Compile Include="IoC.cs" />
     <Compile Include="IRepository\IAccountRepository.cs" />

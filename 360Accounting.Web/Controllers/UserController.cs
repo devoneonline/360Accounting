@@ -65,7 +65,7 @@ namespace _360Accounting.Web.Controllers
         {
             ManageUserViewModel model = new ManageUserViewModel();
             UserProfile userProfile = UserProfile.GetProfile(User.Identity.Name);
-            if (userProfile !=null)
+            if (userProfile != null)
             {
                 model.CompanyId = userProfile.CompanyId;
                 model.Email = userProfile.Email;
@@ -73,6 +73,7 @@ namespace _360Accounting.Web.Controllers
                 model.LastName = userProfile.LastName;
                 model.PhoneNumer = userProfile.PhoneNumber;
             }
+
             return View(model);
         }
 
@@ -83,7 +84,7 @@ namespace _360Accounting.Web.Controllers
             if (ModelState.IsValid)
             {
                 UserProfile userProfile = UserProfile.GetProfile(User.Identity.Name);
-                if (userProfile !=null)
+                if (userProfile != null)
                 {
                     userProfile.FirstName = model.FirstName;
                     userProfile.LastName = model.LastName;
@@ -102,6 +103,7 @@ namespace _360Accounting.Web.Controllers
                     }
                 }
             }
+
             return View(model);
         }
 

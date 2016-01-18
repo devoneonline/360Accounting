@@ -16,7 +16,7 @@ namespace _360Accounting.Web.Controllers
     {
         private IAccountService service;
 
-        public  AccountController()
+        public AccountController()
         {
             ////service = IoC.Resolve<IAccountService>("AccountService");
             service = new AccountService(new AccountRepository());
