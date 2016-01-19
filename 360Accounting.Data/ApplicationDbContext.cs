@@ -20,6 +20,8 @@ namespace _360Accounting.Data
 
         #region DbSets
 
+        public DbSet<SetOfBook> SetOfBooks { get; set; }
+
         public DbSet<Feature> Features { get; set; }
 
         public DbSet<Company> Companies { get; set; }
@@ -45,9 +47,12 @@ namespace _360Accounting.Data
 
             modelBuilder.Entity<Company>().ToTable("tbCompany");
             modelBuilder.Entity<Company>().HasKey(t => new { t.Id });
-
-            ////modelBuilder.Entity<Account>().ToTable("tbChartOfAccount");
-            ////modelBuilder.Entity<Account>().HasKey(t => new { t.Id });
+                
+            modelBuilder.Entity<SetOfBook>().ToTable("tbSetOfBook");
+            modelBuilder.Entity<SetOfBook>().HasKey(t => t.Id);
+                                    
+            modelBuilder.Entity<Account>().ToTable("tbChartOfAccount");
+            modelBuilder.Entity<Account>().HasKey(t => new { t.Id });
 
             modelBuilder.Entity<FeatureSet>().ToTable("tbFeatureSet");
             modelBuilder.Entity<FeatureSet>().HasKey(t => t.Id);

@@ -35,17 +35,19 @@ namespace _360Accounting.Core.Entities
 
         public int SegmentChar1 { get; set; }
 
-        public int SegmentChar2 { get; set; }
+        public int? SegmentChar2 { get; set; }
 
-        public int SegmentChar3 { get; set; }
+        public int? SegmentChar3 { get; set; }
 
-        public int SegmentChar4 { get; set; }
+        public int? SegmentChar4 { get; set; }
 
-        public int SegmentChar6 { get; set; }
+        public int? SegmentChar5 { get; set; }
 
-        public int SegmentChar7 { get; set; }
+        public int? SegmentChar6 { get; set; }
 
-        public int SegmentChar8 { get; set; }
+        public int? SegmentChar7 { get; set; }
+
+        public int? SegmentChar8 { get; set; }
 
         public bool SegmentEnabled1 { get; set; }
 
@@ -60,5 +62,7 @@ namespace _360Accounting.Core.Entities
         public bool SegmentEnabled6 { get; set; }
 
         public bool SegmentEnabled7 { get; set; }
+
+        public bool SegmentEnabled8 { get; set; }
     }
 }

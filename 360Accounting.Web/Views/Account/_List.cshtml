@@ -1,0 +1,177 @@
+﻿@model IEnumerable<_360Accounting.Web.Models.AccountViewModel>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SOBId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentName1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentName2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentName3)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentName4)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentName5)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentName6)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentName7)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentName8)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentChar1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentChar2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentChar3)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentChar4)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentChar5)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentChar6)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentChar7)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentChar8)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentEnabled1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentEnabled2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentEnabled3)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentEnabled4)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentEnabled5)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentEnabled6)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentEnabled7)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SegmentEnabled8)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.SOBId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CompanyId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentName1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentName2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentName3)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentName4)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentName5)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentName6)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentName7)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentName8)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentChar1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentChar2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentChar3)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentChar4)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentChar5)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentChar6)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentChar7)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentChar8)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentEnabled1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentEnabled2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentEnabled3)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentEnabled4)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentEnabled5)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentEnabled6)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentEnabled7)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegmentEnabled8)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @*@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>

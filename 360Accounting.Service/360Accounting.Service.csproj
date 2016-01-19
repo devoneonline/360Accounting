@@ -58,6 +58,7 @@
     <Compile Include="Services\FeatureSetAccessService.cs" />
     <Compile Include="Services\FeatureSetListService.cs" />
     <Compile Include="Services\FeatureSetService.cs" />
+    <Compile Include="Services\SetOfBookService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

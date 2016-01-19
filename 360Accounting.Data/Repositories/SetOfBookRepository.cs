@@ -9,31 +9,30 @@ using System.Threading.Tasks;
 
 namespace _360Accounting.Data.Repositories
 {
-    public class AccountRepository : Repository, IAccountRepository
+    public class SetOfBookRepository : Repository, ISetOfBookRepository
     {
-        public Account GetSingle(string id)
+        public SetOfBook GetSingle(string id)
         {
-            Account account = this.GetAll()
-                .FirstOrDefault(x => x.Id == Convert.ToInt32(id));
-            return account;
+            SetOfBook sob = this.GetAll().FirstOrDefault(x => x.Id == Convert.ToInt64(id));
+            return sob;
         }
 
-        public IEnumerable<Account> GetAll()
+        public IEnumerable<SetOfBook> GetAll()
         {
-            IEnumerable<Account> accountList = this.Context.Accounts;
-            return accountList;
+            IEnumerable<SetOfBook> sobList = this.Context.SetOfBooks;
+            return sobList;
         }
 
-        public string Insert(Account entity)
+        public string Insert(SetOfBook entity)
         {
-            this.Context.Accounts.Add(entity);
+            this.Context.SetOfBooks.Add(entity);
             this.Commit();
             return entity.Id.ToString();
         }
 
-        public string Update(Account entity)
+        public string Update(SetOfBook entity)
         {
-            this.Context.Accounts.Attach(entity);
+            this.Context.SetOfBooks.Attach(entity);
             this.Context.Entry(entity).State = EntityState.Modified;
             this.Commit();
             return entity.Id.ToString();
@@ -41,7 +40,7 @@ namespace _360Accounting.Data.Repositories
 
         public void Delete(string id)
         {
-            this.Context.Accounts.Remove(this.GetSingle(id));
+            this.Context.SetOfBooks.Remove(this.GetSingle(id));
             this.Commit();
         }
 

@@ -57,6 +57,7 @@
     <Compile Include="Entities\FeatureSet.cs" />
     <Compile Include="Entities\FeatureSetAccess.cs" />
     <Compile Include="Entities\FeatureSetList.cs" />
+    <Compile Include="Entities\SetOfBook.cs" />
     <Compile Include="Interfaces\ICore360.cs" />
     <Compile Include="IoC.cs" />
     <Compile Include="IRepository\IAccountRepository.cs" />
@@ -67,12 +68,14 @@
     <Compile Include="IRepository\IFeatureSetRepository.cs" />
     <Compile Include="IRepository\IRepository.cs" />
     <Compile Include="Interfaces\IService.cs" />
+    <Compile Include="IRepository\ISetOfBookRepository.cs" />
     <Compile Include="IService\IAccountService.cs" />
     <Compile Include="IService\ICompanyService.cs" />
     <Compile Include="IService\IFeatureService.cs" />
     <Compile Include="IService\IFeatureSetAccessService.cs" />
     <Compile Include="IService\IFeatureSetListService.cs" />
     <Compile Include="IService\IFeatureSetService.cs" />
+    <Compile Include="IService\ISetOfBookService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
