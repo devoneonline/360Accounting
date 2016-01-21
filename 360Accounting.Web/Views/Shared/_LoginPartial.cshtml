@@ -1,12 +1,16 @@
 ﻿@if (Request.IsAuthenticated)
 {
+    if (AuthenticationHelper.User == null)
+    {
+        AuthenticationHelper.User = _360Accounting.Web.Models.UserProfile.GetProfile(User.Identity.Name);
+    }
     using (Html.BeginForm("LogOff", "User", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
     @Html.AntiForgeryToken()
 
     <ul class="nav navbar-nav navbar-right">
         <li>
-            @Html.ActionLink("Hello " + User.Identity.Name + "!", "ManageUser", "User", routeValues: null, htmlAttributes: new { title = "Manage" })
+            @Html.ActionLink("Hello " + AuthenticationHelper.User.LastName + ", " + AuthenticationHelper.User.FirstName, "ManageUser", "User", routeValues: null, htmlAttributes: new { title = "Manage" })
         </li>
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
     </ul>

@@ -36,34 +36,25 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Create()
         {
             AccountViewModel model = new AccountViewModel();
-
-            UserProfile userProfile = UserProfile
-                .GetProfile(User.Identity.Name);
-
-            model.SetOfBooks = sobService.GetAll()
-                .Where(x => x.CompanyId == userProfile.CompanyId).ToList();
+            model.SetOfBooks = sobService.GetAll()          ////TODO: Use GetByCompany call instead   -- FK
+                .Where(x => x.CompanyId == AuthenticationHelper.User.CompanyId)
+                .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
 
             return View(model);
         }
 
         [HttpPost]
-        ////[ValidateAntiForgeryToken]
         public ActionResult Create(AccountViewModel model)
         {
             if (ModelState.IsValid)
             {
-                UserProfile userProfile = UserProfile
-                    .GetProfile(User.Identity.Name);
-                if (userProfile != null)
-                {
-                    model.CompanyId = userProfile.CompanyId;
-                }
-
-                string result = service.Insert(MapModel(model));
-                
-                model = new AccountViewModel();
+                model.CompanyId = AuthenticationHelper.User.CompanyId;
+                string result = service.Insert(MapModel(model));    ////TODO: mapper should be in service
+                return RedirectToAction("Index");
             }
 
+            model.SetOfBooks = sobService.GetAll()          ////TODO: Use GetByCompany call instead   -- FK
+                .Where(x => x.CompanyId == AuthenticationHelper.User.CompanyId).Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
             return View(model);
         }
 
@@ -71,12 +62,15 @@ namespace _360Accounting.Web.Controllers
         {
             AccountViewModel model = new AccountViewModel(service.GetSingle(id));
 
-            UserProfile userProfile = UserProfile
-                .GetProfile(User.Identity.Name);
+            ////Make appropriate change here as well --FK
 
-            model.SetOfBooks = sobService.GetAll()
-                .Where(x => x.CompanyId == userProfile.CompanyId &&
-                    x.Id == model.SOBId).ToList();
+            ////UserProfile userProfile = UserProfile
+            ////    .GetProfile(User.Identity.Name);
+
+
+            ////model.SetOfBooks = sobService.GetAll()
+            ////    .Where(x => x.CompanyId == userProfile.CompanyId &&
+            ////        x.Id == model.SOBId).ToList();
             return View(model);
         }
 
@@ -105,7 +99,7 @@ namespace _360Accounting.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        private Account MapModel(AccountViewModel model)
+        private Account MapModel(AccountViewModel model)            ////TODO: this should be done in service will discuss later - FK
         {
             return new Account
             {

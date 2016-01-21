@@ -43,8 +43,10 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                MembershipUser mu = Membership.GetUser(model.UserName);
-                mu.UnlockUser();
+                ////TODO: we don't need this. do we? [FK]
+                ////MembershipUser mu = Membership.GetUser(model.UserName);
+                ////mu.UnlockUser();
+
                 if (Membership.ValidateUser(model.UserName, model.Password))
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, false);

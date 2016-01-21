@@ -17,6 +17,7 @@
             columns:grid.Columns(grid.Column(columnName: "CompanyId",
             header: "Company Id", canSort: true),
                 grid.Column("SOBId", header: "SOB Id", canSort: true),
+                grid.Column("SegmentName1",header: "Segment-1", canSort:true),
                 grid.Column("SegmentName1", header: "Segment 1",
                 format: (item) => Html.Raw("<a href='" + 
                     @Url.Content("~/Account/Edit/") + item.Id + ">" +

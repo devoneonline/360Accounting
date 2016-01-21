@@ -5,15 +5,23 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace _360Accounting.Web.Common
+namespace _360Accounting.Web
 {
     public sealed class AuthenticationHelper
     {
-        ////public long GetCompanyId()
-        ////{
-        ////    UserProfile userProfile = UserProfile
-        ////            .GetProfile(User.Identity.Name);
-        ////    return userProfile.CompanyId;
-        ////}
+        private const string SESSION_USER = "USER_PROFILE";
+
+        public static UserProfile User
+        {
+            get
+            {
+                return HttpContext.Current.Session[SESSION_USER] == null ? null : (UserProfile)HttpContext.Current.Session[SESSION_USER];
+            }
+            set
+            {
+                HttpContext.Current.Session[SESSION_USER] = value;
+            }
+        }
+
     }
 }
