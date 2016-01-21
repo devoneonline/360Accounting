@@ -1,0 +1,71 @@
+﻿@model _360Accounting.Web.Models.AccountValueViewModel
+
+@{
+    ViewBag.Title = "Chart of Account Value";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("Edit", "Account", FormMethod.Post,
+    new { @class = "form-horizonatl", role = "form" }))
+{
+    <h4>Add Account Value</h4>
+    <hr />
+    @Html.ValidationSummary()
+
+    <div class="form-group">
+        <div class="col-md-2">
+            @Html.LabelFor(m => m.ValueName)
+        </div>
+        <div class="col-md-4">
+            @Html.TextBoxFor(m => m.ValueName)
+        </div>
+
+        <div class="col-md-2">
+            @Html.LabelFor(m => m.Value)
+        </div>
+        <div class="col-md-4">
+            @Html.TextBoxFor(m => m.Value)
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-2">
+            @Html.LabelFor(m => m.StartDate)
+        </div>
+        <div class="col-md-4">
+            @Html.TextBox("StartDate", Model.StartDate.ToShortDateString(),
+            new { @class = "DatePicker" })
+        </div>
+
+        <div class="col-md-2">
+            @Html.LabelFor(m => m.EndDate)
+        </div>
+        <div class="col-md-4">
+            @Html.TextBox("EndDate", Model.EndDate.ToShortDateString(),
+            new { @class = "DatePicker" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-2">
+            @Html.LabelFor(m => m.AccountType)
+        </div>
+        <div class="col-md-4">
+            @Html.TextBoxFor(m => m.AccountType)
+        </div>
+
+        <div class="col-md-2">
+            @Html.LabelFor(m => m.Levl)
+        </div>
+        <div class="col-md-4">
+            @Html.TextBoxFor(m => m.Levl)
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+}

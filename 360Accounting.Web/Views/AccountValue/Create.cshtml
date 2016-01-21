@@ -1,0 +1,78 @@
+﻿@model _360Accounting.Web.Models.AccValueCreateModel
+
+@{
+    ViewBag.Title = "Chart of Account Value";
+}
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#SOBId').change(function () {
+            $.ajax({
+                url: '@Url.Content("~/AccountValue/SegmentList")',
+                data: {
+                    sobId: $('#SOBId').val()
+                },
+                type: 'post',
+                error: function (error) { alert("error") },
+                success: function (segments) {
+                    var $select = $('#Segments');
+                    $select.empty();
+                    $.each(segments, function (i, segment) {
+                        $('<option>', {
+                            value: segment.value
+                        }).html(segment.Text).appendTo($select);
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("Create", "Account", FormMethod.Post,
+    new { @class = "form-horizontal", role = "form" }))
+{
+    @*@Html.AntiForgeryToken()*@
+    <h4>Create Account Value</h4>
+    <hr />
+    @Html.ValidationSummary()
+    
+    <div class="form-group">
+        <div class="col-md-2">
+            @Html.LabelFor(m => m.SetOfBooks)
+        </div>
+        <div class="col-md-4">
+            <select id="SOBId" class="form-control">
+                @foreach (var item in Model.SetOfBooks)
+                {
+                    <option value="@item.Id">@item.Name</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            @Html.LabelFor(m => m.Segments)
+        </div>
+        <div class="col-md-4">
+            <select id="Segments" class="form-control">
+                @foreach (var i in Model.Segments)
+                {
+                    <option value="@i.Value">@i.Text</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Add New" class="btn btn-default" />
+        </div>
+    </div>
+    
+    @*<div class="form-group">
+        @Html.Partial("_AccountValueList", Model.AccountValues)
+    </div>*@
+}

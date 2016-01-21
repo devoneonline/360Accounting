@@ -18,6 +18,11 @@ namespace _360Accounting.Service
             this.repository = repo;
         }
 
+        public Account GetAccountBySOBId(string sobId)
+        {
+            return this.repository.GetAccountBySOBId(sobId);
+        }
+
         public Account GetSingle(string id)
         {
             return this.repository.GetSingle(id);
@@ -25,27 +30,27 @@ namespace _360Accounting.Service
 
         public IEnumerable<Account> GetAll()
         {
-            return this.GetAll();
+            return this.repository.GetAll();
         }
 
         public string Insert(Account entity)
         {
-            return this.Insert(entity);
+            return this.repository.Insert(entity);
         }
 
         public string Update(Account entity)
         {
-            return this.Update(entity);
+            return this.repository.Update(entity);
         }
 
         public void Delete(string id)
         {
-            this.Delete(id);
+            this.repository.Delete(id);
         }
 
         public int Count()
         {
-            return this.Count();
+            return this.repository.Count();
         }
     }
 }

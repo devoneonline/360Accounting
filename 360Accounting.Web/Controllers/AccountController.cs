@@ -16,7 +16,7 @@ namespace _360Accounting.Web.Controllers
     {
         private IAccountService service;
         private ISetOfBookService sobService;
-        
+
         public AccountController()
         {
             ////service = IoC.Resolve<IAccountService>("AccountService");
@@ -26,7 +26,11 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Index()
         {
-            return PartialView("_List", service.GetAll());
+            var list = service.GetAll();
+            AccountListModel model = new AccountListModel();
+            model.Accounts = list.Select(a => new AccountViewModel(a)).ToList();
+
+            return PartialView("_List", model);
         }
 
         public ActionResult Create()
@@ -55,40 +59,8 @@ namespace _360Accounting.Web.Controllers
                     model.CompanyId = userProfile.CompanyId;
                 }
 
-                #region Save Data
-                string result = service.Insert(new Account
-                {
-                    CompanyId = model.CompanyId,
-                    CreateDate = DateTime.Now,
-                    SegmentChar1 = model.SegmentChar1,
-                    SegmentChar2 = model.SegmentChar2,
-                    SegmentChar3 = model.SegmentChar3,
-                    SegmentChar4 = model.SegmentChar4,
-                    SegmentChar5 = model.SegmentChar5,
-                    SegmentChar6 = model.SegmentChar6,
-                    SegmentChar7 = model.SegmentChar7,
-                    SegmentChar8 = model.SegmentChar8,
-                    SegmentEnabled1 = model.SegmentEnabled1,
-                    SegmentEnabled2 = model.SegmentEnabled2,
-                    SegmentEnabled3 = model.SegmentEnabled3,
-                    SegmentEnabled4 = model.SegmentEnabled4,
-                    SegmentEnabled5 = model.SegmentEnabled5,
-                    SegmentEnabled6 = model.SegmentEnabled6,
-                    SegmentEnabled7 = model.SegmentEnabled7,
-                    SegmentEnabled8 = model.SegmentEnabled8,
-                    SegmentName1 = model.SegmentName1,
-                    SegmentName2 = model.SegmentName2,
-                    SegmentName3 = model.SegmentName3,
-                    SegmentName4 = model.SegmentName4,
-                    SegmentName5 = model.SegmentName5,
-                    SegmentName6 = model.SegmentName6,
-                    SegmentName7 = model.SegmentName7,
-                    SegmentName8 = model.SegmentName8,
-                    SOBId = model.SOBId,
-                    UpdateDate = DateTime.Now
-                });
-                #endregion
-
+                string result = service.Insert(MapModel(model));
+                
                 model = new AccountViewModel();
             }
 
@@ -121,39 +93,7 @@ namespace _360Accounting.Web.Controllers
                     model.CompanyId = userProfile.CompanyId;
                 }
 
-                #region Update Data
-                string result = service.Update(new Account
-                {
-                    CompanyId = model.CompanyId,
-                    CreateDate = DateTime.Now,
-                    SegmentChar1 = model.SegmentChar1,
-                    SegmentChar2 = model.SegmentChar2,
-                    SegmentChar3 = model.SegmentChar3,
-                    SegmentChar4 = model.SegmentChar4,
-                    SegmentChar5 = model.SegmentChar5,
-                    SegmentChar6 = model.SegmentChar6,
-                    SegmentChar7 = model.SegmentChar7,
-                    SegmentChar8 = model.SegmentChar8,
-                    SegmentEnabled1 = model.SegmentEnabled1,
-                    SegmentEnabled2 = model.SegmentEnabled2,
-                    SegmentEnabled3 = model.SegmentEnabled3,
-                    SegmentEnabled4 = model.SegmentEnabled4,
-                    SegmentEnabled5 = model.SegmentEnabled5,
-                    SegmentEnabled6 = model.SegmentEnabled6,
-                    SegmentEnabled7 = model.SegmentEnabled7,
-                    SegmentEnabled8 = model.SegmentEnabled8,
-                    SegmentName1 = model.SegmentName1,
-                    SegmentName2 = model.SegmentName2,
-                    SegmentName3 = model.SegmentName3,
-                    SegmentName4 = model.SegmentName4,
-                    SegmentName5 = model.SegmentName5,
-                    SegmentName6 = model.SegmentName6,
-                    SegmentName7 = model.SegmentName7,
-                    SegmentName8 = model.SegmentName8,
-                    SOBId = model.SOBId,
-                    UpdateDate = DateTime.Now
-                });
-                #endregion
+                string result = service.Update(MapModel(model));
             }
 
             return View(new AccountViewModel());
@@ -162,7 +102,42 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Delete(string id)
         {
             service.Delete(id);
-            return View(new AccountViewModel());
+            return RedirectToAction("Index");
+        }
+
+        private Account MapModel(AccountViewModel model)
+        {
+            return new Account
+            {
+                CompanyId = model.CompanyId,
+                CreateDate = DateTime.Now,
+                SegmentChar1 = model.SegmentChar1,
+                SegmentChar2 = model.SegmentChar2,
+                SegmentChar3 = model.SegmentChar3,
+                SegmentChar4 = model.SegmentChar4,
+                SegmentChar5 = model.SegmentChar5,
+                SegmentChar6 = model.SegmentChar6,
+                SegmentChar7 = model.SegmentChar7,
+                SegmentChar8 = model.SegmentChar8,
+                SegmentEnabled1 = model.SegmentEnabled1,
+                SegmentEnabled2 = model.SegmentEnabled2,
+                SegmentEnabled3 = model.SegmentEnabled3,
+                SegmentEnabled4 = model.SegmentEnabled4,
+                SegmentEnabled5 = model.SegmentEnabled5,
+                SegmentEnabled6 = model.SegmentEnabled6,
+                SegmentEnabled7 = model.SegmentEnabled7,
+                SegmentEnabled8 = model.SegmentEnabled8,
+                SegmentName1 = model.SegmentName1,
+                SegmentName2 = model.SegmentName2,
+                SegmentName3 = model.SegmentName3,
+                SegmentName4 = model.SegmentName4,
+                SegmentName5 = model.SegmentName5,
+                SegmentName6 = model.SegmentName6,
+                SegmentName7 = model.SegmentName7,
+                SegmentName8 = model.SegmentName8,
+                SOBId = model.SOBId,
+                UpdateDate = DateTime.Now
+            };
         }
     }
 }

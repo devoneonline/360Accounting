@@ -14,41 +14,67 @@ namespace _360Accounting.Web.Models
         #region Constructors
         public AccountViewModel()
         {
-
         }
 
         public AccountViewModel(Account bo)
         {
             this.CompanyId = bo.CompanyId;
+
             this.SegmentChar1 = bo.SegmentChar1;
+
             this.SegmentChar2 = bo.SegmentChar2;
+
             this.SegmentChar3 = bo.SegmentChar3;
+
             this.SegmentChar4 = bo.SegmentChar4;
+
             this.SegmentChar5 = bo.SegmentChar5;
+
             this.SegmentChar6 = bo.SegmentChar6;
+
             this.SegmentChar7 = bo.SegmentChar7;
+
             this.SegmentChar8 = bo.SegmentChar8;
-            this.SegmentEnabled1 = bo.SegmentEnabled1;
-            this.SegmentEnabled2 = bo.SegmentEnabled2;
-            this.SegmentEnabled3 = bo.SegmentEnabled3;
-            this.SegmentEnabled4 = bo.SegmentEnabled4;
-            this.SegmentEnabled5 = bo.SegmentEnabled5;
-            this.SegmentEnabled6 = bo.SegmentEnabled6;
-            this.SegmentEnabled7 = bo.SegmentEnabled7;
-            this.SegmentEnabled8 = bo.SegmentEnabled8;
+
+            this.SegmentEnabled1 = bo.SegmentEnabled1 ?? false;
+
+            this.SegmentEnabled2 = bo.SegmentEnabled2 ?? false;
+
+            this.SegmentEnabled3 = bo.SegmentEnabled3 ?? false;
+
+            this.SegmentEnabled4 = bo.SegmentEnabled4 ?? false;
+
+            this.SegmentEnabled5 = bo.SegmentEnabled5 ?? false;
+
+            this.SegmentEnabled6 = bo.SegmentEnabled6 ?? false;
+
+            this.SegmentEnabled7 = bo.SegmentEnabled7 ?? false;
+
+            this.SegmentEnabled8 = bo.SegmentEnabled8 ?? false;
+
             this.SegmentName1 = bo.SegmentName1;
+
             this.SegmentName2 = bo.SegmentName2;
+
             this.SegmentName3 = bo.SegmentName3;
+
             this.SegmentName4 = bo.SegmentName4;
+
             this.SegmentName5 = bo.SegmentName5;
+
             this.SegmentName6 = bo.SegmentName6;
+
             this.SegmentName7 = bo.SegmentName7;
+
             this.SegmentName8 = bo.SegmentName8;
+
             this.SOBId = bo.SOBId;
         }
         #endregion
 
         #region Properties
+        public long Id { get; set; }
+        
         [Required]
         public long SOBId { get; set; }
 
@@ -86,7 +112,7 @@ namespace _360Accounting.Web.Models
         [Required]
         [RegularExpression("^[0-9]{1,1}$")]
         [StringLength(1)]
-        public int SegmentChar1 { get; set; }
+        public int? SegmentChar1 { get; set; }
 
         [Display(Name = "Size")]
         [RegularExpression("^[0-9]{1,1}$")]

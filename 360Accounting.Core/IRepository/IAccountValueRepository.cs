@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace _360Accounting.Core.Interfaces
 {
-    public interface IAccountRepository : IRepository<Account>
+    public interface IAccountValueRepository : IRepository<AccountValue>
     {
-        Account GetAccountBySOBId(string sobId);
     }
 }

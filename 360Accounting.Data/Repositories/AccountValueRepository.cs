@@ -9,38 +9,32 @@ using System.Threading.Tasks;
 
 namespace _360Accounting.Data.Repositories
 {
-    public class AccountRepository : Repository, IAccountRepository
+    public class AccountValueRepository : Repository, IAccountValueRepository
     {
-        public Account GetAccountBySOBId(string sobId)
+        public AccountValue GetSingle(string id)
         {
-            Account account = this.GetAll()
-                .FirstOrDefault(x => x.SOBId == Convert.ToInt32(sobId));
-            return account;
-        }
-
-        public Account GetSingle(string id)
-        {
-            Account account = this.GetAll()
+            AccountValue accountValue = this.GetAll()
                 .FirstOrDefault(x => x.Id == Convert.ToInt32(id));
-            return account;
+            return accountValue;
         }
 
-        public IEnumerable<Account> GetAll()
+        public IEnumerable<AccountValue> GetAll()
         {
-            IEnumerable<Account> accountList = this.Context.Accounts;
-            return accountList;
+            IEnumerable<AccountValue> valueList = this.Context
+                .AccountValues;
+            return valueList;
         }
 
-        public string Insert(Account entity)
+        public string Insert(AccountValue entity)
         {
-            this.Context.Accounts.Add(entity);
+            this.Context.AccountValues.Add(entity);
             this.Commit();
             return entity.Id.ToString();
         }
 
-        public string Update(Account entity)
+        public string Update(AccountValue entity)
         {
-            this.Context.Accounts.Attach(entity);
+            this.Context.AccountValues.Attach(entity);
             this.Context.Entry(entity).State = EntityState.Modified;
             this.Commit();
             return entity.Id.ToString();
@@ -48,7 +42,7 @@ namespace _360Accounting.Data.Repositories
 
         public void Delete(string id)
         {
-            this.Context.Accounts.Remove(this.GetSingle(id));
+            this.Context.AccountValues.Remove(this.GetSingle(id));
             this.Commit();
         }
 

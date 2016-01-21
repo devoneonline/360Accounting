@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace _360Accounting.Core
 {
-    public interface IAccountService : IService<Account>
+    public interface IAccountValueService : IService<AccountValue>
     {
-        Account GetAccountBySOBId(string sobId);
     }
 }

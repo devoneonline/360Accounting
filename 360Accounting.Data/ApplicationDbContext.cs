@@ -28,6 +28,8 @@ namespace _360Accounting.Data
 
         public DbSet<Account> Accounts { get; set; }
 
+        public DbSet<AccountValue> AccountValues { get; set; }
+
         public DbSet<FeatureSet> FeatureSets { get; set; }
 
         public DbSet<FeatureSetList> FeatureSetLists { get; set; }
@@ -53,6 +55,9 @@ namespace _360Accounting.Data
                                     
             modelBuilder.Entity<Account>().ToTable("tbChartOfAccount");
             modelBuilder.Entity<Account>().HasKey(t => new { t.Id });
+
+            modelBuilder.Entity<AccountValue>().ToTable("tbChartOfAccountValues");
+            modelBuilder.Entity<AccountValue>().HasKey(t => new { t.Id });
 
             modelBuilder.Entity<FeatureSet>().ToTable("tbFeatureSet");
             modelBuilder.Entity<FeatureSet>().HasKey(t => t.Id);
