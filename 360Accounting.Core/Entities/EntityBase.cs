@@ -17,7 +17,11 @@ namespace _360Accounting.Core.Entities
 
         public DateTime CreateDate { get; set; }
 
-        public Guid? UpdateBy { get; set; }
+        public Guid UpdateBy
+        {
+            get { return Guid.Parse("715C35AE-DD65-4B5D-ACB9-4572164A476C"); } ////TODO: Need to change when actual user will be available.
+            set { }
+        }
 
         public DateTime? UpdateDate { get; set; }
 

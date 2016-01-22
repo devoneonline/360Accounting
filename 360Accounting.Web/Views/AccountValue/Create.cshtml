@@ -17,7 +17,7 @@
                 type: 'post',
                 error: function (error) { alert("error") },
                 success: function (segments) {
-                    var $select = $('#Segments');
+                    var $select = $('#Segment');
                     $select.empty();
                     $.each(segments, function (i, segment) {
                         $('<option>', {
@@ -32,7 +32,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm("Create", "Account", FormMethod.Post,
+@using (Html.BeginForm("Create", "AccountValue", FormMethod.Post,
     new { @class = "form-horizontal", role = "form" }))
 {
     @*@Html.AntiForgeryToken()*@
@@ -45,24 +45,14 @@
             @Html.LabelFor(m => m.SetOfBooks)
         </div>
         <div class="col-md-4">
-            <select id="SOBId" class="form-control">
-                @foreach (var item in Model.SetOfBooks)
-                {
-                    <option value="@item.Id">@item.Name</option>
-                }
-            </select>
+            @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "ListBox" })
         </div>
 
         <div class="col-md-2">
             @Html.LabelFor(m => m.Segments)
         </div>
         <div class="col-md-4">
-            <select id="Segments" class="form-control">
-                @foreach (var i in Model.Segments)
-                {
-                    <option value="@i.Value">@i.Text</option>
-                }
-            </select>
+            @Html.DropDownListFor(m => m.Segment, Model.Segments, new { @class = "ListBox" })
         </div>
     </div>
 
@@ -71,8 +61,8 @@
             <input type="submit" value="Add New" class="btn btn-default" />
         </div>
     </div>
-    
-    @*<div class="form-group">
-        @Html.Partial("_AccountValueList", Model.AccountValues)
-    </div>*@
 }
+
+<div class="form-group">
+    @Html.Partial("_AccountValueList", Model.AccountValues)
+</div>

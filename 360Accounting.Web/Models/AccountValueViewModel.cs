@@ -34,6 +34,8 @@ namespace _360Accounting.Web.Models
 
         public string Segment { get; set; }
 
+        public string SetOfBook { get; set; }
+
         public string ValueName { get; set; }
 
         public string Value { get; set; }

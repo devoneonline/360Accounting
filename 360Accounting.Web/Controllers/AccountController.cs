@@ -36,8 +36,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Create()
         {
             AccountViewModel model = new AccountViewModel();
-            model.SetOfBooks = sobService.GetAll()          ////TODO: Use GetByCompany call instead   -- FK
-                .Where(x => x.CompanyId == AuthenticationHelper.User.CompanyId)
+            model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
                 .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
 
             return View(model);
@@ -53,8 +52,12 @@ namespace _360Accounting.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            model.SetOfBooks = sobService.GetAll()          ////TODO: Use GetByCompany call instead   -- FK
-                .Where(x => x.CompanyId == AuthenticationHelper.User.CompanyId).Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
+            ////model.SetOfBooks = sobService.GetAll()          ////TODO: Use GetByCompany call instead   -- FK
+            ////    .Where(x => x.CompanyId == AuthenticationHelper.User.CompanyId).Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
+
+            model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
+                .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
+
             return View(model);
         }
 
@@ -64,13 +67,10 @@ namespace _360Accounting.Web.Controllers
 
             ////Make appropriate change here as well --FK
 
-            ////UserProfile userProfile = UserProfile
-            ////    .GetProfile(User.Identity.Name);
+            SetOfBook sob = sobService.GetSingle(model.SOBId.ToString());
+            model.SetOfBooks = new List<SelectListItem>();
+            model.SetOfBooks.Add(new SelectListItem { Text = sob.Name, Value = sob.Id.ToString() });
 
-
-            ////model.SetOfBooks = sobService.GetAll()
-            ////    .Where(x => x.CompanyId == userProfile.CompanyId &&
-            ////        x.Id == model.SOBId).ToList();
             return View(model);
         }
 
@@ -80,17 +80,11 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserProfile userProfile = UserProfile
-                    .GetProfile(User.Identity.Name);
-                if (userProfile != null)
-                {
-                    model.CompanyId = userProfile.CompanyId;
-                }
-
+                model.CompanyId = AuthenticationHelper.User.CompanyId;                
                 string result = service.Update(MapModel(model));
             }
 
-            return View(new AccountViewModel());
+            return RedirectToAction("Index");
         }
 
         public ActionResult Delete(string id)

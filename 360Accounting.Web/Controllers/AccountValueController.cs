@@ -6,6 +6,7 @@ using _360Accounting.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Mvc;
 
@@ -28,15 +29,13 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Create()
         {
             AccValueCreateModel model = new AccValueCreateModel();
-
-            UserProfile userProfile = UserProfile
-                .GetProfile(User.Identity.Name);
-
-            model.SetOfBooks = sobService.GetAll()
-                .Where(x => x.CompanyId == userProfile.CompanyId).ToList();
+            model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
+                .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
 
             model.Segments = GetSegmentList(model.SetOfBooks
-                .FirstOrDefault().Id.ToString());
+                .FirstOrDefault().Value.ToString());
+
+            model.AccountValues = new List<AccountValueViewModel>();
 
             return View(model);
         }
@@ -46,9 +45,11 @@ namespace _360Accounting.Web.Controllers
         {
             AccountValueViewModel newModel = new AccountValueViewModel();
             newModel.ChartId = accountService
-                .GetAccountBySOBId(model.SetOfBooks.ToString()).Id;
+                .GetAccountBySOBId(model.SOBId.ToString()).Id;
 
-            newModel.Segment = model.Segments.ToString();
+            newModel.SetOfBook = sobService.GetSingle(model.SOBId.ToString()).Name;
+
+            newModel.Segment = model.Segment;
 
             return View("Edit", newModel);
         }
@@ -63,6 +64,32 @@ namespace _360Accounting.Web.Controllers
             AccountValueViewModel model = new 
                 AccountValueViewModel(service.GetSingle(id.ToString()));
             return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(AccountValueViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.Id > 0)
+                {
+                    string result = service.Update(MapModel(model));
+                }
+                else
+                {
+                    string result = service.Insert(MapModel(model));
+                }
+
+                return RedirectToAction("Create");
+            }
+
+            return View(model);
+        }
+
+        public ActionResult Delete(string id)
+        {
+            service.Delete(id);
+            return RedirectToAction("Index");
         }
 
         private List<SelectListItem> GetSegmentList(string sobId)
@@ -139,6 +166,24 @@ namespace _360Accounting.Web.Controllers
             }
 
             return lst;
+        }
+
+        private AccountValue MapModel(AccountValueViewModel model)            ////TODO: this should be done in service will discuss later - FK
+        {
+            return new AccountValue
+            {
+                AccountType = model.AccountType,
+                ChartId = model.ChartId,
+                CreateDate = DateTime.Now,
+                EndDate = model.EndDate,
+                Id = model.Id,
+                Levl = model.Levl,
+                Segment = model.Segment,
+                StartDate = model.StartDate,
+                UpdateDate = DateTime.Now,
+                Value = model.Value,
+                ValueName = model.ValueName
+            };
         }
     }
 }

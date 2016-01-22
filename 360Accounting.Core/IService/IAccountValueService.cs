@@ -10,5 +10,6 @@ namespace _360Accounting.Core
 {
     public interface IAccountValueService : IService<AccountValue>
     {
+        List<AccountValue> GetBySegment(string segment);
     }
 }

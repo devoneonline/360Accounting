@@ -17,11 +17,11 @@ namespace _360Accounting.Web
             {
                 return HttpContext.Current.Session[SESSION_USER] == null ? null : (UserProfile)HttpContext.Current.Session[SESSION_USER];
             }
+
             set
             {
                 HttpContext.Current.Session[SESSION_USER] = value;
             }
         }
-
     }
 }

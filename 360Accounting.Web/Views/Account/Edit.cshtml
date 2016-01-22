@@ -20,7 +20,7 @@
         <select>
             @foreach (var item in Model.SetOfBooks)
             {
-                <option value="@item.Id">@item.Name</option>
+                <option value="@item.Value">@item.Text</option>
             }
         </select>
     </div>

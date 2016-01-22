@@ -9,5 +9,6 @@ namespace _360Accounting.Core.Interfaces
 {
     public interface IAccountValueRepository : IRepository<AccountValue>
     {
+        List<AccountValue> GetBySegment(string segment);
     }
 }

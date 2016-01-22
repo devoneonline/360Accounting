@@ -18,6 +18,11 @@ namespace _360Accounting.Service
             this.repository = repo;
         }
 
+        public List<AccountValue> GetBySegment(string segment)
+        {
+            return this.repository.GetBySegment(segment);
+        }
+        
         public AccountValue GetSingle(string id)
         {
             return this.repository.GetSingle(id);
@@ -30,22 +35,22 @@ namespace _360Accounting.Service
 
         public string Insert(AccountValue entity)
         {
-            return this.Insert(entity);
+            return this.repository.Insert(entity);
         }
 
         public string Update(AccountValue entity)
         {
-            return this.Update(entity);
+            return this.repository.Update(entity);
         }
 
         public void Delete(string id)
         {
-            this.Delete(id);
+            this.repository.Delete(id);
         }
 
         public int Count()
         {
-            return this.Count();
+            return this.repository.Count();
         }
     }
 }

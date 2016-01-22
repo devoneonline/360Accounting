@@ -87,7 +87,7 @@ namespace _360Accounting.Web.Models
 
         [Display(Name = "Segments")]
         [Required]
-        [RegularExpression("^[0-9]{1,1}$", ErrorMessage="Segment size should be less than 10")]
+        [RegularExpression("^[0-9]{1,1}$", ErrorMessage = "Segment size should be less than 10")]
         public int? SegmentChar1 { get; set; }
 
         [Display(Name = "Size")]
