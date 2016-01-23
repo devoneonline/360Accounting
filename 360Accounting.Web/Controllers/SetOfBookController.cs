@@ -24,7 +24,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Index()
         {
             SetOfBookListModel model = new SetOfBookListModel();
-            var list = service.GetAll();
+            var list = service.GetByCompanyId(AuthenticationHelper.User.CompanyId);
             model.SetOfBooks = list.Select(a => new SetOfBookModel(a)).ToList();
             return View(model);
         }
