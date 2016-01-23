@@ -30,7 +30,7 @@ namespace _360Accounting.Web.Controllers
             AccountListModel model = new AccountListModel();
             model.Accounts = list.Select(a => new AccountViewModel(a)).ToList();
 
-            return PartialView("_List", model);
+            return View(model);
         }
 
         public ActionResult Create()

@@ -1,0 +1,35 @@
+﻿@model _360Accounting.Web.Models.CompanyModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create Company</h2>
+
+
+@using (Html.BeginForm("Create", "Company", FormMethod.Post,
+    new { @class = "form-horizontal", role = "form" }))
+{
+    <h4>Create Company</h4>
+    <hr />
+    
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    @Html.HiddenFor(m => m.Id)
+    
+    <div class="form-group">
+        <div class="col-md-2">
+            @Html.LabelFor(model => model.Name)
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}

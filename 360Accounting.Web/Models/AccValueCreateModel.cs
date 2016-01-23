@@ -15,10 +15,6 @@ namespace _360Accounting.Web.Models
         #endregion
 
         #region Properties
-        ////public long Id { get; set; }
-
-        ////public long ChartId { get; set; }
-
         public List<SelectListItem> SetOfBooks { get; set; }
 
         public long SOBId { get; set; }
@@ -28,19 +24,6 @@ namespace _360Accounting.Web.Models
         public string Segment { get; set; }
 
         public List<AccountValueViewModel> AccountValues { get; set; }
-
-        ////public string ValueName { get; set; }
-
-        ////public string Value { get; set; }
-
-        ////public DateTime StartDate { get; set; }
-
-        ////public DateTime EndDate { get; set; }
-
-        ////public string AccountType { get; set; }
-
-        ////[Display(Name = "Level")]
-        ////public int Levl { get; set; }
         #endregion
     }
 }

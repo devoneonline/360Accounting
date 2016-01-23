@@ -20,12 +20,12 @@ namespace _360Accounting.Core.Entities
 
         public string Value { get; set; }
 
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         public string AccountType { get; set; }
 
-        public int Levl { get; set; }
+        public int? Levl { get; set; }
     }
 }

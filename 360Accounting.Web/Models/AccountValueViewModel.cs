@@ -1,6 +1,7 @@
 ﻿using _360Accounting.Core.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -36,17 +37,19 @@ namespace _360Accounting.Web.Models
 
         public string SetOfBook { get; set; }
 
+        [Required]
         public string ValueName { get; set; }
 
+        [Required]
         public string Value { get; set; }
 
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         public string AccountType { get; set; }
 
-        public int Levl { get; set; }
+        public int? Levl { get; set; }
         #endregion
     }
 }
