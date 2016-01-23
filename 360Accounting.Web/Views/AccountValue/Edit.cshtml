@@ -52,7 +52,9 @@
             @Html.LabelFor(m => m.StartDate)
         </div>
         <div class="col-md-4">
-            @Html.TextBox("StartDate", Model.StartDate.ToShortDateString(),
+            @Html.TextBox("StartDate", Model.StartDate == null ?
+            Model.StartDate.ToString() : 
+            Model.StartDate.Value.ToShortDateString(),
             new { @class = "DatePicker" })
         </div>
 
@@ -60,7 +62,9 @@
             @Html.LabelFor(m => m.EndDate)
         </div>
         <div class="col-md-4">
-            @Html.TextBox("EndDate", Model.EndDate.ToShortDateString(),
+            @Html.TextBox("EndDate", Model.EndDate == null ?
+            Model.EndDate.ToString() :
+            Model.EndDate.Value.ToShortDateString(),
             new { @class = "DatePicker" })
         </div>
     </div>

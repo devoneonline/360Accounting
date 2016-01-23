@@ -35,7 +35,7 @@ namespace _360Accounting.Web.Controllers
             model.Segments = GetSegmentList(model.SetOfBooks
                 .FirstOrDefault().Value.ToString());
 
-            model.AccountValues = new List<AccountValueViewModel>();
+            model.AccountValues = new List<AccountValueViewModel>(); ////need to call list of selected segment.
 
             return View(model);
         }
@@ -89,83 +89,87 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Delete(string id)
         {
             service.Delete(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("Create");
         }
 
         private List<SelectListItem> GetSegmentList(string sobId)
         {
             Account account = accountService.GetAccountBySOBId(sobId);
             var lst = new List<SelectListItem>();
-            lst.Add(new SelectListItem
-            {
-                Text = account.SegmentName1,
-                Value = account.SegmentName1,
-                Selected = true
-            });
-            if (account.SegmentName2 != null)
+            if (account != null)
             {
                 lst.Add(new SelectListItem
                 {
-                    Text = account.SegmentName2,
-                    Value = account.SegmentName2
+                    Text = account.SegmentName1,
+                    Value = account.SegmentName1,
+                    Selected = true
                 });
-            }
+                if (account.SegmentName2 != null)
+                {
+                    lst.Add(new SelectListItem
+                    {
+                        Text = account.SegmentName2,
+                        Value = account.SegmentName2
+                    });
+                }
 
-            if (account.SegmentName3 != null)
-            {
-                lst.Add(new SelectListItem
+                if (account.SegmentName3 != null)
                 {
-                    Text = account.SegmentName3,
-                    Value = account.SegmentName3
-                });
-            }
+                    lst.Add(new SelectListItem
+                    {
+                        Text = account.SegmentName3,
+                        Value = account.SegmentName3
+                    });
+                }
 
-            if (account.SegmentName4 != null)
-            {
-                lst.Add(new SelectListItem
+                if (account.SegmentName4 != null)
                 {
-                    Text = account.SegmentName4,
-                    Value = account.SegmentName4
-                });
-            }
+                    lst.Add(new SelectListItem
+                    {
+                        Text = account.SegmentName4,
+                        Value = account.SegmentName4
+                    });
+                }
 
-            if (account.SegmentName5 != null)
-            {
-                lst.Add(new SelectListItem
+                if (account.SegmentName5 != null)
                 {
-                    Text = account.SegmentName5,
-                    Value = account.SegmentName5
-                });
-            }
+                    lst.Add(new SelectListItem
+                    {
+                        Text = account.SegmentName5,
+                        Value = account.SegmentName5
+                    });
+                }
 
-            if (account.SegmentName6 != null)
-            {
-                lst.Add(new SelectListItem
+                if (account.SegmentName6 != null)
                 {
-                    Text = account.SegmentName6,
-                    Value = account.SegmentName6
-                });
-            }
+                    lst.Add(new SelectListItem
+                    {
+                        Text = account.SegmentName6,
+                        Value = account.SegmentName6
+                    });
+                }
 
-            if (account.SegmentName7 != null)
-            {
-                lst.Add(new SelectListItem
+                if (account.SegmentName7 != null)
                 {
-                    Text = account.SegmentName7,
-                    Value = account.SegmentName7
-                });
-            }
+                    lst.Add(new SelectListItem
+                    {
+                        Text = account.SegmentName7,
+                        Value = account.SegmentName7
+                    });
+                }
 
-            if (account.SegmentName8 != null)
-            {
-                lst.Add(new SelectListItem
+                if (account.SegmentName8 != null)
                 {
-                    Text = account.SegmentName8,
-                    Value = account.SegmentName8
-                });
+                    lst.Add(new SelectListItem
+                    {
+                        Text = account.SegmentName8,
+                        Value = account.SegmentName8
+                    });
+                }
             }
 
             return lst;
+            
         }
 
         private AccountValue MapModel(AccountValueViewModel model)            ////TODO: this should be done in service will discuss later - FK

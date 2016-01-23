@@ -1,6 +1,8 @@
-﻿using _360Accounting.Core.IService;
+﻿using _360Accounting.Core.Entities;
+using _360Accounting.Core.IService;
 using _360Accounting.Data.Repositories;
 using _360Accounting.Service.Services;
+using _360Accounting.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +24,32 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Create(CompanyModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string result = service.Insert(MapModel(model));
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
+        }
+
+        private Company MapModel(CompanyModel model)            ////TODO: this should be done in service will discuss later - FK
+        {
+            return new Company
+            {
+                Id = model.Id,
+                Name = model.Name
+            };
         }
     }
 }

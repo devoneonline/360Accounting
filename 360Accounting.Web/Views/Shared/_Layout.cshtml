@@ -6,6 +6,9 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
+    <script src="~/Scripts/jquery.dateMask.js"></script>
+
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -28,6 +31,7 @@
                     <li>@Html.ActionLink("Features", "Index", "User")</li>
                     <li>@Html.ActionLink("Chart of Account", "Index", "Account")</li>
                     <li>@Html.ActionLink("Chart of Account Value", "Create", "AccountValue")</li>
+                    <li>@Html.ActionLink("Company", "Create", "Company")</li>
                 </ul>
                 }
                 @Html.Partial("_LoginPartial")
@@ -47,3 +51,22 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.DatePicker').dateMask();
+
+        var currentCulture = '@System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName';
+        currentCulture = '';    ////For english, default culture should be empty
+
+        $('.DatePicker').datepicker({
+            dateFormat: 'mm/dd/yy',
+            buttonImage: '@Url.Content("~/Content/calendar.gif")',
+            buttonImageOnly: true,
+            showOn: "button",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "1947:2050"
+        });
+    });
+</script>
