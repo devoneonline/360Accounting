@@ -1,11 +1,11 @@
-﻿using _360Accounting.Core.Entities;
+﻿using _360Accounting.Core;
+using _360Accounting.Core.Entities;
 using _360Accounting.Core.Interfaces;
-using _360Accounting.Core.IService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace _360Accounting.Service.Services
+namespace _360Accounting.Service
 {
     public class CompanyService : ICompanyService
     {

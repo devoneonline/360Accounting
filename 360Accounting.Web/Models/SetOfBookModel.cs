@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _360Accounting.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -7,6 +8,17 @@ namespace _360Accounting.Web.Models
 {
     public class SetOfBookModel
     {
+        public SetOfBookModel()
+        {
+        }
+
+        public SetOfBookModel(SetOfBook entity)
+        {
+            this.Id = entity.Id;
+            this.CompanyId = entity.CompanyId;
+            this.Name = entity.Name;
+        }
+
         public long Id { get; set; }
 
         public long CompanyId { get; set; }

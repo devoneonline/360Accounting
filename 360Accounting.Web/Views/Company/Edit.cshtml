@@ -1,16 +1,16 @@
 ﻿@model _360Accounting.Web.Models.CompanyModel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Edit";
 }
 
 <h2>Company</h2>
 
 
-@using (Html.BeginForm("Create", "Company", FormMethod.Post,
+@using (Html.BeginForm("Edit", "Company", FormMethod.Post,
     new { @class = "form-horizontal", role = "form" }))
 {
-    <h4>Create Company</h4>
+    <h4>Edit Company</h4>
     <hr />
     
     @Html.AntiForgeryToken()
@@ -28,7 +28,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
     </div>

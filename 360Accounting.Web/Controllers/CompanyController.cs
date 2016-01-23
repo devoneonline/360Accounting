@@ -1,7 +1,7 @@
-﻿using _360Accounting.Core.Entities;
-using _360Accounting.Core.IService;
+﻿using _360Accounting.Core;
+using _360Accounting.Core.Entities;
 using _360Accounting.Data.Repositories;
-using _360Accounting.Service.Services;
+using _360Accounting.Service;
 using _360Accounting.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -23,7 +23,10 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            CompanyListModel model = new CompanyListModel();
+            var list = service.GetAll();
+            model.Companies = list.Select(a => new CompanyModel(a)).ToList();
+            return View(model);
         }
 
         public ActionResult Create()
@@ -32,15 +35,41 @@ namespace _360Accounting.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(CompanyModel model)
+        {
+            ////if (ModelState.IsValid)
+            ////{
+                string result = service.Insert(MapModel(model));
+                return RedirectToAction("Index");
+            ////}
+
+            ////return View(model);
+        }
+
+        public ActionResult Edit(string id)
+        {
+            CompanyModel model = new CompanyModel(service.GetSingle(id));
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(CompanyModel model)
         {
             if (ModelState.IsValid)
             {
-                string result = service.Insert(MapModel(model));
+                string result = service.Update(MapModel(model));
                 return RedirectToAction("Index");
             }
 
             return View(model);
+        }
+
+        public ActionResult Delete(string id)
+        {
+            service.Delete(id);
+            return RedirectToAction("Index");
         }
 
         private Company MapModel(CompanyModel model)            ////TODO: this should be done in service will discuss later - FK

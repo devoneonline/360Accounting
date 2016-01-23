@@ -75,16 +75,17 @@ namespace _360Accounting.Web.Controllers
         }
 
         [HttpPost]
-        ////[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(AccountViewModel model)
         {
             if (ModelState.IsValid)
             {
                 model.CompanyId = AuthenticationHelper.User.CompanyId;                
                 string result = service.Update(MapModel(model));
+                return RedirectToAction("Index");
             }
 
-            return RedirectToAction("Index");
+            return View(model);
         }
 
         public ActionResult Delete(string id)
