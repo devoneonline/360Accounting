@@ -57,7 +57,6 @@ namespace _360Accounting.Web.Controllers
             return View(model);
         }
 
-        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {

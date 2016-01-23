@@ -126,6 +126,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Company\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -136,7 +137,6 @@
     <Compile Include="Controllers\AccountValueController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\SetOfBookController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -146,12 +146,10 @@
     <Compile Include="Models\AccountValueViewModel.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\AccValueCreateModel.cs" />
-    <Compile Include="Models\CompanyListModel.cs" />
     <Compile Include="Models\CompanyModel.cs" />
     <Compile Include="Models\FeatureViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\ManageUserViewModel.cs" />
-    <Compile Include="Models\SetOfBookListModel.cs" />
     <Compile Include="Models\SetOfBookModel.cs" />
     <Compile Include="Models\UserCreateModel.cs" />
     <Compile Include="Models\UserProfile.cs" />
@@ -249,13 +247,7 @@
     <Content Include="Views\AccountValue\Edit.cshtml" />
     <Content Include="Views\AccountValue\_AccountValueList.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
-    <Content Include="Views\Company\Index.cshtml" />
-    <Content Include="Views\Account\Index.cshtml" />
-    <Content Include="Views\Company\Create.cshtml" />
-    <Content Include="Views\Company\Edit.cshtml" />
-    <Content Include="Views\SetOfBook\Index.cshtml" />
-    <Content Include="Views\SetOfBook\Create.cshtml" />
-    <Content Include="Views\SetOfBook\Edit.cshtml" />
+    <Content Include="Views\Shared\_Menu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">
