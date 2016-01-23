@@ -1,55 +1,115 @@
 ﻿@model _360Accounting.Web.Models.LoginViewModel
 
 @{
-    ViewBag.Title = "Login";
+    Layout = null;
+    ViewBag.Title = "360 Accounting - Login";
 }
 
-<h2>
-    @ViewBag.Title
-</h2>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
 
-<div class="row">
-    <div class="col-md-8">
-        <section id="loginForm">
-            @using (Html.BeginForm("Login", "User", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-            {
-                @Html.AntiForgeryToken()
-                <h4>Use a local account to log in.</h4>
-                <hr />
-                @Html.ValidationSummary(false)
-                <div class="form-group">
-                    @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m=> m.UserName)
+    <title>@ViewBag.Title</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href='@Url.Content("~/Content/bootstrap.min.css")' rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href='@Url.Content("~/Content/style.css")' rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href='@Url.Content("~/font-awesome/css/font-awesome.min.css")' rel="stylesheet" type="text/css">
+
+    <link href='@Url.Content("~/Content/bootstrap-multiselect.css")' rel="stylesheet" type="text/css">
+
+    <link href='@Url.Content("~/Content/awesome-bootstrap-checkbox.css")' rel="stylesheet" type="text/css">
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+
+</head>
+<body>
+    <div id="wrapper" class="LoginPageWrapper height100p">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <img class="img-responsive" src='@Url.Content("~/Content/images/logo.png")' alt="" />
+        </div>
+        <!-- Top Menu Items -->
+        <ul class="nav navbar-right top-nav">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-user"></i> Anonymous <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+    </nav>
+
+    <div id="page-wrapper">
+        @using (Html.BeginForm("Login", "User", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="container-fluid height100p">
+                <div class="acc-loginMainWrap height100p">
+                    <div class="acc-loginInnerWrap">
+                        <form name="loginForm" class="">
+                            <div class="login-fields clearfix">
+                                <img class="img-responsive cusBigLogo" src='@Url.Content("~/Content/images/big-logo.png")' alt="" />
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "Username" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+                                </div>
+                                <button type="submit" class="btn btn-default login-btn pull-right">Log In</button>
+                                <div class="forget-pass">
+                                    Forgot Password?
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m=> m.UserName)
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <div class="checkbox">
-                            @Html.CheckBoxFor(m => m.RememberMe)
-                            @Html.LabelFor(m => m.RememberMe)
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Log in" class="btn btn-default" />
-                    </div>
-                </div>
-            }
-        </section>
+            </div>
+            
+        }
+        <!-- /.container-fluid -->
+
     </div>
-</div>
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+    <!-- /#page-wrapper -->
+    </div>
 
+    <!-- jQuery -->
+    <script src='@Url.Content("~/Scripts/js/jquery.js")'></script>
 
+    <!-- Bootstrap Core JavaScript -->
+    <script src='@Url.Content("~/Scripts/js/bootstrap.min.js")'></script>
+
+</body>
+</html>
