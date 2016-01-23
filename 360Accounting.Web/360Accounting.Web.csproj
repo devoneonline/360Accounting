@@ -246,6 +246,7 @@
     <Content Include="Views\AccountValue\Edit.cshtml" />
     <Content Include="Views\AccountValue\_AccountValueList.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\Shared\_Menu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

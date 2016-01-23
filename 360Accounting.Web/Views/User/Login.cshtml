@@ -82,7 +82,8 @@
                         <form name="loginForm" class="">
                             <div class="login-fields clearfix">
                                 <img class="img-responsive cusBigLogo" src='@Url.Content("~/Content/images/big-logo.png")' alt="" />
-                                <div class="form-group">
+                                <div class="form-group input-group">
+                                    <span class="input-group-addon">@Html.Raw("@")</span>
                                     @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "Username" })
                                 </div>
                                 <div class="form-group">
