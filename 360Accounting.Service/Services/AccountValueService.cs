@@ -30,7 +30,7 @@ namespace _360Accounting.Service
 
         public IEnumerable<AccountValue> GetAll()
         {
-            return this.GetAll();
+            return this.repository.GetAll();
         }
 
         public string Insert(AccountValue entity)

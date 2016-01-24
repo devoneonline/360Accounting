@@ -24,18 +24,15 @@ namespace _360Accounting.Web.Controllers
             sobService = new SetOfBookService(new SetOfBookRepository());
         }
 
-        public ActionResult Index()
+        public ActionResult Index(AccountListModel model)
         {
-            var list = service.GetAll();
-            AccountListModel model = new AccountListModel();
-            model.Accounts = list.Select(a => new AccountViewModel(a)).ToList();
-
+            model.Accounts = listAccounts(model.SearchText, true, model.Page, model.SortColumn, model.SortDirection);
             return View(model);
         }
 
         public ActionResult Create()
         {
-            AccountViewModel model = new AccountViewModel();
+            AccountCreateViewModel model = new AccountCreateViewModel();
             model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
                 .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
 
@@ -43,7 +40,7 @@ namespace _360Accounting.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(AccountViewModel model)
+        public ActionResult Create(AccountCreateViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -63,7 +60,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Edit(string id)
         {
-            AccountViewModel model = new AccountViewModel(service.GetSingle(id));
+            AccountCreateViewModel model = new AccountCreateViewModel(service.GetSingle(id));
 
             ////Make appropriate change here as well --FK
 
@@ -75,8 +72,7 @@ namespace _360Accounting.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(AccountViewModel model)
+        public ActionResult Edit(AccountCreateViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -94,10 +90,22 @@ namespace _360Accounting.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        private Account MapModel(AccountViewModel model)            ////TODO: this should be done in service will discuss later - FK
+
+        #region Private Methods
+
+        ////private method name should start with small character
+        
+        private List<AccountViewModel> listAccounts(string searchText, bool paging, int? page, string sort, string sortDir)
+        {
+            List<AccountViewModel> modelList = service.GetAll(AuthenticationHelper.User.CompanyId, searchText, paging, page, sort, sortDir).Select(x => new AccountViewModel(x)).ToList();
+            return modelList;
+        }
+
+        private Account MapModel(AccountCreateViewModel model)            ////TODO: this should be done in service will discuss later - FK
         {
             return new Account
             {
+                Id = model.Id,
                 CompanyId = model.CompanyId,
                 CreateDate = DateTime.Now,
                 SegmentChar1 = model.SegmentChar1,
@@ -128,5 +136,7 @@ namespace _360Accounting.Web.Controllers
                 UpdateDate = DateTime.Now
             };
         }
+
+        #endregion
     }
 }

@@ -7,7 +7,28 @@ namespace _360Accounting.Web.Models
 {
     public class AccountListModel
     {
+        private string sortColumn = "Segments";
+        private string sortDirection = "ASC";
+
         #region Properties
+
+        public string SearchText { get; set; }
+
+        public int? Page { get; set; }
+
+        public int TotalRecords { get; set; }
+
+        public string SortColumn
+        {
+            get { return sortColumn; }
+            set { sortColumn = value; }
+        }
+
+        public string SortDirection
+        {
+            get { return sortDirection; }
+            set { sortDirection = value; }
+        }
 
         public IEnumerable<AccountViewModel> Accounts { get; set; }
 

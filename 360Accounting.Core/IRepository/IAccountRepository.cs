@@ -10,5 +10,7 @@ namespace _360Accounting.Core.Interfaces
     public interface IAccountRepository : IRepository<Account>
     {
         Account GetAccountBySOBId(string sobId);
+
+        IEnumerable<AccountView> GetAll(long companyId, string searchText, bool paging, int page, string sort, string sortDir);
     }
 }

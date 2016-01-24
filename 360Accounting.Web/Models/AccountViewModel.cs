@@ -12,12 +12,39 @@ namespace _360Accounting.Web.Models
 {
     public class AccountViewModel
     {
-        #region Constructors
+        public long Id { get; set; }
+
+        public long SOBId { get; set; }
+
+        public string SOBName { get; set; }
+
+        public string Segments { get; set; }
+
+        public string SegmentsLength { get; set; }
+
         public AccountViewModel()
+        {
+
+        }
+
+        public AccountViewModel(AccountView entity)
+        {
+            this.Id = entity.Id;
+            this.SOBId = entity.SOBId;
+            this.SOBName = entity.SOBName;
+            this.Segments = entity.Segments;
+            this.SegmentsLength = entity.SegmentsLength;
+        }
+    }
+
+    public class AccountCreateViewModel
+    {
+        #region Constructors
+        public AccountCreateViewModel()
         {
         }
 
-        public AccountViewModel(Account bo)
+        public AccountCreateViewModel(Account bo)
         {
             this.Id = bo.Id;
             this.CompanyId = bo.CompanyId;

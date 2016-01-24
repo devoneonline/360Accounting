@@ -33,6 +33,11 @@ namespace _360Accounting.Service
             return this.repository.GetAll();
         }
 
+        public IEnumerable<AccountView> GetAll(long companyId, string searchText, bool paging, int? page, string sort, string sortDir)
+        {
+            return this.repository.GetAll(companyId, searchText, paging, page ?? 1, sort, sortDir);
+        }
+
         public string Insert(Account entity)
         {
             return this.repository.Insert(entity);
