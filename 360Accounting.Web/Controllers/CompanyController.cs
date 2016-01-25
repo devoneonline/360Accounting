@@ -31,20 +31,18 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Create()
         {
-            return View();
+            return View(new CompanyModel());
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Create(CompanyModel model)
         {
-            ////if (ModelState.IsValid)
-            ////{
+            if (ModelState.IsValid)
+            {
                 string result = service.Insert(MapModel(model));
                 return RedirectToAction("Index");
-            ////}
-
-            ////return View(model);
+            }
+            return View(model);
         }
 
         public ActionResult Edit(string id)
@@ -54,7 +52,6 @@ namespace _360Accounting.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Edit(CompanyModel model)
         {
             if (ModelState.IsValid)
