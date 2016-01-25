@@ -1,4 +1,5 @@
-﻿using _360Accounting.Core;
+﻿using _360Accounting.Common;
+using _360Accounting.Core;
 using _360Accounting.Core.Entities;
 using _360Accounting.Data.Repositories;
 using _360Accounting.Service;
@@ -43,13 +44,10 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                ////TODO: we don't need this. do we? [FK]
-                ////MembershipUser mu = Membership.GetUser(model.UserName);
-                ////mu.UnlockUser();
-
                 if (Membership.ValidateUser(model.UserName, model.Password))
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, false);
+                    updateMenuItems();
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -66,7 +64,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult ManageUser()
         {
-            ManageUserViewModel model = new ManageUserViewModel();
+            UserProfileViewModel model = new UserProfileViewModel();
             UserProfile userProfile = UserProfile.GetProfile(User.Identity.Name);
             if (userProfile != null)
             {
@@ -82,7 +80,7 @@ namespace _360Accounting.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ManageUser(ManageUserViewModel model)
+        public ActionResult ManageUser(UserProfileViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -153,5 +151,18 @@ namespace _360Accounting.Web.Controllers
 
             return false;
         }
+
+        public ActionResult Settings()
+        {
+            return View();
+        }
+
+        private void updateMenuItems()
+        {
+            IEnumerable<Feature> featureList = service.GetAll().ToList();
+            var modelList = featureList.Select(x => new FeatureViewModel(x)).ToList();
+            AuthenticationHelper.MenuItems = modelList.Where(x => x.ParentId == null);
+        }
+
     }
 }

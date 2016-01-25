@@ -12,6 +12,12 @@ namespace _360Accounting.Common
         user
     }
 
+    public enum UserRoles
+    {
+        SuperAdmin,
+        User
+    }
+
     public enum AccountTypes
     {
         Capital,

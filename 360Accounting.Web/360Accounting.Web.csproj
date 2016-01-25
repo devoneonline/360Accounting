@@ -263,6 +263,7 @@
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\AccountValue\Index.cshtml" />
     <Content Include="Views\AccountValue\_List.cshtml" />
+    <Content Include="Views\User\Settings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

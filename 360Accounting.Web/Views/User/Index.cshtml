@@ -1,25 +1,12 @@
 ﻿@model IEnumerable<_360Accounting.Web.Models.FeatureViewModel>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Manage Users";
 }
-
-<h2>Index</h2>
-
-@ShowTree(Model)
-
-    @helper ShowTree(IEnumerable<_360Accounting.Web.Models.FeatureViewModel> items)
-{
-    <ul>
-        @foreach (var item in items)
-        {
-            <li>
-                @item.Name
-                @if (item.Features!=null)
-                {
-                    @ShowTree(item.Features)
-                }
-            </li>
-        }
-    </ul>
-}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+            @ViewBag.Title
+        </h1>
+    </div>
+</div>

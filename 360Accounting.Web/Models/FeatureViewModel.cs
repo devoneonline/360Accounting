@@ -12,6 +12,8 @@ namespace _360Accounting.Web.Models
             this.Id = x.Id;
             this.Name = x.Name;
             this.ParentId = x.ParentId;
+            this.Class = x.Class;
+            this.Href = x.Href;
 
             if (x.Features != null)
             {
@@ -24,6 +26,10 @@ namespace _360Accounting.Web.Models
         public string Name { get; set; }
 
         public long? ParentId { get; set; }
+
+        public string Href { get; set; }
+
+        public string Class { get; set; }
 
         public List<FeatureViewModel> Features { get; set; }
     }

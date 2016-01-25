@@ -10,6 +10,7 @@ namespace _360Accounting.Web
     public sealed class AuthenticationHelper
     {
         private const string SESSION_USER = "USER_PROFILE";
+        private const string SESSION_MENU_ITEMS = "MENU_ITEMS";
 
         public static UserProfile User
         {
@@ -23,5 +24,20 @@ namespace _360Accounting.Web
                 HttpContext.Current.Session[SESSION_USER] = value;
             }
         }
+
+        public static IEnumerable<FeatureViewModel> MenuItems
+        {
+            get
+            {
+                return HttpContext.Current.Session[SESSION_MENU_ITEMS] == null 
+                    ? null 
+                    : (IEnumerable<FeatureViewModel>)HttpContext.Current.Session[SESSION_MENU_ITEMS];
+            }
+            set
+            {
+                HttpContext.Current.Session[SESSION_MENU_ITEMS] = value;
+            }
+        }
+
     }
 }

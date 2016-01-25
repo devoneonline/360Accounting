@@ -18,6 +18,10 @@ namespace _360Accounting.Core.Entities
 
         public long? ParentId { get; set; }
 
+        public string Class { get; set; }
+
+        public string Href { get; set; }
+
         public byte[] LastUpdated { get; set; }
 
         [ForeignKey("ParentId")]
