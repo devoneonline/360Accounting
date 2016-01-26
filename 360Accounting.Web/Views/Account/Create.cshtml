@@ -3,6 +3,10 @@
     ViewBag.Title = "Create Account";
 }
 
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">
@@ -42,11 +46,9 @@
             @Html.LabelFor(m => m.SegmentName1, new { @class = "col-md-2 control-label" })
             <div class="col-md-4">
                 @Html.TextBoxFor(m => m.SegmentName1, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m=> m.SegmentName1)
             </div>
             <div class="col-md-2">
                 @Html.TextBoxFor(m => m.SegmentChar1, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.SegmentChar1)
             </div>
             <div class="col-md-2">
                 @Html.CheckBoxFor(m => m.SegmentEnabled1)

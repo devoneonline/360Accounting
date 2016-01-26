@@ -8,8 +8,6 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
-
-
     public class AccValueCreateModel
     {
         #region Constructors

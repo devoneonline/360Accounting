@@ -15,17 +15,17 @@ namespace _360Accounting.Web.Models
         {
         }
 
-        public AccountValueViewModel(AccountValue bo)
+        public AccountValueViewModel(AccountValue entity)
         {
-            this.AccountType = bo.AccountType;
-            this.ChartId = bo.ChartId;
-            this.EndDate = bo.EndDate;
-            this.Id = bo.Id;
-            this.Levl = bo.Levl;
-            this.Segment = bo.Segment;
-            this.StartDate = bo.StartDate;
-            this.Value = bo.Value;
-            this.ValueName = bo.ValueName;
+            this.AccountType = entity.AccountType;
+            this.ChartId = entity.ChartId;
+            this.EndDate = entity.EndDate;
+            this.Id = entity.Id;
+            this.Levl = entity.Levl;
+            this.Segment = entity.Segment;
+            this.StartDate = entity.StartDate;
+            this.Value = entity.Value;
+            this.ValueName = entity.ValueName;
         }
         #endregion
 
@@ -64,6 +64,7 @@ namespace _360Accounting.Web.Models
                 {
                     lst.Add(new SelectListItem { Text = value.ToString(), Value = value.ToString() });
                 }
+
                 return lst;
             }
         }

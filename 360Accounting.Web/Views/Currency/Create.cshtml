@@ -1,0 +1,70 @@
+﻿@model _360Accounting.Web.Models.CurrencyViewModel
+
+@{
+    ViewBag.Title = "Create Currency";
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+            @ViewBag.Title
+        </h1>
+    </div>
+</div>
+
+@using (Html.BeginForm("Create", "Currency", 
+    FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    <div class="col-lg-5">
+        @Html.ValidationSummary()
+        @Html.HiddenFor(m => m.SOBId)
+        @Html.HiddenFor(m => m.CompanyId)
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.SOBName)
+            @Html.TextBoxFor(m => m.SOBName, new { @readonly = "readonly", @class = "form-control" })
+        </div>
+
+    </div>
+    <div class="col-lg-5">
+        <div class="form-group">
+            @Html.LabelFor(m => m.CurrencyCode)
+            @Html.TextBoxFor(m => m.CurrencyCode, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Name)
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Precision)
+            @Html.TextBoxFor(m => m.Precision, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+            <input type="button" value="Cancel" class="btn btn-default" id="btnCancel" />
+        </div>
+    </div>
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#btnCancel').click(function () {
+                    window.location.href = '@Url.Content("~/Currency/Index")';
+                });
+            });
+        </script>
+    }
+}
+

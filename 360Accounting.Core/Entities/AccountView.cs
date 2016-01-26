@@ -17,6 +17,5 @@ namespace _360Accounting.Core.Entities
         public string Segments { get; set; }
 
         public string SegmentsLength { get; set; }
-
     }
 }

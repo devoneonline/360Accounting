@@ -1,0 +1,80 @@
+﻿@model _360Accounting.Web.Models.CodeCombinitionCreateViewModel
+
+@*@{
+    ViewBag.Title = "Code Combinition";
+}*@
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        @*$('#btnCancel').click(function () {
+            window.location.href = '@Url.Content("~/CodeCombinition/Index")';
+        });*@
+    });
+</script>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+            @ViewBag.Title
+        </h1>
+    </div>
+</div>
+
+<div class="col-lg-12">
+    @using (Html.BeginForm("Edit", "CodeCombinition", FormMethod.Post,
+        new { @class = "form-horizonatl", role = "form" }))
+    {
+        @Html.ValidationSummary()
+        @Html.HiddenFor(m => m.SOBId)
+        @Html.HiddenFor(m => m.CompanyId)
+        @Html.HiddenFor(m => m.Id)
+
+        @*for (int i = 0; i < Model.SegmentList.LastOrDefault().SegmentCount; i++)
+        {
+            <div class="col-lg-5">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.SegmentList.Where(x => x.SegmentCount == i), Model.SegmentList.Where(x => x.SegmentCount == i).Select(x => x.SegmentName.ToString()))
+                    @Html.DropDownListFor(m => m.SegmentList
+                   .Where(x => x.SegmentCount == i).Select(x => x.SegmentValue),
+                    Model.SegmentList.Select(x => x.SegmentValueList) ,
+                    new { @class = "form-control" })
+                    @Html.LabelFor(m => m.SegmentList.Where(x => x.SegmentCount == i)
+                   .Select(x => x.SegmentValueName))
+                </div>
+            </div>
+        }*@
+
+        <div class="col-lg-5">
+            <div class="form-group">
+                @Html.LabelFor(m => m.StartDate)
+                @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="form-group">
+                @Html.LabelFor(m => m.EndDate)
+                @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="form-group">
+                @Html.LabelFor(m => m.AllowedPosting)
+                @Html.CheckBoxFor(m => m.AllowedPosting)
+            </div>
+        </div>
+        
+        <div class="col-lg-5">
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="button" value="Cancel" class="btn btn-default" id="btnCancel" />
+            </div>
+        </div>
+    }
+</div>
+

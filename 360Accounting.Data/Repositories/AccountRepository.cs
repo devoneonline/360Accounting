@@ -35,10 +35,14 @@ namespace _360Accounting.Data.Repositories
         public IEnumerable<AccountView> GetAll(long companyId, string searchText, bool paging, int page, string sort, string sortDir)
         {
             IEnumerable<Account> accountList = this.Context.Accounts;
-            accountList = sortDir.ToUpper() == "ASC" ? accountList.OrderBy(x => x.SOBId) : accountList.OrderByDescending(x => x.SOBId);
+            accountList = sortDir.ToUpper() == "ASC" ?
+                accountList.OrderBy(x => x.SOBId) :
+                accountList.OrderByDescending(x => x.SOBId);
 
             if (!paging)
+            {
                 return accountList.Select(x => GetAccountViewByAccountEntity(x)).ToList();
+            }
             else
             {
                 var recordCount = accountList.Count();
@@ -82,11 +86,15 @@ namespace _360Accounting.Data.Repositories
 
         private AccountView GetAccountViewByAccountEntity(Account entity)
         {
-            if (entity == null) return null;
+            if (entity == null)
+            {
+                return null;
+            }
+
             AccountView mappingObject = new AccountView();
             mappingObject.Id = entity.Id;
             mappingObject.SOBId = entity.SOBId;
-            mappingObject.SOBName = this.Context.SetOfBooks.Where(x => x.Id == entity.SOBId).Select(x=> x.Name).FirstOrDefault();
+            mappingObject.SOBName = this.Context.SetOfBooks.Where(x => x.Id == entity.SOBId).Select(x => x.Name).FirstOrDefault();
             mappingObject.Segments = Utility.Stringize("-", entity.SegmentName1, entity.SegmentName2, entity.SegmentName3, entity.SegmentName4, entity.SegmentName5, entity.SegmentName6, entity.SegmentName7, entity.SegmentName8);
             mappingObject.SegmentsLength = Utility.Stringize("-", entity.SegmentChar1, entity.SegmentChar2, entity.SegmentChar3, entity.SegmentChar4, entity.SegmentChar5, entity.SegmentChar6, entity.SegmentChar7, entity.SegmentChar8);
             return mappingObject;

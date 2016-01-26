@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 
 namespace _360Accounting.Core
 {
-    public interface IAccountValueService : IService<AccountValue>
+    public interface ICodeCombinitionService : IService<CodeCombinition>
     {
-        List<AccountValue> GetBySegment(string segment, long chartId);
-
-        List<AccountValue> GetBySegment(string segment);
+        IEnumerable<CodeCombinitionView> GetAll(string searchText, bool paging, int? page, string sort, string sortDir);
     }
 }

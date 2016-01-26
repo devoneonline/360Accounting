@@ -9,18 +9,18 @@ namespace _360Accounting.Web
 {
     public sealed class AuthenticationHelper
     {
-        private const string SESSION_USER = "USER_PROFILE";
+        private const string SessionUser = "USER_PROFILE";
 
         public static UserProfile User
         {
             get
             {
-                return HttpContext.Current.Session[SESSION_USER] == null ? null : (UserProfile)HttpContext.Current.Session[SESSION_USER];
+                return HttpContext.Current.Session[SessionUser] == null ? null : (UserProfile)HttpContext.Current.Session[SessionUser];
             }
 
             set
             {
-                HttpContext.Current.Session[SESSION_USER] = value;
+                HttpContext.Current.Session[SessionUser] = value;
             }
         }
     }

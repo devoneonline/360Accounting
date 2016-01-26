@@ -45,12 +45,9 @@ namespace _360Accounting.Web.Controllers
             if (ModelState.IsValid)
             {
                 model.CompanyId = AuthenticationHelper.User.CompanyId;
-                string result = service.Insert(MapModel(model));    ////TODO: mapper should be in service
+                string result = service.Insert(mapModel(model));    ////TODO: mapper should be in service
                 return RedirectToAction("Index");
             }
-
-            ////model.SetOfBooks = sobService.GetAll()          ////TODO: Use GetByCompany call instead   -- FK
-            ////    .Where(x => x.CompanyId == AuthenticationHelper.User.CompanyId).Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
 
             model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
                 .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
@@ -61,9 +58,6 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Edit(string id)
         {
             AccountCreateViewModel model = new AccountCreateViewModel(service.GetSingle(id));
-
-            ////Make appropriate change here as well --FK
-
             SetOfBook sob = sobService.GetSingle(model.SOBId.ToString());
             model.SetOfBooks = new List<SelectListItem>();
             model.SetOfBooks.Add(new SelectListItem { Text = sob.Name, Value = sob.Id.ToString() });
@@ -77,7 +71,7 @@ namespace _360Accounting.Web.Controllers
             if (ModelState.IsValid)
             {
                 model.CompanyId = AuthenticationHelper.User.CompanyId;                
-                string result = service.Update(MapModel(model));
+                string result = service.Update(mapModel(model));
                 return RedirectToAction("Index");
             }
 
@@ -90,7 +84,6 @@ namespace _360Accounting.Web.Controllers
             return RedirectToAction("Index");
         }
 
-
         #region Private Methods
 
         ////private method name should start with small character
@@ -101,7 +94,7 @@ namespace _360Accounting.Web.Controllers
             return modelList;
         }
 
-        private Account MapModel(AccountCreateViewModel model)            ////TODO: this should be done in service will discuss later - FK
+        private Account mapModel(AccountCreateViewModel model)            ////TODO: this should be done in service will discuss later - FK
         {
             return new Account
             {

@@ -9,41 +9,36 @@ using System.Threading.Tasks;
 
 namespace _360Accounting.Service
 {
-    public class AccountValueService : IAccountValueService
+    public class CodeCombinitionService : ICodeCombinitionService
     {
-        private IAccountValueRepository repository;
+        private ICodeCombinitionRepository repository;
 
-        public AccountValueService(IAccountValueRepository repo)
+        public CodeCombinitionService(ICodeCombinitionRepository repo)
         {
             this.repository = repo;
         }
 
-        public List<AccountValue> GetBySegment(string segment, long chartId)
+        public IEnumerable<CodeCombinitionView> GetAll(string searchText, bool paging, int? page, string sort, string sortDir)
         {
-            return this.repository.GetBySegment(segment, chartId);
+            return this.repository.GetAll(searchText, paging, page ?? 1, sort, sortDir);
         }
 
-        public List<AccountValue> GetBySegment(string segment)
-        {
-            return this.repository.GetBySegment(segment);
-        }
-        
-        public AccountValue GetSingle(string id)
+        public CodeCombinition GetSingle(string id)
         {
             return this.repository.GetSingle(id);
         }
 
-        public IEnumerable<AccountValue> GetAll()
+        public IEnumerable<CodeCombinition> GetAll()
         {
             return this.repository.GetAll();
         }
 
-        public string Insert(AccountValue entity)
+        public string Insert(CodeCombinition entity)
         {
             return this.repository.Insert(entity);
         }
 
-        public string Update(AccountValue entity)
+        public string Update(CodeCombinition entity)
         {
             return this.repository.Update(entity);
         }

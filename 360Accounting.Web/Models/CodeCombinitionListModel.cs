@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
-    public class AccountListModel
+    public class CodeCombinitionListModel
     {
-        private string sortColumn = "Segments";
+        private string sortColumn = string.Empty;
         private string sortDirection = "ASC";
 
         #region Properties
-
         public string SearchText { get; set; }
 
         public int? Page { get; set; }
@@ -30,8 +31,12 @@ namespace _360Accounting.Web.Models
             set { this.sortDirection = value; }
         }
 
-        public IEnumerable<AccountViewModel> Accounts { get; set; }
+        public long SOBId { get; set; }
 
+        [Display(Name = "Set Of Books")]
+        public List<SelectListItem> SetOfBooks { get; set; }
+
+        public List<CodeCombinitionViewModel> CodeCombinitions { get; set; }
         #endregion
     }
 }

@@ -10,18 +10,23 @@ namespace _360Accounting.Common
     {
         public static string Stringize(string delimeter, params string[] value)
         {
-            StringBuilder sb=new StringBuilder();
-            foreach(string s in value)
+            StringBuilder sb = new StringBuilder();
+            foreach (string s in value)
             {
                 if (!string.IsNullOrEmpty(s))
                 {
                     sb.Append(s).Append(" ").Append(delimeter).Append(" ");
                 }
             }
+
             if (sb.ToString().Length > 0)
-                return sb.ToString().Substring(0, sb.ToString().LastIndexOf("-")-1);
+            {
+                return sb.ToString().Substring(0, sb.ToString().LastIndexOf("-") - 1);
+            }
             else
+            {
                 return sb.ToString();
+            }                
         }
 
         public static string Stringize(string delimeter, params int?[] value)

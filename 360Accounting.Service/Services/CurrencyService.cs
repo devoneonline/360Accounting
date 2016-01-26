@@ -9,41 +9,36 @@ using System.Threading.Tasks;
 
 namespace _360Accounting.Service
 {
-    public class AccountValueService : IAccountValueService
+    public class CurrencyService : ICurrencyService
     {
-        private IAccountValueRepository repository;
+        private ICurrencyRepository repository;
 
-        public AccountValueService(IAccountValueRepository repo)
+        public CurrencyService(ICurrencyRepository repo)
         {
             this.repository = repo;
         }
 
-        public List<AccountValue> GetBySegment(string segment, long chartId)
+        public IEnumerable<Currency> GetAll(string searchText, bool paging, int? page, string sort, string sortDir)
         {
-            return this.repository.GetBySegment(segment, chartId);
+            return this.repository.GetAll(searchText, paging, page ?? 1, sort, sortDir);
         }
 
-        public List<AccountValue> GetBySegment(string segment)
-        {
-            return this.repository.GetBySegment(segment);
-        }
-        
-        public AccountValue GetSingle(string id)
+        public Currency GetSingle(string id)
         {
             return this.repository.GetSingle(id);
         }
 
-        public IEnumerable<AccountValue> GetAll()
+        public IEnumerable<Currency> GetAll()
         {
             return this.repository.GetAll();
         }
 
-        public string Insert(AccountValue entity)
+        public string Insert(Currency entity)
         {
             return this.repository.Insert(entity);
         }
 
-        public string Update(AccountValue entity)
+        public string Update(Currency entity)
         {
             return this.repository.Update(entity);
         }

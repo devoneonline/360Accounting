@@ -22,14 +22,14 @@ namespace _360Accounting.Web.Models
 
         public string SortColumn
         {
-            get { return sortColumn; }
-            set { sortColumn = value; }
+            get { return this.sortColumn; }
+            set { this.sortColumn = value; }
         }
 
         public string SortDirection
         {
-            get { return sortDirection; }
-            set { sortDirection = value; }
+            get { return this.sortDirection; }
+            set { this.sortDirection = value; }
         }
 
         [Display(Name = "Set Of Books")]

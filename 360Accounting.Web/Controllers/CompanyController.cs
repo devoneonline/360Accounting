@@ -38,13 +38,13 @@ namespace _360Accounting.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(CompanyModel model)
         {
-            ////if (ModelState.IsValid)
-            ////{
+            if (ModelState.IsValid)
+            {
                 string result = service.Insert(MapModel(model));
                 return RedirectToAction("Index");
-            ////}
+            }
 
-            ////return View(model);
+            return View(model);
         }
 
         public ActionResult Edit(string id)

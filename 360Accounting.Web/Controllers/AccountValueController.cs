@@ -27,18 +27,17 @@ namespace _360Accounting.Web.Controllers
             accountService = new AccountService(new AccountRepository());
         }
 
-
         public ActionResult Index(AccountValueListModel model)
         {
-            if (model.SetOfBooks ==null)
+            if (model.SetOfBooks == null)
             {
                 model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
-                    .Select(x => new SelectListItem { Text = x.Name, Value=x.Id.ToString() }).ToList();
+                    .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
             }
 
             if (model.Segments == null && model.SetOfBooks.Any())
             {
-                model.Segments = GetSegmentList(model.SetOfBooks.First().Value.ToString());
+                model.Segments = getSegmentList(model.SetOfBooks.First().Value.ToString());
             }
 
             model.AccountValues = service.GetAll().Select(x => new AccountValueViewModel(x)).ToList();
@@ -48,15 +47,20 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Create(long sobId, string segment)
         {
             AccountValueViewModel model = new AccountValueViewModel();
-            model.ChartId = accountService.GetAccountBySOBId(sobId.ToString()).Id;
-            model.SetOfBook = sobService.GetSingle(sobId.ToString()).Name;
-            model.Segment = segment;
-            return View("Edit", model);
+            if (accountService.GetAccountBySOBId(sobId.ToString()) != null)
+            {
+                model.ChartId = accountService.GetAccountBySOBId(sobId.ToString()).Id;
+                model.SetOfBook = sobService.GetSingle(sobId.ToString()).Name;
+                model.Segment = segment;
+                return View("Edit", model);
+            }
+
+            return RedirectToAction("Index");
         }
 
         public JsonResult SegmentList(string sobId)
         {
-            return Json(GetSegmentList(sobId), JsonRequestBehavior.AllowGet);
+            return Json(getSegmentList(sobId), JsonRequestBehavior.AllowGet);
         }
         
         public ActionResult Edit(long id)
@@ -73,11 +77,11 @@ namespace _360Accounting.Web.Controllers
             {
                 if (model.Id > 0)
                 {
-                    string result = service.Update(MapModel(model));
+                    string result = service.Update(mapModel(model));
                 }
                 else
                 {
-                    string result = service.Insert(MapModel(model));
+                    string result = service.Insert(mapModel(model));
                 }
 
                 return RedirectToAction("Index");
@@ -92,7 +96,8 @@ namespace _360Accounting.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        private List<SelectListItem> GetSegmentList(string sobId)
+        #region Private Methods
+        private List<SelectListItem> getSegmentList(string sobId)
         {
             Account account = accountService.GetAccountBySOBId(sobId);
             var lst = new List<SelectListItem>();
@@ -171,7 +176,7 @@ namespace _360Accounting.Web.Controllers
             return lst;   
         }
 
-        private AccountValue MapModel(AccountValueViewModel model)            ////TODO: this should be done in service will discuss later - FK
+        private AccountValue mapModel(AccountValueViewModel model)            ////TODO: this should be done in service will discuss later - FK
         {
             return new AccountValue
             {
@@ -188,5 +193,6 @@ namespace _360Accounting.Web.Controllers
                 ValueName = model.ValueName
             };
         }
+        #endregion
     }
 }

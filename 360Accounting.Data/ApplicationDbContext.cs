@@ -36,6 +36,10 @@ namespace _360Accounting.Data
 
         public DbSet<FeatureSetAccess> FeatureSetAccesses { get; set; }
 
+        public DbSet<CodeCombinition> CodeCombinitions { get; set; }
+
+        public DbSet<Currency> Currencies { get; set; }
+
         #endregion
 
         #region Binders
@@ -44,15 +48,21 @@ namespace _360Accounting.Data
         {
             ////base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Currency>().ToTable("tbCurrency");
+            modelBuilder.Entity<Currency>().HasKey(t => t.CurrencyCode);
+
+            modelBuilder.Entity<CodeCombinition>().ToTable("tbCodeCombinition");
+            modelBuilder.Entity<CodeCombinition>().HasKey(t => t.Id);
+
             modelBuilder.Entity<Feature>().ToTable("tbFeature");
             modelBuilder.Entity<Feature>().HasKey(t => new { t.Id });
 
             modelBuilder.Entity<Company>().ToTable("tbCompany");
             modelBuilder.Entity<Company>().HasKey(t => new { t.Id });
-                
+
             modelBuilder.Entity<SetOfBook>().ToTable("tbSetOfBook");
             modelBuilder.Entity<SetOfBook>().HasKey(t => t.Id);
-                                    
+
             modelBuilder.Entity<Account>().ToTable("tbChartOfAccount");
             modelBuilder.Entity<Account>().HasKey(t => new { t.Id });
 

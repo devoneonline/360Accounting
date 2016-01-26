@@ -11,6 +11,14 @@ namespace _360Accounting.Data.Repositories
 {
     public class AccountValueRepository : Repository, IAccountValueRepository
     {
+        public List<AccountValue> GetBySegment(string segment, long chartId)
+        {
+            List<AccountValue> valueList = this.Context
+                .AccountValues.Where(x => x.ChartId == chartId &&
+                    x.Segment == segment).ToList();
+            return valueList;
+        }
+
         public List<AccountValue> GetBySegment(string segment)
         {
             List<AccountValue> valueList = this.Context

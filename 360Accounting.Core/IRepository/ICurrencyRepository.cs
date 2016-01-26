@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace _360Accounting.Core.Interfaces
 {
-    public interface ICompanyRepository : IRepository<Company>
+    public interface ICurrencyRepository : IRepository<Currency>
     {
+        IEnumerable<Currency> GetAll(string searchText, bool paging, int page, string sort, string sortDir);
     }
 }
