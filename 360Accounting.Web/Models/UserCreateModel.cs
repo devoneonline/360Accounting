@@ -23,15 +23,4 @@ namespace _360Accounting.Web.Models
 
         public string PasswordAnswer { get; set; }
     }
-
-    public class UserListModel
-    {
-
-    }
-
-
-    public class UserViewModel
-    {
-
-    }
 }
