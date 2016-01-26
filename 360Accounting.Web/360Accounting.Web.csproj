@@ -270,13 +270,15 @@
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\AccountValue\Index.cshtml" />
     <Content Include="Views\AccountValue\_List.cshtml" />
-    <Content Include="Views\CodeCombinition\_Edit.cshtml" />
+    <Content Include="Views\User\Settings.cshtml" />
+    <Content Include="Views\User\ChangePassword.cshtml" />
     <Content Include="Views\CodeCombinition\Index.cshtml" />
+    <Content Include="Views\CodeCombinition\_Edit.cshtml" />
     <Content Include="Views\CodeCombinition\_List.cshtml" />
-    <Content Include="Views\Currency\Index.cshtml" />
-    <Content Include="Views\Currency\_List.cshtml" />
     <Content Include="Views\Currency\Create.cshtml" />
     <Content Include="Views\Currency\Edit.cshtml" />
+    <Content Include="Views\Currency\Index.cshtml" />
+    <Content Include="Views\Currency\_List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

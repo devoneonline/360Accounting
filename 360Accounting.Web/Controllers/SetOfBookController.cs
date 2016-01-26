@@ -31,16 +31,16 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Create()
         {
-            return View();
+            var model = new SetOfBookModel();
+            model.CompanyId = AuthenticationHelper.User.CompanyId;
+            return View(model);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Create(SetOfBookModel model)
         {
             if (ModelState.IsValid)
             {
-                model.CompanyId = AuthenticationHelper.User.CompanyId;
                 string result = service.Insert(MapModel(model));
                 return RedirectToAction("Index");
             }
@@ -55,7 +55,6 @@ namespace _360Accounting.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Edit(SetOfBookModel model)
         {
             if (ModelState.IsValid)

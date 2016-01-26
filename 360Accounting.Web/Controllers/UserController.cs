@@ -1,8 +1,10 @@
-﻿using _360Accounting.Core;
+﻿using _360Accounting.Common;
+using _360Accounting.Core;
 using _360Accounting.Core.Entities;
 using _360Accounting.Data.Repositories;
 using _360Accounting.Service;
 using _360Accounting.Web.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,18 +17,35 @@ namespace _360Accounting.Web.Controllers
     public class UserController : AsyncController
     {
         private IFeatureService service;
+        private ICompanyService companyService;
 
         public UserController()
         {
             ////service = IoC.Resolve<IFeatureService>("FeatureService");
             service = new FeatureService(new FeatureRepository());
+            companyService = new CompanyService(new CompanyRepository());
         }
 
-        public ActionResult Index()
+        public ActionResult Index(MembershipUserListModel model)
         {
-            IEnumerable<Feature> featureList = service.GetAll().ToList();
-            var modelList = featureList.Select(x => new FeatureViewModel(x)).ToList();
-            return View(modelList.Where(x => x.ParentId == null));
+            int totalRecords = 0;
+            MembershipUserCollection memCollection = Membership.GetAllUsers(model.Page ?? 0, Utility.Configuration.GridRows, out totalRecords);
+            model.Users = new List<UserViewModel>();
+            foreach(MembershipUser user in memCollection)
+            {
+                UserProfile profile = UserProfile.GetProfile(user.UserName);
+                UserViewModel item = new UserViewModel();
+                item.UserId = Guid.Parse(user.ProviderUserKey.ToString());
+                item.UserName = user.UserName;
+                item.FirstName = profile.FirstName;
+                item.LastName = profile.LastName;
+                item.PhoneNumber = profile.PhoneNumber;
+                item.Email = profile.Email;
+                item.CompanyName = companyService.GetSingle(profile.CompanyId.ToString()).Name;
+                model.Users.Add(item);
+            }
+            model.TotalRecords = totalRecords;
+            return View(model);
         }
 
         [AllowAnonymous]
@@ -43,13 +62,10 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                ////TODO: we don't need this. do we? [FK]
-                ////MembershipUser mu = Membership.GetUser(model.UserName);
-                ////mu.UnlockUser();
-
                 if (Membership.ValidateUser(model.UserName, model.Password))
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, false);
+                    updateMenuItems();
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -66,7 +82,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult ManageUser()
         {
-            ManageUserViewModel model = new ManageUserViewModel();
+            UserProfileViewModel model = new UserProfileViewModel();
             UserProfile userProfile = UserProfile.GetProfile(User.Identity.Name);
             if (userProfile != null)
             {
@@ -82,7 +98,7 @@ namespace _360Accounting.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ManageUser(ManageUserViewModel model)
+        public ActionResult ManageUser(UserProfileViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -107,6 +123,28 @@ namespace _360Accounting.Web.Controllers
                 }
             }
 
+            return View(model);
+        }
+
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(ChangePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                MembershipUser memUser = Membership.GetUser(AuthenticationHelper.User.UserName);
+                memUser.ChangePassword(model.OldPassword, model.NewPassword);
+                return RedirectToAction("Settings");
+            }
             return View(model);
         }
 
@@ -153,5 +191,18 @@ namespace _360Accounting.Web.Controllers
 
             return false;
         }
+
+        public ActionResult Settings()
+        {
+            return View();
+        }
+
+        private void updateMenuItems()
+        {
+            IEnumerable<Feature> featureList = service.GetAll().ToList();
+            var modelList = featureList.Select(x => new FeatureViewModel(x)).ToList();
+            AuthenticationHelper.MenuItems = modelList.Where(x => x.ParentId == null);
+        }
+
     }
 }

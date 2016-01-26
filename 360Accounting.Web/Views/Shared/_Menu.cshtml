@@ -1,57 +1,32 @@
-﻿<div class="collapse navbar-collapse navbar-ex1-collapse">
+﻿@if (AuthenticationHelper.MenuItems==null)
+{
+    FormsAuthentication.SignOut();
+    Response.Redirect("~/User/Login");
+}
+<div class="collapse navbar-collapse navbar-ex1-collapse">
     <ul class="nav navbar-nav side-nav">
-        <li>
-            <a href='@Url.Content("~/Company/Index")'><i class="fa fa-fw fa-table"></i> Company</a>
-        </li>
-        <li>
-            <a href='@Url.Content("~/SetOfBook/Index")'><i class="fa fa-fw fa-table"></i> Set of Book</a>
-        </li>
-        <li class="active">
-            <a href='@Url.Content("~/Account/index")'><i class="fa fa-fw fa-dashboard"></i> Chart Of Accounts</a>
-        </li>
-        <li>
-            <a href='@Url.Content("~/AccountValue/Index")'><i class="fa fa-fw fa-table"></i> Account Value</a>
-        </li>
-        <li>
-            <a href='@Url.Content("~/CodeCombinition/Index")'><i class="fa fa-fw fa-table"></i> Code Combinition</a>
-        </li>
-        <li>
-            <a href='@Url.Content("~/Currency/Index")'><i class="fa fa-fw fa-table"></i> Currency</a>
-        </li>
-        <li>
-            <a href="forms.html"><i class="fa fa-fw fa-edit"></i> Forms</a>
-        </li>
-        <li>
-            <a href="javascript:;" data-toggle="collapse" data-target="#level0"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>
-            <ul id="level0" class="collapse">
+        @ShowMenu(AuthenticationHelper.MenuItems)
+
+        @helper ShowMenu(IEnumerable<_360Accounting.Web.Models.FeatureViewModel> items)
+        {
+            foreach (var item in items)
+            {
                 <li>
-                    <a href="javascript:;" data-toggle="collapse" data-target="#level1">Level 1 <i class="fa fa-fw fa-caret-down"></i></a>
-                    <ul id="level1" class="collapse">
-                        <li>
-                            <a href="javascript:;" data-toggle="collapse" data-target="#level2">Level 2<i class="fa fa-fw fa-caret-down"></i></a>
-                            <ul id="level2" class="collapse">
-                                <li>
-                                    <a href="#">Level 3</a>
-                                </li>
-                                <li>
-                                    <a href="#">Level 3</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#">Level 2</a>
-                        </li>
-                    </ul>
+                    @if (item.Features == null)
+                    {
+                        <a href='@Url.Content(item.Href)'><i class="@item.Class"></i> @item.Name</a>
+                    }
+                    else
+                    {
+                        var _id = "level" + item.Id;
+                        var _pid = "#level" + item.Id;
+                        <a href="javascript:;" data-toggle="collapse" data-target="@_pid"><i class="@item.Class"></i> @item.Name </a>
+                        <ul id="@_id" class=" collapse">
+                            @ShowMenu(item.Features)
+                        </ul>
+                    }
                 </li>
-                <li>
-                    <a href="#">Level 1</a>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <a href="blank-page.html"><i class="fa fa-fw fa-file"></i> Blank Page</a>
-        </li>
+            }
+        }    
     </ul>
 </div>
-<!-- /.navbar-collapse -->
-

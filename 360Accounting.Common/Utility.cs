@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,20 @@ namespace _360Accounting.Common
         {
             return
                 Stringize(delimeter, value.Where(x => x.HasValue).Select(x => x.ToString()).ToArray());
+        }
+
+
+
+        public static class Configuration
+        {
+            public static int GridRows
+            {
+                get
+                {
+                    return
+                        (ConfigurationManager.AppSettings["GridRows"] == null ? 20 : Convert.ToInt32(ConfigurationManager.AppSettings["GridRows"].ToString()));
+                }
+            }
         }
     }
 }

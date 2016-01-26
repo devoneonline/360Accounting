@@ -6,7 +6,7 @@
         if (Model.AccountValues.Count > 0)
         {
             var grid = new WebGrid(canSort: true,
-                                    rowsPerPage: 20,
+                                    rowsPerPage: _360Accounting.Common.Utility.Configuration.GridRows,
                                     ajaxUpdateContainerId: "dvAccountList", ajaxUpdateCallback: "CallBack");
 
             if (Model.Page == null) { grid.PageIndex = 0; } else { grid.PageIndex = Model.Page.Value - 1; }

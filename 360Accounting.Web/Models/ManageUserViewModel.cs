@@ -6,7 +6,7 @@ using System.Web;
 
 namespace _360Accounting.Web.Models
 {
-    public class ManageUserViewModel
+    public class UserProfileViewModel
     {
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
