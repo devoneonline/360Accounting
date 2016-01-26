@@ -20,6 +20,6 @@ namespace _360Accounting.Core.Entities
 
         public int Precision { get; set; }
 
-        public string SOBName { get; set; }
+        ////public string SOBName { get; set; }
     }
 }

@@ -13,11 +13,9 @@ namespace _360Accounting.Data.Repositories
     {
         public IEnumerable<Currency> GetAll(string searchText, bool paging, int page, string sort, string sortDir)
         {
-            IEnumerable<Currency> currencyList =
-                this.Context.Currencies;
-            currencyList = sortDir.ToUpper() == "ASC" ?
-                currencyList.OrderBy(x => x.SOBId) :
-                currencyList.OrderByDescending(x => x.SOBId);
+            
+            IEnumerable<Currency> currencyList = this.Context.Currencies;
+            currencyList = sortDir.ToUpper() == "ASC" ? currencyList.OrderBy(x => x.SOBId) : currencyList.OrderByDescending(x => x.SOBId);
             if (!paging)
             {
                 return currencyList.Select(x => new Currency
@@ -29,7 +27,6 @@ namespace _360Accounting.Data.Repositories
                     Name = x.Name,
                     Precision = x.Precision,
                     SOBId = x.SOBId,
-                    SOBName = x.SOBName,
                     UpdateBy = x.UpdateBy,
                     UpdateDate = x.UpdateDate
                 }).ToList();
@@ -46,7 +43,6 @@ namespace _360Accounting.Data.Repositories
                         Name = x.Name,
                         Precision = x.Precision,
                         SOBId = x.SOBId,
-                        SOBName = x.SOBName,
                         UpdateBy = x.UpdateBy,
                         UpdateDate = x.UpdateDate
                     }).Skip((page - 1) * 20)

@@ -20,7 +20,7 @@ namespace _360Accounting.Web.Models
             this.Name = entity.Name;
             this.Precision = entity.Precision;
             this.SOBId = entity.SOBId;
-            this.SOBName = entity.SOBName;
+            ////this.SOBName = entity.SOBName;
         }
         #endregion
 
