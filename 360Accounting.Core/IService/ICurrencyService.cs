@@ -10,6 +10,8 @@ namespace _360Accounting.Core
 {
     public interface ICurrencyService : IService<Currency>
     {
-        IEnumerable<Currency> GetAll(string searchText, bool paging, int? page, string sort, string sortDir);
+        IEnumerable<Currency> GetAll(long companyId, long sobId, string searchText, bool paging, int? page, string sort, string sortDir);
+
+        IEnumerable<Currency> GetAll(long companyId, long sobId);
     }
 }

@@ -1,5 +1,13 @@
 ﻿@model _360Accounting.Web.Models.CurrencyListModel
 
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.delete').click(function () {
+            return confirm("Sure! you wanted to delete ?");
+        });
+    });
+</script>
+
 @{
     if (Model.Currencies != null)
     {
@@ -14,7 +22,7 @@
             else { grid.PageIndex = Model.Page.Value - 1; }
 
             grid.Bind(Model.Currencies, rowCount: Model.TotalRecords,
-                autoSortAndPage: false)
+                autoSortAndPage: false);
 
             <div class="col-sm-offset-10">
                 @{ var startrow = (grid.RowsPerPage * grid.PageIndex) + 1;}
@@ -30,20 +38,20 @@
             columns: grid.Columns
             (
             grid.Column("", header: "Actions", style: "ActionLink",
-            format: (item) => Html.Raw("<a href='" + 
-                @Url.Content("~/Account/Delete/") + item.Id + 
+            format: (item) => Html.Raw("<a class = 'delete' href='" + 
+                @Url.Content("~/Currency/Delete/") + item.CurrencyCode + 
                 "'><img src='" + @Url.Content("~/Content/images/delete.png") + 
-                "' alt='' title='Delete' style='border:0'/></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='" + 
-                @Url.Content("~/Account/Edit/") + item.Id + 
+                "' alt='' title='Delete' style='border:0'/></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='" +
+                @Url.Content("~/Currency/Edit/") + item.CurrencyCode + 
                 "'><img src='" + @Url.Content("~/Content/images/edit.png") + 
                 "' alt='' title='Edit' style='border:0'/></a>")),
-                grid.Column(columnName: "SOBName",
-                header: "Set Of Book",
-                canSort: true),
+                //grid.Column(columnName: "SOBName",
+                //header: "Set Of Book",
+                //canSort: true),
                 grid.Column(columnName: "CurrencyCode",
                 header: "Currrency Code",
                 canSort: true),
-                grid.Column(columnName: "CurrencyName",
+                grid.Column(columnName: "Name",
                 header: "Currrency Name",
                 canSort: true),
                 grid.Column(columnName: "Precision",

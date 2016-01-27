@@ -9,6 +9,6 @@ namespace _360Accounting.Core.Interfaces
 {
     public interface ICodeCombinitionRepository : IRepository<CodeCombinition>
     {
-        IEnumerable<CodeCombinitionView> GetAll(string searchText, bool paging, int page, string sort, string sortDir);
+        IEnumerable<CodeCombinitionView> GetAll(long sobId, string searchText, bool paging, int page, string sort, string sortDir);
     }
 }

@@ -1,5 +1,13 @@
 ﻿@model _360Accounting.Web.Models.CompanyListModel
 
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.delete').click(function () {
+            return confirm("Sure! you wanted to delete ?");
+        });
+    });
+</script>
+
 @{
     ViewBag.Title = "Companies";
 }
@@ -33,7 +41,7 @@
                             columns: grid.Columns
                             (
                             grid.Column("", header: "Actions", style: "ActionLink",
-                                                        format: (item) => Html.Raw("<a href='" + @Url.Content("~/Company/Delete/") + item.Id + "'><img src='" + @Url.Content("~/Content/images/delete.png") + "' alt='' title='Delete' style='border:0'/></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='" + @Url.Content("~/Company/Edit/") + item.Id + "'><img src='" + @Url.Content("~/Content/images/edit.png") + "' alt='' title='Edit' style='border:0'/></a>")),
+                                                        format: (item) => Html.Raw("<a class = 'delete' href='" + @Url.Content("~/Company/Delete/") + item.Id + "'><img src='" + @Url.Content("~/Content/images/delete.png") + "' alt='' title='Delete' style='border:0'/></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='" + @Url.Content("~/Company/Edit/") + item.Id + "'><img src='" + @Url.Content("~/Content/images/edit.png") + "' alt='' title='Edit' style='border:0'/></a>")),
                             grid.Column(columnName: "Id",
                                             header: "Company Id",
                                             canSort: true),

@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
-    public struct Segment
+    public class Segment
     {
         public int SegmentCount { get; set; }
 

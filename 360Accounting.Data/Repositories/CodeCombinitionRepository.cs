@@ -12,10 +12,10 @@ namespace _360Accounting.Data.Repositories
 {
     public class CodeCombinitionRepository : Repository, ICodeCombinitionRepository
     {
-        public IEnumerable<CodeCombinitionView> GetAll(string searchText, bool paging, int page, string sort, string sortDir)
+        public IEnumerable<CodeCombinitionView> GetAll(long sobId, string searchText, bool paging, int page, string sort, string sortDir)
         {
             IEnumerable<CodeCombinition> codeCombList = 
-                this.Context.CodeCombinitions;
+                this.Context.CodeCombinitions.Where(x => x.SOBId == sobId);
             codeCombList = sortDir.ToUpper() == "ASC" ?
                 codeCombList.OrderBy(x => x.SOBId) :
                 codeCombList.OrderByDescending(x => x.SOBId);

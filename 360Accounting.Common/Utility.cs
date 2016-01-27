@@ -22,7 +22,7 @@ namespace _360Accounting.Common
 
             if (sb.ToString().Length > 0)
             {
-                return sb.ToString().Substring(0, sb.ToString().LastIndexOf("-") - 1);
+                return sb.ToString().Substring(0, sb.ToString().LastIndexOf(delimeter) - 1);
             }
             else
             {
@@ -36,8 +36,6 @@ namespace _360Accounting.Common
                 Stringize(delimeter, value.Where(x => x.HasValue).Select(x => x.ToString()).ToArray());
         }
 
-
-
         public static class Configuration
         {
             public static int GridRows
@@ -45,7 +43,7 @@ namespace _360Accounting.Common
                 get
                 {
                     return
-                        (ConfigurationManager.AppSettings["GridRows"] == null ? 20 : Convert.ToInt32(ConfigurationManager.AppSettings["GridRows"].ToString()));
+                        ConfigurationManager.AppSettings["GridRows"] == null ? 20 : Convert.ToInt32(ConfigurationManager.AppSettings["GridRows"].ToString());
                 }
             }
         }

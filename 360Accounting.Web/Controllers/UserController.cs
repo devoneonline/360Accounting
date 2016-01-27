@@ -31,7 +31,7 @@ namespace _360Accounting.Web.Controllers
             int totalRecords = 0;
             MembershipUserCollection memCollection = Membership.GetAllUsers(model.Page ?? 0, Utility.Configuration.GridRows, out totalRecords);
             model.Users = new List<UserViewModel>();
-            foreach(MembershipUser user in memCollection)
+            foreach (MembershipUser user in memCollection)
             {
                 UserProfile profile = UserProfile.GetProfile(user.UserName);
                 UserViewModel item = new UserViewModel();
@@ -44,6 +44,7 @@ namespace _360Accounting.Web.Controllers
                 item.CompanyName = companyService.GetSingle(profile.CompanyId.ToString()).Name;
                 model.Users.Add(item);
             }
+
             model.TotalRecords = totalRecords;
             return View(model);
         }
@@ -145,6 +146,7 @@ namespace _360Accounting.Web.Controllers
                 memUser.ChangePassword(model.OldPassword, model.NewPassword);
                 return RedirectToAction("Settings");
             }
+
             return View(model);
         }
 
@@ -203,6 +205,5 @@ namespace _360Accounting.Web.Controllers
             var modelList = featureList.Select(x => new FeatureViewModel(x)).ToList();
             AuthenticationHelper.MenuItems = modelList.Where(x => x.ParentId == null);
         }
-
     }
 }

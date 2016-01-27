@@ -64,8 +64,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="FeatureSetTest.cs" />
-    <Compile Include="UserTest.cs" />
+    <Compile Include="Tests\FeatureSetTest.cs" />
+    <Compile Include="Tests\UserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
