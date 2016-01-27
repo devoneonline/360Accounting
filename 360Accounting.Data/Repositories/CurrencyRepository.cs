@@ -11,7 +11,6 @@ namespace _360Accounting.Data.Repositories
 {
     public class CurrencyRepository : Repository, ICurrencyRepository
     {
-
         public IEnumerable<Currency> GetAll(long companyId, long sobId)
         {
             IEnumerable<Currency> currencyList = this.Context

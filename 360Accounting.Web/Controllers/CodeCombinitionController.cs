@@ -94,9 +94,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult GetCodeCombinitionList(long sobId)
         {
             CodeCombinitionListModel model = new CodeCombinitionListModel();
-            model.CodeCombinitions = service
-                .GetAll(sobId, model.SearchText, true, model.Page,
-                model.SortColumn, model.SortDirection)
+            model.CodeCombinitions = service.GetAll(sobId, model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
                 .Select(x => new CodeCombinitionViewModel(x)).ToList();
             return PartialView("_List", model);
         }
@@ -112,14 +110,14 @@ namespace _360Accounting.Web.Controllers
                 model.Id = 1;
             }
 
-            model.Segment1 = "value1";     //To be decided
-            model.Segment2 = "value2";     //To be decided
-            model.Segment3 = "value3";     //To be decided
-            //model.Segment4 = "";     //To be decided
-            //model.Segment5 = "";     //To be decided
-            //model.Segment6 = "";     //To be decided
-            //model.Segment7 = "";     //To be decided
-            //model.Segment8 = "";     //To be decided            
+            model.Segment1 = "value1";     ////To be decided
+            model.Segment2 = "value2";     ////To be decided
+            model.Segment3 = "value3";     ////To be decided
+            ////model.Segment4 = "";     ////To be decided
+            ////model.Segment5 = "";     ////To be decided
+            ////model.Segment6 = "";     ////To be decided
+            ////model.Segment7 = "";     ////To be decided
+            ////model.Segment8 = "";     ////To be decided            
             model.StartDate = new DateTime(2016, 1, 1);
             model.EndDate = new DateTime(2016, 12, 31);
             model.AllowedPosting = true;
@@ -140,7 +138,6 @@ namespace _360Accounting.Web.Controllers
             }
 
             return View(model);
-
         }
 
         #region Private Methods

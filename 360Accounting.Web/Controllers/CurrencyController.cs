@@ -35,7 +35,7 @@ namespace _360Accounting.Web.Controllers
                     }).ToList();
             }
 
-            if(model.SOBId != 0 || model.SetOfBooks != null)
+            if (model.SOBId != 0 || model.SetOfBooks != null)
             {
                 model.Currencies = service.GetAll(AuthenticationHelper.User.CompanyId, model.SOBId != 0 ? model.SOBId : Convert.ToInt64(model.SetOfBooks.First().Value), model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
                     .Select(x => new CurrencyViewModel(x)).ToList();
