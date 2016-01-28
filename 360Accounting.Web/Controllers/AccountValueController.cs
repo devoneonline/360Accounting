@@ -82,16 +82,16 @@ namespace _360Accounting.Web.Controllers
                 }
                 else
                 {
-                    AccountValue duplicateRecord = service.GetAccountValueBySegment(model.Segment, model.ChartId);
-                    if (duplicateRecord == null)
-                    {
+                    ////AccountValue duplicateRecord = service.GetAccountValueBySegment(model.Segment, model.ChartId);
+                    ////if (duplicateRecord == null)
+                    ////{
                         string result = service.Insert(mapModel(model));
                         return RedirectToAction("Index");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("Error", "Account Value Already exists.");
-                    }
+                    ////}
+                    ////else
+                    ////{
+                    ////    ModelState.AddModelError("Error", "Account Value Already exists.");
+                    ////}
                         
                 }
             }
