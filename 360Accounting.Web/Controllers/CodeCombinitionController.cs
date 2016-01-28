@@ -167,7 +167,7 @@ namespace _360Accounting.Web.Controllers
         private List<Segment> getSegmentList(long sobId)
         {
             List<Segment> segmentList = new List<Segment>();
-            Account account = accountService.GetAccountBySOBId(sobId.ToString());
+            Account account = accountService.GetAccountBySOBId(sobId.ToString(), AuthenticationHelper.User.CompanyId);
             if (account != null)
             {
                 if (account.SegmentEnabled1 == true)
@@ -177,7 +177,7 @@ namespace _360Accounting.Web.Controllers
                         SegmentCount = 1,
                         SegmentName = account.SegmentName1,
                         SegmentValueList = accountValueService
-                        .GetBySegment(account.SegmentName1, account.Id)
+                        .GetAccountValuesBySegment(account.SegmentName1, account.Id)
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,
@@ -193,7 +193,7 @@ namespace _360Accounting.Web.Controllers
                         SegmentCount = 2,
                         SegmentName = account.SegmentName2,
                         SegmentValueList = accountValueService
-                        .GetBySegment(account.SegmentName2, account.Id)
+                        .GetAccountValuesBySegment(account.SegmentName2, account.Id)
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,
@@ -209,7 +209,7 @@ namespace _360Accounting.Web.Controllers
                         SegmentCount = 3,
                         SegmentName = account.SegmentName3,
                         SegmentValueList = accountValueService
-                        .GetBySegment(account.SegmentName3, account.Id)
+                        .GetAccountValuesBySegment(account.SegmentName3, account.Id)
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,
@@ -225,7 +225,7 @@ namespace _360Accounting.Web.Controllers
                         SegmentCount = 4,
                         SegmentName = account.SegmentName4,
                         SegmentValueList = accountValueService
-                        .GetBySegment(account.SegmentName4, account.Id)
+                        .GetAccountValuesBySegment(account.SegmentName4, account.Id)
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,
@@ -241,7 +241,7 @@ namespace _360Accounting.Web.Controllers
                         SegmentCount = 5,
                         SegmentName = account.SegmentName5,
                         SegmentValueList = accountValueService
-                        .GetBySegment(account.SegmentName5, account.Id)
+                        .GetAccountValuesBySegment(account.SegmentName5, account.Id)
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,
@@ -257,7 +257,7 @@ namespace _360Accounting.Web.Controllers
                         SegmentCount = 6,
                         SegmentName = account.SegmentName6,
                         SegmentValueList = accountValueService
-                        .GetBySegment(account.SegmentName6, account.Id)
+                        .GetAccountValuesBySegment(account.SegmentName6, account.Id)
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,
@@ -273,7 +273,7 @@ namespace _360Accounting.Web.Controllers
                         SegmentCount = 7,
                         SegmentName = account.SegmentName7,
                         SegmentValueList = accountValueService
-                        .GetBySegment(account.SegmentName7, account.Id)
+                        .GetAccountValuesBySegment(account.SegmentName7, account.Id)
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,
@@ -289,7 +289,7 @@ namespace _360Accounting.Web.Controllers
                         SegmentCount = 8,
                         SegmentName = account.SegmentName8,
                         SegmentValueList = accountValueService
-                        .GetBySegment(account.SegmentName8, account.Id)
+                        .GetAccountValuesBySegment(account.SegmentName8, account.Id)
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,

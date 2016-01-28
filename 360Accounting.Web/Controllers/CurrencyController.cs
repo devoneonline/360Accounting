@@ -94,7 +94,7 @@ namespace _360Accounting.Web.Controllers
         {
             CurrencyListModel model = new CurrencyListModel();
             model.Currencies = model.Currencies = service
-                .GetAll(AuthenticationHelper.User.CompanyId,sobId)
+                .GetAll(AuthenticationHelper.User.CompanyId, sobId)
                 .Select(x => new CurrencyViewModel(x)).ToList();
             return PartialView("_List", model);
         }

@@ -11,5 +11,7 @@ namespace _360Accounting.Core
     public interface ISetOfBookService : IService<SetOfBook>
     {
         List<SetOfBook> GetByCompanyId(long companyId);
+
+        SetOfBook GetSetOfBook(long companyId, string name);
     }
 }

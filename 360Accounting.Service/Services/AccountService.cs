@@ -18,9 +18,9 @@ namespace _360Accounting.Service
             this.repository = repo;
         }
 
-        public Account GetAccountBySOBId(string sobId)
+        public Account GetAccountBySOBId(string sobId, long companyId)
         {
-            return this.repository.GetAccountBySOBId(sobId);
+            return this.repository.GetAccountBySOBId(sobId, companyId);
         }
 
         public Account GetSingle(string id)

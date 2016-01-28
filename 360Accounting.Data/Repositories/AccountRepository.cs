@@ -12,10 +12,11 @@ namespace _360Accounting.Data.Repositories
 {
     public class AccountRepository : Repository, IAccountRepository
     {
-        public Account GetAccountBySOBId(string sobId)
+        public Account GetAccountBySOBId(string sobId, long companyId)
         {
             Account account = this.GetAll()
-                .FirstOrDefault(x => x.SOBId == Convert.ToInt32(sobId));
+                .FirstOrDefault(x => x.SOBId == Convert.ToInt32(sobId) && 
+                x.CompanyId == companyId);
             return account;
         }
 

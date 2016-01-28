@@ -10,5 +10,7 @@ namespace _360Accounting.Core.Interfaces
     public interface ISetOfBookRepository : IRepository<SetOfBook>
     {
         List<SetOfBook> GetByCompanyId(long companyId);
+
+        SetOfBook GetSetOfBook(long companyId, string name);
     }
 }
