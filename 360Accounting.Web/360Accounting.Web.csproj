@@ -150,6 +150,8 @@
     <Compile Include="Models\AccountValueViewModel.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\AccValueCreateModel.cs" />
+    <Compile Include="Models\CalendarListModel.cs" />
+    <Compile Include="Models\CalendarViewModel.cs" />
     <Compile Include="Models\CodeCombinitionCreateViewModel.cs" />
     <Compile Include="Models\CodeCombinitionListModel.cs" />
     <Compile Include="Models\CodeCombinitionViewModel.cs" />
