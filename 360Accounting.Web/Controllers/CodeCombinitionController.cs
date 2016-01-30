@@ -102,7 +102,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Test(string task)
         {
             CodeCombinitionCreateViewModel model = new CodeCombinitionCreateViewModel();
-            model.SOBId = 8;
+            model.SOBId = 18;
             model.SegmentList = getSegmentList(model.SOBId);
 
             if (task == "Update")
@@ -110,9 +110,9 @@ namespace _360Accounting.Web.Controllers
                 model.Id = 1;
             }
 
-            model.Segment1 = "value1";     ////To be decided
-            model.Segment2 = "value2";     ////To be decided
-            model.Segment3 = "value3";     ////To be decided
+            model.Segment1 = "00001";     ////To be decided
+            ////model.Segment2 = "value2";     ////To be decided
+            ////model.Segment3 = "value3";     ////To be decided
             ////model.Segment4 = "";     ////To be decided
             ////model.Segment5 = "";     ////To be decided
             ////model.Segment6 = "";     ////To be decided
