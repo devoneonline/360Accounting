@@ -29,6 +29,7 @@ namespace _360Accounting.Data.Repositories
             {
                 return currencyList.Select(x => new Currency
                 {
+                    Id = x.Id,
                     CompanyId = x.CompanyId,
                     CreateBy = x.CreateBy,
                     CreateDate = x.CreateDate,
@@ -45,6 +46,7 @@ namespace _360Accounting.Data.Repositories
                 var recordCount = currencyList.Count();
                 return currencyList.Select(x => new Currency
                     {
+                        Id = x.Id,
                         CompanyId = x.CompanyId,
                         CreateBy = x.CreateBy,
                         CreateDate = x.CreateDate,
@@ -62,7 +64,7 @@ namespace _360Accounting.Data.Repositories
         public Currency GetSingle(string id)
         {
             Currency currency = this.GetAll()
-                .FirstOrDefault(x => x.CurrencyCode == id);
+                .FirstOrDefault(x => x.Id == Convert.ToInt64(id));
             return currency;
         }
 
@@ -77,7 +79,7 @@ namespace _360Accounting.Data.Repositories
         {
             this.Context.Currencies.Add(entity);
             this.Commit();
-            return entity.CurrencyCode;
+            return entity.Id.ToString();
         }
 
         public string Update(Currency entity)
@@ -85,7 +87,7 @@ namespace _360Accounting.Data.Repositories
             this.Context.Currencies.Attach(entity);
             this.Context.Entry(entity).State = EntityState.Modified;
             this.Commit();
-            return entity.CurrencyCode;
+            return entity.Id.ToString();
         }
 
         public void Delete(string id)

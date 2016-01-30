@@ -25,5 +25,9 @@
             <input type="submit" value="Save" class="btn btn-default" />
             <input type="button" value="Cancel" class="btn btn-default" onclick="javascript: window.location.href='@Url.Content("~/Company/Index")'" />
         </div>
+        
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+    }
     }
 </div>

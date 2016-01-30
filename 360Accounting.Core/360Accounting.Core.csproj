@@ -53,6 +53,7 @@
     <Compile Include="Entities\Account.cs" />
     <Compile Include="Entities\AccountValue.cs" />
     <Compile Include="Entities\AccountView.cs" />
+    <Compile Include="Entities\Calendar.cs" />
     <Compile Include="Entities\CodeCombinition.cs" />
     <Compile Include="Entities\CodeCombinitionView.cs" />
     <Compile Include="Entities\Company.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="IoC.cs" />
     <Compile Include="IRepository\IAccountRepository.cs" />
     <Compile Include="IRepository\IAccountValueRepository.cs" />
+    <Compile Include="IRepository\ICalendarRepository.cs" />
     <Compile Include="IRepository\ICodeCombinitionRepository.cs" />
     <Compile Include="IRepository\ICompanyRepository.cs" />
     <Compile Include="IRepository\ICurrencyRepository.cs" />
@@ -79,6 +81,7 @@
     <Compile Include="IRepository\ISetOfBookRepository.cs" />
     <Compile Include="IService\IAccountService.cs" />
     <Compile Include="IService\IAccountValueService.cs" />
+    <Compile Include="IService\ICalendarService.cs" />
     <Compile Include="IService\ICodeCombinitionService.cs" />
     <Compile Include="IService\ICompanyService.cs" />
     <Compile Include="IService\ICurrencyService.cs" />

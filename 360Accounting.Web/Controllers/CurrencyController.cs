@@ -104,6 +104,7 @@ namespace _360Accounting.Web.Controllers
         {
             return new Currency
             {
+                Id = model.Id,
                 CompanyId = model.CompanyId,
                 CreateDate = DateTime.Now,
                 CurrencyCode = model.CurrencyCode,

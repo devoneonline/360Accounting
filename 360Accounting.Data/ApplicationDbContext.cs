@@ -40,6 +40,8 @@ namespace _360Accounting.Data
 
         public DbSet<Currency> Currencies { get; set; }
 
+        public DbSet<Calendar> Calendars { get; set; }
+
         #endregion
 
         #region Binders
@@ -48,8 +50,11 @@ namespace _360Accounting.Data
         {
             ////base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Calendar>().ToTable("tbCalendar");
+            modelBuilder.Entity<Calendar>().HasKey(t => t.Id);
+
             modelBuilder.Entity<Currency>().ToTable("tbCurrency");
-            modelBuilder.Entity<Currency>().HasKey(t => t.CurrencyCode);
+            modelBuilder.Entity<Currency>().HasKey(t => t.Id);
 
             modelBuilder.Entity<CodeCombinition>().ToTable("tbCodeCombinition");
             modelBuilder.Entity<CodeCombinition>().HasKey(t => t.Id);

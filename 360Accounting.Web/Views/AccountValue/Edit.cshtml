@@ -4,10 +4,6 @@
     ViewBag.Title = "Account Value";
 }
 
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">
@@ -78,13 +74,15 @@
                        id="btnCancel" />
             </div>
         </div>
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#btnCancel').click(function () {
+                    window.location.href = '@Url.Content("~/AccountValue/Index")';
+                });
+            });
+        </script>
 }
 </div>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#btnCancel').click(function () {
-            window.location.href = '@Url.Content("~/AccountValue/Index")';
-        });
-    });
-</script>

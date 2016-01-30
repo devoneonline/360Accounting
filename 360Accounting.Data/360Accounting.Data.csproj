@@ -59,6 +59,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AccountRepository.cs" />
     <Compile Include="Repositories\AccountValueRepository.cs" />
+    <Compile Include="Repositories\CalendarRepository.cs" />
     <Compile Include="Repositories\CodeCombinitionRepository.cs" />
     <Compile Include="Repositories\CompanyRepository.cs" />
     <Compile Include="Repositories\CurrencyRepository.cs" />
