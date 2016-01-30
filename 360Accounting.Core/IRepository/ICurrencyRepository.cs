@@ -9,6 +9,8 @@ namespace _360Accounting.Core.Interfaces
 {
     public interface ICurrencyRepository : IRepository<Currency>
     {
-        IEnumerable<Currency> GetAll(string searchText, bool paging, int page, string sort, string sortDir);
+        IEnumerable<Currency> GetAll(long companyId, long sobId, string searchText, bool paging, int page, string sort, string sortDir);
+
+        IEnumerable<Currency> GetAll(long companyId, long sobId);
     }
 }

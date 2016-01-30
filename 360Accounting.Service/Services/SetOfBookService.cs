@@ -18,6 +18,11 @@ namespace _360Accounting.Service
             this.repository = setOfBookRepository;
         }
 
+        public SetOfBook GetSetOfBook(long companyId, string name)
+        {
+            return this.repository.GetSetOfBook(companyId, name);
+        }
+        
         public List<SetOfBook> GetByCompanyId(long companyId)
         {
             return this.repository.GetByCompanyId(companyId);

@@ -11,10 +11,19 @@ namespace _360Accounting.Data.Repositories
 {
     public class CurrencyRepository : Repository, ICurrencyRepository
     {
-        public IEnumerable<Currency> GetAll(string searchText, bool paging, int page, string sort, string sortDir)
+        public IEnumerable<Currency> GetAll(long companyId, long sobId)
         {
-            
-            IEnumerable<Currency> currencyList = this.Context.Currencies;
+            IEnumerable<Currency> currencyList = this.Context
+                .Currencies.Where(x => x.CompanyId == companyId &&
+                    x.SOBId == sobId);
+            return currencyList;
+        }
+
+        public IEnumerable<Currency> GetAll(long companyId, long sobId, string searchText, bool paging, int page, string sort, string sortDir)
+        {            
+            IEnumerable<Currency> currencyList = this.Context.Currencies
+                .Where(x => x.CompanyId == companyId &&
+                    x.SOBId == sobId);
             currencyList = sortDir.ToUpper() == "ASC" ? currencyList.OrderBy(x => x.SOBId) : currencyList.OrderByDescending(x => x.SOBId);
             if (!paging)
             {

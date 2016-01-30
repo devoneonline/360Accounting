@@ -35,8 +35,12 @@ namespace _360Accounting.Web.Controllers
                     }).ToList();
             }
 
-            model.Currencies = service.GetAll(model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
-                .Select(x => new CurrencyViewModel(x)).ToList();
+            if (model.SOBId != 0 || model.SetOfBooks != null)
+            {
+                model.Currencies = service.GetAll(AuthenticationHelper.User.CompanyId, model.SOBId != 0 ? model.SOBId : Convert.ToInt64(model.SetOfBooks.First().Value), model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
+                    .Select(x => new CurrencyViewModel(x)).ToList();
+            }
+                
             return View(model);
         }
 
@@ -60,10 +64,10 @@ namespace _360Accounting.Web.Controllers
             return View(model);
         }
 
-        public ActionResult Edit(string currencyCode)
+        public ActionResult Edit(string id)
         {
-            CurrencyViewModel model = 
-                new CurrencyViewModel(service.GetSingle(currencyCode));
+            CurrencyViewModel model =
+                new CurrencyViewModel(service.GetSingle(id));
             return View(model);
         }
 
@@ -84,6 +88,15 @@ namespace _360Accounting.Web.Controllers
         {
             service.Delete(id);
             return RedirectToAction("Index");
+        }
+
+        public ActionResult GetCurrencyList(long sobId)
+        {
+            CurrencyListModel model = new CurrencyListModel();
+            model.Currencies = model.Currencies = service
+                .GetAll(AuthenticationHelper.User.CompanyId, sobId)
+                .Select(x => new CurrencyViewModel(x)).ToList();
+            return PartialView("_List", model);
         }
 
         #region Private Methods

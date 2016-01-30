@@ -47,9 +47,9 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Create(long sobId, string segment)
         {
             AccountValueViewModel model = new AccountValueViewModel();
-            if (accountService.GetAccountBySOBId(sobId.ToString()) != null)
+            if (accountService.GetAccountBySOBId(sobId.ToString(), AuthenticationHelper.User.CompanyId) != null)
             {
-                model.ChartId = accountService.GetAccountBySOBId(sobId.ToString()).Id;
+                model.ChartId = accountService.GetAccountBySOBId(sobId.ToString(), AuthenticationHelper.User.CompanyId).Id;
                 model.SetOfBook = sobService.GetSingle(sobId.ToString()).Name;
                 model.Segment = segment;
                 return View("Edit", model);
@@ -78,13 +78,22 @@ namespace _360Accounting.Web.Controllers
                 if (model.Id > 0)
                 {
                     string result = service.Update(mapModel(model));
+                    return RedirectToAction("Index");
                 }
                 else
                 {
-                    string result = service.Insert(mapModel(model));
+                    ////AccountValue duplicateRecord = service.GetAccountValueBySegment(model.Segment, model.ChartId);
+                    ////if (duplicateRecord == null)
+                    ////{
+                        string result = service.Insert(mapModel(model));
+                        return RedirectToAction("Index");
+                    ////}
+                    ////else
+                    ////{
+                    ////    ModelState.AddModelError("Error", "Account Value Already exists.");
+                    ////}
+                        
                 }
-
-                return RedirectToAction("Index");
             }
 
             return View(model);
@@ -99,7 +108,7 @@ namespace _360Accounting.Web.Controllers
         #region Private Methods
         private List<SelectListItem> getSegmentList(string sobId)
         {
-            Account account = accountService.GetAccountBySOBId(sobId);
+            Account account = accountService.GetAccountBySOBId(sobId, AuthenticationHelper.User.CompanyId);
             var lst = new List<SelectListItem>();
             if (account != null)
             {

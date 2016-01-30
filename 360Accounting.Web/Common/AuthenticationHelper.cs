@@ -43,11 +43,11 @@ namespace _360Accounting.Web
                     ? null 
                     : (IEnumerable<FeatureViewModel>)HttpContext.Current.Session[SESSION_MENU_ITEMS];
             }
+
             set
             {
                 HttpContext.Current.Session[SESSION_MENU_ITEMS] = value;
             }
         }
-
     }
 }

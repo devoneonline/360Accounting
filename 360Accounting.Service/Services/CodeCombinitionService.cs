@@ -18,9 +18,9 @@ namespace _360Accounting.Service
             this.repository = repo;
         }
 
-        public IEnumerable<CodeCombinitionView> GetAll(string searchText, bool paging, int? page, string sort, string sortDir)
+        public IEnumerable<CodeCombinitionView> GetAll(long sobId, string searchText, bool paging, int? page, string sort, string sortDir)
         {
-            return this.repository.GetAll(searchText, paging, page ?? 1, sort, sortDir);
+            return this.repository.GetAll(sobId, searchText, paging, page ?? 1, sort, sortDir);
         }
 
         public CodeCombinition GetSingle(string id)

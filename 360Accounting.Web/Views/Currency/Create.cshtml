@@ -16,55 +16,39 @@
     </div>
 </div>
 
-@using (Html.BeginForm("Create", "Currency", 
+<div class="col-lg-6">
+    @using (Html.BeginForm("Create", "Currency",
     FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    <div class="col-lg-5">
+    {
         @Html.ValidationSummary()
         @Html.HiddenFor(m => m.SOBId)
         @Html.HiddenFor(m => m.CompanyId)
 
         <div class="form-group">
-            @Html.LabelFor(m => m.SOBName)
-            @Html.TextBoxFor(m => m.SOBName, new { @readonly = "readonly", @class = "form-control" })
-        </div>
-
-    </div>
-    <div class="col-lg-5">
-        <div class="form-group">
             @Html.LabelFor(m => m.CurrencyCode)
             @Html.TextBoxFor(m => m.CurrencyCode, new { @class = "form-control" })
         </div>
-    </div>
-    <div class="col-lg-5">
+        
         <div class="form-group">
             @Html.LabelFor(m => m.Name)
             @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
         </div>
-    </div>
-    <div class="col-lg-5">
+        
         <div class="form-group">
             @Html.LabelFor(m => m.Precision)
-            @Html.TextBoxFor(m => m.Precision, new { @class = "form-control" })
+            @Html.DropDownListFor(m => m.Precision, Model.PrecisionList, new { @class = "form-control" })
         </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
+        <div class="form-group">
             <input type="submit" value="Save" class="btn btn-default" />
             <input type="button" value="Cancel" class="btn btn-default" id="btnCancel" />
         </div>
-    </div>
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('#btnCancel').click(function () {
-                    window.location.href = '@Url.Content("~/Currency/Index")';
-                });
-            });
-        </script>
     }
-}
+</div>
 
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnCancel').click(function () {
+            window.location.href = '@Url.Content("~/Currency/Index")';
+        });
+    });
+</script>

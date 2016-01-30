@@ -33,20 +33,14 @@
         @Html.HiddenFor(m => m.CompanyId)
         @Html.HiddenFor(m => m.Id)
 
-        @*for (int i = 0; i < Model.SegmentList.LastOrDefault().SegmentCount; i++)
+        for (int i = 1; i <= Model.SegmentList.Count; i++)
         {
             <div class="col-lg-5">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.SegmentList.Where(x => x.SegmentCount == i), Model.SegmentList.Where(x => x.SegmentCount == i).Select(x => x.SegmentName.ToString()))
-                    @Html.DropDownListFor(m => m.SegmentList
-                   .Where(x => x.SegmentCount == i).Select(x => x.SegmentValue),
-                    Model.SegmentList.Select(x => x.SegmentValueList) ,
-                    new { @class = "form-control" })
-                    @Html.LabelFor(m => m.SegmentList.Where(x => x.SegmentCount == i)
-                   .Select(x => x.SegmentValueName))
+                    
                 </div>
             </div>
-        }*@
+        }
 
         <div class="col-lg-5">
             <div class="form-group">

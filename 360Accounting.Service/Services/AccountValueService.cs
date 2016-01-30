@@ -18,14 +18,14 @@ namespace _360Accounting.Service
             this.repository = repo;
         }
 
-        public List<AccountValue> GetBySegment(string segment, long chartId)
+        public AccountValue GetAccountValueBySegment(string segment, long chartId)
         {
-            return this.repository.GetBySegment(segment, chartId);
+            return this.repository.GetAccountValueBySegment(segment, chartId);
         }
 
-        public List<AccountValue> GetBySegment(string segment)
+        public List<AccountValue> GetAccountValuesBySegment(string segment, long chartId)
         {
-            return this.repository.GetBySegment(segment);
+            return this.repository.GetAccountValuesBySegment(segment, chartId);
         }
         
         public AccountValue GetSingle(string id)

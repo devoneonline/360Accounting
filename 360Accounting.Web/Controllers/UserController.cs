@@ -45,6 +45,7 @@ namespace _360Accounting.Web.Controllers
                 item.Role = Roles.GetRolesForUser(user.UserName)[0];
                 model.Users.Add(item);
             }
+
             model.TotalRecords = totalRecords;
             return View(model);
         }
@@ -181,6 +182,7 @@ namespace _360Accounting.Web.Controllers
                 memUser.ChangePassword(model.OldPassword, model.NewPassword);
                 return RedirectToAction("Settings");
             }
+
             return View(model);
         }
 
@@ -272,6 +274,5 @@ namespace _360Accounting.Web.Controllers
             var modelList = featureList.Select(x => new FeatureViewModel(x)).ToList();
             AuthenticationHelper.MenuItems = modelList.Where(x => x.ParentId == null);
         }
-
     }
 }

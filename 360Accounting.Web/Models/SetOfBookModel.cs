@@ -1,6 +1,7 @@
 ﻿using _360Accounting.Core.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -23,6 +24,7 @@ namespace _360Accounting.Web.Models
 
         public long CompanyId { get; set; }
 
+        [Required]
         public string Name { get; set; }
     }
 }

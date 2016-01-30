@@ -41,8 +41,16 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                string result = service.Insert(MapModel(model));
-                return RedirectToAction("Index");
+                SetOfBook duplicateRecord = service.GetSetOfBook(AuthenticationHelper.User.CompanyId, model.Name);
+                if (duplicateRecord == null)
+                {
+                    string result = service.Insert(MapModel(model));
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError("Error", "Set of Book Already exists.");
+                }
             }
 
             return View(model);

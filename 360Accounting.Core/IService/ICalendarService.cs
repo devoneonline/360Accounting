@@ -8,10 +8,7 @@ using System.Threading.Tasks;
 
 namespace _360Accounting.Core
 {
-    public interface ISetOfBookService : IService<SetOfBook>
+    public interface ICalendarService : IService<Calendar>
     {
-        List<SetOfBook> GetByCompanyId(long companyId);
-
-        SetOfBook GetSetOfBook(long companyId, string name);
     }
 }

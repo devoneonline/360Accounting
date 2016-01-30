@@ -16,7 +16,7 @@ namespace _360Accounting.Core.Entities
 
         public string CodeCombinitionCode { get; set; }
 
-        ////public string CodeCombinitionName { get; set; }
+        public string CodeCombinitionName { get; set; }
 
         public DateTime? StartDate { get; set; }
 

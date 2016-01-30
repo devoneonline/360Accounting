@@ -42,6 +42,7 @@ namespace _360Accounting.Web.Controllers
                 string result = service.Insert(MapModel(model));
                 return RedirectToAction("Index");
             }
+
             return View(model);
         }
 

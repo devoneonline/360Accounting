@@ -45,8 +45,16 @@ namespace _360Accounting.Web.Controllers
             if (ModelState.IsValid)
             {
                 model.CompanyId = AuthenticationHelper.User.CompanyId;
-                string result = service.Insert(mapModel(model));    ////TODO: mapper should be in service
-                return RedirectToAction("Index");
+                Account duplicateRecord = service.GetAccountBySOBId(model.SOBId.ToString(), model.CompanyId);
+                if (duplicateRecord == null)
+                {
+                    string result = service.Insert(mapModel(model));    ////TODO: mapper should be in service
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError("Error", "Account Already exists.");
+                }                
             }
 
             model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)

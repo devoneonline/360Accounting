@@ -11,6 +11,13 @@ namespace _360Accounting.Data.Repositories
 {
     public class SetOfBookRepository : Repository, ISetOfBookRepository
     {
+        public SetOfBook GetSetOfBook(long companyId, string name)
+        {
+            SetOfBook sob = this.GetAll().FirstOrDefault(x => x.CompanyId == companyId &&
+                x.Name == name);
+            return sob;
+        }
+
         public List<SetOfBook> GetByCompanyId(long companyId)
         {
             List<SetOfBook> list = this.Context.SetOfBooks
