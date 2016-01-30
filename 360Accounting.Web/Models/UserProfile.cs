@@ -34,9 +34,9 @@ namespace _360Accounting.Web.Models
             set { base["Email"] = value; }
         }
 
-        public long CompanyId 
+        public long CompanyId
         {
-            get { return 1; }   ////TODO: Need to change when actual user will be available.
+            get { return  base["CompanyId"] == null || (long)base["CompanyId"] == 0 ? 1 : (long)base["CompanyId"]  ; }
             set { base["CompanyId"] = value; }
         }
 
@@ -108,6 +108,10 @@ namespace _360Accounting.Web.Models
         public string Email { get; set; }
 
         public string CompanyName { get; set; }
+
+        public string Role { get; set; }
+
+        public string[] FeatureSet { get; set; }
 
         public UserViewModel()
         {

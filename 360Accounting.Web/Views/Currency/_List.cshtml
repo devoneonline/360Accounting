@@ -14,7 +14,7 @@
             else { grid.PageIndex = Model.Page.Value - 1; }
 
             grid.Bind(Model.Currencies, rowCount: Model.TotalRecords,
-                autoSortAndPage: false)
+                autoSortAndPage: false);
 
             <div class="col-sm-offset-10">
                 @{ var startrow = (grid.RowsPerPage * grid.PageIndex) + 1;}

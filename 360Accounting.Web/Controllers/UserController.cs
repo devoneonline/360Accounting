@@ -31,7 +31,7 @@ namespace _360Accounting.Web.Controllers
             int totalRecords = 0;
             MembershipUserCollection memCollection = Membership.GetAllUsers(model.Page ?? 0, Utility.Configuration.GridRows, out totalRecords);
             model.Users = new List<UserViewModel>();
-            foreach(MembershipUser user in memCollection)
+            foreach (MembershipUser user in memCollection)
             {
                 UserProfile profile = UserProfile.GetProfile(user.UserName);
                 UserViewModel item = new UserViewModel();
@@ -42,6 +42,7 @@ namespace _360Accounting.Web.Controllers
                 item.PhoneNumber = profile.PhoneNumber;
                 item.Email = profile.Email;
                 item.CompanyName = companyService.GetSingle(profile.CompanyId.ToString()).Name;
+                item.Role = Roles.GetRolesForUser(user.UserName)[0];
                 model.Users.Add(item);
             }
             model.TotalRecords = totalRecords;
@@ -111,15 +112,7 @@ namespace _360Accounting.Web.Controllers
                     userProfile.Email = model.Email;
                     userProfile.Save();
 
-                    MembershipUser memUser = Membership.GetUser(userProfile.UserName);
-                    if (memUser.ChangePassword(model.OldPassword, model.NewPassword))
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("Failure", "Unable to change password!");
-                    }
+                    return RedirectToAction("Index", "Home");
                 }
             }
 
@@ -128,13 +121,56 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Create()
         {
-            return View();
+            return View(new UserCreateModel());
+        }
+
+        [HttpPost]
+        public ActionResult Create(UserCreateModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (this.CreateUser(model))
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            return View(model);
         }
 
         public ActionResult ChangePassword()
         {
             return View();
         }
+
+
+        public ActionResult Edit(Guid id)
+        {
+            var memUser = Membership.GetUser(id);
+            var userProfile = UserProfile.GetProfile(memUser.UserName);
+            UserCreateModel model = new UserCreateModel();
+            model.UserName = memUser.UserName;
+            model.FirstName = userProfile.FirstName;
+            model.LastName = userProfile.LastName;
+            model.PhoneNumber = userProfile.PhoneNumber;
+            model.Email = userProfile.Email;
+            model.RoleName = Roles.GetRolesForUser(model.UserName)[0];
+            model.CompanyId = userProfile.CompanyId;
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(UserCreateModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (this.UpdateUser(model))
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            return View(model);
+        }
+
 
         [HttpPost]
         public ActionResult ChangePassword(ChangePasswordViewModel model)
@@ -155,23 +191,24 @@ namespace _360Accounting.Web.Controllers
                 return false;
             }
 
-            MembershipUser user = Membership.GetUser(model.Credentials.UserName);
+            MembershipUser user = Membership.GetUser(model.UserName);
             if (user == null)
             {
                 MembershipCreateStatus status;
-                user = Membership.CreateUser(model.Credentials.UserName, model.Credentials.Password, model.Email, model.PasswordQuestion, model.PasswordAnswer, true, out status);
+                user = Membership.CreateUser(model.UserName, model.Password, model.Email, model.PasswordQuestion, model.PasswordAnswer, true, out status);
                 if (status == MembershipCreateStatus.Success && user != null)
                 {
-                    UserProfile up = UserProfile.GetProfile(model.Credentials.UserName);
+                    UserProfile up = UserProfile.GetProfile(model.UserName);
                     up.FirstName = model.FirstName;
                     up.LastName = model.LastName;
                     up.PhoneNumber = model.PhoneNumber;
                     up.Email = model.Email;
+                    up.CompanyId = model.CompanyId.Value;
                     up.Save();
 
-                    if (!Roles.GetRolesForUser(model.Credentials.UserName).Contains(model.RoleName))
+                    if (!Roles.GetRolesForUser(model.UserName).Contains(model.RoleName))
                     {
-                        Roles.AddUserToRole(model.Credentials.UserName, model.RoleName);
+                        Roles.AddUserToRole(model.UserName, model.RoleName);
                     }
 
                     return true;
@@ -186,6 +223,38 @@ namespace _360Accounting.Web.Controllers
             if (!Roles.RoleExists(roleName))
             {
                 Roles.CreateRole(roleName);
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool UpdateUser(UserCreateModel model)
+        {
+            if (!Roles.RoleExists(model.RoleName))
+            {
+                return false;
+            }
+
+            MembershipUser user = Membership.GetUser(model.UserName);
+            if (user != null)
+            {
+                UserProfile up = UserProfile.GetProfile(model.UserName);
+                up.FirstName = model.FirstName;
+                up.LastName = model.LastName;
+                up.PhoneNumber = model.PhoneNumber;
+                up.Email = model.Email;
+                if (model.RoleName == UserRoles.SuperAdmin.ToString())
+                    up.CompanyId = 0;
+                else
+                    up.CompanyId = model.CompanyId ?? 0;
+                up.Save();
+
+                if (!Roles.GetRolesForUser(model.UserName).Contains(model.RoleName))
+                {
+                    Roles.AddUserToRole(model.UserName, model.RoleName);
+                }
+
                 return true;
             }
 

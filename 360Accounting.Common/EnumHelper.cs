@@ -14,6 +14,7 @@ namespace _360Accounting.Common
 
     public enum UserRoles
     {
+        CompanyAdmin,
         SuperAdmin,
         User
     }
