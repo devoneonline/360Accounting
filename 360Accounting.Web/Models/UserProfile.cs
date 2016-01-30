@@ -34,9 +34,9 @@ namespace _360Accounting.Web.Models
             set { base["Email"] = value; }
         }
 
-        public long CompanyId 
+        public long CompanyId
         {
-            get { return 1; }   ////TODO: Need to change when actual user will be available.
+            get { return  base["CompanyId"] == null || (long)base["CompanyId"] == 0 ? 1 : (long)base["CompanyId"]  ; }
             set { base["CompanyId"] = value; }
         }
 
@@ -58,7 +58,7 @@ namespace _360Accounting.Web.Models
 
         [Required]
         [Display(Name = "Confirm Password")]
-        [Compare("NewPassword", ErrorMessage = "Confirm password do not match!")]
+        [Compare("NewPassword",ErrorMessage = "Confirm password do not match!")]
         public string ConfirmPassword { get; set; }
     }
 
@@ -77,37 +77,24 @@ namespace _360Accounting.Web.Models
 
         public string SortColumn
         {
-            get { return this.sortColumn; }
-            set { this.sortColumn = value; }
+            get { return sortColumn; }
+            set { sortColumn = value; }
         }
 
         public string SortDirection
         {
-            get { return this.sortDirection; }
-            set { this.sortDirection = value; }
+            get { return sortDirection; }
+            set { sortDirection = value; }
         }
 
         public List<UserViewModel> Users { get; set; }
+
         #endregion
+
     }
 
     public class UserViewModel
     {
-        public UserViewModel()
-        {
-        }
-
-        public UserViewModel(Guid userId, string userName, string firstName, string lastName, string phoneNumber, string email, string companyName)
-        {
-            this.UserId = userId;
-            this.UserName = userName;
-            this.FirstName = firstName;
-            this.LastName = lastName;
-            this.PhoneNumber = phoneNumber;
-            this.Email = email;
-            this.CompanyName = companyName;
-        }
-
         public Guid UserId { get; set; }
 
         public string UserName { get; set; }
@@ -120,6 +107,25 @@ namespace _360Accounting.Web.Models
 
         public string Email { get; set; }
 
-        public string CompanyName { get; set; }        
+        public string CompanyName { get; set; }
+
+        public string Role { get; set; }
+
+        public string[] FeatureSet { get; set; }
+
+        public UserViewModel()
+        {
+
+        }
+        public UserViewModel(Guid userId, string userName, string firstName, string lastName, string phoneNumber, string email, string companyName)
+        {
+            this.UserId = userId;
+            this.UserName = userName;
+            this.FirstName = firstName;
+            this.LastName = lastName;
+            this.PhoneNumber = phoneNumber;
+            this.Email = email;
+            this.CompanyName = companyName;
+        }
     }
 }

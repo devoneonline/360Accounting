@@ -12,7 +12,7 @@ namespace _360Accounting.Web.Controllers
 {
     public class CalendarController : Controller
     {
-        private ICalendarService service;
+        //private ICalendarService service;
         private ISetOfBookService sobService;
 
         public CalendarController()
