@@ -10,6 +10,8 @@ namespace _360Accounting.Core.Entities
     public class Currency : EntityBase
     {
         [Key]
+        public long Id { get; set; }
+
         public string CurrencyCode { get; set; }
 
         public long SOBId { get; set; }

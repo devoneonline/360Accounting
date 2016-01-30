@@ -17,6 +17,7 @@ namespace _360Accounting.Web.Models
 
         public CurrencyViewModel(Currency entity)
         {
+            this.Id = entity.Id;
             this.CompanyId = entity.CompanyId;
             this.CurrencyCode = entity.CurrencyCode;
             this.Name = entity.Name;
@@ -27,6 +28,9 @@ namespace _360Accounting.Web.Models
         #endregion
 
         #region Properties
+        public long Id { get; set; }
+
+        [Required]
         [Display(Name = "Currency Code")]
         public string CurrencyCode { get; set; }
 
@@ -36,6 +40,7 @@ namespace _360Accounting.Web.Models
         [Display(Name = "CompanyId")]
         public long CompanyId { get; set; }
 
+        [Required]
         [Display(Name = "Currency Name")]
         public string Name { get; set; }
 

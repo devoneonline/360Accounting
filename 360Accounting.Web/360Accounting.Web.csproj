@@ -126,7 +126,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Calendar\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -151,6 +150,8 @@
     <Compile Include="Models\AccountValueViewModel.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\AccValueCreateModel.cs" />
+    <Compile Include="Models\CalendarListModel.cs" />
+    <Compile Include="Models\CalendarViewModel.cs" />
     <Compile Include="Models\CodeCombinitionCreateViewModel.cs" />
     <Compile Include="Models\CodeCombinitionListModel.cs" />
     <Compile Include="Models\CodeCombinitionViewModel.cs" />
@@ -282,6 +283,8 @@
     <Content Include="Views\Currency\Edit.cshtml" />
     <Content Include="Views\Currency\Index.cshtml" />
     <Content Include="Views\Currency\_List.cshtml" />
+    <Content Include="Views\Calendar\Index.cshtml" />
+    <Content Include="Views\Calendar\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">
