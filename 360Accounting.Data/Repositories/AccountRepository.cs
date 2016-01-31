@@ -14,22 +14,21 @@ namespace _360Accounting.Data.Repositories
     {
         public Account GetAccountBySOBId(string sobId, long companyId)
         {
-            Account account = this.GetAll()
-                .FirstOrDefault(x => x.SOBId == Convert.ToInt32(sobId) && 
-                x.CompanyId == companyId);
+            Account account = this.GetAll(companyId)
+                .FirstOrDefault(x => x.SOBId == Convert.ToInt32(sobId));
             return account;
         }
 
-        public Account GetSingle(string id)
+        public Account GetSingle(string id, long companyId)
         {
-            Account account = this.GetAll()
+            Account account = this.GetAll(companyId)
                 .FirstOrDefault(x => x.Id == Convert.ToInt32(id));
             return account;
         }
 
-        public IEnumerable<Account> GetAll()
+        public IEnumerable<Account> GetAll(long companyId)
         {
-            IEnumerable<Account> accountList = this.Context.Accounts;
+            IEnumerable<Account> accountList = this.Context.Accounts.Where(x => x.CompanyId == companyId);
             return accountList;
         }
 
@@ -69,15 +68,15 @@ namespace _360Accounting.Data.Repositories
             return entity.Id.ToString();
         }
 
-        public void Delete(string id)
+        public void Delete(string id, long companyId)
         {
-            this.Context.Accounts.Remove(this.GetSingle(id));
+            this.Context.Accounts.Remove(this.GetSingle(id,companyId));
             this.Commit();
         }
 
-        public int Count()
+        public int Count(long companyId)
         {
-            return this.GetAll().Count();
+            return this.GetAll(companyId).Count();
         }
 
         public int Commit()

@@ -5,6 +5,7 @@ using _360Accounting.Service;
 using _360Accounting.Web.Controllers;
 using _360Accounting.Web.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -42,8 +43,17 @@ namespace _360Accounting.Test
         public void FeatureListTest()
         {
             IFeatureService service = new FeatureService(new FeatureRepository());
-            List<Feature> result = service.GetAll().ToList();
+            List<Feature> result = service.GetAll(1).ToList();
             Assert.IsTrue(result.Count > 0);
+        }
+
+
+        [TestMethod]
+        public void FeatureListByUserTest()
+        {
+            IFeatureService service = new FeatureService(new FeatureRepository());
+            List<Feature> result = service.GetMenuItemsByUserId(Guid.Parse("58F351C9-8A17-4A14-B83F-72B1518ED50B")).ToList();
+            Assert.IsTrue(result.Count() > 0);
         }
     }
 }

@@ -1,12 +1,9 @@
-﻿@if (AuthenticationHelper.MenuItems==null)
-{
-    FormsAuthentication.SignOut();
-    Response.Redirect("~/User/Login");
-}
-<div class="collapse navbar-collapse navbar-ex1-collapse">
+﻿<div class="collapse navbar-collapse navbar-ex1-collapse">
     <ul class="nav navbar-nav side-nav">
-        @ShowMenu(AuthenticationHelper.MenuItems)
-
+        @if (AuthenticationHelper.MenuItems !=null)
+        {
+            @ShowMenu(AuthenticationHelper.MenuItems);
+        }
         @helper ShowMenu(IEnumerable<_360Accounting.Web.Models.FeatureViewModel> items)
         {
             foreach (var item in items)

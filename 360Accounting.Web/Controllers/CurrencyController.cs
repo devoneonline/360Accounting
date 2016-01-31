@@ -67,7 +67,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Edit(string id)
         {
             CurrencyViewModel model =
-                new CurrencyViewModel(service.GetSingle(id));
+                new CurrencyViewModel(service.GetSingle(id,AuthenticationHelper.User.CompanyId));
             return View(model);
         }
 
@@ -86,7 +86,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            service.Delete(id);
+            service.Delete(id,AuthenticationHelper.User.CompanyId);
             return RedirectToAction("Index");
         }
 

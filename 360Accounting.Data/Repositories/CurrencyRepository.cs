@@ -61,17 +61,17 @@ namespace _360Accounting.Data.Repositories
             }
         }
 
-        public Currency GetSingle(string id)
+        public Currency GetSingle(string id, long companyId)
         {
-            Currency currency = this.GetAll()
+            Currency currency = this.GetAll(companyId)
                 .FirstOrDefault(x => x.Id == Convert.ToInt64(id));
             return currency;
         }
 
-        public IEnumerable<Currency> GetAll()
+        public IEnumerable<Currency> GetAll(long companyId)
         {
             IEnumerable<Currency> currencyList = this.Context
-                .Currencies;
+                .Currencies.Where(x=> x.CompanyId == companyId);
             return currencyList;
         }
 
@@ -90,15 +90,15 @@ namespace _360Accounting.Data.Repositories
             return entity.Id.ToString();
         }
 
-        public void Delete(string id)
+        public void Delete(string id, long companyId)
         {
-            this.Context.Currencies.Remove(this.GetSingle(id));
+            this.Context.Currencies.Remove(this.GetSingle(id,companyId));
             this.Commit();
         }
 
-        public int Count()
+        public int Count(long companyId)
         {
-            return this.GetAll().Count();
+            return this.GetAll(companyId).Count();
         }
 
         public int Commit()

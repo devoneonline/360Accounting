@@ -58,9 +58,7 @@ namespace _360Accounting.Web.Controllers
         
         public ActionResult Edit(long id)
         {
-            CodeCombinitionCreateViewModel model =
-                new CodeCombinitionCreateViewModel(service
-                    .GetSingle(id.ToString()));
+            CodeCombinitionCreateViewModel model = new CodeCombinitionCreateViewModel(service.GetSingle(id.ToString(),AuthenticationHelper.User.CompanyId));
             return PartialView("_Edit", model);
         }
 
@@ -87,7 +85,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            service.Delete(id);
+            service.Delete(id,AuthenticationHelper.User.CompanyId);
             return RedirectToAction("Index");
         }
 

@@ -58,7 +58,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Edit(string id)
         {
-            SetOfBookModel model = new SetOfBookModel(service.GetSingle(id));
+            SetOfBookModel model = new SetOfBookModel(service.GetSingle(id,AuthenticationHelper.User.CompanyId));
             return View(model);
         }
 
@@ -76,7 +76,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            service.Delete(id);
+            service.Delete(id,AuthenticationHelper.User.CompanyId);
             return RedirectToAction("Index");
         }
 

@@ -27,15 +27,15 @@ namespace _360Accounting.Service
         {
             return this.repository.GetAccountValuesBySegment(segment, chartId);
         }
-        
-        public AccountValue GetSingle(string id)
+
+        public AccountValue GetSingle(string id, long companyId)
         {
-            return this.repository.GetSingle(id);
+            return this.repository.GetSingle(id,companyId);
         }
 
-        public IEnumerable<AccountValue> GetAll()
+        public IEnumerable<AccountValue> GetAll( long companyId)
         {
-            return this.repository.GetAll();
+            return this.repository.GetAll(companyId);
         }
 
         public string Insert(AccountValue entity)
@@ -48,14 +48,14 @@ namespace _360Accounting.Service
             return this.repository.Update(entity);
         }
 
-        public void Delete(string id)
+        public void Delete(string id, long companyId)
         {
-            this.repository.Delete(id);
+            this.repository.Delete(id,companyId);
         }
 
-        public int Count()
+        public int Count( long companyId)
         {
-            return this.repository.Count();
+            return this.repository.Count(companyId);
         }
     }
 }

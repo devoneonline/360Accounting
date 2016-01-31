@@ -23,14 +23,14 @@ namespace _360Accounting.Service
             return this.repository.GetAll(companyId, sobId, searchText, paging, page ?? 1, sort, sortDir);
         }
 
-        public Calendar GetSingle(string id)
+        public Calendar GetSingle(string id, long companyId)
         {
-            return this.repository.GetSingle(id);
+            return this.repository.GetSingle(id,companyId);
         }
 
-        public IEnumerable<Calendar> GetAll()
+        public IEnumerable<Calendar> GetAll( long companyId)
         {
-            return this.repository.GetAll();
+            return this.repository.GetAll(companyId);
         }
 
         public string Insert(Calendar entity)
@@ -43,14 +43,14 @@ namespace _360Accounting.Service
             return this.repository.Update(entity);
         }
 
-        public void Delete(string id)
+        public void Delete(string id, long companyId)
         {
-            this.repository.Delete(id);
+            this.repository.Delete(id,companyId);
         }
 
-        public int Count()
+        public int Count( long companyId)
         {
-            return this.repository.Count();
+            return this.repository.Count(companyId);
         }
     }
 }

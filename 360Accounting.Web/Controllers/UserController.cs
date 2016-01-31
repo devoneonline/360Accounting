@@ -41,7 +41,7 @@ namespace _360Accounting.Web.Controllers
                 item.LastName = profile.LastName;
                 item.PhoneNumber = profile.PhoneNumber;
                 item.Email = profile.Email;
-                item.CompanyName = companyService.GetSingle(profile.CompanyId.ToString()).Name;
+                item.CompanyName = companyService.GetSingle(profile.CompanyId.ToString(),AuthenticationHelper.User.CompanyId).Name;
                 item.Role = Roles.GetRolesForUser(user.UserName)[0];
                 model.Users.Add(item);
             }
@@ -67,7 +67,14 @@ namespace _360Accounting.Web.Controllers
                 if (Membership.ValidateUser(model.UserName, model.Password))
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, false);
-                    updateMenuItems();
+                    if (Roles.IsUserInRole(model.UserName, UserRoles.SuperAdmin.ToString()))
+                    {
+                        getSuperAdminMenu();
+                    }
+                    else
+                    {
+                        updateMenuItems(model.UserName);
+                    }
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -143,7 +150,6 @@ namespace _360Accounting.Web.Controllers
             return View();
         }
 
-
         public ActionResult Edit(Guid id)
         {
             var memUser = Membership.GetUser(id);
@@ -171,7 +177,6 @@ namespace _360Accounting.Web.Controllers
             }
             return View(model);
         }
-
 
         [HttpPost]
         public ActionResult ChangePassword(ChangePasswordViewModel model)
@@ -268,11 +273,20 @@ namespace _360Accounting.Web.Controllers
             return View();
         }
 
-        private void updateMenuItems()
+        private void getSuperAdminMenu()
         {
-            IEnumerable<Feature> featureList = service.GetAll().ToList();
-            var modelList = featureList.Select(x => new FeatureViewModel(x)).ToList();
-            AuthenticationHelper.MenuItems = modelList.Where(x => x.ParentId == null);
+            AuthenticationHelper.MenuItems = service.GetSuperAdminMenu().Select(x => new FeatureViewModel(x)).ToList();
+        }
+
+        private void updateMenuItems(string userName)
+        {
+            var memUser = Membership.GetUser(userName);
+            if (memUser != null)
+            {
+                IEnumerable<Feature> featureList = service.GetMenuItemsByUserId(Guid.Parse(memUser.ProviderUserKey.ToString()));
+                var modelList = featureList.Select(x => new FeatureViewModel(x)).ToList();
+                AuthenticationHelper.MenuItems = modelList;
+            }
         }
     }
 }

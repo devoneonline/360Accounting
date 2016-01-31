@@ -40,7 +40,7 @@ namespace _360Accounting.Web.Controllers
                 model.Segments = getSegmentList(model.SetOfBooks.First().Value.ToString());
             }
 
-            model.AccountValues = service.GetAll().Select(x => new AccountValueViewModel(x)).ToList();
+            model.AccountValues = service.GetAll(AuthenticationHelper.User.CompanyId).Select(x => new AccountValueViewModel(x)).ToList();
             return View(model);
         }
 
@@ -50,7 +50,7 @@ namespace _360Accounting.Web.Controllers
             if (accountService.GetAccountBySOBId(sobId.ToString(), AuthenticationHelper.User.CompanyId) != null)
             {
                 model.ChartId = accountService.GetAccountBySOBId(sobId.ToString(), AuthenticationHelper.User.CompanyId).Id;
-                model.SetOfBook = sobService.GetSingle(sobId.ToString()).Name;
+                model.SetOfBook = sobService.GetSingle(sobId.ToString(),AuthenticationHelper.User.CompanyId).Name;
                 model.Segment = segment;
                 return View("Edit", model);
             }
@@ -66,7 +66,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Edit(long id)
         {
             AccountValueViewModel model = new 
-                AccountValueViewModel(service.GetSingle(id.ToString()));
+                AccountValueViewModel(service.GetSingle(id.ToString(),AuthenticationHelper.User.CompanyId));
             return View(model);
         }
 
@@ -101,7 +101,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            service.Delete(id);
+            service.Delete(id,AuthenticationHelper.User.CompanyId);
             return RedirectToAction("Index");
         }
 

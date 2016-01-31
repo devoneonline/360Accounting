@@ -28,14 +28,14 @@ namespace _360Accounting.Service
             return this.repository.GetByCompanyId(companyId);
         }
 
-        public SetOfBook GetSingle(string id)
+        public SetOfBook GetSingle(string id, long companyId)
         {
-            return this.repository.GetSingle(id);
+            return this.repository.GetSingle(id,companyId);
         }
 
-        public IEnumerable<SetOfBook> GetAll()
+        public IEnumerable<SetOfBook> GetAll(long companyId)
         {
-            return this.repository.GetAll();
+            return this.repository.GetAll(companyId);
         }
 
         public string Insert(SetOfBook entity)
@@ -48,14 +48,14 @@ namespace _360Accounting.Service
             return this.repository.Update(entity);
         }
 
-        public void Delete(string id)
+        public void Delete(string id, long companyId)
         {
-            this.repository.Delete(id);
+            this.repository.Delete(id,companyId);
         }
 
-        public int Count()
+        public int Count(long companyId)
         {
-            return this.repository.Count();
+            return this.repository.Count(companyId);
         }
     }
 }

@@ -61,14 +61,14 @@ namespace _360Accounting.Data.Repositories
             }
         }
 
-        public Calendar GetSingle(string id)
+        public Calendar GetSingle(string id, long companyId)
         {
-            Calendar calendar = this.GetAll()
+            Calendar calendar = this.GetAll(companyId)
                 .FirstOrDefault(x => x.Id == Convert.ToInt64(id));
             return calendar;
         }
 
-        public IEnumerable<Calendar> GetAll()
+        public IEnumerable<Calendar> GetAll(long companyId)
         {
             IEnumerable<Calendar> calendarList = this.Context
                 .Calendars;
@@ -90,15 +90,15 @@ namespace _360Accounting.Data.Repositories
             return entity.Id.ToString();
         }
 
-        public void Delete(string id)
+        public void Delete(string id, long companyId)
         {
-            this.Context.Calendars.Remove(this.GetSingle(id));
+            this.Context.Calendars.Remove(this.GetSingle(id,companyId));
             this.Commit();
         }
 
-        public int Count()
+        public int Count(long companyId)
         {
-            return this.GetAll().Count();
+            return this.GetAll(companyId).Count();
         }
 
         public int Commit()

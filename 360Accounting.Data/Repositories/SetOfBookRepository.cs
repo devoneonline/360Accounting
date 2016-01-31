@@ -13,8 +13,7 @@ namespace _360Accounting.Data.Repositories
     {
         public SetOfBook GetSetOfBook(long companyId, string name)
         {
-            SetOfBook sob = this.GetAll().FirstOrDefault(x => x.CompanyId == companyId &&
-                x.Name == name);
+            SetOfBook sob = this.GetAll(companyId).FirstOrDefault(x => x.Name == name);
             return sob;
         }
 
@@ -25,15 +24,15 @@ namespace _360Accounting.Data.Repositories
             return list;
         }
 
-        public SetOfBook GetSingle(string id)
+        public SetOfBook GetSingle(string id, long companyId)
         {
-            SetOfBook sob = this.GetAll().FirstOrDefault(x => x.Id == Convert.ToInt64(id));
+            SetOfBook sob = this.GetAll(companyId).FirstOrDefault(x => x.Id == Convert.ToInt64(id));
             return sob;
         }
 
-        public IEnumerable<SetOfBook> GetAll()
+        public IEnumerable<SetOfBook> GetAll(long companyId)
         {
-            IEnumerable<SetOfBook> sobList = this.Context.SetOfBooks;
+            IEnumerable<SetOfBook> sobList = this.Context.SetOfBooks.Where(x=> x.CompanyId == companyId);
             return sobList;
         }
 
@@ -52,15 +51,15 @@ namespace _360Accounting.Data.Repositories
             return entity.Id.ToString();
         }
 
-        public void Delete(string id)
+        public void Delete(string id, long companyId)
         {
-            this.Context.SetOfBooks.Remove(this.GetSingle(id));
+            this.Context.SetOfBooks.Remove(this.GetSingle(id,companyId));
             this.Commit();
         }
 
-        public int Count()
+        public int Count(long companyId)
         {
-            return this.GetAll().Count();
+            return this.GetAll(companyId).Count();
         }
 
         public int Commit()

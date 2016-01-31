@@ -34,17 +34,15 @@ namespace _360Accounting.Data.Repositories
             }
         }
 
-        public CodeCombinition GetSingle(string id)
+        public CodeCombinition GetSingle(string id, long companyId)
         {
-            CodeCombinition codeCombinition = this.GetAll()
-                .FirstOrDefault(x => x.Id == Convert.ToInt32(id));
+            CodeCombinition codeCombinition = this.GetAll(companyId).FirstOrDefault(x => x.Id == Convert.ToInt32(id));
             return codeCombinition;
         }
 
-        public IEnumerable<CodeCombinition> GetAll()
+        public IEnumerable<CodeCombinition> GetAll(long companyId)
         {
-            IEnumerable<CodeCombinition> codeComblist = 
-                this.Context.CodeCombinitions;
+            IEnumerable<CodeCombinition> codeComblist = this.Context.CodeCombinitions;
             return codeComblist;
         }
 
@@ -63,15 +61,15 @@ namespace _360Accounting.Data.Repositories
             return entity.Id.ToString();
         }
 
-        public void Delete(string id)
+        public void Delete(string id, long companyId)
         {
-            this.Context.CodeCombinitions.Remove(this.GetSingle(id));
+            this.Context.CodeCombinitions.Remove(this.GetSingle(id,companyId));
             this.Commit();
         }
 
-        public int Count()
+        public int Count(long companyId)
         {
-            return this.GetAll().Count();
+            return this.GetAll(companyId).Count();
         }
 
         public int Commit()

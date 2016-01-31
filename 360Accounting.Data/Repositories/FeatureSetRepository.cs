@@ -9,13 +9,13 @@ namespace _360Accounting.Data.Repositories
 {
     public class FeatureSetRepository : Repository, IFeatureSetRepository
     {
-        public FeatureSet GetSingle(string id)
+        public FeatureSet GetSingle(string id, long companyId)
         {
-            FeatureSet featureSet = this.GetAll().FirstOrDefault(x => x.Id == Convert.ToInt64(id));
+            FeatureSet featureSet = this.GetAll(companyId).FirstOrDefault(x => x.Id == Convert.ToInt64(id));
             return featureSet;
         }
 
-        public IEnumerable<FeatureSet> GetAll()
+        public IEnumerable<FeatureSet> GetAll(long companyId)
         {
             IEnumerable<FeatureSet> featureSets = this.Context.FeatureSets;
             return featureSets;
@@ -36,15 +36,15 @@ namespace _360Accounting.Data.Repositories
             return entity.Id.ToString();
         }
 
-        public void Delete(string id)
+        public void Delete(string id, long companyId)
         {
-            this.Context.FeatureSets.Remove(this.GetSingle(id));
+            this.Context.FeatureSets.Remove(this.GetSingle(id,companyId));
             this.Commit();
         }
 
-        public int Count()
+        public int Count(long companyId)
         {
-            return this.GetAll().Count();
+            return this.GetAll(companyId).Count();
         }
 
         public int Commit()
