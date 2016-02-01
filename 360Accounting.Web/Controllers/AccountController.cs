@@ -19,9 +19,8 @@ namespace _360Accounting.Web.Controllers
 
         public AccountController()
         {
-            ////service = IoC.Resolve<IAccountService>("AccountService");
-            service = new AccountService(new AccountRepository());
-            sobService = new SetOfBookService(new SetOfBookRepository());
+            service = IoC.Resolve<IAccountService>("AccountService");
+            sobService = IoC.Resolve<ISetOfBookService>("SetOfBookService");
         }
 
         public ActionResult Index(AccountListModel model)

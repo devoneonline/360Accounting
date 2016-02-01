@@ -18,7 +18,7 @@ namespace _360Accounting.Web.Controllers
 
         public CompanyController()
         {
-            service = new CompanyService(new CompanyRepository());
+            service = IoC.Resolve<ICompanyService>("CompanyService");
         }
 
         public ActionResult Index()

@@ -59,8 +59,8 @@ namespace _360Accounting.Data.Repositories
                                                 join c in this.Context.FeatureSetLists on b.Id equals c.FeatureSetId
                                                 join d in this.Context.Features on c.FeatureId equals d.Id
                                                 where a.UserId == userId
-                                                select d).Where(x=> x.ParentId == null).Include(x=> x.Features);
-            return featureList;
+                                                select d).Include(x=> x.Features);
+            return featureList.Where(x=> x.ParentId == null);
         }
 
 

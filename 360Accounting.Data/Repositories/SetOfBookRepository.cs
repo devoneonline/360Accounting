@@ -45,8 +45,9 @@ namespace _360Accounting.Data.Repositories
 
         public string Update(SetOfBook entity)
         {
-            this.Context.SetOfBooks.Attach(entity);
-            this.Context.Entry(entity).State = EntityState.Modified;
+            var orignalEntity = this.Context.SetOfBooks.Find(entity.Id);
+            this.Context.Entry(orignalEntity).CurrentValues.SetValues(entity);
+            this.Context.Entry(orignalEntity).State = EntityState.Modified;
             this.Commit();
             return entity.Id.ToString();
         }

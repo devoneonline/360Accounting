@@ -21,10 +21,10 @@ namespace _360Accounting.Web.Controllers
 
         public CodeCombinitionController()
         {
-            service = new CodeCombinitionService(new CodeCombinitionRepository());
-            sobService = new SetOfBookService(new SetOfBookRepository());
-            accountService = new AccountService(new AccountRepository());
-            accountValueService = new AccountValueService(new AccountValueRepository());
+            service = IoC.Resolve<ICodeCombinitionService>("CodeCombinitionService");
+            sobService = IoC.Resolve<ISetOfBookService>("SetOfBookService");
+            accountService = IoC.Resolve<IAccountService>("AccountService");
+            accountValueService = IoC.Resolve<IAccountValueService>("AccountValueService");
         }
 
         public ActionResult Index(CodeCombinitionListModel model)

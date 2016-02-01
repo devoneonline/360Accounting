@@ -21,9 +21,8 @@ namespace _360Accounting.Web.Controllers
 
         public UserController()
         {
-            ////service = IoC.Resolve<IFeatureService>("FeatureService");
-            service = new FeatureService(new FeatureRepository());
-            companyService = new CompanyService(new CompanyRepository());
+            service = IoC.Resolve<IFeatureService>("FeatureService");
+            companyService = IoC.Resolve<ICompanyService>("CompanyService");
         }
 
         public ActionResult Index(MembershipUserListModel model)
@@ -86,6 +85,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult LogOff()
         {
             FormsAuthentication.SignOut();
+            Session.Abandon();
             return RedirectToAction("Login");
         }
 

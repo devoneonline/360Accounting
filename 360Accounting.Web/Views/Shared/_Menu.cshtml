@@ -1,4 +1,10 @@
-﻿<div class="collapse navbar-collapse navbar-ex1-collapse">
+﻿@if (AuthenticationHelper.MenuItems == null)
+{
+    FormsAuthentication.SignOut();
+    Session.Abandon();
+    Response.Redirect("~/User/Login");
+}
+<div class="collapse navbar-collapse navbar-ex1-collapse">
     <ul class="nav navbar-nav side-nav">
         @if (AuthenticationHelper.MenuItems !=null)
         {

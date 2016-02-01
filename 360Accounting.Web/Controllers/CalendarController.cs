@@ -17,8 +17,8 @@ namespace _360Accounting.Web.Controllers
 
         public CalendarController()
         {
-            service = new CalendarService(new CalendarRepository());
-            sobService = new SetOfBookService(new SetOfBookRepository());
+            service = IoC.Resolve<ICalendarService>("CalendarService");
+            sobService = IoC.Resolve<ISetOfBookService>("SetOfBookService");
         }
 
         public ActionResult Index(CalendarListModel model)

@@ -22,9 +22,9 @@ namespace _360Accounting.Web.Controllers
 
         public AccountValueController()
         {
-            service = new AccountValueService(new AccountValueRepository());
-            sobService = new SetOfBookService(new SetOfBookRepository());
-            accountService = new AccountService(new AccountRepository());
+            service = IoC.Resolve<IAccountValueService>("AccountValueService");
+            sobService = IoC.Resolve<ISetOfBookService>("SetOfBookService");
+            accountService = IoC.Resolve<IAccountService>("AccountService");
         }
 
         public ActionResult Index(AccountValueListModel model)

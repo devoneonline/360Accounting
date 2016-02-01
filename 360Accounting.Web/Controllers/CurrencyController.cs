@@ -18,8 +18,8 @@ namespace _360Accounting.Web.Controllers
 
         public CurrencyController()
         {
-            service = new CurrencyService(new CurrencyRepository());
-            sobService = new SetOfBookService(new SetOfBookRepository());
+            service = IoC.Resolve<ICurrencyService>("CurrencyService");
+            sobService = IoC.Resolve<ISetOfBookService>("SetOfBookService");
         }
 
         public ActionResult Index(CurrencyListModel model)

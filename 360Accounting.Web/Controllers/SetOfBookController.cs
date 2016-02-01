@@ -18,7 +18,7 @@ namespace _360Accounting.Web.Controllers
 
         public SetOfBookController()
         {
-            service = new SetOfBookService(new SetOfBookRepository());
+            service = IoC.Resolve<ISetOfBookService>("SetOfBookService");
         }
 
         public ActionResult Index()
