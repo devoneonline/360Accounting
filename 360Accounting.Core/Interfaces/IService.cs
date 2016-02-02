@@ -8,16 +8,16 @@ namespace _360Accounting.Core.Interfaces
 {
     public interface IService<T>
     {
-        T GetSingle(string id);
+        T GetSingle(string id, long companyId);
 
-        IEnumerable<T> GetAll();
+        IEnumerable<T> GetAll(long companyId);
 
         string Insert(T entity);
 
         string Update(T entity);
 
-        void Delete(string id);
+        void Delete(string id, long companyId);
 
-        int Count();
+        int Count(long companyId);
     }
 }

@@ -18,14 +18,14 @@ namespace _360Accounting.Service
             this.repository = featureRepository;
         }
 
-        public Feature GetSingle(string id)
+        public Feature GetSingle(string id, long companyId)
         {
-            return this.repository.GetSingle(id);
+            return this.repository.GetSingle(id,companyId);
         }
 
-        public IEnumerable<Feature> GetAll()
+        public IEnumerable<Feature> GetAll( long companyId)
         {
-            return this.repository.GetAll();
+            return this.repository.GetAll(companyId);
         }
 
         public string Insert(Feature entity)
@@ -38,14 +38,24 @@ namespace _360Accounting.Service
             return this.repository.Update(entity);
         }
 
-        public void Delete(string id)
+        public void Delete(string id, long companyId)
         {
-            this.repository.Delete(id);
+            this.repository.Delete(id,companyId);
         }
 
-        public int Count()
+        public int Count( long companyId)
         {
-            return this.repository.Count();
+            return this.repository.Count(companyId);
+        }
+
+        public IEnumerable<Feature> GetMenuItemsByUserId(Guid userId)
+        {
+            return this.repository.GetMenuItemsByUserId(userId);
+        }
+
+        public IEnumerable<Feature> GetSuperAdminMenu()
+        {
+            return this.repository.GetSuperAdminMenu();
         }
     }
 }

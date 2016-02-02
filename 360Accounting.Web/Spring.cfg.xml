@@ -3,11 +3,46 @@
 <objects xmlns="http://www.springframework.net">
   <description>360Accounting Configuration</description>
   
-  <object name="FeatureRepository" type="_360Accounting.Data.Repositories.FeatureRepository, _360Accounting.Data.Repositories"> </object>
+  <object name="FeatureRepository" type="_360Accounting.Data.Repositories.FeatureRepository, 360Accounting.Data"> </object>
+  <object name="CompanyRepository" type="_360Accounting.Data.Repositories.CompanyRepository, 360Accounting.Data"> </object>
+  <object name="SetOfBookRepository" type="_360Accounting.Data.Repositories.SetOfBookRepository, 360Accounting.Data"> </object>
+  <object name="AccountRepository" type="_360Accounting.Data.Repositories.AccountRepository, 360Accounting.Data"> </object>
+  <object name="AccountValueRepository" type="_360Accounting.Data.Repositories.AccountValueRepository, 360Accounting.Data"> </object>
+  <object name="CalendarRepository" type="_360Accounting.Data.Repositories.CalendarRepository, 360Accounting.Data"> </object>
+  <object name="CodeCombinitionRepository" type="_360Accounting.Data.Repositories.CodeCombinitionRepository, 360Accounting.Data"> </object>
+  <object name="CurrencyRepository" type="_360Accounting.Data.Repositories.CurrencyRepository, 360Accounting.Data"> </object>
 
-  <object name="FeatureService" type="_360Accounting.Service.FeatureService, _360Accounting.Service" >
-    <constructor-arg name="IFeatureRepository" ref="FeatureRepository" />
+
+  <object name="FeatureService" type="_360Accounting.Service.FeatureService, 360Accounting.Service" >
+    <constructor-arg name="featureRepository" ref="FeatureRepository" />
   </object>
+  <object name="CompanyService" type="_360Accounting.Service.CompanyService, 360Accounting.Service" >
+    <constructor-arg name="repo" ref="CompanyRepository" />
+  </object>
+  <object name="SetOfBookService" type="_360Accounting.Service.SetOfBookService, 360Accounting.Service" >
+    <constructor-arg name="setOfBookRepository" ref="SetOfBookRepository" />
+  </object>
+  <object name="AccountService" type="_360Accounting.Service.AccountService, 360Accounting.Service" >
+    <constructor-arg name="repo" ref="AccountRepository" />
+  </object>
+  <object name="AccountValueService" type="_360Accounting.Service.AccountValueService, 360Accounting.Service" >
+    <constructor-arg name="repo" ref="AccountValueRepository" />
+  </object>
+  <object name="CalendarService" type="_360Accounting.Service.CalendarService, 360Accounting.Service" >
+    <constructor-arg name="repo" ref="CalendarRepository" />
+  </object>
+  <object name="CodeCombinitionService" type="_360Accounting.Service.CodeCombinitionService, 360Accounting.Service" >
+    <constructor-arg name="repo" ref="CodeCombinitionRepository" />
+  </object>
+  <object name="CurrencyService" type="_360Accounting.Service.CurrencyService, 360Accounting.Service" >
+    <constructor-arg name="repo" ref="CurrencyRepository" />
+  </object>
+
+
+
+
+
+
 </objects>
 
 

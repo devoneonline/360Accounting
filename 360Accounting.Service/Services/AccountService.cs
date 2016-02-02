@@ -23,14 +23,14 @@ namespace _360Accounting.Service
             return this.repository.GetAccountBySOBId(sobId, companyId);
         }
 
-        public Account GetSingle(string id)
+        public Account GetSingle(string id, long companyId)
         {
-            return this.repository.GetSingle(id);
+            return this.repository.GetSingle(id,companyId);
         }
 
-        public IEnumerable<Account> GetAll()
+        public IEnumerable<Account> GetAll( long companyId)
         {
-            return this.repository.GetAll();
+            return this.repository.GetAll(companyId);
         }
 
         public IEnumerable<AccountView> GetAll(long companyId, string searchText, bool paging, int? page, string sort, string sortDir)
@@ -48,14 +48,14 @@ namespace _360Accounting.Service
             return this.repository.Update(entity);
         }
 
-        public void Delete(string id)
+        public void Delete(string id, long companyId)
         {
-            this.repository.Delete(id);
+            this.repository.Delete(id,companyId);
         }
 
-        public int Count()
+        public int Count( long companyId)
         {
-            return this.repository.Count();
+            return this.repository.Count(companyId);
         }
     }
 }

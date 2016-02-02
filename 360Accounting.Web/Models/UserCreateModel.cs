@@ -52,7 +52,7 @@ namespace _360Accounting.Web.Models
                 if (AuthenticationHelper.UserRole == UserRoles.SuperAdmin.ToString())
                 {
                     CompanyService service = new CompanyService(new CompanyRepository());
-                    companyList.AddRange(service.GetAll().Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }));
+                    companyList.AddRange(service.GetAll(AuthenticationHelper.User.CompanyId).Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }));
                 }
                 return companyList;
             }

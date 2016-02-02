@@ -19,9 +19,8 @@ namespace _360Accounting.Web.Controllers
 
         public AccountController()
         {
-            ////service = IoC.Resolve<IAccountService>("AccountService");
-            service = new AccountService(new AccountRepository());
-            sobService = new SetOfBookService(new SetOfBookRepository());
+            service = IoC.Resolve<IAccountService>("AccountService");
+            sobService = IoC.Resolve<ISetOfBookService>("SetOfBookService");
         }
 
         public ActionResult Index(AccountListModel model)
@@ -65,8 +64,8 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Edit(string id)
         {
-            AccountCreateViewModel model = new AccountCreateViewModel(service.GetSingle(id));
-            SetOfBook sob = sobService.GetSingle(model.SOBId.ToString());
+            AccountCreateViewModel model = new AccountCreateViewModel(service.GetSingle(id,AuthenticationHelper.User.CompanyId));
+            SetOfBook sob = sobService.GetSingle(model.SOBId.ToString(),AuthenticationHelper.User.CompanyId);
             model.SetOfBooks = new List<SelectListItem>();
             model.SetOfBooks.Add(new SelectListItem { Text = sob.Name, Value = sob.Id.ToString() });
 
@@ -88,7 +87,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            service.Delete(id);
+            service.Delete(id,AuthenticationHelper.User.CompanyId);
             return RedirectToAction("Index");
         }
 

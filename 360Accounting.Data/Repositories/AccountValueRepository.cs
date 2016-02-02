@@ -27,17 +27,16 @@ namespace _360Accounting.Data.Repositories
             return valueList;
         }
 
-        public AccountValue GetSingle(string id)
+        public AccountValue GetSingle(string id, long companyId)
         {
-            AccountValue accountValue = this.GetAll()
+            AccountValue accountValue = this.GetAll(companyId)
                 .FirstOrDefault(x => x.Id == Convert.ToInt32(id));
             return accountValue;
         }
 
-        public IEnumerable<AccountValue> GetAll()
+        public IEnumerable<AccountValue> GetAll(long companyId)
         {
-            IEnumerable<AccountValue> valueList = this.Context
-                .AccountValues;
+            IEnumerable<AccountValue> valueList = this.Context.AccountValues;
             return valueList;
         }
 
@@ -56,15 +55,15 @@ namespace _360Accounting.Data.Repositories
             return entity.Id.ToString();
         }
 
-        public void Delete(string id)
+        public void Delete(string id, long companyId)
         {
-            this.Context.AccountValues.Remove(this.GetSingle(id));
+            this.Context.AccountValues.Remove(this.GetSingle(id,companyId));
             this.Commit();
         }
 
-        public int Count()
+        public int Count(long companyId)
         {
-            return this.GetAll().Count();
+            return this.GetAll(companyId).Count();
         }
 
         public int Commit()

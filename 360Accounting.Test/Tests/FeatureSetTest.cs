@@ -26,7 +26,7 @@ namespace _360Accounting.Test
         public void UpdateFeatureSetTest()
         {
             FeatureSetService service = new FeatureSetService(new FeatureSetRepository());
-            FeatureSet entity = service.GetSingle("1");
+            FeatureSet entity = service.GetSingle("1",1);
             Assert.IsNotNull(entity);
 
             entity.Name = "Featureset: GL";

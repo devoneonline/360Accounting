@@ -18,13 +18,13 @@ namespace _360Accounting.Web.Controllers
 
         public CompanyController()
         {
-            service = new CompanyService(new CompanyRepository());
+            service = IoC.Resolve<ICompanyService>("CompanyService");
         }
 
         public ActionResult Index()
         {
             CompanyListModel model = new CompanyListModel();
-            var list = service.GetAll();
+            var list = service.GetAll(AuthenticationHelper.User.CompanyId);
             model.Companies = list.Select(a => new CompanyModel(a)).ToList();
             return View(model);
         }
@@ -48,7 +48,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Edit(string id)
         {
-            CompanyModel model = new CompanyModel(service.GetSingle(id));
+            CompanyModel model = new CompanyModel(service.GetSingle(id,AuthenticationHelper.User.CompanyId));
             return View(model);
         }
 
@@ -66,7 +66,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            service.Delete(id);
+            service.Delete(id,AuthenticationHelper.User.CompanyId);
             return RedirectToAction("Index");
         }
 

@@ -9,12 +9,12 @@ namespace _360Accounting.Data.Repositories
 {
     public class CompanyRepository : Repository, ICompanyRepository
     {
-        public Company GetSingle(string id)
+        public Company GetSingle(string id, long companyId)
         {
-            return this.GetAll().FirstOrDefault(x => x.Id == Convert.ToInt32(id));
+            return this.GetAll(companyId).FirstOrDefault(x => x.Id == Convert.ToInt32(id));
         }
 
-        public IEnumerable<Company> GetAll()
+        public IEnumerable<Company> GetAll(long companyId)
         {
             return this.Context.Companies;
         }
@@ -34,15 +34,15 @@ namespace _360Accounting.Data.Repositories
             return entity.Id.ToString();
         }
 
-        public void Delete(string id)
+        public void Delete(string id, long companyId)
         {
-            this.Context.Companies.Remove(this.GetSingle(id));
+            this.Context.Companies.Remove(this.GetSingle(id,companyId));
             this.Commit();
         }
 
-        public int Count()
+        public int Count(long companyId)
         {
-            return this.GetAll().Count();
+            return this.GetAll(companyId).Count();
         }
 
         public int Commit()

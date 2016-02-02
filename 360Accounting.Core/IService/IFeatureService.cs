@@ -10,5 +10,7 @@ namespace _360Accounting.Core
 {
     public interface IFeatureService : IService<Feature>
     {
+        IEnumerable<Feature> GetMenuItemsByUserId(Guid userId);
+        IEnumerable<Feature> GetSuperAdminMenu();
     }
 }

@@ -18,14 +18,14 @@ namespace _360Accounting.Service
             this.repository = featureSetListRepository;
         }
 
-        public FeatureSetList GetSingle(string id)
+        public FeatureSetList GetSingle(string id, long companyId)
         {
-            return this.repository.GetSingle(id);
+            return this.repository.GetSingle(id,companyId);
         }
 
-        public IEnumerable<FeatureSetList> GetAll()
+        public IEnumerable<FeatureSetList> GetAll(long companyId)
         {
-            return this.repository.GetAll();
+            return this.repository.GetAll(companyId);
         }
 
         public string Insert(FeatureSetList entity)
@@ -38,14 +38,14 @@ namespace _360Accounting.Service
             return this.repository.Update(entity);
         }
 
-        public void Delete(string id)
+        public void Delete(string id, long companyId)
         {
-            this.repository.Delete(id);
+            this.repository.Delete(id,companyId);
         }
 
-        public int Count()
+        public int Count(long companyId)
         {
-            return this.repository.Count();
+            return this.repository.Count(companyId);
         }
 
         public IEnumerable<FeatureSetList> GetByFeatureSetId(long featureSetId)

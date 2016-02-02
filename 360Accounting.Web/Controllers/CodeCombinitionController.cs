@@ -21,10 +21,10 @@ namespace _360Accounting.Web.Controllers
 
         public CodeCombinitionController()
         {
-            service = new CodeCombinitionService(new CodeCombinitionRepository());
-            sobService = new SetOfBookService(new SetOfBookRepository());
-            accountService = new AccountService(new AccountRepository());
-            accountValueService = new AccountValueService(new AccountValueRepository());
+            service = IoC.Resolve<ICodeCombinitionService>("CodeCombinitionService");
+            sobService = IoC.Resolve<ISetOfBookService>("SetOfBookService");
+            accountService = IoC.Resolve<IAccountService>("AccountService");
+            accountValueService = IoC.Resolve<IAccountValueService>("AccountValueService");
         }
 
         public ActionResult Index(CodeCombinitionListModel model)
@@ -58,9 +58,7 @@ namespace _360Accounting.Web.Controllers
         
         public ActionResult Edit(long id)
         {
-            CodeCombinitionCreateViewModel model =
-                new CodeCombinitionCreateViewModel(service
-                    .GetSingle(id.ToString()));
+            CodeCombinitionCreateViewModel model = new CodeCombinitionCreateViewModel(service.GetSingle(id.ToString(),AuthenticationHelper.User.CompanyId));
             return PartialView("_Edit", model);
         }
 
@@ -87,7 +85,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            service.Delete(id);
+            service.Delete(id,AuthenticationHelper.User.CompanyId);
             return RedirectToAction("Index");
         }
 
