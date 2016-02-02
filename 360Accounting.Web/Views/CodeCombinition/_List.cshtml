@@ -46,7 +46,8 @@
                  format: (item) => Html.Raw("<a class = 'delete' href = '" + 
                      @Url.Content("~/CodeCombinition/Delete/") + item.Id +
                      "'><img src ='" +
-                     @Url.Content("~/Content/Images/delete.png") + "alt ='' title ='Delete' style = 'border:0'/></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='" + @Url.Content("~/Account/Edit/") + item.Id +
+                          @Url.Content("~/Content/Images/delete.png") + "' alt ='' title ='Delete' style = 'border:0'/></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='" +
+                          @Url.Content("~/CodeCombinition/Edit/") + item.Id +
                      "'><img src='" + 
                      @Url.Content("~/Content/images/edit.png") + "' alt='' title='Edit' style='border:0'/></a>")),
                      grid.Column(columnName: "CodeCombinitionCode",

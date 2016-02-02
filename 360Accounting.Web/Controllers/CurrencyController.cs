@@ -37,8 +37,7 @@ namespace _360Accounting.Web.Controllers
 
             if (model.SOBId != 0 || model.SetOfBooks != null)
             {
-                model.Currencies = service.GetAll(AuthenticationHelper.User.CompanyId, model.SOBId != 0 ? model.SOBId : Convert.ToInt64(model.SetOfBooks.First().Value), model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
-                    .Select(x => new CurrencyViewModel(x)).ToList();
+                model.Currencies = getCurrencyList(model);
             }
                 
             return View(model);
@@ -93,13 +92,18 @@ namespace _360Accounting.Web.Controllers
         public ActionResult GetCurrencyList(long sobId)
         {
             CurrencyListModel model = new CurrencyListModel();
-            model.Currencies = model.Currencies = service
-                .GetAll(AuthenticationHelper.User.CompanyId, sobId)
-                .Select(x => new CurrencyViewModel(x)).ToList();
+            model.SOBId = sobId;
+            model.Currencies = getCurrencyList(model);
             return PartialView("_List", model);
         }
 
         #region Private Methods
+        private List<CurrencyViewModel> getCurrencyList(CurrencyListModel model)
+        {
+            return service.GetAll(AuthenticationHelper.User.CompanyId, model.SOBId != 0 ? model.SOBId : Convert.ToInt64(model.SetOfBooks.First().Value), model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
+                .Select(x => new CurrencyViewModel(x)).ToList();
+        }
+
         private Currency mapModel(CurrencyViewModel model)            ////TODO: this should be done in service will discuss later - FK
         {
             return new Currency

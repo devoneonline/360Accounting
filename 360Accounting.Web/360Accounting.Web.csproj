@@ -174,7 +174,10 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Images\big-logo.png" />
+    <Content Include="Content\Images\delete.png" />
+    <Content Include="Content\Images\edit.png" />
     <Content Include="Content\Images\logo.png" />
+    <Content Include="Content\Images\open.jpg" />
     <Content Include="Content\style.css" />
     <Content Include="favicon.ico" />
     <Content Include="font-awesome\css\font-awesome.css" />
@@ -287,6 +290,9 @@
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\Calendar\Create.cshtml" />
     <Content Include="Views\Calendar\Index.cshtml" />
+    <Content Include="Views\Calendar\_List.cshtml" />
+    <Content Include="Views\Calendar\Edit.cshtml" />
+    <Content Include="Views\Calendar\ChangeStatus.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

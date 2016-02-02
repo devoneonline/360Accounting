@@ -11,6 +11,15 @@ namespace _360Accounting.Data.Repositories
 {
     public class CalendarRepository : Repository, ICalendarRepository
     {
+        public Calendar getCalendarByPeriod(long companyId, long sobId, DateTime? startDate, DateTime? endDate)
+        {
+            Calendar calendar = this.GetAll()
+                .FirstOrDefault(x => x.CompanyId == companyId &&
+                x.SOBId == sobId && x.StartDate == startDate &&
+                x.EndDate == endDate);
+            return calendar;
+        }
+
         public IEnumerable<Calendar> GetAll(long companyId, long sobId, string searchText, bool paging, int page, string sort, string sortDir)
         {
             IEnumerable<Calendar> calendarList = this.Context.Calendars

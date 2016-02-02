@@ -11,5 +11,7 @@ namespace _360Accounting.Core
     public interface ICalendarService : IService<Calendar>
     {
         IEnumerable<Calendar> GetAll(long companyId, long sobId, string searchText, bool paging, int? page, string sort, string sortDir);
+
+        Calendar getCalendarByPeriod(long companyId, long sobId, DateTime? startDate, DateTime? endDate);
     }
 }

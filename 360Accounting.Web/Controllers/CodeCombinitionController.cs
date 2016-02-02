@@ -41,7 +41,7 @@ namespace _360Accounting.Web.Controllers
                     }).ToList();
             }
 
-            model.CodeCombinitions = service.GetAll(model.SOBId, model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
+            model.CodeCombinitions = service.GetAll(model.SOBId != 0 ? model.SOBId : Convert.ToInt64(model.SetOfBooks.First().Value), model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
                 .Select(x => new CodeCombinitionViewModel(x)).ToList();
             return View(model);
         }

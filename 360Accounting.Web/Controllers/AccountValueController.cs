@@ -67,6 +67,7 @@ namespace _360Accounting.Web.Controllers
         {
             AccountValueViewModel model = new 
                 AccountValueViewModel(service.GetSingle(id.ToString()));
+            model.SetOfBook =  sobService.GetSingle(accountService.GetSingle(model.ChartId.ToString()).SOBId.ToString()).Name;
             return View(model);
         }
 

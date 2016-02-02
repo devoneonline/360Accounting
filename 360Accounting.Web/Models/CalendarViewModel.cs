@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
@@ -16,8 +17,8 @@ namespace _360Accounting.Web.Models
 
         public CalendarViewModel(Calendar entity)
         {
-            this.SOBId = entity.SOBId;
             this.Adjusting = entity.Adjusting;
+            this.ClosingStatus = entity.ClosingStatus;
             this.EndDate = entity.EndDate;
             this.Id = entity.Id;
             this.PeriodName = entity.PeriodName;
@@ -36,10 +37,8 @@ namespace _360Accounting.Web.Models
 
         public string PeriodName { get; set; }
 
-        [Required]
         public int? PeriodYear { get; set; }
 
-        [Required]
         public int? PeriodQuarter { get; set; }
 
         public int? SeqNumber { get; set; }
@@ -49,6 +48,20 @@ namespace _360Accounting.Web.Models
         public DateTime? EndDate { get; set; }
 
         public bool Adjusting { get; set; }
+
+        public string ClosingStatus { get; set; }
+
+        public List<SelectListItem> ClosingStatusList
+        {
+            get
+            {
+                List<SelectListItem> list = new List<SelectListItem>();
+                list.Add(new SelectListItem { Text = "Open", Value = "Open" });
+                list.Add(new SelectListItem { Text = "Close", Value = "Close" });
+
+                return list;
+            }
+        }
         #endregion
     }
 }

@@ -12,6 +12,5 @@ namespace _360Accounting.Core
     {
         IEnumerable<Currency> GetAll(long companyId, long sobId, string searchText, bool paging, int? page, string sort, string sortDir);
 
-        IEnumerable<Currency> GetAll(long companyId, long sobId);
     }
 }
