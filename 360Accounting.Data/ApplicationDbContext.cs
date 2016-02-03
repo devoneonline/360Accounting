@@ -44,6 +44,8 @@ namespace _360Accounting.Data
 
         public DbSet<JournalVoucher> JournalVouchers { get; set; }
 
+        public DbSet<JournalVoucherDetail> JournalVoucherDetails { get; set; }
+
         #endregion
 
         #region Binders
@@ -51,10 +53,12 @@ namespace _360Accounting.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ////base.OnModelCreating(modelBuilder);
-
+            modelBuilder.Entity<JournalVoucherDetail>().ToTable("tbGLLines");
+            modelBuilder.Entity<JournalVoucherDetail>().HasKey(t => t.Id);
+            
             modelBuilder.Entity<JournalVoucher>().ToTable("tbGLHeader");
             modelBuilder.Entity<JournalVoucher>().HasKey(t => t.Id);
-
+            
             modelBuilder.Entity<Calendar>().ToTable("tbCalendar");
             modelBuilder.Entity<Calendar>().HasKey(t => t.Id);
 

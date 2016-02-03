@@ -41,7 +41,7 @@ namespace _360Accounting.Web.Controllers
                     }).ToList();
             }
 
-            model.CodeCombinitions = service.GetAll(model.SOBId != 0 ? model.SOBId : Convert.ToInt64(model.SetOfBooks.First().Value), model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
+            model.CodeCombinitions = service.GetAll(AuthenticationHelper.User.CompanyId, model.SOBId != 0 ? model.SOBId : Convert.ToInt64(model.SetOfBooks.First().Value), model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
                 .Select(x => new CodeCombinitionViewModel(x)).ToList();
             return View(model);
         }
@@ -92,7 +92,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult GetCodeCombinitionList(long sobId)
         {
             CodeCombinitionListModel model = new CodeCombinitionListModel();
-            model.CodeCombinitions = service.GetAll(sobId, model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
+            model.CodeCombinitions = service.GetAll(AuthenticationHelper.User.CompanyId, sobId, model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
                 .Select(x => new CodeCombinitionViewModel(x)).ToList();
             return PartialView("_List", model);
         }

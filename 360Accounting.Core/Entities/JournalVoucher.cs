@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,5 +32,7 @@ namespace _360Accounting.Core.Entities
         public long CurrencyId { get; set; }
 
         public decimal ConversionRate { get; set; }
+
+        public List<JournalVoucherDetail> JournalVoucherDetail { get; set; }
     }
 }

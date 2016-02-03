@@ -22,50 +22,46 @@ FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     @Html.HiddenFor(m => m.PeriodId)
     @Html.HiddenFor(m => m.CurrencyId)
 
-        <div class="col-lg-6">
-            <div class="form-group">
-                @Html.LabelFor(m => m.JournalName)
-                @Html.TextBoxFor(m => m.JournalName, new { @class = "form-control" })
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(m => m.Description)
-                @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
-            </div>
+    <div class="col-lg-12">
+        <div class="col-md-6">
+            @Html.LabelFor(m => m.JournalName)
+            @Html.TextBoxFor(m => m.JournalName, new { @class = "form-control" })
         </div>
 
-        <div class="col-lg-3">
+        <div class="col-md-6">
+            @Html.LabelFor(m => m.Description)
+            @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+        </div>
+
+        <div class="col-md-4">
             @Html.LabelFor(m => m.SOBName)
             @Html.TextBoxFor(m => m.SOBName, new { @readonly = "readonly", @class = "form-control" })
         </div>
 
-        <div class="col-lg-3">
+        <div class="col-md-4">
             @Html.LabelFor(m => m.PeriodName)
             @Html.TextBoxFor(m => m.PeriodName, new { @readonly = "readonly", @class = "form-control" })
         </div>
 
-    <div class="col-lg-3">
-        @Html.LabelFor(m => m.CurrencyName)
-        @Html.TextBoxFor(m => m.CurrencyName, new { @readonly = "readonly", @class = "form-control" })
-    </div>
+        <div class="col-md-4">
+            @Html.LabelFor(m => m.CurrencyName)
+            @Html.TextBoxFor(m => m.CurrencyName, new { @readonly = "readonly", @class = "form-control" })
+        </div>
 
-    <div class="col-lg-3">
-        @Html.LabelFor(m => m.DocumentNo)
-        @Html.TextBoxFor(m => m.DocumentNo, new { @class = "form-control" })
-    </div>
+        <div class="col-md-4">
+            @Html.LabelFor(m => m.DocumentNo)
+            @Html.TextBoxFor(m => m.DocumentNo, new { @class = "form-control" })
+        </div>
 
-    <div class="col-lg-3">
-        @Html.LabelFor(m => m.GLDate)
-        @Html.TextBoxFor(m => m.GLDate, new { @class = "form-control" })
-    </div>
+        <div class="col-md-4">
+            @Html.LabelFor(m => m.GLDate)
+            @Html.TextBoxFor(m => m.GLDate, new { @class = "form-control" })
+        </div>
 
-    <div class="col-lg-3">
-        @Html.LabelFor(m => m.ConversionRate)
-        @Html.TextBoxFor(m => m.ConversionRate, new { @class = "form-control" })
-    </div>
-
-
-
-
+        <div class="col-md-4">
+            @Html.LabelFor(m => m.ConversionRate)
+            @Html.TextBoxFor(m => m.ConversionRate, new { @class = "form-control" })
+        </div>
 
         <div class="col-md-4">
             @Html.LabelFor(m => m.CodeCombinationId)
@@ -106,20 +102,30 @@ FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             @Html.LabelFor(m => m.AccountedCr)
             @Html.TextBoxFor(m => m.AccountedCr, new { @class = "form-control" })
         </div>
+    </div>
+    <div class="col-lg-12">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Save" class="btn btn-default" />
             <input type="button" value="Cancel" class="btn btn-default" id="btnCancel" />
         </div>
-    
-        @section Scripts {
-            @Scripts.Render("~/bundles/jqueryval")
+    </div>
 
-            <script type="text/javascript">
+    <div class="col-lg-12">
+        @if (_360Accounting.Web.Mvc.SessionHelper.JournalVoucher != null)
+        {
+            @Html.Partial("_JournalVoucherDetailList", _360Accounting.Web.Mvc.SessionHelper.JournalVoucher)
+        }
+    </div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+
+        <script type="text/javascript">
                 $(document).ready(function () {
                     $('#btnCancel').click(function () {
                         window.location.href = '@Url.Content("~/JournalVoucher/Index")';
                     });
                 });
-            </script>
-        }
+        </script>
+    }
 }

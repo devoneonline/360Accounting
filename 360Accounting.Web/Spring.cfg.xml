@@ -11,6 +11,7 @@
   <object name="CalendarRepository" type="_360Accounting.Data.Repositories.CalendarRepository, 360Accounting.Data"> </object>
   <object name="CodeCombinitionRepository" type="_360Accounting.Data.Repositories.CodeCombinitionRepository, 360Accounting.Data"> </object>
   <object name="CurrencyRepository" type="_360Accounting.Data.Repositories.CurrencyRepository, 360Accounting.Data"> </object>
+  <object name="JournalVoucherRepository" type="_360Accounting.Data.Repositories.JournalVoucherRepository, 360Accounting.Data"> </object>
 
 
   <object name="FeatureService" type="_360Accounting.Service.FeatureService, 360Accounting.Service" >
@@ -36,6 +37,9 @@
   </object>
   <object name="CurrencyService" type="_360Accounting.Service.CurrencyService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="CurrencyRepository" />
+  </object>
+  <object name="JournalVoucherService" type="_360Accounting.Service.JournalVoucherService, 360Accounting.Service" >
+    <constructor-arg name="repo" ref="JournalVoucherRepository" />
   </object>
 
 

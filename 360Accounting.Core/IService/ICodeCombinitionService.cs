@@ -10,6 +10,6 @@ namespace _360Accounting.Core
 {
     public interface ICodeCombinitionService : IService<CodeCombinition>
     {
-        IEnumerable<CodeCombinitionView> GetAll(long sobId, string searchText, bool paging, int? page, string sort, string sortDir);
+        IEnumerable<CodeCombinitionView> GetAll(long companyId, long sobId, string searchText, bool paging, int? page, string sort, string sortDir);
     }
 }

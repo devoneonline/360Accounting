@@ -17,7 +17,7 @@ namespace _360Accounting.Service
         {
             this.repository = repo;
         }
-
+        
         public IEnumerable<JournalVoucher> GetAll(long companyId, string searchText, bool paging, int? page, string sort, string sortDir)
         {
             return this.repository.GetAll(companyId, searchText, paging, page ?? 1, sort, sortDir);

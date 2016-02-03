@@ -64,6 +64,7 @@
     <Compile Include="Entities\FeatureSetAccess.cs" />
     <Compile Include="Entities\FeatureSetList.cs" />
     <Compile Include="Entities\JournalVoucher.cs" />
+    <Compile Include="Entities\JournalVoucherDetail.cs" />
     <Compile Include="Entities\SetOfBook.cs" />
     <Compile Include="Interfaces\ICore360.cs" />
     <Compile Include="IoC.cs" />

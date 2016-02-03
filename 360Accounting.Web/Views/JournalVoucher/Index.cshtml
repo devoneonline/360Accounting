@@ -41,7 +41,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#btnCreate').click(function () {
-            var url = '@Url.Content("~/JournalVoucher/Create?sobId=")' + $('#SOBId').val() + "&period=" + $('#PeriodId').val() + "&currencyId=" + $('#CurrencyId').val()
+            var url = '@Url.Content("~/JournalVoucher/Create?sobId=")' + $('#SOBId').val() + "&periodId=" + $('#PeriodId').val() + "&currencyId=" + $('#CurrencyId').val()
             window.location.href = url;
         });
 

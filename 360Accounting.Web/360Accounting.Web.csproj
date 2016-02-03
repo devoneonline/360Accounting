@@ -132,6 +132,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Common\AuthenticationHelper.cs" />
+    <Compile Include="Common\SessionHelper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AccountValueController.cs" />
     <Compile Include="Controllers\CalendarController.cs" />
@@ -269,7 +270,6 @@
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Account\_List.cshtml" />
     <Content Include="Views\AccountValue\Edit.cshtml" />
-    <Content Include="Views\AccountValue\_AccountValueList.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\Shared\_Menu.cshtml" />
     <Content Include="Views\Company\Create.cshtml" />
@@ -299,6 +299,8 @@
     <Content Include="Views\Calendar\ChangeStatus.cshtml" />
     <Content Include="Views\JournalVoucher\Index.cshtml" />
     <Content Include="Views\JournalVoucher\Create.cshtml" />
+    <Content Include="Views\JournalVoucher\Edit.cshtml" />
+    <Content Include="Views\JournalVoucher\_JournalVoucherDetailList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">
