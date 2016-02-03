@@ -35,20 +35,27 @@ namespace _360Accounting.Web.Models
 
         public long SOBId { get; set; }
 
+        [Display(Name="Period")]
         public string PeriodName { get; set; }
 
+        [Display(Name = "Year")]
         public int? PeriodYear { get; set; }
 
+        [Display(Name = "Quarter")]
         public int? PeriodQuarter { get; set; }
 
+        [Display(Name = "Sequence Number")]
         public int? SeqNumber { get; set; }
 
+        [Display(Name = "From")]
         public DateTime? StartDate { get; set; }
 
+        [Display(Name = "To")]
         public DateTime? EndDate { get; set; }
 
         public bool Adjusting { get; set; }
 
+        [Display(Name = "Status")]
         public string ClosingStatus { get; set; }
 
         public List<SelectListItem> ClosingStatusList

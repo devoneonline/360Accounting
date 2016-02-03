@@ -67,6 +67,7 @@
     <Compile Include="Repositories\FeatureSetAccessRepository.cs" />
     <Compile Include="Repositories\FeatureSetListRepository.cs" />
     <Compile Include="Repositories\FeatureSetRepository.cs" />
+    <Compile Include="Repositories\JournalVoucherRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />
     <Compile Include="Repositories\SetOfBookRepository.cs" />
   </ItemGroup>

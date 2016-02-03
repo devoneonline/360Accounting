@@ -18,6 +18,11 @@ namespace _360Accounting.Service
             this.repository = repo;
         }
 
+        public IEnumerable<Calendar> GetAll(long companyId, long sobId)
+        {
+            return this.repository.GetAll(companyId, sobId);
+        }
+
         public Calendar getCalendarByPeriod(long companyId, long sobId, DateTime? startDate, DateTime? endDate)
         {
             return this.repository.getCalendarByPeriod(companyId, sobId, startDate, endDate);

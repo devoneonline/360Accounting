@@ -27,7 +27,7 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                Calendar entity = service.GetSingle(model.Id.ToString());
+                Calendar entity = service.GetSingle(model.Id.ToString(), AuthenticationHelper.User.CompanyId);
                 entity.ClosingStatus = model.ClosingStatus;
                 string result = service.Update(entity);
                 return RedirectToAction("Index");
@@ -38,13 +38,13 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult ChangeStatus(string id)
         {
-            CalendarViewModel model = new CalendarViewModel(service.GetSingle(id));
+            CalendarViewModel model = new CalendarViewModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
             return View(model);
         }
 
         public ActionResult Delete(string id)
         {
-            service.Delete(id);
+            service.Delete(id, AuthenticationHelper.User.CompanyId);
             return RedirectToAction("Index");
         }
 
@@ -62,7 +62,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Edit(string id)
         {
-            CalendarViewModel model = new CalendarViewModel(service.GetSingle(id));
+            CalendarViewModel model = new CalendarViewModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
             return View(model);
         }
 

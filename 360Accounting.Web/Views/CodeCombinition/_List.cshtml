@@ -1,13 +1,5 @@
 ﻿@model _360Accounting.Web.Models.CodeCombinitionListModel
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.delete').click(function () {
-            return confirm("Sure! you wanted to delete ?");
-        });
-    });
-</script>
-
 @{
     if (Model.CodeCombinitions != null)
     {
@@ -68,6 +60,12 @@
 }
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        $('.delete').click(function () {
+            return confirm("Sure! you wanted to delete ?");
+        });
+    });
+
     function CallBack(context) {
         $("#dvCodeCombinitionList")[0].innerHTML = context;
     }

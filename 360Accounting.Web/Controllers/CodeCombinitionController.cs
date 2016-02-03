@@ -108,9 +108,9 @@ namespace _360Accounting.Web.Controllers
                 model.Id = 1;
             }
 
-            model.Segment1 = "00001";     ////To be decided
-            ////model.Segment2 = "value2";     ////To be decided
-            ////model.Segment3 = "value3";     ////To be decided
+            model.Segment1 = "00003";     ////To be decided
+            model.Segment2 = "0002";     ////To be decided
+            model.Segment3 = "0001";     ////To be decided
             ////model.Segment4 = "";     ////To be decided
             ////model.Segment5 = "";     ////To be decided
             ////model.Segment6 = "";     ////To be decided

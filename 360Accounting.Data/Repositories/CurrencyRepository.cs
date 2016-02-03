@@ -27,37 +27,12 @@ namespace _360Accounting.Data.Repositories
             currencyList = sortDir.ToUpper() == "ASC" ? currencyList.OrderBy(x => x.SOBId) : currencyList.OrderByDescending(x => x.SOBId);
             if (!paging)
             {
-                return currencyList.Select(x => new Currency
-                {
-                    Id = x.Id,
-                    CompanyId = x.CompanyId,
-                    CreateBy = x.CreateBy,
-                    CreateDate = x.CreateDate,
-                    CurrencyCode = x.CurrencyCode,
-                    Name = x.Name,
-                    Precision = x.Precision,
-                    SOBId = x.SOBId,
-                    UpdateBy = x.UpdateBy,
-                    UpdateDate = x.UpdateDate
-                }).ToList();
+                return currencyList;
             }
             else
             {
                 var recordCount = currencyList.Count();
-                return currencyList.Select(x => new Currency
-                    {
-                        Id = x.Id,
-                        CompanyId = x.CompanyId,
-                        CreateBy = x.CreateBy,
-                        CreateDate = x.CreateDate,
-                        CurrencyCode = x.CurrencyCode,
-                        Name = x.Name,
-                        Precision = x.Precision,
-                        SOBId = x.SOBId,
-                        UpdateBy = x.UpdateBy,
-                        UpdateDate = x.UpdateDate
-                    }).Skip((page - 1) * 20)
-                    .Take(20);
+                return currencyList.Skip((page - 1) * 20).Take(20);
             }
         }
 

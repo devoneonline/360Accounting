@@ -67,6 +67,7 @@ namespace _360Accounting.Web.Controllers
         {
             AccountValueViewModel model = new 
                 AccountValueViewModel(service.GetSingle(id.ToString(),AuthenticationHelper.User.CompanyId));
+            model.SetOfBook = sobService.GetSingle(accountService.GetSingle(model.ChartId.ToString(), AuthenticationHelper.User.CompanyId).SOBId.ToString(), AuthenticationHelper.User.CompanyId).Name;
             return View(model);
         }
 
@@ -82,17 +83,8 @@ namespace _360Accounting.Web.Controllers
                 }
                 else
                 {
-                    ////AccountValue duplicateRecord = service.GetAccountValueBySegment(model.Segment, model.ChartId);
-                    ////if (duplicateRecord == null)
-                    ////{
-                        string result = service.Insert(mapModel(model));
-                        return RedirectToAction("Index");
-                    ////}
-                    ////else
-                    ////{
-                    ////    ModelState.AddModelError("Error", "Account Value Already exists.");
-                    ////}
-                        
+                    string result = service.Insert(mapModel(model));
+                    return RedirectToAction("Index");
                 }
             }
 
@@ -101,7 +93,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            service.Delete(id,AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.User.CompanyId);
             return RedirectToAction("Index");
         }
 

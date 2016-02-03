@@ -1,0 +1,52 @@
+﻿@model _360Accounting.Web.Models.JournalVoucherCreateModel
+
+@{
+    ViewBag.Title = "Create Journal Voucher";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header">
+            @ViewBag.Title
+        </h3>
+    </div>
+</div>
+
+@using (Html.BeginForm("Create", "Calendar",
+FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.ValidationSummary()
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.SOBId)
+    @Html.HiddenFor(m => m.PeriodId)
+    @Html.HiddenFor(m => m.CurrencyId)
+
+    <div class="col-lg-12">
+        <div class="col-md-4">
+            @Html.LabelFor(m => m.SOBName)
+            @Html.TextBoxFor(m => m.SOBName, new { @class = "form-control" })
+        </div>
+
+        <div class="col-md-4">
+            @Html.LabelFor(m => m.PeriodName)
+            @Html.TextBoxFor(m => m.PeriodName, new { @class = "form-control" })
+        </div>
+
+        <div class="col-md-4">
+            @Html.LabelFor(m => m.CurrencyName)
+            @Html.TextBoxFor(m => m.CurrencyName, new { @class = "form-control" })
+        </div>
+    </div>
+
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('#btnCancel').click(function () {
+                        window.location.href = '@Url.Content("~/JournalVoucher/Index")';
+                    });
+                });
+            </script>
+        }
+        }
