@@ -11,69 +11,60 @@
         </h3>
     </div>
 </div>
-
-<div class="col-lg-12">
-    <div class="col-md-4">
-        @Html.LabelFor(m => m.SetOfBooks)
-        @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control" })
-    </div>
-
-    <div class="col-md-4">
-        @Html.LabelFor(m => m.Periods)
-        @Html.DropDownListFor(m => m.PeriodId, Model.Periods, new { @class = "form-control" })
-    </div>
-
-    <div class="col-md-4">
-        @Html.LabelFor(m => m.Currencies)
-        @Html.DropDownListFor(m => m.CurrencyId, Model.Currencies, new { @class = "form-control" })
-    </div>
-
-    <div class="form-group">
-        <input type="button" id="btnCreate" value="Create New" class="btn btn-default" />
-        <input type="button" id="btnShow" value="Show" class="btn btn-default" />
-    </div>
+<div class="col-lg-4">
+    @Html.LabelFor(m => m.SetOfBooks)
+    @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control" })
 </div>
 
-@*<div id="dvList" class="col-lg-12">
-    @Html.Partial("_List", Model)
-</div>*@
+<div class="col-lg-4">
+    @Html.LabelFor(m => m.Periods)
+    @Html.DropDownListFor(m => m.PeriodId, Model.Periods, new { @class = "form-control" })
+</div>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#btnCreate').click(function () {
-            var url = '@Url.Content("~/JournalVoucher/Create?sobId=")' + $('#SOBId').val() + "&periodId=" + $('#PeriodId').val() + "&currencyId=" + $('#CurrencyId').val()
-            window.location.href = url;
-        });
+<div class="col-lg-4">
+    @Html.LabelFor(m => m.Currencies)
+    @Html.DropDownListFor(m => m.CurrencyId, Model.Currencies, new { @class = "form-control" })
+</div>
+<div class="col-lg-6">
+    <input type="button" id="btnCreate" value="Create New" class="btn btn-default" />
+    <input type="button" id="btnShow" value="Show" class="btn btn-default" />
+</div>
+    @*<div id="dvList" class="col-lg-12">
+            @Html.Partial("_List", Model)
+        </div>*@
 
-        $('#SOBId').change(
-            function () {
-                var url1 = '@Url.Content("~/JournalVoucher/PeriodList")';
-                var url2 = '@Url.Content("~/JournalVoucher/CurrencyList")';
-
-                $.get(url1, { sobId: $(this).val() },
-                    function (data)
-                    {
-                        var periodDropdown = $('#PeriodId');
-                        periodDropdown.empty();
-                        for (var i = 0; i < data.length; i++)
-                        {
-                            periodDropdown.append('<option value?+data[i].Value+?="">' + data[i].Text + '</option>');
-                        }
-                    });
-
-                $.get(url2, { sobId: $(this).val() },
-                    function (data)
-                    {
-                        var currencyDropdown = $('#CurrencyId');
-                        currencyDropdown.empty();
-                        for (var i = 0; i < data.length; i++)
-                        {
-                            currencyDropdown.append('<option value?+data[i].Value+?="">' + data[i].Text + '</option>');
-                        }
-                    });
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnCreate').click(function () {
+                var url = '@Url.Content("~/JournalVoucher/Create?sobId=")' + $('#SOBId').val() + "&periodId=" + $('#PeriodId').val() + "&currencyId=" + $('#CurrencyId').val()
+                window.location.href = url;
             });
 
-        @*$('.form-control').change(function () {
+            $('#SOBId').change(
+                function () {
+                    var url1 = '@Url.Content("~/JournalVoucher/PeriodList")';
+                    var url2 = '@Url.Content("~/JournalVoucher/CurrencyList")';
+
+                    $.get(url1, { sobId: $(this).val() },
+                        function (data) {
+                            var periodDropdown = $('#PeriodId');
+                            periodDropdown.empty();
+                            for (var i = 0; i < data.length; i++) {
+                                periodDropdown.append('<option value?+data[i].Value+?="">' + data[i].Text + '</option>');
+                            }
+                        });
+
+                    $.get(url2, { sobId: $(this).val() },
+                        function (data) {
+                            var currencyDropdown = $('#CurrencyId');
+                            currencyDropdown.empty();
+                            for (var i = 0; i < data.length; i++) {
+                                currencyDropdown.append('<option value?+data[i].Value+?="">' + data[i].Text + '</option>');
+                            }
+                        });
+                });
+
+            @*$('.form-control').change(function () {
             $.ajax({
                 url: '@Url.Content("~/JournalVoucher/GetJournalVoucherList")',
                 data: {
@@ -89,5 +80,5 @@
                 }
             });
         });*@
-    });
-</script>
+        });
+    </script>
