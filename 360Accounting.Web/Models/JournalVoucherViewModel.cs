@@ -23,7 +23,7 @@ namespace _360Accounting.Web.Models
             this.GLDate = entity.GLDate;
             this.Id = entity.Id;
             this.JournalName = entity.JournalName;
-            this.JournalVoucherDetail = entity.JournalVoucherDetail.Select(x => new JournalVoucherDetailModel(x)).ToList();
+            //this.JournalVoucherDetail = entity.JournalVoucherDetail.Select(x => new JournalVoucherDetailModel(x)).ToList();
             this.PeriodId = entity.PeriodId;
             this.SOBId = entity.SOBId;
         }

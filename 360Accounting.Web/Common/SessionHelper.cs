@@ -20,5 +20,18 @@ namespace _360Accounting.Web.Mvc
                 HttpContext.Current.Session["JournalVoucher"] = value;
             }
         }
+
+        public static CalendarViewModel Calendar
+        {
+            get
+            {
+                return HttpContext.Current.Session["Calendar"] == null ? new CalendarViewModel()
+                    : (CalendarViewModel)HttpContext.Current.Session["Calendar"];
+            }
+            set
+            {
+                HttpContext.Current.Session["Calendar"] = value;
+            }
+        }
     }
 }

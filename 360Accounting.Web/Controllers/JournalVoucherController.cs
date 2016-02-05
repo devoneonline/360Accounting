@@ -40,34 +40,61 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_List", model);
         }
 
-        public ActionResult Edit(long id)
+        [HttpPost]
+        public ActionResult Edit(JournalVoucherCreateModel model, string submit)
         {
-            JournalVoucherViewModel model = 
-                new JournalVoucherViewModel(service.GetSingle(id.ToString(), 
-                    AuthenticationHelper.User.CompanyId));
-            if (model == null)
+            if (ModelState.IsValid)
             {
-                return RedirectToAction("Index");
+                if (model.GLDate < SessionHelper.Calendar.StartDate || model.GLDate > SessionHelper.Calendar.EndDate)
+                {
+                    ModelState.AddModelError("Error", "Invalid Effective date");
+                }
+                else
+                {
+                    SessionHelper.JournalVoucher = mapModel(model, SessionHelper.JournalVoucher);
+
+                    if (submit == "Save")
+                    {
+                        long result = saveJournalVoucher(SessionHelper.JournalVoucher);
+                        if (result > 0)
+                        {
+                            return RedirectToAction("Index");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("Error", "Unable to save!");
+                        }
+                    }
+                    else
+                    {
+                        ////model.HeaderId = ?????,
+                        ////model.Id = ????,
+                        ////model.CodeCombinationId = ????;
+                        model.GLLinesDescription = "";
+                        model.EnteredDr = 0;
+                        model.AccountedDr = 0;
+                        model.EnteredCr = 0;
+                        model.AccountedCr = 0;
+                        model.Qty = 0;
+                        model.TaxRateCode = 0;
+
+                        return RedirectToAction("Edit", model);
+                        //return View("Edit", model);
+                    }
+                }
             }
+            return View(model);
+        }
 
-            SessionHelper.JournalVoucher = model;
-
-            return View(new JournalVoucherCreateModel
-            {
-                ConversionRate = model.ConversionRate,
-                CurrencyId = model.CurrencyId,
-                CurrencyName = currencyService.GetSingle(model.CurrencyId.ToString(), AuthenticationHelper.User.CompanyId).Name,
-                Description = model.Description,
-                DocumentNo = model.DocumentNo,
-                GLDate = model.GLDate,
-                HeaderId = model.Id,
-                JournalName = model.JournalName,
-                PeriodId = model.PeriodId,
-                PeriodName = calendarService.GetSingle(model.PeriodId.ToString(), AuthenticationHelper.User.CompanyId).PeriodName,
-                SOBId = model.SOBId,
-                SOBName = sobService.GetSingle(model.SOBId.ToString(), AuthenticationHelper.User.CompanyId).Name
-            });
-                
+        public ActionResult Edit(JournalVoucherCreateModel model)
+        {
+            model.CodeCombinationList = codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, model.SOBId, "", false, null, "", "")
+                    .Select(x => new SelectListItem
+                    {
+                        Text = x.CodeCombinitionCode,
+                        Value = x.Id.ToString()
+                    }).ToList();
+            return View(model);
         }
 
         [HttpPost]
@@ -75,10 +102,26 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                long result = saveJournalVoucher(model);
-                if (result > 0)
+                if (model.GLDate < SessionHelper.Calendar.StartDate || model.GLDate > SessionHelper.Calendar.EndDate)
                 {
-                    return RedirectToAction("Edit", new { id = result });
+                    ModelState.AddModelError("Error", "Invalid Effective date");
+                }
+                else
+                {
+                    SessionHelper.JournalVoucher = mapModel(model, SessionHelper.JournalVoucher);
+
+                    ////model.HeaderId = ?????,
+                    ////model.Id = ????,
+                    ////model.CodeCombinationId = ????;
+                    model.GLLinesDescription = "";
+                    model.EnteredDr = 0;
+                    model.AccountedDr = 0;
+                    model.EnteredCr = 0;
+                    model.AccountedCr = 0;
+                    model.Qty = 0;
+                    model.TaxRateCode = 0;
+
+                    return RedirectToAction("Edit", model);
                 }
             }
             return View(model);
@@ -86,20 +129,33 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Create(long sobId, long periodId, long currencyId)
         {
-            JournalVoucherCreateModel model = new JournalVoucherCreateModel();
-            model.SOBId = sobId;
-            model.PeriodId = periodId;
-            model.CurrencyId = currencyId;
-            model.SOBName = sobService.GetSingle(sobId.ToString(), AuthenticationHelper.User.CompanyId).Name;
-            model.PeriodName = calendarService.GetSingle(periodId.ToString(), AuthenticationHelper.User.CompanyId).PeriodName;
-            model.CurrencyName = currencyService.GetSingle(currencyId.ToString(), AuthenticationHelper.User.CompanyId).Name;
-            model.CodeCombinationList = codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, model.SOBId, "", false, null, "", "")
-                .Select(x => new SelectListItem 
-                {
-                    Text = x.CodeCombinitionCode,
-                    Value = x.Id.ToString()
-                }).ToList();
-            return View(model);
+            if (sobId > 0 && periodId > 0 && currencyId > 0)
+            {
+                JournalVoucherCreateModel model = new JournalVoucherCreateModel();
+                model.SOBId = sobId;
+                model.PeriodId = periodId;
+                model.CurrencyId = currencyId;
+                model.SOBName = sobService.GetSingle(sobId.ToString(), AuthenticationHelper.User.CompanyId).Name;
+
+                SessionHelper.Calendar = new CalendarViewModel(calendarService.GetSingle(periodId.ToString(), AuthenticationHelper.User.CompanyId));
+                model.GLDate = SessionHelper.Calendar.StartDate.Value;
+                model.ConversionRate = 1;
+
+                model.PeriodName = SessionHelper.Calendar.PeriodName;
+                model.CurrencyName = currencyService.GetSingle(currencyId.ToString(), AuthenticationHelper.User.CompanyId).Name;
+                model.CodeCombinationList = codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, model.SOBId, "", false, null, "", "")
+                    .Select(x => new SelectListItem
+                    {
+                        Text = x.CodeCombinitionCode,
+                        Value = x.Id.ToString()
+                    }).ToList();
+
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         public JsonResult CurrencyList(string sobId)
@@ -118,27 +174,62 @@ namespace _360Accounting.Web.Controllers
             {
                 model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
                     .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
+                model.SOBId = model.SetOfBooks.Any() ? Convert.ToInt32(model.SetOfBooks.First().Value) : 0;
             }
 
             if (model.Periods == null && model.SetOfBooks.Any())
             {
                 model.Periods = getPeriodList(model.SetOfBooks.First().Value);
+                model.PeriodId = model.Periods.Any() ? Convert.ToInt32(model.Periods.First().Value) : 0;
             }
 
             if (model.Currencies == null && model.SetOfBooks.Any())
             {
                 model.Currencies = getCurrencyList(model.SetOfBooks.First().Value);
+                model.CurrencyId = model.Currencies.Any() ? Convert.ToInt32(model.Currencies.First().Value) : 0;
             }
 
-            //model.JournalVouchers = getJournalVouchers(model);
+            model.JournalVouchers = getJournalVouchers(model);
             
             return View(model);
         }
 
         #region Private Methods
-        private long saveJournalVoucher(JournalVoucherCreateModel model)
+        private JournalVoucherViewModel mapModel(JournalVoucherCreateModel model, JournalVoucherViewModel jv)
         {
-            //make model
+            jv.CompanyId = AuthenticationHelper.User.CompanyId;
+            jv.ConversionRate = model.ConversionRate;
+            jv.CurrencyId = model.CurrencyId;
+            jv.Description = model.Description;
+            jv.DocumentNo = model.DocumentNo;
+            jv.GLDate = model.GLDate;
+            jv.Id = model.HeaderId;
+            jv.JournalName = model.JournalName;
+            if (jv.JournalVoucherDetail == null)
+            {
+                jv.JournalVoucherDetail = new List<JournalVoucherDetailModel>();
+            }
+            jv.JournalVoucherDetail.Add(new JournalVoucherDetailModel
+                {
+                    AccountedCr = model.AccountedCr,
+                    AccountedDr = model.AccountedDr,
+                    CodeCombinationId = model.CodeCombinationId,
+                    Description = model.GLLinesDescription,
+                    EnteredCr = model.EnteredCr,
+                    EnteredDr = model.EnteredDr,
+                    HeaderId = model.HeaderId,
+                    Id = model.Id,
+                    Qty = model.Qty,
+                    TaxRateCode = model.TaxRateCode
+                });
+
+            jv.PeriodId = model.PeriodId;
+            jv.SOBId = model.SOBId;
+            return jv;
+        }
+
+        private long saveJournalVoucher(JournalVoucherViewModel model)
+        {
             JournalVoucher entity = new JournalVoucher();
             entity.CompanyId = AuthenticationHelper.User.CompanyId;
             entity.ConversionRate = model.ConversionRate;
@@ -147,29 +238,13 @@ namespace _360Accounting.Web.Controllers
             entity.Description = model.Description;
             entity.DocumentNo = model.DocumentNo;
             entity.GLDate = model.GLDate;
-            entity.Id = model.HeaderId;
+            entity.Id = model.Id;
             entity.JournalName = model.JournalName;
             entity.PeriodId = model.PeriodId;
-            entity.PostingFlag = codeCombinitionService.GetSingle(model.CodeCombinationId.ToString(), AuthenticationHelper.User.CompanyId).AllowedPosting;
+            //entity.PostingFlag = codeCombinitionService.GetSingle(model.CodeCombinationId.ToString(), AuthenticationHelper.User.CompanyId).AllowedPosting;
+            entity.PostingFlag = true;
             entity.SOBId = model.SOBId;
             entity.UpdateDate = DateTime.Now;
-
-            entity.JournalVoucherDetail = new List<JournalVoucherDetail>()
-                .Select(x => new JournalVoucherDetail 
-                { 
-                    AccountedCr = model.AccountedCr,
-                    AccountedDr = model.AccountedDr,
-                    CodeCombinationId = model.CodeCombinationId,
-                    CreateDate = DateTime.Now,
-                    Description = model.GLLinesDescription,
-                    EnteredCr = model.EnteredCr,
-                    EnteredDr = model.EnteredDr,
-                    HeaderId = model.HeaderId,
-                    Id = model.Id,
-                    Qty = model.Qty,
-                    TaxRateCode = model.TaxRateCode,
-                    UpdateDate = DateTime.Now
-                }).ToList();
 
             if (entity.Id == 0)
             {
@@ -180,6 +255,37 @@ namespace _360Accounting.Web.Controllers
                 entity.Id = Convert.ToInt32(service.Update(entity));
             }
 
+            if (model.JournalVoucherDetail.Any())
+            {
+                foreach (var detail in model.JournalVoucherDetail)
+                {
+                    detail.HeaderId = entity.Id;
+
+                    JournalVoucherDetail entityDetail = new JournalVoucherDetail();
+                    entityDetail.AccountedCr = detail.AccountedCr;
+                    entityDetail.AccountedDr = detail.AccountedDr;
+                    entityDetail.CodeCombinationId = detail.CodeCombinationId;
+                    entityDetail.CreateDate = DateTime.Now;
+                    entityDetail.Description = detail.Description;
+                    entityDetail.EnteredCr = detail.EnteredCr;
+                    entityDetail.EnteredDr = detail.EnteredDr;
+                    entityDetail.HeaderId = detail.HeaderId;
+                    entityDetail.Id = detail.Id;
+                    entityDetail.Qty = detail.Qty;
+                    entityDetail.TaxRateCode = detail.TaxRateCode;
+                    entityDetail.UpdateDate = DateTime.Now;
+
+                    if (entityDetail.Id == 0)
+                    {
+                        entityDetail.Id = Convert.ToInt32(service.Insert(entityDetail));
+                    }
+                    else
+                    {
+                        entityDetail.Id = Convert.ToInt32(service.Update(entityDetail));
+                    }
+                }
+            }
+
             return entity.Id;
         }
 
@@ -187,8 +293,7 @@ namespace _360Accounting.Web.Controllers
         {
             List<JournalVoucherViewModel> list = service.GetAll(AuthenticationHelper.User.CompanyId, model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
                 .Select(x => new JournalVoucherViewModel(x)).ToList();
-            return list;
-                
+            return list;       
         }
 
         private List<SelectListItem> getPeriodList(string sobId)

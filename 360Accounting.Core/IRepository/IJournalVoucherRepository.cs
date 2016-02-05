@@ -10,5 +10,11 @@ namespace _360Accounting.Core.Interfaces
     public interface IJournalVoucherRepository : IRepository<JournalVoucher>
     {
         IEnumerable<JournalVoucher> GetAll(long companyId, string searchText, bool paging, int page, string sort, string sortDir);
+
+        IEnumerable<JournalVoucherDetail> GetAll(string headerId);
+
+        string Insert(JournalVoucherDetail entity);
+
+        string Update(JournalVoucherDetail entity);
     }
 }

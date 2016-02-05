@@ -11,6 +11,15 @@ namespace _360Accounting.Data.Repositories
 {
     public class CalendarRepository : Repository, ICalendarRepository
     {
+        public Calendar getLastCalendarByYear(long comapnyId, long sobId, int periodYear)
+        {
+            Calendar calendar = this.Context.Calendars
+                .OrderBy(x => x.PeriodYear).ThenByDescending(x => x.SeqNumber)
+                .FirstOrDefault(x => x.CompanyId == comapnyId &&
+                x.SOBId == sobId && x.PeriodYear == periodYear);
+            return calendar;
+        }
+
         public IEnumerable<Calendar> GetAll(long companyId, long sobId)
         {
             IEnumerable<Calendar> calendarList = this.Context.Calendars
@@ -109,7 +118,7 @@ namespace _360Accounting.Data.Repositories
 
         public void Delete(string id, long companyId)
         {
-            this.Context.Calendars.Remove(this.GetSingle(id,companyId));
+            this.Context.Calendars.Remove(this.GetSingle(id, companyId));
             this.Commit();
         }
 

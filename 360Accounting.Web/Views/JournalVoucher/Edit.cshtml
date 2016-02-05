@@ -12,7 +12,7 @@
     </div>
 </div>
 
-@using (Html.BeginForm("Create", "JournalVoucher",
+@using (Html.BeginForm("Edit", "JournalVoucher",
 FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.ValidationSummary()
@@ -22,110 +22,122 @@ FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     @Html.HiddenFor(m => m.PeriodId)
     @Html.HiddenFor(m => m.CurrencyId)
 
-    <div class="col-lg-12">
-        <div class="col-md-6">
+    <div class="col-lg-3">
+        <div class="form-group">
             @Html.LabelFor(m => m.JournalName)
             @Html.TextBoxFor(m => m.JournalName, new { @class = "form-control" })
         </div>
+    </div>
+    <div class="col-lg-3">
+        @Html.LabelFor(m => m.SOBName)
+        @Html.TextBoxFor(m => m.SOBName, new { @readonly = "readonly", @class = "form-control" })
+    </div>
 
-        <div class="col-md-6">
+    <div class="col-lg-3">
+        @Html.LabelFor(m => m.PeriodName)
+        @Html.TextBoxFor(m => m.PeriodName, new { @readonly = "readonly", @class = "form-control" })
+    </div>
+    <div class="col-lg-3">
+        @Html.LabelFor(m => m.CurrencyName)
+        @Html.TextBoxFor(m => m.CurrencyName, new { @readonly = "readonly", @class = "form-control" })
+    </div>
+    <div class="col-lg-3">
+        @Html.LabelFor(m => m.DocumentNo)
+        @Html.TextBoxFor(m => m.DocumentNo, new { @class = "form-control" })
+    </div>
+
+    <div class="col-lg-3">
+        @Html.LabelFor(m => m.GLDate)
+        @Html.TextBoxFor(m => m.GLDate, new { @class = "form-control" })
+    </div>
+
+    <div class="col-lg-3">
+        @Html.LabelFor(m => m.ConversionRate)
+        @Html.TextBoxFor(m => m.ConversionRate, new { @class = "form-control" })
+    </div>
+
+    <div class="col-lg-11">
+        <div class="form-group">
             @Html.LabelFor(m => m.Description)
-            @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
         </div>
+    </div>
 
-        <div class="col-md-4">
-            @Html.LabelFor(m => m.SOBName)
-            @Html.TextBoxFor(m => m.SOBName, new { @readonly = "readonly", @class = "form-control" })
-        </div>
-
-        <div class="col-md-4">
-            @Html.LabelFor(m => m.PeriodName)
-            @Html.TextBoxFor(m => m.PeriodName, new { @readonly = "readonly", @class = "form-control" })
-        </div>
-
-        <div class="col-md-4">
-            @Html.LabelFor(m => m.CurrencyName)
-            @Html.TextBoxFor(m => m.CurrencyName, new { @readonly = "readonly", @class = "form-control" })
-        </div>
-
-        <div class="col-md-4">
-            @Html.LabelFor(m => m.DocumentNo)
-            @Html.TextBoxFor(m => m.DocumentNo, new { @class = "form-control" })
-        </div>
-
-        <div class="col-md-4">
-            @Html.LabelFor(m => m.GLDate)
-            @Html.TextBoxFor(m => m.GLDate, new { @class = "form-control" })
-        </div>
-
-        <div class="col-md-4">
-            @Html.LabelFor(m => m.ConversionRate)
-            @Html.TextBoxFor(m => m.ConversionRate, new { @class = "form-control" })
-        </div>
-
-        <div class="col-md-4">
+    <div class="col-lg-12">
+        <div class="col-md-3">
             @Html.LabelFor(m => m.CodeCombinationId)
             @Html.DropDownListFor(m => m.CodeCombinationId, Model.CodeCombinationList, new { @class = "form-control" })
         </div>
-
-        <div class="col-md-4">
-            @Html.LabelFor(m => m.EnteredDr)
-            @Html.TextBoxFor(m => m.EnteredDr, new { @class = "form-control" })
-        </div>
-
-        <div class="col-md-4">
-            @Html.LabelFor(m => m.EnteredCr)
-            @Html.TextBoxFor(m => m.EnteredCr, new { @class = "form-control" })
-        </div>
-
-        <div class="col-md-4">
-            @Html.LabelFor(m => m.Qty)
-            @Html.TextBoxFor(m => m.Qty, new { @class = "form-control" })
-        </div>
-
-        <div class="col-md-4">
+        <div class="col-md-6">
             @Html.LabelFor(m => m.GLLinesDescription)
             @Html.TextBoxFor(m => m.GLLinesDescription, new { @class = "form-control" })
         </div>
-
-        <div class="col-md-4">
-            @Html.LabelFor(m => m.TaxRateCode)
-            @Html.TextBoxFor(m => m.TaxRateCode, new { @class = "form-control" })
+    </div>
+    <div class="col-lg-12">
+        <div class="col-lg-3">
+            @Html.LabelFor(m => m.EnteredDr)
+            @Html.TextBoxFor(m => m.EnteredDr, new { @class = "form-control" })
         </div>
-
-        <div class="col-md-4">
+        <div class="col-lg-3">
             @Html.LabelFor(m => m.AccountedDr)
             @Html.TextBoxFor(m => m.AccountedDr, new { @class = "form-control" })
         </div>
-
-        <div class="col-md-4">
+    </div>
+    <div class="col-lg-12">
+        <div class="col-lg-3">
+            @Html.LabelFor(m => m.EnteredCr)
+            @Html.TextBoxFor(m => m.EnteredCr, new { @class = "form-control" })
+        </div>
+        <div class="col-lg-3">
             @Html.LabelFor(m => m.AccountedCr)
             @Html.TextBoxFor(m => m.AccountedCr, new { @class = "form-control" })
         </div>
     </div>
     <div class="col-lg-12">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />
-            <input type="button" value="Cancel" class="btn btn-default" id="btnCancel" />
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.Qty)
+            @Html.TextBoxFor(m => m.Qty, new { @class = "form-control" })
+        </div>
+        <div class="col-lg-3">
+            @Html.LabelFor(m => m.TaxRateCode)
+            @Html.TextBoxFor(m => m.TaxRateCode, new { @class = "form-control" })
         </div>
     </div>
 
     <div class="col-lg-12">
-        @if (_360Accounting.Web.Mvc.SessionHelper.JournalVoucher != null)
-        {
-            @Html.Partial("_JournalVoucherDetailList", _360Accounting.Web.Mvc.SessionHelper.JournalVoucher)
-        }
+        <div class="col-lg-6">
+            <br />
+            <input type="submit" value="Add" class="btn btn-default" name="submit" />
+            <input type="submit" value="Save" class="btn btn-default" name="submit" />
+            <input type="button" value="Cancel" class="btn btn-default" id="btnCancel" />
+        </div>
+        <div class="col-lg-12">
+            <br />
+            @if (_360Accounting.Web.Mvc.SessionHelper.JournalVoucher.JournalVoucherDetail != null)
+            {
+                @Html.Partial("_JournalVoucherDetailList", _360Accounting.Web.Mvc.SessionHelper.JournalVoucher.JournalVoucherDetail)
+            }
+        </div>
     </div>
 
     @section Scripts {
         @Scripts.Render("~/bundles/jqueryval")
 
         <script type="text/javascript">
-                $(document).ready(function () {
-                    $('#btnCancel').click(function () {
-                        window.location.href = '@Url.Content("~/JournalVoucher/Index")';
-                    });
+            $(document).ready(function () {
+                $('#btnCancel').click(function () {
+                    window.location.href = '@Url.Content("~/JournalVoucher/Index")';
                 });
+
+                @*$('btnAdd').click(function () {
+                    $.ajax({
+                        url: '@Url.Content("~/Client/GetClientBasicInfo")',
+                        data: {
+
+                        },
+                    });
+                });*@
+            });
         </script>
     }
 }

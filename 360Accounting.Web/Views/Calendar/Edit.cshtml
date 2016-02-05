@@ -37,7 +37,7 @@ FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 
         <div class="col-md-4">
             @Html.LabelFor(m => m.SeqNumber)
-            @Html.TextBoxFor(m => m.SeqNumber, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.SeqNumber, new { @readonly = "readonly", @class = "form-control" })
         </div>
 
         <div class="col-md-4">

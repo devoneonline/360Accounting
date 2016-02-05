@@ -17,6 +17,21 @@ namespace _360Accounting.Service
         {
             this.repository = repo;
         }
+
+        public IEnumerable<JournalVoucherDetail> GetAll(string headerId)
+        {
+            return this.repository.GetAll(headerId);
+        }
+
+        public string Insert(JournalVoucherDetail entity)
+        {
+            return this.repository.Insert(entity);
+        }
+
+        public string Update(JournalVoucherDetail entity)
+        {
+            return this.repository.Update(entity);
+        }
         
         public IEnumerable<JournalVoucher> GetAll(long companyId, string searchText, bool paging, int? page, string sort, string sortDir)
         {

@@ -38,7 +38,7 @@ namespace _360Accounting.Data.Repositories
 
         public void Delete(string id, long companyId)
         {
-            this.Context.Features.Remove(this.GetSingle(id,companyId));
+            this.Context.Features.Remove(this.GetSingle(id, companyId));
             this.Commit();
         }
 
@@ -59,10 +59,9 @@ namespace _360Accounting.Data.Repositories
                                                 join c in this.Context.FeatureSetLists on b.Id equals c.FeatureSetId
                                                 join d in this.Context.Features on c.FeatureId equals d.Id
                                                 where a.UserId == userId
-                                                select d).Include(x=> x.Features);
-            return featureList.Where(x=> x.ParentId == null);
+                                                select d).Include(x => x.Features);
+            return featureList.Where(x => x.ParentId == null);
         }
-
 
         public IEnumerable<Feature> GetSuperAdminMenu()
         {

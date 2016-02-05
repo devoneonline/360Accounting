@@ -38,7 +38,7 @@ namespace _360Accounting.Data.Repositories
 
         public void Delete(string id, long companyId)
         {
-            this.Context.FeatureSets.Remove(this.GetSingle(id,companyId));
+            this.Context.FeatureSets.Remove(this.GetSingle(id, companyId));
             this.Commit();
         }
 

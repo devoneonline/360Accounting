@@ -301,6 +301,7 @@
     <Content Include="Views\JournalVoucher\Create.cshtml" />
     <Content Include="Views\JournalVoucher\Edit.cshtml" />
     <Content Include="Views\JournalVoucher\_JournalVoucherDetailList.cshtml" />
+    <Content Include="Views\JournalVoucher\_List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">
