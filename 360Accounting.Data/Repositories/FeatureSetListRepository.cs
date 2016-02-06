@@ -59,5 +59,14 @@ namespace _360Accounting.Data.Repositories
             IEnumerable<FeatureSetList> list = this.Context.FeatureSetLists.Where(x => x.FeatureSetId == featureSetId);
             return list;
         }
+
+        public void Insert(List<FeatureSetList> entityList)
+        {
+            foreach(FeatureSetList entity in entityList)
+            {
+                this.Context.FeatureSetLists.Add(entity);
+            }
+            this.Commit();
+        }
     }
 }

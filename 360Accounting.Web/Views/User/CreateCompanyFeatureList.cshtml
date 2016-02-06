@@ -1,0 +1,131 @@
+﻿@model _360Accounting.Web.Models.CreateCompanyFeatureListModel
+@{
+    ViewBag.Title = "Create Company Feature List";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header">
+            @ViewBag.Title
+        </h3>
+    </div>
+</div>
+
+    <div class="col-lg-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.CompanyId)
+            @Html.DropDownListFor(model => model.CompanyId, Model.CompanyList, "--select--", new { @class = "form-control" })
+            <span class="field-validation-error" id="CompanyValidation"></span>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name)
+            @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+            <span class="field-validation-error" id="NameValidation"></span>
+            @Html.HiddenFor(model=> model.Id)
+        </div>
+        <div class="form-group">
+            <input type="button" class="btn btn-default" value="Save" id="btnSave" />
+            <input type="button" value="Cancel" class="btn btn-default" onclick="javascript: window.location.href='@Url.Content("~/User/FeatureSet")'" />                
+        </div>
+    </div>
+    <div class="col-lg-6">
+
+        @ShowTree(Model.FeatureList)
+
+        @helper ShowTree(IEnumerable<_360Accounting.Web.Models.FeatureViewModel> items)
+        {
+            <ul>
+                @foreach (var item in items)
+                {
+                    <li>
+                        <input type="checkbox" class="cbox" data-text="d" data-id="@item.Id" data-parent-id="@item.ParentId" />
+                        @item.Name
+                        @if (item.Features != null)
+                        {
+                            @ShowTree(item.Features)
+                        }
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.cbox').click(function () {
+                var contId = $(this).attr('data-id');
+                var parentId = $(this).attr('data-parent-id');
+
+                if ($('[data-id=' + contId + ']').prop('checked') == true)
+                {
+                    $('[data-parent-id=' + contId + ']').prop('checked', true);
+                    if (parentId != '') {
+                        if ($('[data-id=' + parentId + ']').prop('checked') == false) {
+                            $('[data-id=' + parentId + ']').prop('checked', true);
+                        }
+                    }
+                }
+                else
+                {
+                    $('[data-parent-id=' + contId + ']').prop('checked', false);
+                    if ($('[data-id=' + parentId + ']').prop('checked') == true) {
+                        var siblings = $('[data-parent-id=' + parentId + ']:checked');
+                        if (siblings.length == 0)
+                        {
+                            $('[data-id=' + parentId + ']').prop('checked', false);
+                        }
+                    }
+                }
+
+            });
+
+            $('#btnSave').click(function () {
+
+                if (validateForm())
+                {
+                    var flist = "";
+                    $(':checked').each(function (e, i) {
+                        flist += $(i).attr('data-id') + "|" + $(i).attr('data-parent-id') + "±";
+                    });
+                    var url = '@Url.Content("~/User/UpdateCompanyFeature")';
+                    $.post(url, { companyId: $('#CompanyId').val(), featureName: $('#Name').val(), featureList: flist }, function (result) {
+                        window.location.href = '@Url.Content("~/")';
+                    });
+                    
+                }
+                return false;
+            });
+        });
+
+        function validateForm()
+        {
+            if ($('#CompanyId').val() == '')
+            {
+                $('#CompanyValidation').html("Company is Required!");
+                $('#CompanyValidation').show();
+                return false;
+            }
+            else
+            {
+                $('#CompanyValidation').empty();
+            }
+            if ($('#Name').val() == '')
+            {
+                $('#NameValidation').html("Name is Required!");
+                $('#NameValidation').show();
+                return false;
+            }
+            else {
+                $('#NameValidation').empty();
+            }
+            return true;
+        }
+    </script>
+}
+
+

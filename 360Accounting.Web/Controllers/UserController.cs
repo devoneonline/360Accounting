@@ -4,26 +4,36 @@ using _360Accounting.Core.Entities;
 using _360Accounting.Data.Repositories;
 using _360Accounting.Service;
 using _360Accounting.Web.Models;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Security;
+using DevExpress.Web.Mvc;
 
 namespace _360Accounting.Web.Controllers
 {
     [Authorize]
     public class UserController : AsyncController
     {
+        #region Declaration
         private IFeatureService service;
         private ICompanyService companyService;
+        private IFeatureSetService featureSetService;
+        #endregion
 
+        #region Constructor
         public UserController()
         {
             service = IoC.Resolve<IFeatureService>("FeatureService");
             companyService = IoC.Resolve<ICompanyService>("CompanyService");
+            featureSetService = IoC.Resolve<IFeatureSetService>("FeatureSetService");
         }
+        #endregion
+
+        #region ActionResult
 
         public ActionResult Index(MembershipUserListModel model)
         {
@@ -40,7 +50,7 @@ namespace _360Accounting.Web.Controllers
                 item.LastName = profile.LastName;
                 item.PhoneNumber = profile.PhoneNumber;
                 item.Email = profile.Email;
-                item.CompanyName = companyService.GetSingle(profile.CompanyId.ToString(),AuthenticationHelper.User.CompanyId).Name;
+                item.CompanyName = companyService.GetSingle(profile.CompanyId.ToString(), AuthenticationHelper.User.CompanyId).Name;
                 item.Role = Roles.GetRolesForUser(user.UserName)[0];
                 model.Users.Add(item);
             }
@@ -191,6 +201,63 @@ namespace _360Accounting.Web.Controllers
             return View(model);
         }
 
+        public ActionResult Settings()
+        {
+            return View();
+        }
+
+        #endregion
+
+
+        public ActionResult CreateCompanyFeatureList()
+        {
+            IEnumerable<Feature> featureList = service.GetAll(long.MaxValue).ToList();        ////here company argument doesn't require
+            IEnumerable<Company> companyList = companyService.GetAll(long.MaxValue);
+
+            CreateCompanyFeatureListModel model = new CreateCompanyFeatureListModel();
+            model.FeatureList = featureList.Select(x => new FeatureViewModel(x)).ToList();
+            model.CompanyList = companyList.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
+            return View(model);
+        }
+
+        public JsonResult UpdateCompanyFeature(long companyId, string featureName, string featureList)
+        {
+            FeatureSet fs = new FeatureSet();
+            fs.Name = featureName;
+            fs.AccessType = "company";
+            fs.CreateDate = DateTime.Now;
+            List<FeatureSetList> fsList = new List<FeatureSetList>();
+            var newValue = featureList.Replace("undefined|","").Replace("undefined±","").Split(new char[] { '±' }, StringSplitOptions.None);
+            foreach(string s in newValue)
+            {
+                if (!string.IsNullOrEmpty(s))
+                {
+                    fsList.Add(new FeatureSetList { FeatureId = long.Parse(s.Split(new char[] { '|' }, StringSplitOptions.None)[0]), FeatureSetId = fs.Id });
+                }
+            }
+            fs.FeatureSetList = fsList;
+
+            FeatureSetAccess fsa = new FeatureSetAccess();
+            fsa.CompanyId = companyId;
+            fsa.FeatureSetId = fs.Id;
+            fsa.CreateDate = DateTime.Now;
+
+            service.InsertCompanyFeatureSet(fs, fsa);
+
+            return Json("Success");
+        }
+
+        public ActionResult FeatureSet(FeatureSetListModel model)
+        {
+            int totalRecords = 0;
+            model.FeatureSet = featureSetService.GetAll(long.MaxValue).Select(x => new FeatureSetModel(x)).ToList();
+            model.TotalRecords = totalRecords;
+            return View(model);
+        }
+
+
+        #region Helper Methods
+
         public bool CreateUser(UserCreateModel model)
         {
             if (!Roles.RoleExists(model.RoleName))
@@ -268,11 +335,6 @@ namespace _360Accounting.Web.Controllers
             return false;
         }
 
-        public ActionResult Settings()
-        {
-            return View();
-        }
-
         private void getSuperAdminMenu()
         {
             AuthenticationHelper.MenuItems = service.GetSuperAdminMenu().Select(x => new FeatureViewModel(x)).ToList();
@@ -287,6 +349,15 @@ namespace _360Accounting.Web.Controllers
                 var modelList = featureList.Select(x => new FeatureViewModel(x)).ToList();
                 AuthenticationHelper.MenuItems = modelList;
             }
+        }
+
+        #endregion
+
+
+        public ActionResult ChartPartial()
+        {
+            var model = new object[0];
+            return PartialView("_ChartPartial", model);
         }
     }
 }

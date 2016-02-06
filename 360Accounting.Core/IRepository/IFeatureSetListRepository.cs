@@ -6,5 +6,7 @@ namespace _360Accounting.Core.Interfaces
     public interface IFeatureSetListRepository : IRepository<FeatureSetList>
     {
         IEnumerable<FeatureSetList> GetByFeatureSetId(long featureSetId);
+        void Insert(List<FeatureSetList> entityList);
+
     }
 }

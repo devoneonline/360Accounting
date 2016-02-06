@@ -17,8 +17,9 @@ namespace _360Accounting.Data.Repositories
 
         public IEnumerable<Feature> GetAll(long companyId)
         {
-            IEnumerable<Feature> featureList = this.Context.Features;
-            return featureList;
+            IEnumerable<Feature> featureList = (from a in this.Context.Features
+                                                select a).Include(x => x.Features);
+            return featureList.Where(x => x.ParentId == null);
         }
 
         public string Insert(Feature entity)

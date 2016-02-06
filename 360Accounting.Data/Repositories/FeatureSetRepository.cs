@@ -18,7 +18,7 @@ namespace _360Accounting.Data.Repositories
         public IEnumerable<FeatureSet> GetAll(long companyId)
         {
             IEnumerable<FeatureSet> featureSets = this.Context.FeatureSets;
-            return featureSets;
+            return featureSets.ToList();
         }
 
         public string Insert(FeatureSet entity)
