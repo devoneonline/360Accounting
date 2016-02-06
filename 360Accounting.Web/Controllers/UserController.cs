@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Security;
+using DevExpress.Web.Mvc;
 
 namespace _360Accounting.Web.Controllers
 {
@@ -352,5 +353,11 @@ namespace _360Accounting.Web.Controllers
 
         #endregion
 
+
+        public ActionResult ChartPartial()
+        {
+            var model = new object[0];
+            return PartialView("_ChartPartial", model);
+        }
     }
 }
