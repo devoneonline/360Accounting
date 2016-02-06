@@ -36,7 +36,7 @@ FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     
         <div class="col-md-4">
             @Html.LabelFor(m => m.SeqNumber)
-            @Html.TextBoxFor(m => m.SeqNumber, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.SeqNumber, new { @readonly = "readonly", @class = "form-control" })
         </div>
     
         <div class="col-md-4">
@@ -70,6 +70,22 @@ FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             $(document).ready(function () {
                 $('#btnCancel').click(function () {
                     window.location.href = '@Url.Content("~/Calendar/Index")';
+                });
+
+                $('#PeriodYear').change(function () {
+                    $.ajax({
+                        url: '@Url.Content("~/Calendar/GetPreviousCalendar")',
+                        data: {
+                            sobId: $('#SOBId').val(),
+                            periodYear: $('#PeriodYear').val()
+                        },
+                        type: 'post',
+                        datatype: 'json',
+                        error: function (error) { alert("Error Sequence Number fetch.") },
+                        success: function (seqNumber) {
+                            $('#SeqNumber').val(seqNumber + 1);
+                        }
+                    });
                 });
             });
         </script>

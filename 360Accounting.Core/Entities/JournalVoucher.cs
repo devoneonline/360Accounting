@@ -33,6 +33,6 @@ namespace _360Accounting.Core.Entities
 
         public decimal ConversionRate { get; set; }
 
-        public List<JournalVoucherDetail> JournalVoucherDetail { get; set; }
+        ////public List<JournalVoucherDetail> JournalVoucherDetail { get; set; }
     }
 }

@@ -1,13 +1,5 @@
 ﻿@model _360Accounting.Web.Models.AccountListModel
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.delete').click(function () {
-            return confirm("Sure! you wanted to delete ?");
-        });
-    });
-</script>
-
 @{
     if (Model.Accounts != null)
     {
@@ -51,6 +43,12 @@
 }
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        $('.delete').click(function () {
+            return confirm("Sure! you wanted to delete ?");
+        });
+    });
+
     function CallBack(context) {
         $("#dvAccountList")[0].innerHTML = context;
     }

@@ -1,0 +1,56 @@
+﻿@model _360Accounting.Web.Models.JournalVoucherListModel
+
+@{
+    if (Model.JournalVouchers != null)
+    {
+        if (Model.JournalVouchers.Count() > 0)
+        {
+            var grid = new WebGrid(canSort: true,
+                                    rowsPerPage: 20,
+                                    ajaxUpdateContainerId: "dvJournalVoucherList", ajaxUpdateCallback: "CallBack");
+
+            if (Model.Page == null) { grid.PageIndex = 0; } else { grid.PageIndex = Model.Page.Value - 1; }
+
+            grid.Bind(Model.JournalVouchers, rowCount: Model.TotalRecords, autoSortAndPage: false);
+
+            <div class="col-sm-offset-10">
+                @{ var startrow = (grid.RowsPerPage * grid.PageIndex) + 1;}
+                @{ var endrow = (startrow + grid.Rows.Count - 1);}
+                Displaying: <b>@startrow - @endrow</b>
+                <br />
+                TotalRecords <b>@grid.TotalRowCount</b>
+            </div>
+
+            @grid.GetHtml(tableStyle: "table table-bordered table-hover table-striped",
+                            mode: WebGridPagerModes.All,
+                            numericLinksCount: 10,
+                            htmlAttributes: new { style = "width:100%", @class = "table", id = "tblAccounts" },
+                            columns: grid.Columns
+                            (
+                            grid.Column("", header: "Actions", style: "ActionLink",
+                                                          format: (item) => Html.Raw("<a class = 'delete' href='" + @Url.Content("~/JournalVoucher/Delete/") + item.Id + "'><img src='" + @Url.Content("~/Content/images/delete.png") + "' alt='' title='Delete' style='border:0'/></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='" + @Url.Content("~/JournalVoucher/Edit/") + item.Id + "'><img src='" + @Url.Content("~/Content/images/edit.png") + "' alt='' title='Edit' style='border:0'/></a>")),
+                            grid.Column(columnName: "JournalName",
+                                            header: "Journal Name",
+                                            canSort: true),
+                            grid.Column("DocumentNo", header: "Document #", canSort: false),
+                            grid.Column("GLDate", header: "Effective Date", canSort: true),
+                            grid.Column("Description", header: "Description", canSort: false)))
+        }
+        else
+        {
+            <div id='dvNoRecord'>No Record Found!</div>
+        }
+    }
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.delete').click(function () {
+            return confirm("Sure! you wanted to delete ?");
+        });
+    });
+
+    function CallBack(context) {
+        $("#dvJournalVoucherList")[0].innerHTML = context;
+    }
+</script>

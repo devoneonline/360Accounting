@@ -32,7 +32,7 @@ namespace _360Accounting.Data.Repositories
 
         public IEnumerable<SetOfBook> GetAll(long companyId)
         {
-            IEnumerable<SetOfBook> sobList = this.Context.SetOfBooks.Where(x=> x.CompanyId == companyId);
+            IEnumerable<SetOfBook> sobList = this.Context.SetOfBooks.Where(x => x.CompanyId == companyId);
             return sobList;
         }
 
@@ -54,7 +54,7 @@ namespace _360Accounting.Data.Repositories
 
         public void Delete(string id, long companyId)
         {
-            this.Context.SetOfBooks.Remove(this.GetSingle(id,companyId));
+            this.Context.SetOfBooks.Remove(this.GetSingle(id, companyId));
             this.Commit();
         }
 

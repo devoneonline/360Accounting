@@ -11,6 +11,27 @@ namespace _360Accounting.Data.Repositories
 {
     public class JournalVoucherRepository : Repository, IJournalVoucherRepository
     {
+        public string Insert(JournalVoucherDetail entity)
+        {
+            this.Context.JournalVoucherDetails.Add(entity);
+            this.Commit();
+            return entity.Id.ToString();
+        }
+
+        public IEnumerable<JournalVoucherDetail> GetAll(string headerId)
+        {
+            IEnumerable<JournalVoucherDetail> voucherDetailList = this.Context.JournalVoucherDetails.Where(x => x.HeaderId == Convert.ToInt32(headerId));
+            return voucherDetailList;
+        }
+
+        public string Update(JournalVoucherDetail entity)
+        {
+            this.Context.JournalVoucherDetails.Attach(entity);
+            this.Context.Entry(entity).State = EntityState.Modified;
+            this.Commit();
+            return entity.Id.ToString();
+        }
+        
         public IEnumerable<JournalVoucher> GetAll(long companyId, string searchText, bool paging, int page, string sort, string sortDir)
         {
             IEnumerable<JournalVoucher> voucherList = this.Context.JournalVouchers.Where(x => x.CompanyId == companyId);

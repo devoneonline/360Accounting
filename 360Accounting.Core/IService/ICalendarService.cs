@@ -15,5 +15,7 @@ namespace _360Accounting.Core
         IEnumerable<Calendar> GetAll(long companyId, long sobId);
 
         Calendar getCalendarByPeriod(long companyId, long sobId, DateTime? startDate, DateTime? endDate);
+
+        Calendar getLastCalendarByYear(long comapnyId, long sobId, int periodYear);
     }
 }

@@ -3,6 +3,7 @@ using _360Accounting.Core.Entities;
 using _360Accounting.Data.Repositories;
 using _360Accounting.Service;
 using _360Accounting.Web.Models;
+using _360Accounting.Web.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,17 @@ namespace _360Accounting.Web.Controllers
         {
             service = IoC.Resolve<ICalendarService>("CalendarService");
             sobService = IoC.Resolve<ISetOfBookService>("SetOfBookService");
+        }
+
+        public JsonResult GetPreviousCalendar(long sobId, int periodYear)
+        {
+            Calendar calendar = service.getLastCalendarByYear(AuthenticationHelper.User.CompanyId, sobId, periodYear);
+            if (calendar != null)
+            {
+                SessionHelper.Calendar = new CalendarViewModel(calendar);
+                return Json(SessionHelper.Calendar.SeqNumber, JsonRequestBehavior.AllowGet);
+            }
+            return Json(0, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -71,16 +83,31 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                Calendar duplicateRecord = service.getCalendarByPeriod(AuthenticationHelper.User.CompanyId, model.SOBId, model.StartDate, model.EndDate);
-                if (duplicateRecord == null)
+                if (model.StartDate < SessionHelper.Calendar.EndDate)
                 {
-                    model.ClosingStatus = "Open";
-                    string result = service.Insert(mapModel(model));    ////TODO: mapper should be in service
-                    return RedirectToAction("Index");
+                    ModelState.AddModelError("Error", "Start date is overlaping with previous period!");
+                }
+                else if (model.StartDate > model.EndDate)
+                {
+                    ModelState.AddModelError("Error", "Invalid Dates!");
                 }
                 else
                 {
-                    ModelState.AddModelError("Error", "Period Already Exists!");
+                    ////Not sure about the validity of this code,
+                    ////To be checked later.
+                    //////////////////////////////////////////////////
+                    ////Calendar duplicateRecord = service.getCalendarByPeriod(AuthenticationHelper.User.CompanyId, model.SOBId, model.StartDate, model.EndDate);
+                    //////////////////////////////////////////////////
+                    ////if (duplicateRecord == null)
+                    ////{
+                        model.ClosingStatus = "Open";
+                        string result = service.Insert(mapModel(model));    ////TODO: mapper should be in service
+                        return RedirectToAction("Index");
+                    ////}
+                    ////else
+                    ////{
+                    ////    ModelState.AddModelError("Error", "Period Already Exists!");
+                    ////}
                 }
             }
 
@@ -91,6 +118,7 @@ namespace _360Accounting.Web.Controllers
         {
             CalendarViewModel model = new CalendarViewModel();
             model.SOBId = sobId;
+            SessionHelper.Calendar = model;
             return View(model);
         }
 

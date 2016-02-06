@@ -26,12 +26,13 @@
     @Html.DropDownListFor(m => m.CurrencyId, Model.Currencies, new { @class = "form-control" })
 </div>
 <div class="col-lg-6">
+    <br />
     <input type="button" id="btnCreate" value="Create New" class="btn btn-default" />
     <input type="button" id="btnShow" value="Show" class="btn btn-default" />
 </div>
-    @*<div id="dvList" class="col-lg-12">
-            @Html.Partial("_List", Model)
-        </div>*@
+<div id="dvList" class="col-lg-12">
+    @Html.Partial("_List", Model)
+</div>
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -64,7 +65,7 @@
                         });
                 });
 
-            @*$('.form-control').change(function () {
+            $('#btnShow').click(function () {
             $.ajax({
                 url: '@Url.Content("~/JournalVoucher/GetJournalVoucherList")',
                 data: {
@@ -79,6 +80,6 @@
                     $('#dvList').html(data);
                 }
             });
-        });*@
+        });
         });
     </script>

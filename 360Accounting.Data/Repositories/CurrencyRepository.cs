@@ -46,7 +46,7 @@ namespace _360Accounting.Data.Repositories
         public IEnumerable<Currency> GetAll(long companyId)
         {
             IEnumerable<Currency> currencyList = this.Context
-                .Currencies.Where(x=> x.CompanyId == companyId);
+                .Currencies.Where(x => x.CompanyId == companyId);
             return currencyList;
         }
 
@@ -67,7 +67,7 @@ namespace _360Accounting.Data.Repositories
 
         public void Delete(string id, long companyId)
         {
-            this.Context.Currencies.Remove(this.GetSingle(id,companyId));
+            this.Context.Currencies.Remove(this.GetSingle(id, companyId));
             this.Commit();
         }
 
