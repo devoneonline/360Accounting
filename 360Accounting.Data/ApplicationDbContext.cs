@@ -55,7 +55,7 @@ namespace _360Accounting.Data
             ////base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<JournalVoucherDetail>().ToTable("tbGLLines");
             modelBuilder.Entity<JournalVoucherDetail>().HasKey(t => t.Id);
-            
+
             modelBuilder.Entity<JournalVoucher>().ToTable("tbGLHeader");
             modelBuilder.Entity<JournalVoucher>().HasKey(t => t.Id);
             

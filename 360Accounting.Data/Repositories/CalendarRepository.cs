@@ -45,45 +45,12 @@ namespace _360Accounting.Data.Repositories
             calendarList = sortDir.ToUpper() == "ASC" ? calendarList.OrderBy(x => x.SOBId) : calendarList.OrderByDescending(x => x.SOBId);
             if (!paging)
             {
-                return calendarList.Select(x => new Calendar
-                {
-                    Adjusting = x.Adjusting,
-                    CompanyId = x.CompanyId,
-                    CreateBy = x.CreateBy,
-                    CreateDate = x.CreateDate,
-                    EndDate = x.EndDate,
-                    Id = x.Id,
-                    PeriodName = x.PeriodName,
-                    PeriodQuarter = x.PeriodQuarter,
-                    PeriodYear = x.PeriodYear,
-                    SeqNumber = x.SeqNumber,
-                    SOBId = x.SOBId,
-                    StartDate = x.StartDate,
-                    UpdateBy = x.UpdateBy,
-                    UpdateDate = x.UpdateDate
-                }).ToList();
+                return calendarList;
             }
             else
             {
                 var recordCount = calendarList.Count();
-                return calendarList.Select(x => new Calendar
-                {
-                    Adjusting = x.Adjusting,
-                    CompanyId = x.CompanyId,
-                    CreateBy = x.CreateBy,
-                    CreateDate = x.CreateDate,
-                    EndDate = x.EndDate,
-                    Id = x.Id,
-                    PeriodName = x.PeriodName,
-                    PeriodQuarter = x.PeriodQuarter,
-                    PeriodYear = x.PeriodYear,
-                    SeqNumber = x.SeqNumber,                    
-                    SOBId = x.SOBId,
-                    StartDate = x.StartDate,
-                    UpdateBy = x.UpdateBy,
-                    UpdateDate = x.UpdateDate
-                }).Skip((page - 1) * 20)
-                    .Take(20);
+                return calendarList.Skip((page - 1) * 20).Take(20);
             }
         }
 
@@ -96,8 +63,7 @@ namespace _360Accounting.Data.Repositories
 
         public IEnumerable<Calendar> GetAll(long companyId)
         {
-            IEnumerable<Calendar> calendarList = this.Context
-                .Calendars;
+            IEnumerable<Calendar> calendarList = this.Context.Calendars;
             return calendarList;
         }
 

@@ -46,26 +46,7 @@ namespace _360Accounting.Data.Repositories
             else
             {
                 var recordCount = voucherList.Count();
-                return voucherList
-                    .Select(x => new JournalVoucher
-                    {
-                        CompanyId = x.CompanyId,
-                        ConversionRate = x.ConversionRate,
-                        CreateBy = x.CreateBy,
-                        CreateDate = x.CreateDate,
-                        CurrencyId = x.CurrencyId,
-                        Description = x.Description,
-                        DocumentNo = x.DocumentNo,
-                        GLDate = x.GLDate,
-                        Id = x.Id,
-                        JournalName = x.JournalName,
-                        PeriodId = x.PeriodId,
-                        PostingFlag = x.PostingFlag,
-                        SOBId = x.SOBId,
-                        UpdateBy = x.UpdateBy,
-                        UpdateDate = x.UpdateDate
-                    }).ToList()
-                    .Skip((page - 1) * 20)
+                return voucherList.Skip((page - 1) * 20)
                     .Take(20);
             }
         }
