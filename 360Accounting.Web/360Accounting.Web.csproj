@@ -154,6 +154,7 @@
     <Compile Include="Models\AccValueCreateModel.cs" />
     <Compile Include="Models\CalendarListModel.cs" />
     <Compile Include="Models\CalendarViewModel.cs" />
+    <Compile Include="Models\CreateCompanyFeatureListModel.cs" />
     <Compile Include="Models\CodeCombinitionCreateViewModel.cs" />
     <Compile Include="Models\CodeCombinitionListModel.cs" />
     <Compile Include="Models\CodeCombinitionViewModel.cs" />
@@ -183,6 +184,8 @@
     <Content Include="Content\Images\edit.png" />
     <Content Include="Content\Images\logo.png" />
     <Content Include="Content\Images\open.jpg" />
+    <Content Include="Content\Images\plus.png" />
+    <Content Include="Content\Images\plusred.png" />
     <Content Include="Content\style.css" />
     <Content Include="favicon.ico" />
     <Content Include="font-awesome\css\font-awesome.css" />
@@ -301,6 +304,8 @@
     <Content Include="Views\JournalVoucher\Create.cshtml" />
     <Content Include="Views\JournalVoucher\Edit.cshtml" />
     <Content Include="Views\JournalVoucher\_JournalVoucherDetailList.cshtml" />
+    <Content Include="Views\User\CreateCompanyFeatureList.cshtml" />
+    <Content Include="Views\User\FeatureSet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

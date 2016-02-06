@@ -12,10 +12,17 @@ namespace _360Accounting.Service
     public class FeatureService : IFeatureService
     {
         private IFeatureRepository repository;
+        private IFeatureSetRepository fsRepo;
+        private IFeatureSetListRepository fslRepo;
+        private IFeatureSetAccessRepository fsaRepo;
 
-        public FeatureService(IFeatureRepository featureRepository)
+        public FeatureService(IFeatureRepository featureRepository, IFeatureSetRepository fsRepo, IFeatureSetListRepository fslRepo,
+                    IFeatureSetAccessRepository fsaRepo)
         {
             this.repository = featureRepository;
+            this.fsaRepo = fsaRepo;
+            this.fslRepo = fslRepo;
+            this.fsRepo = fsRepo;
         }
 
         public Feature GetSingle(string id, long companyId)
@@ -56,6 +63,23 @@ namespace _360Accounting.Service
         public IEnumerable<Feature> GetSuperAdminMenu()
         {
             return this.repository.GetSuperAdminMenu();
+        }
+
+        public void InsertCompanyFeatureSet(FeatureSet fs, FeatureSetAccess fsa)
+        {
+            var result = this.fsRepo.Insert(fs);
+
+            long outValue = 0;
+            if (long.TryParse(result, out outValue))
+            {
+                foreach (var f in fs.FeatureSetList)
+                {
+                    f.FeatureSetId = outValue;
+                }
+                fslRepo.Insert(fs.FeatureSetList.ToList());
+                fsa.FeatureSetId = outValue;
+                result = this.fsaRepo.Insert(fsa);
+            }
         }
     }
 }

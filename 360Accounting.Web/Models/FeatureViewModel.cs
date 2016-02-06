@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _360Accounting.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -32,5 +33,58 @@ namespace _360Accounting.Web.Models
         public string Class { get; set; }
 
         public List<FeatureViewModel> Features { get; set; }
+    }
+
+
+    public class FeatureSetListModel
+    {
+        private string sortColumn = "Segments";
+        private string sortDirection = "ASC";
+
+        #region Properties
+
+        public string SearchText { get; set; }
+
+        public int? Page { get; set; }
+
+        public int TotalRecords { get; set; }
+
+        public string SortColumn
+        {
+            get { return sortColumn; }
+            set { sortColumn = value; }
+        }
+
+        public string SortDirection
+        {
+            get { return sortDirection; }
+            set { sortDirection = value; }
+        }
+
+        public List<FeatureSetModel> FeatureSet { get; set; }
+
+        #endregion
+
+    }
+
+    public class FeatureSetModel
+    {
+        public long Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string AccessType { get; set; }
+
+        public FeatureSetModel()
+        {
+
+        }
+
+        public FeatureSetModel(FeatureSet x)
+        {
+            this.Id = x.Id;
+            this.Name = x.Name;
+            this.AccessType = x.AccessType;
+        }
     }
 }

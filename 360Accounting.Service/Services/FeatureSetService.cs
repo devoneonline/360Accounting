@@ -1,4 +1,5 @@
-﻿using _360Accounting.Core.Entities;
+﻿using _360Accounting.Core;
+using _360Accounting.Core.Entities;
 using _360Accounting.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace _360Accounting.Service
 {
-    public class FeatureSetService : IService<FeatureSet>
+    public class FeatureSetService : IFeatureSetService
     {
         private IFeatureSetRepository repository;
 
