@@ -330,7 +330,7 @@
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\Calendar\Create.cshtml" />
     <Content Include="Views\Calendar\Index.cshtml" />
-    <Content Include="Views\Calendar\_List.cshtml" />
+    <Content Include="Views\Calendar\_OldList.cshtml" />
     <Content Include="Views\Calendar\Edit.cshtml" />
     <Content Include="Views\Calendar\ChangeStatus.cshtml" />
     <Content Include="Views\JournalVoucher\Index.cshtml" />
@@ -341,6 +341,7 @@
     <Content Include="Views\User\FeatureSet.cshtml" />
     <Content Include="Views\JournalVoucher\_List.cshtml" />
     <Content Include="Views\User\_ChartPartial.cshtml" />
+    <Content Include="Views\Calendar\_List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

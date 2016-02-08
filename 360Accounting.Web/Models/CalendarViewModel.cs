@@ -76,6 +76,8 @@ namespace _360Accounting.Web.Models
                 return list;
             }
         }
+
+        public List<SelectListItem> SetOfBooks { get; set; }
         #endregion
     }
 }
