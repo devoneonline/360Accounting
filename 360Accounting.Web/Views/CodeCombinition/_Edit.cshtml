@@ -1,16 +1,8 @@
 ﻿@model _360Accounting.Web.Models.CodeCombinitionCreateViewModel
 
-@*@{
-    ViewBag.Title = "Code Combinition";
-}*@
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        @*$('#btnCancel').click(function () {
-            window.location.href = '@Url.Content("~/CodeCombinition/Index")';
-        });*@
-    });
-</script>
+@{
+    ViewBag.Title = "Account Combination";
+}
 
 <div class="row">
     <div class="col-lg-12">
@@ -20,23 +12,23 @@
     </div>
 </div>
 
-<div class="col-lg-12">
-    @using (Html.BeginForm("Edit", "CodeCombinition", FormMethod.Post,
-        new { @class = "form-horizonatl", role = "form" }))
-    {
         @Html.ValidationSummary()
         @Html.HiddenFor(m => m.SOBId)
         @Html.HiddenFor(m => m.CompanyId)
         @Html.HiddenFor(m => m.Id)
 
-        for (int i = 1; i <= Model.SegmentList.Count; i++)
-        {
-            <div class="col-lg-5">
+        @{ int count = 0; }
+        <div class="col-lg-6">
+            @foreach (var item in Model.SegmentList)
+            {
+                count++;
+                string comboName = "Combo_" + count.ToString();
                 <div class="form-group">
-                    
+                    @item.SegmentName
+                    @Html.DropDownList(comboName, item.SegmentValueList, new { @class = "form-control autoCombo" })
                 </div>
-            </div>
-        }
+            }
+        </div>
 
         <div class="col-lg-5">
             <div class="form-group">
@@ -58,16 +50,14 @@
                 @Html.CheckBoxFor(m => m.AllowedPosting)
             </div>
         </div>
-        
+
         <div class="col-lg-5">
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-                <input type="button" value="Cancel" class="btn btn-default" id="btnCancel" />
+                <input type="button" value="Save" class="btn btn-default" id="btnSave" onclick="javascript: return SaveValue();" />
             </div>
         </div>
+
         @section Scripts {
             @Scripts.Render("~/bundles/jqueryval")
-    }
-    }
-</div>
+        }
 

@@ -219,6 +219,14 @@
     <Content Include="Content\Images\open.jpg" />
     <Content Include="Content\Images\plus.png" />
     <Content Include="Content\Images\plusred.png" />
+    <Content Include="Content\Images\ui-icons_444444_256x240.png" />
+    <Content Include="Content\Images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\Images\ui-icons_777620_256x240.png" />
+    <Content Include="Content\Images\ui-icons_777777_256x240.png" />
+    <Content Include="Content\Images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\Images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\jquery-ui.css" />
+    <Content Include="Content\jquery-ui.min.css" />
     <Content Include="Content\style.css" />
     <Content Include="favicon.ico" />
     <Content Include="font-awesome\css\font-awesome.css" />
@@ -273,6 +281,8 @@
     <Content Include="Scripts\js\bootstrap-multiselect.js" />
     <Content Include="Scripts\js\bootstrap.js" />
     <Content Include="Scripts\js\bootstrap.min.js" />
+    <Content Include="Scripts\js\jquery-ui.js" />
+    <Content Include="Scripts\js\jquery-ui.min.js" />
     <Content Include="Scripts\js\jquery.js" />
     <Content Include="Scripts\js\jquery.nicescroll.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
@@ -340,7 +350,6 @@
     <Content Include="Views\User\CreateCompanyFeatureList.cshtml" />
     <Content Include="Views\User\FeatureSet.cshtml" />
     <Content Include="Views\JournalVoucher\_List.cshtml" />
-    <Content Include="Views\User\_ChartPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

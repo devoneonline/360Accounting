@@ -31,11 +31,13 @@ namespace _360Accounting.Web.Models
 
         public long SOBId { get; set; }
 
+        public string SOBName { get; set; }
+
         public long CompanyId { get; set; }
 
         public string CodeCombinitionCode { get; set; }
 
-        ////public string CodeCombinitionName { get; set; }
+        public string CodeCombinitionName { get; set; }
 
         public DateTime? StartDate { get; set; }
 

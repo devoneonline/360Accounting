@@ -14,9 +14,16 @@ namespace _360Accounting.Data.Repositories
     {
         public IEnumerable<CodeCombinitionView> GetAll(long companyId, long sobId, string searchText, bool paging, int page, string sort, string sortDir)
         {
-            IEnumerable<CodeCombinition> codeCombList = 
-                this.Context.CodeCombinitions.Where(x => x.CompanyId == companyId &&
-                    x.SOBId == sobId);
+            IEnumerable<CodeCombinition> codeCombList =
+                //(from a in this.Context.CodeCombinitions
+                // join b in this.Context.Accounts on new { SOBId = a.SOBId, CompanyId = a.CompanyId } equals new { SOBId = b.SOBId, CompanyId = b.CompanyId }
+                // where a.SOBId == sobId && a.CompanyId == companyId
+                // select new CodeCombinitionView
+                // {
+
+                // });
+
+                this.Context.CodeCombinitions.Where(x => x.CompanyId == companyId && x.SOBId == sobId);
             codeCombList = sortDir.ToUpper() == "ASC" ?
                 codeCombList.OrderBy(x => x.SOBId) :
                 codeCombList.OrderByDescending(x => x.SOBId);

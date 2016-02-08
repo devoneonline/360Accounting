@@ -12,7 +12,8 @@ namespace _360Accounting.Web
             ////            "~/Scripts/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/js/jquery.js"));
+                        "~/Scripts/js/jquery.js",
+                        "~/Scripts/js/jquery-ui.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -30,6 +31,7 @@ namespace _360Accounting.Web
                       "~/Content/bootstrap.min.css",
                       "~/Content/bootstrap-multiselect.css",
                       "~/Content/style.css",
+                      "~/Content/jquery-ui.css",
                       "~/font-awesome/css/font-awesome.min.css",
                       "~/awesome-bootstrap-checkbox.css"));
         }
