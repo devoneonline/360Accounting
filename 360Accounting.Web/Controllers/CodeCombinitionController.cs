@@ -48,11 +48,8 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Create(long sobId)
         {
-            CodeCombinitionCreateViewModel model = 
-                new CodeCombinitionCreateViewModel();
-
+            CodeCombinitionCreateViewModel model =  new CodeCombinitionCreateViewModel();
             model.SegmentList = getSegmentList(sobId);
-
             return PartialView("_Edit", model);
         }
         
@@ -62,26 +59,12 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_Edit", model);
         }
 
-        [HttpPost]
-        public ActionResult Edit(CodeCombinitionCreateViewModel model)
+        public ActionResult UpdateCodeCombinition(string segmentValues, bool allowPosting, string startDate, string endDate)
         {
-            if (ModelState.IsValid)
-            {
-                model.CompanyId = AuthenticationHelper.User.CompanyId;
-                if (model.Id > 0)
-                {
-                    string result = service.Update(mapModel(model));
-                }
-                else
-                {
-                    string result = service.Insert(mapModel(model));
-                }
 
-                return RedirectToAction("Index", model);
-            }
-
-            return View(model);
+            return Json("success");
         }
+
 
         public ActionResult Delete(string id)
         {
@@ -174,8 +157,7 @@ namespace _360Accounting.Web.Controllers
                     {
                         SegmentCount = 1,
                         SegmentName = account.SegmentName1,
-                        SegmentValueList = accountValueService
-                        .GetAccountValuesBySegment(account.SegmentName1, account.Id)
+                        SegmentValueList = accountValueService.GetAccountValuesBySegment(account.SegmentName1, account.Id)
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,

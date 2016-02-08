@@ -21,9 +21,7 @@ namespace _360Accounting.Data.Repositories
 
         public List<AccountValue> GetAccountValuesBySegment(string segment, long chartId)
         {
-            List<AccountValue> valueList = this.Context
-                .AccountValues.Where(x => x.Segment == segment &&
-                    x.ChartId == chartId).ToList();
+            List<AccountValue> valueList = this.Context.AccountValues.Where(x => x.Segment == segment && x.ChartId == chartId).ToList();
             return valueList;
         }
 
