@@ -1,0 +1,85 @@
+﻿@model DevEx_360Accounting_Web.Models.JournalVoucherListModel
+
+@{
+    ViewBag.Title = "Journal Vouchers";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header">
+            @ViewBag.Title
+        </h3>
+    </div>
+</div>
+<div class="col-lg-4">
+    @Html.LabelFor(m => m.SetOfBooks)
+    @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control" })
+</div>
+
+<div class="col-lg-4">
+    @Html.LabelFor(m => m.Periods)
+    @Html.DropDownListFor(m => m.PeriodId, Model.Periods, new { @class = "form-control" })
+</div>
+
+<div class="col-lg-4">
+    @Html.LabelFor(m => m.Currencies)
+    @Html.DropDownListFor(m => m.CurrencyId, Model.Currencies, new { @class = "form-control" })
+</div>
+<div class="col-lg-6">
+    <br />
+    <input type="button" id="btnCreate" value="Create New" class="btn btn-default" />
+    <input type="button" id="btnShow" value="Show" class="btn btn-default" />
+</div>
+<div id="dvList" class="col-lg-12">
+    @Html.Partial("_List", Model)
+</div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnCreate').click(function () {
+                var url = '@Url.Content("~/JournalVoucher/Create?sobId=")' + $('#SOBId').val() + "&periodId=" + $('#PeriodId').val() + "&currencyId=" + $('#CurrencyId').val()
+                window.location.href = url;
+            });
+
+            $('#SOBId').change(
+                function () {
+                    var url1 = '@Url.Content("~/JournalVoucher/PeriodList")';
+                    var url2 = '@Url.Content("~/JournalVoucher/CurrencyList")';
+
+                    $.get(url1, { sobId: $(this).val() },
+                        function (data) {
+                            var periodDropdown = $('#PeriodId');
+                            periodDropdown.empty();
+                            for (var i = 0; i < data.length; i++) {
+                                periodDropdown.append('<option value?+data[i].Value+?="">' + data[i].Text + '</option>');
+                            }
+                        });
+
+                    $.get(url2, { sobId: $(this).val() },
+                        function (data) {
+                            var currencyDropdown = $('#CurrencyId');
+                            currencyDropdown.empty();
+                            for (var i = 0; i < data.length; i++) {
+                                currencyDropdown.append('<option value?+data[i].Value+?="">' + data[i].Text + '</option>');
+                            }
+                        });
+                });
+
+            $('#btnShow').click(function () {
+            $.ajax({
+                url: '@Url.Content("~/JournalVoucher/GetJournalVoucherList")',
+                data: {
+                    sobId: $('#SOBId').val(),
+                    periodId: $('#PeriodId').val(),
+                    currencyId: $('#CurrencyId').val()
+                },
+                datatype: 'html',
+                type: 'post',
+                error: function (data) { },
+                success: function (data) {
+                    $('#dvList').html(data);
+                }
+            });
+        });
+        });
+    </script>

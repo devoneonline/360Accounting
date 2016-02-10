@@ -1,0 +1,59 @@
+﻿@model DevEx_360Accounting_Web.Models.AccountValueListModel
+@{
+    ViewBag.Title = "Account Values";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header">
+            @ViewBag.Title
+        </h3>
+    </div>
+</div>
+<div class="col-lg-6">
+    <div class="form-group">
+        @Html.LabelFor(m => m.SetOfBooks)
+        @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Segments)
+        @Html.DropDownListFor(m => m.Segment, Model.Segments, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <input type="button" id="btnShow" value="Show" class="btn btn-default" />
+        <input type="button" id="btnCreate" value="Create New" class="btn btn-default" />
+    </div>
+</div>
+<div class="col-lg-12">
+    @Html.Partial("_List", Model)
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnCreate').click(function () {
+            var url = '@Url.Content("~/AccountValue/Create?sobId=")' + $('#SOBId').val() + "&segment=" + $('#Segment').val();
+            window.location.href = url;
+        });
+
+        @*$('#btnShow').click(function () {
+            var url = '@Url.Content("~/AccountValue/GetAccountValueList")'
+        });*@
+
+        $('#SOBId').change(
+            function () {
+                var url = '@Url.Content("~/AccountValue/SegmentList")';
+
+                $.get(url,{ sobId: $(this).val() },
+                    function(data)
+                    {
+                        var segmentDropdown=$('#Segment');
+                        segmentDropdown.empty();
+                        for (var i=0 ; i<data.length; i++)
+                        {
+                            segmentDropdown.append('<option value?+data[i].Value+?="">' + data[i].Text + '</option>');
+                        }
+                    });
+                });
+    });
+</script>
+

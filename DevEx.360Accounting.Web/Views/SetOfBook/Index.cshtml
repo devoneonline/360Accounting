@@ -1,0 +1,54 @@
+﻿@model DevEx_360Accounting_Web.Models.SetOfBookListModel
+
+@{
+    ViewBag.Title = "Set Of Books";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header">
+            @ViewBag.Title
+        </h3>
+    </div>
+</div>
+
+<div class="form-group">
+    <input type="button" value="Create New" class="btn btn-default" id="btnNew" />
+</div>
+
+    @{
+        if (Model.SetOfBooks != null)
+        {
+            if (Model.SetOfBooks.Count() > 0)
+            {
+                var grid = new WebGrid(canSort: true,
+                    rowsPerPage: _360Accounting.Common.Utility.Configuration.GridRows);
+                grid.Bind(Model.SetOfBooks);
+
+                @grid.GetHtml(tableStyle: "table table-bordered table-hover table-striped",
+                            mode: WebGridPagerModes.All,
+                            numericLinksCount: 10,
+                            htmlAttributes: new { style = "width:100%" },
+                            columns: grid.Columns
+                            (
+                            grid.Column("", header: "Actions", style: "ActionLink",
+                                                                  format: (item) => Html.Raw("<a class = 'delete' href='" + @Url.Content("~/SetOfBook/Delete/") + item.Id + "'><img src='" + @Url.Content("~/Content/images/delete.png") + "' alt='' title='Delete' style='border:0'/></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='" + @Url.Content("~/SetOfBook/Edit/") + item.Id + "'><img src='" + @Url.Content("~/Content/images/edit.png") + "' alt='' title='Edit' style='border:0'/></a>")),
+                            grid.Column("Name", header: "SOB Name", canSort: true)))
+            }
+            else
+            {
+                <div id='dvNoRecord'>No Record Found!</div>
+            }
+        }
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnNew').click(function () {
+            window.location.href = '@Url.Content("~/SetOfBook/Create")';
+        });
+
+        $('.delete').click(function () {
+            return confirm("Sure! you wanted to delete ?");
+        });
+    });
+</script>

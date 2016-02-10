@@ -1,0 +1,30 @@
+﻿@model DevEx_360Accounting_Web.Models.AccountListModel
+
+@{
+    ViewBag.Title = "Chart Of Accounts";
+}
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header">
+            @ViewBag.Title
+        </h3>
+    </div>
+</div>
+<div class="col-lg-12">
+    <div class="form-group">
+        <input type="button" id="btnSave" value="Create New" class="btn btn-default" />
+    </div>
+</div>
+<div class="col-lg-12">
+    @Html.Partial("_List", Model)
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnSave').click(function () {
+            var url = '@Url.Content("~/Account/Create")';
+            window.location.href = url;
+        });
+    });
+</script>

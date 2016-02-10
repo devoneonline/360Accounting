@@ -1,0 +1,42 @@
+﻿@if (DevEx_360Accounting_Web.AuthenticationHelper.MenuItems == null)
+{
+    FormsAuthentication.SignOut();
+    Session.Abandon();
+    Response.Redirect("~/User/Login");
+}
+<div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav side-nav">
+        @if (DevEx_360Accounting_Web.AuthenticationHelper.MenuItems !=null)
+        {
+            @ShowMenu(DevEx_360Accounting_Web.AuthenticationHelper.MenuItems);
+        }
+        @helper ShowMenu(IEnumerable<DevEx_360Accounting_Web.Models.FeatureViewModel> items)
+        {
+            foreach (var item in items)
+            {
+                <li>
+                    @if (item.Features == null)
+                    {
+                        <a href='@Url.Content(item.Href)'><i class="@item.Class"></i> @item.Name</a>
+                    }
+                    else
+                    {
+                        var _id = "level" + item.Id;
+                        var _pid = "#level" + item.Id;
+                        
+                    ////faisal bhai ye do lines samajh nai aaein, plz samjha dain.
+                    ////***************************************************************
+                        <a href="javascript:;" data-toggle="collapse" data-target="@_pid"><i class="@item.Class"></i> @item.Name </a>
+                        <ul id="@_id" class=" collapse">
+                    @*faisal bhai ye do lines samajh nai aaein, plz samjha dain.
+                    faisal bhai ye do lines samajh nai aaein, plz samjha dain.*@
+                    @*////****************************************************************@
+
+                            @ShowMenu(item.Features)
+                        </ul>
+                    }
+                </li>
+            }
+        }    
+    </ul>
+</div>

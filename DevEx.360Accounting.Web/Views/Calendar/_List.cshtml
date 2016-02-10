@@ -1,0 +1,41 @@
+@{
+	var grid = Html.DevExpress().GridView(settings => {
+        settings.Name = "CalendarList";
+        settings.CallbackRouteValues = new { Controller = "Calendar", Action = "List" };
+
+				settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Calendar", Action = "ListAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Calendar", Action = "ListUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Calendar", Action = "ListDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+		settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButton = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+		settings.KeyFieldName = "Id";
+
+		settings.SettingsPager.Visible = true;
+		settings.Settings.ShowGroupPanel = true;
+		settings.Settings.ShowFilterRow = true;
+		settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+				settings.Columns.Add("Id");
+				settings.Columns.Add("SOBId");
+				settings.Columns.Add("PeriodName");
+				settings.Columns.Add("PeriodYear");
+				settings.Columns.Add("PeriodQuarter");
+				settings.Columns.Add("SeqNumber");
+				settings.Columns.Add("StartDate");
+				settings.Columns.Add("EndDate");
+				settings.Columns.Add("Adjusting");
+				settings.Columns.Add("ClosingStatus");
+                //settings.Columns.Add("ClosingStatusList");
+                //settings.Columns.Add("SetOfBooks");
+			});
+		if (ViewData["EditError"] != null){
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

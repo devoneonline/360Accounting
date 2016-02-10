@@ -1,0 +1,119 @@
+﻿@model DevEx_360Accounting_Web.Models.CodeCombinitionListModel
+
+@{
+    ViewBag.Title = "Code Combinition";
+}
+
+<div id="dvCriteria">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="form-group">
+            @Html.LabelFor(m => m.SetOfBooks)
+            @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks,
+        new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            <input type="button" id="btnCreate" value="Create New" class="btn btn-default" />
+
+            <input type="button" id="btnTestInsert" value="Test Insert" class="btn btn-default" />
+
+            <input type="button" id="btnTestUpdate" value="Test Update" class="btn btn-default" />
+        </div>
+    </div>
+    <div id="dvList" class="col-lg-12">
+        @Html.Partial("_List", Model)
+    </div>
+</div>
+<div id="dvInput">
+
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('#dvInput').dialog({
+            modal: true,
+            autoOpen: false,
+            height: 400,
+            width: 500,
+        });
+    });
+
+    function SaveValue() {
+        var segmentValues = '';
+        $('.autoCombo').each(function (i, item) {
+            segmentValues += i + "|" + item.value + "±";
+        });
+        var posting = false;
+        if ($('#AllowedPosting').prop("checked") == true)
+        {
+            posting = true;
+        }
+        var url = '@Url.Content("~/Codecombinition/UpdateCodeCombinition")';
+        $.post(url, { segmentValues: segmentValues, allowPosting: posting, startDate: $('#StartDate').val(), endDate: $('#EndDate').val() }, function (result) {
+            $('#dvInput').dialog('close');
+        });
+    }
+
+    $(document).ready(function () {
+        $('#dvInput').css({overflow: "hidden" });
+
+        $('#btnTestUpdate').click(function () {
+            $.ajax({
+                url: '@Url.Content("~/CodeCombinition/Test")',
+                data: { task: 'Update' },
+                datatype: 'html',
+                type: 'post',
+                error: function (error) { alert("Update Unsuccessful") },
+                success: function (data) { alert("Update Successful") }
+            });
+        });
+
+        $('#btnTestInsert').click(function () {
+            $.ajax({
+                url: '@Url.Content("~/CodeCombinition/Test")',
+                data: { task: 'Insert' },
+                datatype: 'html',
+                type: 'post',
+                error: function (error) { alert("Insert Unsuccessful") },
+                success: function (data) { alert("Insert Successful") }
+            });
+        });
+
+        $('#SOBId').change(function () {
+            $.ajax({
+                url: '@Url.Content("~/CodeCombinition/GetCodeCombinitionList")',
+                data: {
+                    sobId: $('#SOBId').val()
+                },
+                datatype: 'html',
+                type: 'post',
+                error: function (data) { },
+                success: function (data) {
+                    $('#dvList').html(data);
+                }
+            });
+        });
+
+        $('#btnCreate').click(function () {
+            $.ajax({
+                url: '@Url.Content("~/CodeCombinition/Create")',
+                data: { sobId: $('#SOBId').val() },
+                datatype: 'html',
+                type: 'post',
+                error: function (error) { },
+                success: function (data) {
+                    $('#dvInput').html(data);
+                    $('#dvInput').dialog("open");
+                    return false;
+                }
+            });
+        });
+    });
+</script>

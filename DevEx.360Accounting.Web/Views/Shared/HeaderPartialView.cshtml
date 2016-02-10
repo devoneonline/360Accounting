@@ -1,0 +1,27 @@
+<div class="headerTop">
+    <div id="wrapper">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <img class="img-responsive" src='@Url.Content("~/Content/images/logo.png")' alt="" />
+            </div>
+            @Html.Partial("_LoginPartial")
+
+            @*@Html.Partial("_Menu")*@
+        </nav>
+    </div>
+</div>
+@*<div class="headerMenu">
+    @Html.DevExpress().Menu(settings => {
+        settings.Name = "HeaderMenu";
+        settings.ItemAutoWidth = false;
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.Styles.Style.Border.BorderWidth = System.Web.UI.WebControls.Unit.Pixel(0);
+        settings.Styles.Style.BorderTop.BorderWidth = System.Web.UI.WebControls.Unit.Pixel(1);
+    }).BindToXML(HttpContext.Current.Server.MapPath("~/App_Data/TopMenu.xml"), "/items/*").GetHtml()
+</div>*@
