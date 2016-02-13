@@ -17,12 +17,12 @@
     </div>
 </div>
 
-    @{
-        if (Model.Companies != null)
+@{
+    if (Model.Companies != null)
+    {
+        if (Model.Companies.Count() > 0)
         {
-            if (Model.Companies.Count() > 0)
-            {
-                var grid = new WebGrid(canSort: true,
+            @*var grid = new WebGrid(canSort: true,
                     rowsPerPage: _360Accounting.Common.Utility.Configuration.GridRows);
                 grid.Bind(Model.Companies);
 
@@ -37,10 +37,66 @@
                         grid.Column(columnName: "Id",
                                         header: "Company Id",
                                         canSort: true),
-                        grid.Column("Name", header: "Company Name", canSort: true)))
+                        grid.Column("Name", header: "Company Name", canSort: true)))*@
+
+            Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
+
+            //Html.EnableClientValidation();
+            //Html.EnableUnobtrusiveJavaScript();
+
+            var grid = Html.DevExpress().GridView(settings =>
+            {
+                settings.Name = "Companies";
+                settings.Theme = "Office2010Black";
+                settings.KeyFieldName = "Id";
+
+                settings.CallbackRouteValues = new { Controller = "Company", Action = "CompanyListPartial" };
+
+                settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+                settings.SettingsBehavior.ConfirmDelete = true;
+                
+                settings.SettingsPager.Visible = true;
+                settings.Settings.ShowGroupPanel = true;
+                settings.Settings.ShowFilterRow = true;
+                settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+                settings.Columns.Add(column =>
+                {
+                    column.Caption = "#";
+                    column.SetDataItemTemplateContent(c =>
+                    {
+                        ViewContext.Writer.Write(
+                            Html.Raw("<a href='" + Url.Content("~/Company/Edit/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
+                    + "&nbsp;" +
+                            Html.ActionLink("Delete", "Delete", new { id = DataBinder.Eval(c.DataItem, "Id") },
+                                new { onclick = "return confirm('Do you really want to delete this record?')" })
+                        );
+                    });
+                    //column.SetHeaderTemplateContent(c =>
+                    //{
+                    //    ViewContext.Writer.Write(
+                    //        Html.ActionLink("New", "Create", new { Id = -1 }).ToHtmlString()
+                    //    );
+                    //});
+                    column.Settings.AllowDragDrop = DefaultBoolean.False;
+                    column.Settings.AllowSort = DefaultBoolean.False;
+                    column.Width = 70;
+                });     
+                
+                settings.Columns.Add("Id", "Company Id");
+                settings.Columns.Add("Name", "Company Name");
+            });
+            if (ViewData["EditError"] != null)
+            {
+                grid.SetEditErrorText((string)ViewData["EditError"]);
             }
+            
+            grid.Bind(Model.Companies).GetHtml();
         }
     }
+}
 <script type="text/javascript">
     $(document).ready(function () {
         $('#btnNew').click(function () {

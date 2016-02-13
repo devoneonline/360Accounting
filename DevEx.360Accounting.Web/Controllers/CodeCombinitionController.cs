@@ -282,5 +282,12 @@ namespace DevEx_360Accounting_Web.Controllers
             return segmentList;
         }
         #endregion
+
+        public ActionResult CodeCombinitionPartial(long sobId)
+        {
+            IEnumerable<CodeCombinitionViewModel> codeCombinition = service.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", true, null, "", "")
+                .Select(x => new CodeCombinitionViewModel(x));
+            return PartialView("_List", codeCombinition);
+        }
     }
 }

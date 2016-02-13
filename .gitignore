@@ -154,3 +154,25 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+/packages/Microsoft.AspNet.Mvc.5.2.3/Content/Web.config.install.xdt
+/packages/Microsoft.AspNet.Mvc.5.2.3/Content/Web.config.uninstall.xdt
+/packages/Microsoft.AspNet.Mvc.5.2.3/Microsoft.AspNet.Mvc.5.2.3.nupkg
+/packages/Microsoft.AspNet.Mvc.5.2.3/Microsoft.AspNet.Mvc.5.2.3.nuspec
+/packages/Microsoft.AspNet.Mvc.5.2.3/lib/net45/System.Web.Mvc.dll
+/packages/Microsoft.AspNet.Mvc.5.2.3/lib/net45/System.Web.Mvc.xml
+/packages/Microsoft.AspNet.Razor.3.2.3/Microsoft.AspNet.Razor.3.2.3.nupkg
+/packages/Microsoft.AspNet.Razor.3.2.3/Microsoft.AspNet.Razor.3.2.3.nuspec
+/packages/Microsoft.AspNet.Razor.3.2.3/lib/net45/System.Web.Razor.dll
+/packages/Microsoft.AspNet.Razor.3.2.3/lib/net45/System.Web.Razor.xml
+/packages/Microsoft.AspNet.WebPages.3.2.3/Content/Web.config.install.xdt
+/packages/Microsoft.AspNet.WebPages.3.2.3/Content/Web.config.uninstall.xdt
+/packages/Microsoft.AspNet.WebPages.3.2.3/Microsoft.AspNet.WebPages.3.2.3.nupkg
+/packages/Microsoft.AspNet.WebPages.3.2.3/Microsoft.AspNet.WebPages.3.2.3.nuspec
+/packages/Microsoft.AspNet.WebPages.3.2.3/lib/net45/System.Web.Helpers.dll
+/packages/Microsoft.AspNet.WebPages.3.2.3/lib/net45/System.Web.Helpers.xml
+/packages/Microsoft.AspNet.WebPages.3.2.3/lib/net45/System.Web.WebPages.Deployment.dll
+/packages/Microsoft.AspNet.WebPages.3.2.3/lib/net45/System.Web.WebPages.Deployment.xml
+/packages/Microsoft.AspNet.WebPages.3.2.3/lib/net45/System.Web.WebPages.Razor.dll
+/packages/Microsoft.AspNet.WebPages.3.2.3/lib/net45/System.Web.WebPages.Razor.xml
+/packages/Microsoft.AspNet.WebPages.3.2.3/lib/net45/System.Web.WebPages.dll
+/packages/Microsoft.AspNet.WebPages.3.2.3/lib/net45/System.Web.WebPages.xml

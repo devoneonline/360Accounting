@@ -88,6 +88,13 @@ namespace DevEx_360Accounting_Web.Controllers
                 CompanyId = model.CompanyId,
                 Name = model.Name
             };
-        } 
+        }
+
+        public ActionResult SetOfBookPartial()
+        {
+            var list = service.GetByCompanyId(AuthenticationHelper.User.CompanyId);
+            IEnumerable<SetOfBookModel> setofBookList = list.Select(a => new SetOfBookModel(a));
+            return PartialView("_List", setofBookList);
+        }
     }
 }
