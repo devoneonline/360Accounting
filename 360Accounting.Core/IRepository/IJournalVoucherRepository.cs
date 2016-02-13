@@ -16,5 +16,7 @@ namespace _360Accounting.Core.Interfaces
         string Insert(JournalVoucherDetail entity);
 
         string Update(JournalVoucherDetail entity);
+
+        IEnumerable<UserwiseEntriesTrial> UserwiseEntriesTrial(long sobId, DateTime fromDate, DateTime toDate, string userName);
     }
 }

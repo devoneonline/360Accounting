@@ -54,6 +54,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Common.Logging.Core.3.0.0\lib\net40\Common.Logging.Core.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.Sparkline.v14.2.Core, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="EntityFramework">
       <HintPath>..\..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -101,10 +102,10 @@
     </Reference>
     <Reference Include="System.Web.Mvc, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.0.0\lib\net45\System.Web.Mvc.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.0.0\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Optimization">
-      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.1\lib\net40\System.Web.Optimization.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -318,6 +319,14 @@
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\User\ManageUser.cshtml" />
     <Content Include="Views\User\Settings.cshtml" />
+    <Content Include="Views\User\DemoReport.cshtml" />
+    <Content Include="Views\User\_UserList.cshtml" />
+    <Content Include="Views\User\UserList.cshtml" />
+    <Content Include="Views\User\UserwiseRole.cshtml" />
+    <Content Include="Views\User\_UserwiseRole.cshtml" />
+    <Content Include="Views\User\UserwiseSession.cshtml" />
+    <Content Include="Views\User\_UserwiseSession.cshtml" />
+    <Content Include="Views\User\UserwiseEntriesTrial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -372,6 +381,36 @@
     <Compile Include="Models\UserCreateModel.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\UserList.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\UserList.Designer.cs">
+      <DependentUpon>UserList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DemoReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\DemoReport.Designer.cs">
+      <DependentUpon>DemoReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\UserwiseEntriesTrial.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\UserwiseEntriesTrial.Designer.cs">
+      <DependentUpon>UserwiseEntriesTrial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\UserwiseRole.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\UserwiseRole.Designer.cs">
+      <DependentUpon>UserwiseRole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\UserwiseSession.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\UserwiseSession.Designer.cs">
+      <DependentUpon>UserwiseSession.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
@@ -393,6 +432,25 @@
       <Project>{51cb8959-1e5d-4453-b6b6-6a32b768e688}</Project>
       <Name>360Accounting.Service</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Reports\DemoReport.resx">
+      <DependentUpon>DemoReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\UserList.resx">
+      <DependentUpon>UserList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\UserwiseEntriesTrial.resx">
+      <DependentUpon>UserwiseEntriesTrial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\UserwiseRole.resx">
+      <DependentUpon>UserwiseRole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\UserwiseSession.resx">
+      <DependentUpon>UserwiseSession.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

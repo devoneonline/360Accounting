@@ -12,6 +12,8 @@ using System.Web.Mvc;
 using System.Web.Security;
 using DevExpress.Web.Mvc;
 using DevEx_360Accounting_Web.Models;
+using DevEx._360Accounting.Web.Reports;
+using DevExpress.XtraReports.UI;
 
 namespace DevEx_360Accounting_Web.Controllers
 {
@@ -34,6 +36,85 @@ namespace DevEx_360Accounting_Web.Controllers
         #endregion
 
         #region ActionResult
+
+        #region Uzair Reports Code
+
+        #region Code for getting reports data
+        List<UserViewModel> GetUserList()
+        {
+            MembershipUserCollection memCollection = Membership.GetAllUsers();
+            List<UserViewModel> users = new List<UserViewModel>();
+            foreach (MembershipUser user in memCollection)
+            {
+                UserViewModel item = new UserViewModel();
+                item.UserId = Guid.Parse(user.ProviderUserKey.ToString());
+                item.UserName = user.UserName;
+                item.Role = Roles.GetRolesForUser(user.UserName)[0];
+                users.Add(item);
+            }
+
+            return users;
+        }
+
+        object UserwiseSessionPartial(DateTime fromDate, DateTime toDate, string userName)
+        {
+            //Which object to get here & where to get the data from?????
+            return new object();
+        }
+
+        #endregion
+
+        public ActionResult UserwiseEntriesTrial()
+        {
+            DevEx._360Accounting.Web.Reports.UserwiseEntriesTrial model = new DevEx._360Accounting.Web.Reports.UserwiseEntriesTrial();
+            //get data in the model.
+            return View(model);
+        }
+
+        public ActionResult UserwiseSession()
+        {
+            UserwiseSession model = new UserwiseSession();
+            //GetData & pass it to the UserwiseSession.
+            //but where to get the data from????
+            return View(model);
+        }
+
+        public ActionResult UserwiseRole()
+        {
+            UserwiseRole model = new UserwiseRole();
+            //GetData (from GetUserList) & pass it to the UserwiseRole(View).
+            return View(model);
+        }
+
+        public ActionResult UserList()
+        {
+            return View();
+        }
+        
+        public ActionResult DocumentViewerPartial()
+        {
+            return PartialView("_UserList", CreateReport());
+        }
+
+        public ActionResult DocumentViewerPartialExport()
+        {
+            return DocumentViewerExtension.ExportTo(CreateReport(), Request);
+        }
+
+        public ActionResult DemoReport()
+        {
+            return View(new DemoReport());
+        }
+
+        private UserList CreateReport()
+        {
+            List<UserViewModel> modelList = GetUserList();
+            UserList report = new UserList();
+            report.DataSource = modelList;
+            return report;
+        }
+
+        #endregion
 
         public ActionResult Index(MembershipUserListModel model)
         {
@@ -352,12 +433,5 @@ namespace DevEx_360Accounting_Web.Controllers
         }
 
         #endregion
-
-
-        public ActionResult ChartPartial()
-        {
-            var model = new object[0];
-            return PartialView("_ChartPartial", model);
-        }
     }
 }

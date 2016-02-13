@@ -4,6 +4,10 @@
     ViewBag.Title = "Journal Voucher";
 }
 
+<script src="~/Scripts/jquery-ui-1.10.3.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
 <div class="row">
     <div class="col-lg-12">
         <h3 class="page-header">
@@ -111,16 +115,12 @@ FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             <input type="button" value="Cancel" class="btn btn-default" id="btnCancel" />
         </div>
     </div>
-    
-        @section Scripts {
-            @Scripts.Render("~/bundles/jqueryval")
-
-            <script type="text/javascript">
-                $(document).ready(function () {
-                    $('#btnCancel').click(function () {
-                        window.location.href = '@Url.Content("~/JournalVoucher/Index")';
-                    });
-                });
-            </script>
-        }
 }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnCancel').click(function () {
+            window.location.href = '@Url.Content("~/JournalVoucher/Index")';
+        });
+    });
+</script>

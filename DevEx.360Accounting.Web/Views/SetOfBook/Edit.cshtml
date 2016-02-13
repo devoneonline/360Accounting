@@ -4,6 +4,10 @@
     ViewBag.Title = "Edit Book";
 }
 
+<script src="~/Scripts/jquery-ui-1.10.3.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
 <div class="row">
     <div class="col-lg-12">
         <h3 class="page-header">
@@ -28,8 +32,5 @@
             <input type="submit" value="Save" class="btn btn-default" />
             <input type="button" value="Cancel" class="btn btn-default" onclick="javascript: window.location.href='@Url.Content("~/SetOfBook/Index")'" />
         </div>
-        @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-    }
     }
 </div>
