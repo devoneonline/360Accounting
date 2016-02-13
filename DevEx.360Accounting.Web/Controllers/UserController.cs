@@ -426,7 +426,7 @@ namespace DevEx_360Accounting_Web.Controllers
             var memUser = Membership.GetUser(userName);
             if (memUser != null)
             {
-                IEnumerable<Feature> featureList = service.GetMenuItemsByUserId(Guid.Parse(memUser.ProviderUserKey.ToString()));
+                List<Feature> featureList = service.GetMenuItemsByUserId(Guid.Parse(memUser.ProviderUserKey.ToString())).ToList();
                 var modelList = featureList.Select(x => new FeatureViewModel(x)).ToList();
                 AuthenticationHelper.MenuItems = modelList;
             }

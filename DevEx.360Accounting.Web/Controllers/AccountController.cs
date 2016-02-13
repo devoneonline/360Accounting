@@ -91,6 +91,12 @@ namespace DevEx_360Accounting_Web.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult AccountListPartial()
+        {
+            List<AccountViewModel> accountsList = listAccounts("", false, null, "", "");
+            return PartialView("_List", accountsList);
+        }
+
         #region Private Methods
 
         ////private method name should start with small character
