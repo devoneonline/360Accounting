@@ -35,4 +35,17 @@ namespace _360Accounting.Core.Entities
 
         ////public List<JournalVoucherDetail> JournalVoucherDetail { get; set; }
     }
+
+    public class UserwiseEntriesTrial
+    {
+        public Guid UserId { get; set; }
+
+        public string UserName { get; set; }
+
+        public DateTime TransactionDate { get; set; }
+
+        public string DocumentNo { get; set; }
+
+        public string EntryType { get; set; }
+    }
 }

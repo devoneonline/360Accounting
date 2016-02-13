@@ -18,6 +18,11 @@ namespace _360Accounting.Service
             this.repository = repo;
         }
 
+        public IEnumerable<UserwiseEntriesTrial> UserwiseEntriesTrial(long sobId, DateTime fromDate, DateTime toDate, string userName)
+        {
+            return this.repository.UserwiseEntriesTrial(sobId, fromDate, toDate, userName);
+        }
+
         public IEnumerable<JournalVoucherDetail> GetAll(string headerId)
         {
             return this.repository.GetAll(headerId);

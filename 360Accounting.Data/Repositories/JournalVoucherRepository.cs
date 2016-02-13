@@ -11,6 +11,11 @@ namespace _360Accounting.Data.Repositories
 {
     public class JournalVoucherRepository : Repository, IJournalVoucherRepository
     {
+        public IEnumerable<UserwiseEntriesTrial> UserwiseEntriesTrial(long sobId, DateTime fromDate, DateTime toDate, string userName)
+        {
+            throw new NotImplementedException();
+        }
+
         public string Insert(JournalVoucherDetail entity)
         {
             this.Context.JournalVoucherDetails.Add(entity);

@@ -98,4 +98,17 @@ namespace DevEx_360Accounting_Web.Models
         public long TaxRateCode { get; set; }
         #endregion 
     }
+
+    public class UserwiseEntriesTrialModel
+    {
+        public Guid UserId { get; set; }
+
+        public string UserName { get; set; }
+
+        public DateTime TransactionDate { get; set; }
+
+        public string DocumentNo { get; set; }
+
+        public string EntryType { get; set; }
+    }
 }

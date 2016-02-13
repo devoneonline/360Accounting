@@ -4,6 +4,10 @@
     ViewBag.Title = "Edit Calendar";
 }
 
+<script src="~/Scripts/jquery-ui-1.10.3.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">
@@ -64,15 +68,12 @@ FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             </div>
         </div>
     </div>
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('#btnCancel').click(function () {
-                    window.location.href = '@Url.Content("~/Calendar/Index")';
-                });
-            });
-        </script>
-    }
 }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnCancel').click(function () {
+            window.location.href = '@Url.Content("~/Calendar/Index")';
+        });
+    });
+</script>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExpress.XtraReports.UI;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -127,5 +128,18 @@ namespace DevEx_360Accounting_Web.Models
             this.Email = email;
             this.CompanyName = companyName;
         }
+    }
+
+    public class UserwiseSessionModel
+    {
+        public Guid UserId { get; set; }
+
+        public string UserName { get; set; }
+
+        public DateTime Start { get; set; }
+
+        public DateTime End { get; set; }
+
+        public TimeSpan Duration { get; set; }
     }
 }

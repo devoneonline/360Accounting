@@ -1,0 +1,37 @@
+﻿@model DevEx._360Accounting.Web.Reports.UserwiseSession
+
+@Html.DevExpress().DocumentViewer(
+        settings =>
+        {
+            settings.Name = "DocumentViewer";
+            settings.Report = Model.Report;
+            settings.SettingsSplitter.DocumentMapCollapsed = true;
+            settings.CallbackRouteValues = new { Controller = "User", Action = "UserwiseSessionPartial", fromDate = Model.FromDate, toDate = Model.ToDate, UserName = Model.UserNameFilter };
+            settings.SetCustomParameter("DateFrom", x =>
+            {
+                x.ParameterType = MVCxDocumentViewerParameterEditorType.DateEdit;
+                var properties = (DateEditProperties)x.PropertiesEdit;
+                properties.MinDate = new DateTime(2016, 1, 1);
+                properties.MaxDate = DateTime.Now;
+            });
+            settings.SetCustomParameter("DateTo", x =>
+            {
+                x.ParameterType = MVCxDocumentViewerParameterEditorType.DateEdit;
+                var properties = (DateEditProperties)x.PropertiesEdit;
+                properties.MinDate = new DateTime(2016, 1, 1);
+                properties.MaxDate = DateTime.Now;
+            });
+
+            settings.SetCustomParameter("UserNameFilter", x =>
+            { 
+                x.ParameterType = MVCxDocumentViewerParameterEditorType.ComboBox;
+                var properties = (ComboBoxProperties)x.PropertiesEdit;
+                properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                properties.DropDownStyle = DropDownStyle.DropDownList;
+                properties.DataSource = Model.Users;
+                properties.TextField = "UserName";
+                properties.ValueField = "UserName";
+            });
+        }
+)
+
