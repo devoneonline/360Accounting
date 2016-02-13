@@ -49,8 +49,7 @@
                                 ViewContext.Writer.Write(
                                     Html.Raw("<a href='" + Url.Content("~/SetOfBook/Edit/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
                             + "&nbsp;" +
-                                    Html.ActionLink("Delete", "Delete", new { id = DataBinder.Eval(c.DataItem, "Id") },
-                                        new { onclick = "return confirm('Do you really want to delete this record?')" })
+                                    Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/SetOfBook/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
                                 );
                             });
                             column.Settings.AllowDragDrop = DefaultBoolean.False;

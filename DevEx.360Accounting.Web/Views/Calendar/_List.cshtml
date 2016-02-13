@@ -24,16 +24,10 @@ var grid = Html.DevExpress().GridView(settings =>
             ViewContext.Writer.Write(
                 Html.Raw("<a href='" + Url.Content("~/Calendar/Edit/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
                     + "&nbsp;" +
-                Html.ActionLink("Delete", "Delete", new { id = DataBinder.Eval(c.DataItem, "Id") },
-                    new { onclick = "return confirm('Do you really want to delete this record?')" })
+                Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/Calendar/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
             );
         });
-        //column.SetHeaderTemplateContent(c =>
-        //{
-        //    ViewContext.Writer.Write(
-        //        Html.ActionLink("New", "Create", new { Id = -1 }).ToHtmlString()
-        //    );
-        //});
+
         column.Settings.AllowDragDrop = DefaultBoolean.False;
         column.Settings.AllowSort = DefaultBoolean.False;
         column.Width = 70;
@@ -49,8 +43,6 @@ var grid = Html.DevExpress().GridView(settings =>
     settings.Columns.Add("EndDate");
     settings.Columns.Add("Adjusting");
     settings.Columns.Add("ClosingStatus");
-    //settings.Columns.Add("ClosingStatusList");
-    //settings.Columns.Add("SetOfBooks");
 });
 if (ViewData["EditError"] != null)
 {
