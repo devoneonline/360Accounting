@@ -119,5 +119,12 @@ namespace DevEx_360Accounting_Web.Controllers
             };
         }
         #endregion
+
+        public ActionResult CurrencyListPartial(long sobId) 
+        {
+            IEnumerable<CurrencyViewModel> currencyList = service.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", true, null, "", "")
+                .Select(x => new CurrencyViewModel(x)).ToList();
+            return PartialView("_List");
+        }
     }
 }

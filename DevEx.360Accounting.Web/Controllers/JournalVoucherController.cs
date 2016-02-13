@@ -310,5 +310,13 @@ namespace DevEx_360Accounting_Web.Controllers
                 
         }
         #endregion
+
+        public ActionResult JournalVoucherPartial()
+        {
+            IEnumerable<JournalVoucherViewModel> list = service.GetAll(AuthenticationHelper.User.CompanyId, "", true, null, "", "")
+                .Select(x => new JournalVoucherViewModel(x));
+            
+            return PartialView("_List");
+        }
     }
 }

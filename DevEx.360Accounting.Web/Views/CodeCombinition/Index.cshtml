@@ -28,7 +28,7 @@
         </div>
     </div>
     <div id="dvList" class="col-lg-12">
-        @Html.Partial("_List", Model)
+        @Html.Action("CodeCombinitionPartial", new { sobId = Model.SOBId })
     </div>
 </div>
 <div id="dvInput">
@@ -51,8 +51,7 @@
             segmentValues += i + "|" + item.value + "±";
         });
         var posting = false;
-        if ($('#AllowedPosting').prop("checked") == true)
-        {
+        if ($('#AllowedPosting').prop("checked") == true) {
             posting = true;
         }
         var url = '@Url.Content("~/Codecombinition/UpdateCodeCombinition")';
@@ -62,7 +61,7 @@
     }
 
     $(document).ready(function () {
-        $('#dvInput').css({overflow: "hidden" });
+        $('#dvInput').css({ overflow: "hidden" });
 
         $('#btnTestUpdate').click(function () {
             $.ajax({

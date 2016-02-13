@@ -74,6 +74,7 @@
 
         settings.CallbackRouteValues = new { Controller = "AccountValue", Action = "AccountValuesPartial" };
 
+        settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
         settings.SettingsBehavior.ConfirmDelete = true;
 
         settings.SettingsPager.Visible = true;
@@ -83,20 +84,22 @@
 
         settings.Columns.Add(column =>
         {
+            column.Caption = "#";
             column.SetDataItemTemplateContent(c =>
             {
                 ViewContext.Writer.Write(
-                    Html.ActionLink("Edit", "List2", new { id = DataBinder.Eval(c.DataItem, "Id") }) + "&nbsp;" +
-                    Html.ActionLink("Delete", "List2", new { id = DataBinder.Eval(c.DataItem, "Id") },
+                    Html.Raw("<a href='" + Url.Content("~/AccountValue/Edit/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
+                    + "&nbsp;" +
+                    Html.ActionLink("Delete", "Delete", new { id = DataBinder.Eval(c.DataItem, "Id") },
                         new { onclick = "return confirm('Do you really want to delete this record?')" })
                 );
             });
-            column.SetHeaderTemplateContent(c =>
-            {
-                ViewContext.Writer.Write(
-                    Html.ActionLink("New", "Create", new { Id = -1 }).ToHtmlString()
-                );
-            });
+            //column.SetHeaderTemplateContent(c =>
+            //{
+            //    ViewContext.Writer.Write(
+            //        Html.ActionLink("New", "Create", new { Id = -1 }).ToHtmlString()
+            //    );
+            //});
             column.Settings.AllowDragDrop = DefaultBoolean.False;
             column.Settings.AllowSort = DefaultBoolean.False;
             column.Width = 70;

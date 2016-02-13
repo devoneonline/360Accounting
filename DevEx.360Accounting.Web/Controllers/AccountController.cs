@@ -70,6 +70,8 @@ namespace DevEx_360Accounting_Web.Controllers
             model.SetOfBooks.Add(new SelectListItem { Text = sob.Name, Value = sob.Id.ToString() });
 
             return View(model);
+
+            //Opens popup in grid..
         }
 
         [HttpPost]

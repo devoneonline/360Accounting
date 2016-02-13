@@ -48,23 +48,38 @@
                 settings.Theme = "Office2010Black";
                 settings.KeyFieldName = "Id";
 
-                settings.CallbackRouteValues = new { Controller = "SetOfBook", Action = "List2" };
+                settings.CallbackRouteValues = new { Controller = "SetOfBook", Action = "SetOfBookPartial" };
 
-                settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "SetOfBook", Action = "List2AddNew" };
-                settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "SetOfBook", Action = "List2Update" };
-                settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "SetOfBook", Action = "List2Delete" };
                 settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
                 settings.SettingsBehavior.ConfirmDelete = true;
-
-                settings.CommandColumn.Visible = true;
-                settings.CommandColumn.ShowNewButton = true;
-                settings.CommandColumn.ShowDeleteButton = true;
-                settings.CommandColumn.ShowEditButton = true;
 
                 settings.SettingsPager.Visible = true;
                 settings.Settings.ShowGroupPanel = true;
                 settings.Settings.ShowFilterRow = true;
                 settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+                settings.Columns.Add(column =>
+                {
+                    column.Caption = "#";
+                    column.SetDataItemTemplateContent(c =>
+                    {
+                        ViewContext.Writer.Write(
+                            Html.Raw("<a href='" + Url.Content("~/SetOfBook/Edit/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
+                    + "&nbsp;" +
+                            Html.ActionLink("Delete", "Delete", new { id = DataBinder.Eval(c.DataItem, "Id") },
+                                new { onclick = "return confirm('Do you really want to delete this record?')" })
+                        );
+                    });
+                    //column.SetHeaderTemplateContent(c =>
+                    //{
+                    //    ViewContext.Writer.Write(
+                    //        Html.ActionLink("New", "Create", new { Id = -1 }).ToHtmlString()
+                    //    );
+                    //});
+                    column.Settings.AllowDragDrop = DefaultBoolean.False;
+                    column.Settings.AllowSort = DefaultBoolean.False;
+                    column.Width = 70;
+                });
 
                 settings.Columns.Add("Name", "SOB Name");
             });

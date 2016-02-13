@@ -1,32 +1,32 @@
-﻿@model DevEx_360Accounting_Web.Models.CurrencyListModel
+﻿@*@model DevEx_360Accounting_Web.Models.CurrencyListModel
 
 @{
     if (Model.Currencies != null)
     {
         if (Model.Currencies.Count() > 0)
         {
-            @*var grid = new WebGrid(canSort: true,
+            var grid = new WebGrid(canSort: true,
                     rowsPerPage: 20,
                     ajaxUpdateContainerId: "dvCurrencyList",
                     ajaxUpdateCallback: "CallBack");
 
-                if (Model.Page == null) { grid.PageIndex = 0; }
-                else { grid.PageIndex = Model.Page.Value - 1; }
+            if (Model.Page == null) { grid.PageIndex = 0; }
+            else { grid.PageIndex = Model.Page.Value - 1; }
 
-                grid.Bind(Model.Currencies, rowCount: Model.TotalRecords,
-                    autoSortAndPage: false);
+            grid.Bind(Model.Currencies, rowCount: Model.TotalRecords,
+                autoSortAndPage: false);
 
-                <div class="col-sm-offset-10">
-                    @{ var startrow = (grid.RowsPerPage * grid.PageIndex) + 1;}
-                    @{ var endrow = (startrow + grid.Rows.Count - 1);}
-                    Displaying: <b>@startrow - @endrow</b>
-                    <br />
-                    TotalRecords <b>@grid.TotalRowCount</b>
-                </div>
+            <div class="col-sm-offset-10">
+                @{ var startrow = (grid.RowsPerPage * grid.PageIndex) + 1;}
+                @{ var endrow = (startrow + grid.Rows.Count - 1);}
+                Displaying: <b>@startrow - @endrow</b>
+                <br />
+                TotalRecords <b>@grid.TotalRowCount</b>
+            </div>
 
-                @grid.GetHtml(tableStyle: "table table-bordered table-hover table-striped",
+            @grid.GetHtml(tableStyle: "table table-bordered table-hover table-striped",
                 mode: WebGridPagerModes.All, numericLinksCount: 10,
-                htmlAttributes: new { style = "width:100%", @class = "table", id="tblCurrencies" },
+                htmlAttributes: new { style = "width:100%", @class = "table", id = "tblCurrencies" },
                 columns: grid.Columns
                 (
                 grid.Column("", header: "Actions", style: "ActionLink",
@@ -46,55 +46,70 @@
                     grid.Column(columnName: "Precision",
                     header: "Precision",
                     canSort: true)
-                ))*@
-
-            Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
-                    new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
-                    new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
-
-            //Html.EnableClientValidation();
-            //Html.EnableUnobtrusiveJavaScript();
-
-            var grid = Html.DevExpress().GridView(settings =>
-            {
-                settings.Name = "Currency";
-                settings.Theme = "Office2010Black";
-                settings.KeyFieldName = "Id";
-
-                settings.CallbackRouteValues = new { Controller = "Currency", Action = "List2" };
-
-                settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Currency", Action = "List2AddNew" };
-                settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Currency", Action = "List2Update" };
-                settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Currency", Action = "List2Delete" };
-                settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
-                settings.SettingsBehavior.ConfirmDelete = true;
-
-                settings.CommandColumn.Visible = true;
-                settings.CommandColumn.ShowNewButton = true;
-                settings.CommandColumn.ShowDeleteButton = true;
-                settings.CommandColumn.ShowEditButton = true;
-
-                settings.SettingsPager.Visible = true;
-                settings.Settings.ShowGroupPanel = true;
-                settings.Settings.ShowFilterRow = true;
-                settings.SettingsBehavior.AllowSelectByRowClick = true;
-
-                settings.Columns.Add("CurrencyCode", "Currency Code");
-                settings.Columns.Add("Name", "Currency Name");
-                settings.Columns.Add("Precision");
-            });
-            if (ViewData["EditError"] != null)
-            {
-                grid.SetEditErrorText((string)ViewData["EditError"]);
-            }
-            grid.Bind(Model.Currencies).GetHtml();
+                ))
         }
         else
         {
             <div id='dvNoRecord'>No Record Found!</div>
         }
     }
+}*@
+
+@{Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
+
+//Html.EnableClientValidation();
+//Html.EnableUnobtrusiveJavaScript();
+
+var grid = Html.DevExpress().GridView(settings =>
+{
+    settings.Name = "Currency";
+    settings.Theme = "Office2010Black";
+    settings.KeyFieldName = "Id";
+
+    settings.CallbackRouteValues = new { Controller = "Currency", Action = "CurrencyListPartial" };
+
+    settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+    settings.SettingsBehavior.ConfirmDelete = true;
+
+    settings.SettingsPager.Visible = true;
+    settings.Settings.ShowGroupPanel = true;
+    settings.Settings.ShowFilterRow = true;
+    settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+    settings.Columns.Add(column =>
+    {
+        column.Caption = "#";
+        column.SetDataItemTemplateContent(c =>
+        {
+            ViewContext.Writer.Write(
+                Html.Raw("<a href='" + Url.Content("~/Currency/Edit/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
+                    + "&nbsp;" +
+                Html.ActionLink("Delete", "Delete", new { id = DataBinder.Eval(c.DataItem, "Id") },
+                    new { onclick = "return confirm('Do you really want to delete this record?')" })
+            );
+        });
+        //column.SetHeaderTemplateContent(c =>
+        //{
+        //    ViewContext.Writer.Write(
+        //        Html.ActionLink("New", "Create", new { Id = -1 }).ToHtmlString()
+        //    );
+        //});
+        column.Settings.AllowDragDrop = DefaultBoolean.False;
+        column.Settings.AllowSort = DefaultBoolean.False;
+        column.Width = 70;
+    });
+    settings.Columns.Add("CurrencyCode", "Currency Code");
+    settings.Columns.Add("Name", "Currency Name");
+    settings.Columns.Add("Precision");
+});
+if (ViewData["EditError"] != null)
+{
+    grid.SetEditErrorText((string)ViewData["EditError"]);
 }
+}
+@grid.Bind(Model).GetHtml()
 
 <script type="text/javascript">
     $(document).ready(function () {
