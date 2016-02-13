@@ -138,5 +138,11 @@ namespace DevEx_360Accounting_Web.Controllers
         }
 
         #endregion
+
+        public ActionResult AccountListPartial()
+        {
+            List<AccountViewModel> accountsList = listAccounts("", false, null, "", "");
+            return PartialView("_List", accountsList);
+        }
     }
 }

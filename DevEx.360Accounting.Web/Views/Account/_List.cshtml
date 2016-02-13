@@ -1,4 +1,4 @@
-﻿@model DevEx_360Accounting_Web.Models.AccountListModel
+﻿@*@model DevEx_360Accounting_Web.Models.AccountListModel
 
 @{
     if (Model.Accounts != null)
@@ -52,4 +52,43 @@
     function CallBack(context) {
         $("#dvAccountList")[0].innerHTML = context;
     }
-</script>
+</script>*@
+
+@{Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
+
+Html.EnableClientValidation();
+Html.EnableUnobtrusiveJavaScript();
+
+var grid = Html.DevExpress().GridView(settings =>
+{
+    settings.Name = "Account";
+    settings.Theme = "Office2010Black";
+    settings.KeyFieldName = "Id";
+
+    settings.CallbackRouteValues = new { Controller = "Account", Action = "AccountListPartial" };
+
+    settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+    settings.SettingsBehavior.ConfirmDelete = true;
+
+    settings.CommandColumn.Visible = true;
+    settings.CommandColumn.ShowNewButton = true;
+    settings.CommandColumn.ShowDeleteButton = true;
+    settings.CommandColumn.ShowEditButton = true;
+
+    settings.SettingsPager.Visible = true;
+    settings.Settings.ShowGroupPanel = true;
+    settings.Settings.ShowFilterRow = true;
+    settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+    settings.Columns.Add("SOBName", "Set Of Book");
+    settings.Columns.Add("Segments");
+    settings.Columns.Add("SegmentsLength", "Segments Size");
+});
+if (ViewData["EditError"] != null)
+{
+    grid.SetEditErrorText((string)ViewData["EditError"]);
+}
+}
+@grid.Bind(Model).GetHtml()

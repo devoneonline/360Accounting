@@ -1,4 +1,4 @@
-﻿@model DevEx_360Accounting_Web.Models.AccountValueListModel
+﻿@*@model DevEx_360Accounting_Web.Models.AccountValueListModel
 
 @{
     if (Model.AccountValues != null)
@@ -57,4 +57,61 @@
     function CallBack(context) {
         $("#dvAccountList")[0].innerHTML = context;
     }
-</script>
+</script>*@
+
+@{Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
+
+    //Html.EnableClientValidation();
+    //Html.EnableUnobtrusiveJavaScript();
+
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "AccountValue";
+        settings.Theme = "Office2010Black";
+        settings.KeyFieldName = "Id";
+
+        settings.CallbackRouteValues = new { Controller = "AccountValue", Action = "AccountValuesPartial" };
+
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.Columns.Add(column =>
+        {
+            column.SetDataItemTemplateContent(c =>
+            {
+                ViewContext.Writer.Write(
+                    Html.ActionLink("Edit", "List2", new { id = DataBinder.Eval(c.DataItem, "Id") }) + "&nbsp;" +
+                    Html.ActionLink("Delete", "List2", new { id = DataBinder.Eval(c.DataItem, "Id") },
+                        new { onclick = "return confirm('Do you really want to delete this record?')" })
+                );
+            });
+            column.SetHeaderTemplateContent(c =>
+            {
+                ViewContext.Writer.Write(
+                    Html.ActionLink("New", "Create", new { Id = -1 }).ToHtmlString()
+                );
+            });
+            column.Settings.AllowDragDrop = DefaultBoolean.False;
+            column.Settings.AllowSort = DefaultBoolean.False;
+            column.Width = 70;
+        });        
+        settings.Columns.Add("Segment");
+        settings.Columns.Add("ValueName", "Detail");
+        settings.Columns.Add("Value");
+        settings.Columns.Add("StartDate");
+        settings.Columns.Add("EndDate");
+        settings.Columns.Add("AccountType");
+        settings.Columns.Add("Levl", "Level");
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

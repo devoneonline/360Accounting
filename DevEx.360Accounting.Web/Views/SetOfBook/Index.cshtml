@@ -16,12 +16,12 @@
     <input type="button" value="Create New" class="btn btn-default" id="btnNew" />
 </div>
 
-    @{
-        if (Model.SetOfBooks != null)
+@{
+    if (Model.SetOfBooks != null)
+    {
+        if (Model.SetOfBooks.Count() > 0)
         {
-            if (Model.SetOfBooks.Count() > 0)
-            {
-                var grid = new WebGrid(canSort: true,
+            @*var grid = new WebGrid(canSort: true,
                     rowsPerPage: _360Accounting.Common.Utility.Configuration.GridRows);
                 grid.Bind(Model.SetOfBooks);
 
@@ -33,13 +33,52 @@
                             (
                             grid.Column("", header: "Actions", style: "ActionLink",
                                                                   format: (item) => Html.Raw("<a class = 'delete' href='" + @Url.Content("~/SetOfBook/Delete/") + item.Id + "'><img src='" + @Url.Content("~/Content/images/delete.png") + "' alt='' title='Delete' style='border:0'/></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='" + @Url.Content("~/SetOfBook/Edit/") + item.Id + "'><img src='" + @Url.Content("~/Content/images/edit.png") + "' alt='' title='Edit' style='border:0'/></a>")),
-                            grid.Column("Name", header: "SOB Name", canSort: true)))
-            }
-            else
+                            grid.Column("Name", header: "SOB Name", canSort: true)))*@
+
+            Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
+
+            //Html.EnableClientValidation();
+            //Html.EnableUnobtrusiveJavaScript();
+
+            var grid = Html.DevExpress().GridView(settings =>
             {
-                <div id='dvNoRecord'>No Record Found!</div>
+                settings.Name = "SetOfBook";
+                settings.Theme = "Office2010Black";
+                settings.KeyFieldName = "Id";
+
+                settings.CallbackRouteValues = new { Controller = "SetOfBook", Action = "List2" };
+
+                settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "SetOfBook", Action = "List2AddNew" };
+                settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "SetOfBook", Action = "List2Update" };
+                settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "SetOfBook", Action = "List2Delete" };
+                settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+                settings.SettingsBehavior.ConfirmDelete = true;
+
+                settings.CommandColumn.Visible = true;
+                settings.CommandColumn.ShowNewButton = true;
+                settings.CommandColumn.ShowDeleteButton = true;
+                settings.CommandColumn.ShowEditButton = true;
+
+                settings.SettingsPager.Visible = true;
+                settings.Settings.ShowGroupPanel = true;
+                settings.Settings.ShowFilterRow = true;
+                settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+                settings.Columns.Add("Name", "SOB Name");
+            });
+            if (ViewData["EditError"] != null)
+            {
+                grid.SetEditErrorText((string)ViewData["EditError"]);
             }
+            grid.Bind(Model.SetOfBooks).GetHtml();
         }
+        else
+        {
+            <div id='dvNoRecord'>No Record Found!</div>
+        }
+    }
 }
 <script type="text/javascript">
     $(document).ready(function () {
