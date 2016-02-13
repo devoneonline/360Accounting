@@ -66,6 +66,7 @@
     <Compile Include="Entities\JournalVoucher.cs" />
     <Compile Include="Entities\JournalVoucherDetail.cs" />
     <Compile Include="Entities\SetOfBook.cs" />
+    <Compile Include="Entities\User.cs" />
     <Compile Include="Interfaces\ICore360.cs" />
     <Compile Include="IoC.cs" />
     <Compile Include="IRepository\IAccountRepository.cs" />

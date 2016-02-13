@@ -18,6 +18,6 @@ namespace _360Accounting.Core
 
         string Update(JournalVoucherDetail entity);
 
-        IEnumerable<UserwiseEntriesTrial> UserwiseEntriesTrial(long sobId, DateTime fromDate, DateTime toDate, string userName);
+        List<UserwiseEntriesTrial> UserwiseEntriesTrial(long companyId, long sobId, DateTime fromDate, DateTime toDate, Guid? UserId);
     }
 }

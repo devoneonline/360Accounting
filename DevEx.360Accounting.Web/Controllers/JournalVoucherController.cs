@@ -7,7 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
 using System.Web.Mvc;
+using DevEx._360Accounting.Web.Reports;
 
 namespace DevEx_360Accounting_Web.Controllers
 {
@@ -28,6 +30,81 @@ namespace DevEx_360Accounting_Web.Controllers
             calendarService = IoC.Resolve<ICalendarService>("CalendarService");
             codeCombinitionService = IoC.Resolve<ICodeCombinitionService>("CodeCombinitionService");
         }
+
+        #region Reports
+        private UserwiseEntriesTrialReport CreateUserwiseEntriesTrialReport(UserwiseEntriesTrialCriteriaModel model)
+        {
+            Guid? userId = null;
+            //Get data in the model
+            if (model.UserName != null)
+            {
+                userId = Guid.Parse(Membership.GetUser(model.UserName).ProviderUserKey.ToString());
+            }
+            List<UserwiseEntriesTrialModel> modelList = mapReportModel(service.UserwiseEntriesTrial(AuthenticationHelper.User.CompanyId, model.SOBId, model.FromDate, model.ToDate, userId));
+            UserwiseEntriesTrialReport report = new UserwiseEntriesTrialReport();
+            report.DataSource = modelList;
+            return report;
+        }
+
+        private List<UserwiseEntriesTrialModel> mapReportModel(List<UserwiseEntriesTrial> list)
+        {
+            List<UserwiseEntriesTrialModel> reportModel = new List<UserwiseEntriesTrialModel>();
+            foreach (var record in list)
+	        {
+                reportModel.Add(new UserwiseEntriesTrialModel
+                {
+                    DocumentNo = record.DocumentNo,
+                    EntryType = record.EntryType,
+                    TransactionDate = record.TransactionDate,
+                    UserId = record.UserId,
+                    UserName = record.UserName
+                });
+	        }
+            return reportModel;
+        }
+
+        public ActionResult UserwiseEntriesTrialPartial(UserwiseEntriesTrialCriteriaModel model)
+        {
+            return PartialView("_UserwiseEntriesTrailPartial", CreateUserwiseEntriesTrialReport(model));
+        }
+
+        [HttpPost]
+        public ActionResult UserwiseEntriesTrial(UserwiseEntriesTrialCriteriaModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                RedirectToAction("UserwiseEntriesTrialPartial", model);
+            }
+            return View(model);
+        }
+
+        public ActionResult UserwiseEntriesTrial()
+        {
+            UserwiseEntriesTrialCriteriaModel model = new UserwiseEntriesTrialCriteriaModel();
+            model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.Id.ToString()
+                }).ToList();
+
+            MembershipUserCollection memCollection = Membership.GetAllUsers();
+            foreach (MembershipUser user in memCollection)
+            {
+                if (model.Users == null)
+                {
+                    model.Users = new List<SelectListItem>();
+                }
+                model.Users.Add(new SelectListItem
+                {
+                    Text = user.UserName,
+                    Value = user.ProviderUserKey.ToString()
+                });
+            }
+
+            return View(model);
+        }
+        #endregion
 
         public ActionResult GetJournalVoucherList(string sobId, string periodId, string currencyId)
         {

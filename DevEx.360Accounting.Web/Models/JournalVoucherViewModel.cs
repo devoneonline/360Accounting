@@ -1,8 +1,10 @@
 ﻿using _360Accounting.Core.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace DevEx_360Accounting_Web.Models
 {
@@ -101,6 +103,19 @@ namespace DevEx_360Accounting_Web.Models
 
     public class UserwiseEntriesTrialModel
     {
+        public UserwiseEntriesTrialModel()
+        {
+        }
+
+        public UserwiseEntriesTrialModel(UserwiseEntriesTrial entity)
+        {
+            this.DocumentNo = entity.DocumentNo;
+            this.EntryType = entity.EntryType;
+            this.TransactionDate = entity.TransactionDate;
+            this.UserId = entity.UserId;
+            this.UserName = entity.UserName;            
+        }
+
         public Guid UserId { get; set; }
 
         public string UserName { get; set; }
@@ -110,5 +125,24 @@ namespace DevEx_360Accounting_Web.Models
         public string DocumentNo { get; set; }
 
         public string EntryType { get; set; }
+    }
+
+    public class UserwiseEntriesTrialCriteriaModel
+    {
+        [Required]
+        [Display(Name="Set of Book")]
+        public long SOBId { get; set; }
+
+        public List<SelectListItem> SetOfBooks { get; set; }
+        
+        public List<SelectListItem> Users { get; set; }
+
+        [Required]
+        public DateTime FromDate { get; set; }
+
+        [Required]
+        public DateTime ToDate { get; set; }
+
+        public string UserName { get; set; }
     }
 }

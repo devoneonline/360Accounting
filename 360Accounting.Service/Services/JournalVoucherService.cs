@@ -18,9 +18,9 @@ namespace _360Accounting.Service
             this.repository = repo;
         }
 
-        public IEnumerable<UserwiseEntriesTrial> UserwiseEntriesTrial(long sobId, DateTime fromDate, DateTime toDate, string userName)
+        public List<UserwiseEntriesTrial> UserwiseEntriesTrial(long companyId, long sobId, DateTime fromDate, DateTime toDate, Guid? UserId)
         {
-            return this.repository.UserwiseEntriesTrial(sobId, fromDate, toDate, userName);
+            return this.repository.UserwiseEntriesTrial(companyId, sobId, fromDate, toDate, UserId);
         }
 
         public IEnumerable<JournalVoucherDetail> GetAll(string headerId)

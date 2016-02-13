@@ -1,6 +1,6 @@
 ﻿namespace DevEx._360Accounting.Web.Reports
 {
-    partial class UserwiseEntriesTrial
+    partial class UserwiseEntriesTrialReport
     {
         /// <summary>
         /// Required designer variable.

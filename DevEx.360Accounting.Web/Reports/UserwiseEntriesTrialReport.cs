@@ -6,12 +6,11 @@ using DevExpress.XtraReports.UI;
 
 namespace DevEx._360Accounting.Web.Reports
 {
-    public partial class UserwiseEntriesTrial : DevExpress.XtraReports.UI.XtraReport
+    public partial class UserwiseEntriesTrialReport : DevExpress.XtraReports.UI.XtraReport
     {
-        public UserwiseEntriesTrial()
+        public UserwiseEntriesTrialReport()
         {
             InitializeComponent();
         }
-
     }
 }

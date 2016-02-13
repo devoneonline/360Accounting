@@ -11,9 +11,90 @@ namespace _360Accounting.Data.Repositories
 {
     public class JournalVoucherRepository : Repository, IJournalVoucherRepository
     {
-        public IEnumerable<UserwiseEntriesTrial> UserwiseEntriesTrial(long sobId, DateTime fromDate, DateTime toDate, string userName)
+        public List<UserwiseEntriesTrial> UserwiseEntriesTrial(long companyId, long sobId, DateTime fromDate, DateTime toDate, Guid? userId)
         {
-            throw new NotImplementedException();
+            ////Get new Entries
+            var newEntries = (from a in this.Context.JournalVouchers
+                        join b in this.Context.Users on a.CreateBy equals b.UserId
+                        where a.CompanyId == companyId && a.SOBId == sobId &&
+                        a.GLDate >= fromDate && a.GLDate <= toDate &&
+                        a.CreateDate == a.UpdateDate
+                        select new UserwiseEntriesTrial
+                        {
+                            UserId = a.CreateBy,
+                            UserName = b.Username,
+                            TransactionDate = a.GLDate,
+                            DocumentNo = a.DocumentNo,
+                            EntryType = "New"
+                        }).ToList();
+            
+            if (userId != null)
+            {
+                newEntries = newEntries.Where(x => x.UserId == userId)
+                    .Select(x => new UserwiseEntriesTrial
+                    {
+                        UserId = x.UserId,
+                        UserName = x.UserName,
+                        TransactionDate = x.TransactionDate,
+                        DocumentNo = x.DocumentNo,
+                        EntryType = x.EntryType
+                    }).ToList();
+            }
+
+            ////Get edit Entries
+            var editEntries = (from a in this.Context.JournalVouchers
+                                   join b in this.Context.Users on a.UpdateBy equals b.UserId
+                                   where a.CompanyId == companyId && a.SOBId == sobId &&
+                                   a.GLDate >= fromDate && a.GLDate <= toDate &&
+                                   a.CreateDate != a.UpdateDate
+                                   select new UserwiseEntriesTrial
+                                   {
+                                        UserId = a.CreateBy,
+                                        UserName = b.Username,
+                                        TransactionDate = a.GLDate,
+                                        DocumentNo = a.DocumentNo,
+                                        EntryType = "Edit"
+                                   }).ToList();
+
+            if (userId != null)
+            {
+                editEntries = editEntries.Where(x => x.UserId == userId)
+                    .Select(x => new UserwiseEntriesTrial
+                    {
+                        UserId = x.UserId,
+                        UserName = x.UserName,
+                        TransactionDate = x.TransactionDate,
+                        DocumentNo = x.DocumentNo,
+                        EntryType = x.EntryType
+                    }).ToList();
+            }
+
+            List<UserwiseEntriesTrial> data = new List<UserwiseEntriesTrial>();
+            foreach (UserwiseEntriesTrial record in newEntries)
+            {
+                data.Add(new UserwiseEntriesTrial
+                {
+                    DocumentNo = record.DocumentNo,
+                    EntryType = record.EntryType,
+                    TransactionDate = record.TransactionDate,
+                    UserId = record.UserId,
+                    UserName = record.UserName
+                });
+            }
+
+            foreach (UserwiseEntriesTrial record in editEntries)
+            {
+                data.Add(new UserwiseEntriesTrial
+                {
+                    DocumentNo = record.DocumentNo,
+                    EntryType = record.EntryType,
+                    TransactionDate = record.TransactionDate,
+                    UserId = record.UserId,
+                    UserName = record.UserName
+                });
+            }
+
+            return data;
         }
 
         public string Insert(JournalVoucherDetail entity)

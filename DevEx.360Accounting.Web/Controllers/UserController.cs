@@ -40,7 +40,23 @@ namespace DevEx_360Accounting_Web.Controllers
         #region Uzair Reports Code
 
         #region Code for getting reports data
-        List<UserViewModel> GetUserList()
+        private UserwiseRole CreateUserwiseRoleReport()
+        {
+            List<UserViewModel> modelList = GetUserList();
+            UserwiseRole report = new UserwiseRole();
+            report.DataSource = modelList;
+            return report;
+        }
+
+        private UserList CreateReport()
+        {
+            List<UserViewModel> modelList = GetUserList();
+            UserList report = new UserList();
+            report.DataSource = modelList;
+            return report;
+        }
+
+        private List<UserViewModel> GetUserList()
         {
             MembershipUserCollection memCollection = Membership.GetAllUsers();
             List<UserViewModel> users = new List<UserViewModel>();
@@ -64,13 +80,6 @@ namespace DevEx_360Accounting_Web.Controllers
 
         #endregion
 
-        public ActionResult UserwiseEntriesTrial()
-        {
-            DevEx._360Accounting.Web.Reports.UserwiseEntriesTrial model = new DevEx._360Accounting.Web.Reports.UserwiseEntriesTrial();
-            //get data in the model.
-            return View(model);
-        }
-
         public ActionResult UserwiseSession()
         {
             UserwiseSession model = new UserwiseSession();
@@ -81,19 +90,27 @@ namespace DevEx_360Accounting_Web.Controllers
 
         public ActionResult UserwiseRole()
         {
-            UserwiseRole model = new UserwiseRole();
-            //GetData (from GetUserList) & pass it to the UserwiseRole(View).
-            return View(model);
+            return View();
         }
 
         public ActionResult UserList()
         {
             return View();
         }
-        
+
+        public ActionResult UserwiseRolePartial()
+        {
+            return PartialView("_UserwiseRole", CreateUserwiseRoleReport());
+        }
+
         public ActionResult DocumentViewerPartial()
         {
             return PartialView("_UserList", CreateReport());
+        }
+
+        public ActionResult UserwiseRolePartialExport()
+        {
+            return DocumentViewerExtension.ExportTo(CreateUserwiseRoleReport(), Request);
         }
 
         public ActionResult DocumentViewerPartialExport()
@@ -104,14 +121,6 @@ namespace DevEx_360Accounting_Web.Controllers
         public ActionResult DemoReport()
         {
             return View(new DemoReport());
-        }
-
-        private UserList CreateReport()
-        {
-            List<UserViewModel> modelList = GetUserList();
-            UserList report = new UserList();
-            report.DataSource = modelList;
-            return report;
         }
 
         #endregion

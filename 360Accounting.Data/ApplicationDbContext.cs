@@ -46,6 +46,8 @@ namespace _360Accounting.Data
 
         public DbSet<JournalVoucherDetail> JournalVoucherDetails { get; set; }
 
+        public DbSet<aspnet_User> Users { get; set; }
+
         #endregion
 
         #region Binders
@@ -53,6 +55,9 @@ namespace _360Accounting.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ////base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<aspnet_User>().ToTable("aspnet_Users");
+            modelBuilder.Entity<aspnet_User>().HasKey(t => t.UserId);
+
             modelBuilder.Entity<JournalVoucherDetail>().ToTable("tbGLLines");
             modelBuilder.Entity<JournalVoucherDetail>().HasKey(t => t.Id);
 

@@ -326,7 +326,8 @@
     <Content Include="Views\User\_UserwiseRole.cshtml" />
     <Content Include="Views\User\UserwiseSession.cshtml" />
     <Content Include="Views\User\_UserwiseSession.cshtml" />
-    <Content Include="Views\User\UserwiseEntriesTrial.cshtml" />
+    <Content Include="Views\JournalVoucher\UserwiseEntriesTrial.cshtml" />
+    <Content Include="Views\JournalVoucher\_UserwiseEntriesTrailPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -393,11 +394,11 @@
     <Compile Include="Reports\DemoReport.Designer.cs">
       <DependentUpon>DemoReport.cs</DependentUpon>
     </Compile>
-    <Compile Include="Reports\UserwiseEntriesTrial.cs">
+    <Compile Include="Reports\UserwiseEntriesTrialReport.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Reports\UserwiseEntriesTrial.Designer.cs">
-      <DependentUpon>UserwiseEntriesTrial.cs</DependentUpon>
+    <Compile Include="Reports\UserwiseEntriesTrialReport.Designer.cs">
+      <DependentUpon>UserwiseEntriesTrialReport.cs</DependentUpon>
     </Compile>
     <Compile Include="Reports\UserwiseRole.cs">
       <SubType>Component</SubType>
@@ -442,8 +443,8 @@
     <EmbeddedResource Include="Reports\UserList.resx">
       <DependentUpon>UserList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\UserwiseEntriesTrial.resx">
-      <DependentUpon>UserwiseEntriesTrial.cs</DependentUpon>
+    <EmbeddedResource Include="Reports\UserwiseEntriesTrialReport.resx">
+      <DependentUpon>UserwiseEntriesTrialReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\UserwiseRole.resx">
       <DependentUpon>UserwiseRole.cs</DependentUpon>

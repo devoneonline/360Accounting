@@ -1,18 +1,11 @@
 ﻿@model DevEx._360Accounting.Web.Reports.UserwiseRole
 
-@Html.DevExpress().DocumentViewer(settings =>
+@Html.DevExpress().DocumentViewer(r =>
 {
-    settings.Name = "DocumentViewer";
-    settings.Report = Model;
-    //settings.CallbackRouteValues = new
-    //{
-    //    Controller = "User",
-    //    Action = "UserListPartial"
-    //};
-    //settings.ExportRouteValues = new
-    //{
-    //    Controller = "User",
-    //    Action = "DocumentViewerExportTo"
-    //};
+    r.Name = "DocumentViewer";
+    r.CallbackRouteValues = new { Controller = "User", Action = "UserwiseRolePartial" };
+    r.ExportRouteValues = new { Controller = "User", Action = "UserwiseRolePartialExport" };
+    r.Report = (XtraReport)Model;
+    r.ToolbarMode = DocumentViewerToolbarMode.Ribbon;
 }).GetHtml()
 
