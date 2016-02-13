@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using DevExpress.Web.Mvc;
 
 namespace DevEx_360Accounting_Web.Controllers
 {
@@ -195,5 +196,11 @@ namespace DevEx_360Accounting_Web.Controllers
             };
         }
         #endregion
+
+        public ActionResult AccountValuesPartial(long sobId, string segment)
+        {
+            IEnumerable<AccountValueViewModel> accountValuesList = service.GetAll(AuthenticationHelper.User.CompanyId).Select(x => new AccountValueViewModel(x));
+            return PartialView("_List", accountValuesList);
+        }
     }
 }

@@ -78,5 +78,12 @@ namespace DevEx_360Accounting_Web.Controllers
                 Name = model.Name
             };
         }
+
+        public ActionResult CompanyListPartial()
+        {
+            var list = service.GetAll(AuthenticationHelper.User.CompanyId);
+            IEnumerable<CompanyModel> companyList = list.Select(a => new CompanyModel(a));
+            return PartialView("_List", companyList);
+        }
     }
 }

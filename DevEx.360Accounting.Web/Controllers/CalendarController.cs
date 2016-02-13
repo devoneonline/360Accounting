@@ -181,67 +181,11 @@ namespace DevEx_360Accounting_Web.Controllers
         #endregion
 
         [ValidateInput(false)]
-        public ActionResult List()
+        public ActionResult CalendarListPartial()
         {
             //var model = new object[0];
             IEnumerable<CalendarViewModel> model = service.GetAll(AuthenticationHelper.User.CompanyId)
                 .Select(x => new CalendarViewModel(x)).ToList();
-            return PartialView("_List", model);
-        }
-
-        [HttpPost, ValidateInput(false)]
-        public ActionResult ListAddNew([ModelBinder(typeof(DevExpressEditorsBinder))] DevEx_360Accounting_Web.Models.CalendarViewModel item)
-        {
-            var model = new object[0];
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    // Insert here a code to insert the new item in your model
-                }
-                catch (Exception e)
-                {
-                    ViewData["EditError"] = e.Message;
-                }
-            }
-            else
-                ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("_List", model);
-        }
-        [HttpPost, ValidateInput(false)]
-        public ActionResult ListUpdate([ModelBinder(typeof(DevExpressEditorsBinder))] DevEx_360Accounting_Web.Models.CalendarViewModel item)
-        {
-            var model = new object[0];
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    // Insert here a code to update the item in your model
-                }
-                catch (Exception e)
-                {
-                    ViewData["EditError"] = e.Message;
-                }
-            }
-            else
-                ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("_List", model);
-        }
-        [HttpPost, ValidateInput(false)]
-        public ActionResult ListDelete(System.Int64 Id)
-        {
-            var model = new object[0];
-            if (Id >= 0)
-            {
-                try
-                {
-                    // Insert here a code to delete the item from your model
-                }
-                catch (Exception e)
-                {
-                    ViewData["EditError"] = e.Message;
-                }
-            }
             return PartialView("_List", model);
         }
     }

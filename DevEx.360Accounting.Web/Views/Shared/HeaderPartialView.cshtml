@@ -8,12 +8,16 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <img class="img-responsive" src='@Url.Content("~/Content/images/logo.png")' alt="" />
+                <span class="navbar-brand"><img class="img-responsive" src='@Url.Content("~/Content/images/logo.png")' alt="" /></span>
             </div>
-            @Html.Partial("_LoginPartial")
 
-            @*@Html.Partial("_Menu")*@
-        </nav>
+            <div class="navbar-collapse collapse">
+
+                @Html.Partial("_Menu")
+
+                @Html.Partial("_LoginPartial")
+            </div>
+</nav>
     </div>
 </div>
 @*<div class="headerMenu">

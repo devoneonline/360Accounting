@@ -70,6 +70,8 @@ namespace DevEx_360Accounting_Web.Controllers
             model.SetOfBooks.Add(new SelectListItem { Text = sob.Name, Value = sob.Id.ToString() });
 
             return View(model);
+
+            //Opens popup in grid..
         }
 
         [HttpPost]
@@ -89,6 +91,12 @@ namespace DevEx_360Accounting_Web.Controllers
         {
             service.Delete(id,AuthenticationHelper.User.CompanyId);
             return RedirectToAction("Index");
+        }
+
+        public ActionResult AccountListPartial()
+        {
+            List<AccountViewModel> accountsList = listAccounts("", false, null, "", "");
+            return PartialView("_List", accountsList);
         }
 
         #region Private Methods
@@ -138,5 +146,6 @@ namespace DevEx_360Accounting_Web.Controllers
         }
 
         #endregion
+
     }
 }
