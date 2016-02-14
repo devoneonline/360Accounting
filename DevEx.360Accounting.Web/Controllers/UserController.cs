@@ -14,6 +14,7 @@ using DevExpress.Web.Mvc;
 using DevEx_360Accounting_Web.Models;
 using DevEx._360Accounting.Web.Reports;
 using DevExpress.XtraReports.UI;
+using DevExpress.XtraReports.Parameters;
 
 namespace DevEx_360Accounting_Web.Controllers
 {
@@ -45,6 +46,9 @@ namespace DevEx_360Accounting_Web.Controllers
             List<UserViewModel> modelList = GetUserList();
             UserwiseRole report = new UserwiseRole();
             report.DataSource = modelList;
+            report.Parameters["CompanyName"].Value = companyService
+                .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
+                AuthenticationHelper.User.CompanyId).Name;
             return report;
         }
 
@@ -53,6 +57,9 @@ namespace DevEx_360Accounting_Web.Controllers
             List<UserViewModel> modelList = GetUserList();
             UserList report = new UserList();
             report.DataSource = modelList;
+            report.Parameters["CompanyName"].Value = companyService
+                .GetSingle(AuthenticationHelper.User.CompanyId.ToString(), 
+                AuthenticationHelper.User.CompanyId).Name;
             return report;
         }
 
@@ -70,22 +77,6 @@ namespace DevEx_360Accounting_Web.Controllers
             }
 
             return users;
-        }
-
-        object UserwiseSessionPartial(DateTime fromDate, DateTime toDate, string userName)
-        {
-            //Which object to get here & where to get the data from?????
-            return new object();
-        }
-
-        #endregion
-
-        public ActionResult UserwiseSession()
-        {
-            UserwiseSession model = new UserwiseSession();
-            //GetData & pass it to the UserwiseSession.
-            //but where to get the data from????
-            return View(model);
         }
 
         public ActionResult UserwiseRole()
@@ -298,6 +289,7 @@ namespace DevEx_360Accounting_Web.Controllers
 
         #endregion
 
+        #endregion
 
         public ActionResult CreateCompanyFeatureList()
         {
