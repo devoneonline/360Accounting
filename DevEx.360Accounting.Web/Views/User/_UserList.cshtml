@@ -1,17 +1,10 @@
 ﻿@model DevEx._360Accounting.Web.Reports.UserList
 
-@*<div class="container">
-    <div class="form-control">
-        &nbsp
-    </div>
-    <div class="clearfix">*@
-        @Html.DevExpress().DocumentViewer(r =>
-        {
-            r.Name = "DocumentViewer";
-            r.CallbackRouteValues = new { Controller = "User", Action = "DocumentViewerPartial" };
-            r.ExportRouteValues = new { Controller = "User", Action = "DocumentViewerPartialExport" };
-            r.Report = (XtraReport)Model;
-            r.ToolbarMode = DocumentViewerToolbarMode.StandardToolbar;
-        }).GetHtml()
-    @*</div>
-        </div>*@
+@Html.DevExpress().DocumentViewer(r =>
+{
+    r.Name = "DocumentViewer";
+    r.CallbackRouteValues = new { Controller = "User", Action = "DocumentViewerPartial" };
+    r.ExportRouteValues = new { Controller = "User", Action = "DocumentViewerPartialExport" };
+    r.Report = (XtraReport)Model;
+    r.ToolbarMode = DocumentViewerToolbarMode.StandardToolbar;
+}).GetHtml()
