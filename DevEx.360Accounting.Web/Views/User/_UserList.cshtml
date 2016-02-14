@@ -6,5 +6,5 @@
     r.CallbackRouteValues = new { Controller = "User", Action = "DocumentViewerPartial" };
     r.ExportRouteValues = new { Controller = "User", Action = "DocumentViewerPartialExport" };
     r.Report = (XtraReport)Model;
-    r.ToolbarMode = DocumentViewerToolbarMode.Ribbon;
+    r.ToolbarMode = DocumentViewerToolbarMode.StandardToolbar;
 }).GetHtml()
