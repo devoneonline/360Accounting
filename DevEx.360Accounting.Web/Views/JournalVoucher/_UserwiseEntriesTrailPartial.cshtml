@@ -1,10 +1,17 @@
 ﻿@model DevEx._360Accounting.Web.Reports.UserwiseEntriesTrialReport
 
+@*<div class="container">
+    <div class="form-control">
+        &nbsp
+    </div>
+    <div class="clearfix">*@
 @Html.DevExpress().DocumentViewer(r =>
 {
     r.Name = "DocumentViewer";
     //r.CallbackRouteValues = new { Controller = "User", Action = "UserwiseEntriesTrialPartial" };
     r.ExportRouteValues = new { Controller = "User", Action = "UserwiseEntriesTrialPartialExport" };
     r.Report = (XtraReport)Model;
-    r.ToolbarMode = DocumentViewerToolbarMode.Ribbon;
+    r.ToolbarMode = DocumentViewerToolbarMode.StandardToolbar;
 }).GetHtml()
+@*</div>
+    </div>*@

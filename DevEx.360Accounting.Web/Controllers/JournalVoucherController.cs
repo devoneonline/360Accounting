@@ -16,6 +16,7 @@ namespace DevEx_360Accounting_Web.Controllers
     [Authorize]
     public class JournalVoucherController : Controller
     {
+        private ICompanyService companyService;
         private IJournalVoucherService service;
         private ISetOfBookService sobService;
         private ICurrencyService currencyService;
@@ -24,6 +25,7 @@ namespace DevEx_360Accounting_Web.Controllers
 
         public JournalVoucherController()
         {
+            companyService = IoC.Resolve<ICompanyService>("CompanyService");
             service = IoC.Resolve<IJournalVoucherService>("JournalVoucherService");
             sobService = IoC.Resolve<ISetOfBookService>("SetOfBookService");
             currencyService = IoC.Resolve<ICurrencyService>("CurrencyService");
@@ -43,6 +45,9 @@ namespace DevEx_360Accounting_Web.Controllers
             List<UserwiseEntriesTrialModel> modelList = mapReportModel(service.UserwiseEntriesTrial(AuthenticationHelper.User.CompanyId, model.SOBId, model.FromDate, model.ToDate, userId));
             UserwiseEntriesTrialReport report = new UserwiseEntriesTrialReport();
             report.DataSource = modelList;
+            report.Parameters["CompanyName"].Value = companyService
+                .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
+                AuthenticationHelper.User.CompanyId);
             return report;
         }
 
