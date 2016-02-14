@@ -334,7 +334,7 @@
     <Content Include="Views\User\UserwiseSession.cshtml" />
     <Content Include="Views\User\_UserwiseSession.cshtml" />
     <Content Include="Views\JournalVoucher\UserwiseEntriesTrial.cshtml" />
-    <Content Include="Views\JournalVoucher\_UserwiseEntriesTrailPartial.cshtml" />
+    <Content Include="Views\JournalVoucher\_UserwiseEntriesTrialPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

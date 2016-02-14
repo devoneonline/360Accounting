@@ -15,36 +15,43 @@
     </div>
     <div class="clearfix">
         <div class="col-lg-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.SOBId)
+                @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control" })
+            </div>
 
-            @using (Html.BeginForm("UserwiseEntriesTrial", "JournalVoucher", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-            {
-                @Html.ValidationSummary()
+            <div class="form-group">
+                @Html.LabelFor(m => m.FromDate)
+                @Html.TextBoxFor(m => m.FromDate, new { @class = "form-control" })
+            </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(m => m.SOBId)
-                    @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control" })
-                </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ToDate)
+                @Html.TextBoxFor(m => m.ToDate, new { @class = "form-control" })
+            </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(m => m.FromDate)
-                    @Html.TextBoxFor(m => m.FromDate, new { @class = "form-control" })
-                </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.UserId)
+                @Html.DropDownListFor(m => m.UserId, Model.Users, new { @class = "form-control" })
+            </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(m => m.ToDate)
-                    @Html.TextBoxFor(m => m.ToDate, new { @class = "form-control" })
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(m => m.UserName)
-                    @Html.DropDownListFor(m => m.UserName, Model.Users, new { @class = "form-control" })
-                </div>
-
-                <div class="form-group">
-                    <input type="submit" value="Show" class="btn btn-default" />
-                    <input type="button" value="Cancel" class="btn btn-default" onclick="javascript: window.location.href='@Url.Content("~/Home/Index")'" />
-                </div>
-            }
+            <div class="form-group">
+                <input type="submit" value="Show" id="btnShow" class="btn btn-default" />
+                <input type="button" value="Cancel" class="btn btn-default" onclick="javascript: window.location.href='@Url.Content("~/Home/Index")'" />
+            </div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnShow').click(function () {
+            var url = '@Url.Content("~/JournalVoucher/UserwiseEntriesTrialPartial?sobId=")' +
+                $('#SOBId').val() +
+                "&fromDate=" + $('#FromDate').val() +
+                "&toDate=" + $('#ToDate').val() +
+                "&userId=" + $('#UserId').val();
+            window.location.href = url;
+        });
+    });
+</script>

@@ -34,15 +34,15 @@ namespace DevEx_360Accounting_Web.Controllers
         }
 
         #region Reports
-        private UserwiseEntriesTrialReport CreateUserwiseEntriesTrialReport(UserwiseEntriesTrialCriteriaModel model)
+        private UserwiseEntriesTrialReport CreateUserwiseEntriesTrialReport(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
         {
-            Guid? userId = null;
-            //Get data in the model
-            if (model.UserName != null)
-            {
-                userId = Guid.Parse(Membership.GetUser(model.UserName).ProviderUserKey.ToString());
-            }
-            List<UserwiseEntriesTrialModel> modelList = mapReportModel(service.UserwiseEntriesTrial(AuthenticationHelper.User.CompanyId, model.SOBId, model.FromDate, model.ToDate, userId));
+            //Guid? userId = null;
+            ////Get data in the model
+            //if (username != null)
+            //{
+            //    userId = Guid.Parse(Membership.GetUser(username).ProviderUserKey.ToString());
+            //}
+            List<UserwiseEntriesTrialModel> modelList = mapReportModel(service.UserwiseEntriesTrial(AuthenticationHelper.User.CompanyId, sobId, fromDate, toDate, userId));
             UserwiseEntriesTrialReport report = new UserwiseEntriesTrialReport();
             report.DataSource = modelList;
             report.Parameters["CompanyName"].Value = companyService
@@ -68,20 +68,20 @@ namespace DevEx_360Accounting_Web.Controllers
             return reportModel;
         }
 
-        public ActionResult UserwiseEntriesTrialPartial(UserwiseEntriesTrialCriteriaModel model)
+        public ActionResult UserwiseEntriesTrialPartial(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
         {
-            return PartialView("_UserwiseEntriesTrailPartial", CreateUserwiseEntriesTrialReport(model));
+            return PartialView("_UserwiseEntriesTrialPartial", CreateUserwiseEntriesTrialReport(sobId, fromDate, toDate, userId));
         }
 
-        [HttpPost]
-        public ActionResult UserwiseEntriesTrial(UserwiseEntriesTrialCriteriaModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                RedirectToAction("UserwiseEntriesTrialPartial", model);
-            }
-            return View(model);
-        }
+        //[HttpPost]
+        //public ActionResult UserwiseEntriesTrial(UserwiseEntriesTrialCriteriaModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        RedirectToAction("UserwiseEntriesTrialPartial", model);
+        //    }
+        //    return View(model);
+        //}
 
         public ActionResult UserwiseEntriesTrial()
         {

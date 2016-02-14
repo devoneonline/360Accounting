@@ -138,11 +138,14 @@ namespace DevEx_360Accounting_Web.Models
         public List<SelectListItem> Users { get; set; }
 
         [Required]
+        [Display(Name = "From Date")]
         public DateTime FromDate { get; set; }
 
         [Required]
+        [Display(Name = "To Date")]
         public DateTime ToDate { get; set; }
 
-        public string UserName { get; set; }
+        [Display(Name = "User")]
+        public Guid UserId { get; set; }
     }
 }

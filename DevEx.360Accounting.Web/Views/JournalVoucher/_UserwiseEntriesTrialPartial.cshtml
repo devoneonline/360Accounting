@@ -8,7 +8,7 @@
 @Html.DevExpress().DocumentViewer(r =>
 {
     r.Name = "DocumentViewer";
-    //r.CallbackRouteValues = new { Controller = "User", Action = "UserwiseEntriesTrialPartial" };
+    r.CallbackRouteValues = new { Controller = "User", Action = "UserwiseEntriesTrialPartial" };
     r.ExportRouteValues = new { Controller = "User", Action = "UserwiseEntriesTrialPartialExport" };
     r.Report = (XtraReport)Model;
     r.ToolbarMode = DocumentViewerToolbarMode.StandardToolbar;
