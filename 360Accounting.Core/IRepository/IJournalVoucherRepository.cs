@@ -18,5 +18,7 @@ namespace _360Accounting.Core.Interfaces
         string Update(JournalVoucherDetail entity);
 
         List<UserwiseEntriesTrial> UserwiseEntriesTrial(long companyId, long sobId, DateTime fromDate, DateTime toDate, Guid? UserId);
+
+        List<AuditTrial> AuditTrial(long companyId, long sobId, DateTime fromDate, DateTime toDate);
     }
 }

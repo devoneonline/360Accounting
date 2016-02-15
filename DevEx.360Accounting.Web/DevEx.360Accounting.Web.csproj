@@ -334,7 +334,11 @@
     <Content Include="Views\User\UserwiseSession.cshtml" />
     <Content Include="Views\User\_UserwiseSession.cshtml" />
     <Content Include="Views\JournalVoucher\UserwiseEntriesTrial.cshtml" />
-    <Content Include="Views\JournalVoucher\_UserwiseEntriesTrailPartial.cshtml" />
+    <Content Include="Views\JournalVoucher\_UserwiseEntriesTrialPartial.cshtml" />
+    <Content Include="Views\JournalVoucher\UserwiseEntriesTrialReport.cshtml" />
+    <Content Include="Views\JournalVoucher\AuditTrial.cshtml" />
+    <Content Include="Views\JournalVoucher\AuditTrialReport.cshtml" />
+    <Content Include="Views\JournalVoucher\_AuditTrialPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -389,6 +393,12 @@
     <Compile Include="Models\UserCreateModel.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\AuditTrialReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\AuditTrialReport.Designer.cs">
+      <DependentUpon>AuditTrialReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Reports\UserList.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -444,6 +454,9 @@
   <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Reports\AuditTrialReport.resx">
+      <DependentUpon>AuditTrialReport.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\DemoReport.resx">
       <DependentUpon>DemoReport.cs</DependentUpon>
     </EmbeddedResource>

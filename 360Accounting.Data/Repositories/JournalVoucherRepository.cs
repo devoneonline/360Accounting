@@ -11,6 +11,38 @@ namespace _360Accounting.Data.Repositories
 {
     public class JournalVoucherRepository : Repository, IJournalVoucherRepository
     {
+        public List<AuditTrial> AuditTrial(long companyId, long sobId, DateTime fromDate, DateTime toDate)
+        {
+            var data = (from a in this.Context.JournalVouchers
+                        join b in this.Context.JournalVoucherDetails on a.Id equals b.HeaderId
+                        join c in this.Context.CodeCombinitions on b.CodeCombinationId equals c.Id
+                        join d in this.Context.Currencies on a.CurrencyId equals d.Id
+                        join e in this.Context.Calendars on a.PeriodId equals e.Id
+                        where a.CompanyId == companyId && a.SOBId == sobId &&
+                        a.GLDate >= fromDate && a.GLDate <= toDate
+                        select new AuditTrial
+                        {
+                            CCSegment1 = c.Segment1,
+                            CCSegment2 = c.Segment2,
+                            CCSegment3 = c.Segment3,
+                            CCSegment4 = c.Segment4,
+                            CCSegment5 = c.Segment5,
+                            CCSegment6 = c.Segment6,
+                            CCSegment7 = c.Segment7,
+                            CCSegment8 = c.Segment8,
+                            ConversionRate = a.ConversionRate,
+                            Credit = b.EnteredCr,
+                            CurrencyName = d.CurrencyCode,
+                            Debit = b.EnteredDr,
+                            Description = a.Description,
+                            Document = a.DocumentNo,
+                            LineDescription = b.Description,
+                            PeriodName = e.PeriodName,
+                            TransactionDate = a.GLDate
+                        }).ToList();
+            return data;
+        }
+
         public List<UserwiseEntriesTrial> UserwiseEntriesTrial(long companyId, long sobId, DateTime fromDate, DateTime toDate, Guid? userId)
         {
             ////Get new Entries
