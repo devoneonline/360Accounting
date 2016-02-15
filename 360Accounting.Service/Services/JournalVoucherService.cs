@@ -18,6 +18,11 @@ namespace _360Accounting.Service
             this.repository = repo;
         }
 
+        public List<AuditTrial> AuditTrial(long companyId, long sobId, DateTime fromDate, DateTime toDate)
+        {
+            return this.repository.AuditTrial(companyId, sobId, fromDate, toDate);
+        }
+
         public List<UserwiseEntriesTrial> UserwiseEntriesTrial(long companyId, long sobId, DateTime fromDate, DateTime toDate, Guid? UserId)
         {
             return this.repository.UserwiseEntriesTrial(companyId, sobId, fromDate, toDate, UserId);

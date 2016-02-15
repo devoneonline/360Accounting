@@ -10,6 +10,8 @@ using System.Web;
 using System.Web.Security;
 using System.Web.Mvc;
 using DevEx._360Accounting.Web.Reports;
+using DevExpress.Web.Mvc;
+using _360Accounting.Common;
 
 namespace DevEx_360Accounting_Web.Controllers
 {
@@ -34,20 +36,68 @@ namespace DevEx_360Accounting_Web.Controllers
         }
 
         #region Reports
-        private UserwiseEntriesTrialReport CreateUserwiseEntriesTrialReport(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
+        public ActionResult AuditTrialPartialExport(long sobId, DateTime fromDate, DateTime toDate)
         {
-            //Guid? userId = null;
-            ////Get data in the model
-            //if (username != null)
-            //{
-            //    userId = Guid.Parse(Membership.GetUser(username).ProviderUserKey.ToString());
-            //}
-            List<UserwiseEntriesTrialModel> modelList = mapReportModel(service.UserwiseEntriesTrial(AuthenticationHelper.User.CompanyId, sobId, fromDate, toDate, userId));
-            UserwiseEntriesTrialReport report = new UserwiseEntriesTrialReport();
-            report.DataSource = modelList;
+            return DocumentViewerExtension.ExportTo(CreateAuditTrialReport(sobId, fromDate, toDate), Request);
+        }
+
+        public ActionResult UserwiseEntriesTrialPartialExport(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
+        {
+            return DocumentViewerExtension.ExportTo(CreateUserwiseEntriesTrialReport(sobId, fromDate, toDate, userId), Request);
+        }
+
+        private AuditTrialReport CreateAuditTrialReport(long sobId, DateTime fromDate, DateTime toDate)
+        {
+            List<AuditTrialModel> modelList = mapAuditTrialModel(service.AuditTrial(AuthenticationHelper.User.CompanyId, sobId, fromDate, toDate));
+            AuditTrialReport report = new AuditTrialReport();
             report.Parameters["CompanyName"].Value = companyService
                 .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
-                AuthenticationHelper.User.CompanyId);
+                AuthenticationHelper.User.CompanyId).Name;
+            report.Parameters["SOBId"].Value = sobId;
+            report.Parameters["FromDate"].Value = fromDate;
+            report.Parameters["ToDate"].Value = toDate;
+            report.DataSource = modelList;
+            return report;
+        }
+
+        private List<AuditTrialModel> mapAuditTrialModel(List<AuditTrial> list)
+        {
+            List<AuditTrialModel> reportModel = new List<AuditTrialModel>();
+            foreach (var record in list)
+            {
+                reportModel.Add(new AuditTrialModel
+                {
+                    CodeCombination = Utility.Stringize(".", record.CCSegment1,
+                    record.CCSegment2, record.CCSegment3, record.CCSegment4,
+                    record.CCSegment5, record.CCSegment6, record.CCSegment7,
+                    record.CCSegment8),
+                    ConversionRate = record.ConversionRate,
+                    Credit = record.Credit,
+                    CurrencyName = record.CurrencyName,
+                    Debit = record.Debit,
+                    Description = record.Description,
+                    Document = record.Document,
+                    LineDescription = record.LineDescription,
+                    PeriodName = record.PeriodName,
+                    TransactionDate = record.TransactionDate
+                });
+            }
+
+            return reportModel;
+        }
+
+        private UserwiseEntriesTrialReport CreateUserwiseEntriesTrialReport(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
+        {
+            List<UserwiseEntriesTrialModel> modelList = mapReportModel(service.UserwiseEntriesTrial(AuthenticationHelper.User.CompanyId, sobId, fromDate, toDate, userId));
+            UserwiseEntriesTrialReport report = new UserwiseEntriesTrialReport();
+            report.Parameters["CompanyName"].Value = companyService
+                .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
+                AuthenticationHelper.User.CompanyId).Name;
+            report.Parameters["SOBId"].Value = sobId;
+            report.Parameters["FromDate"].Value = fromDate;
+            report.Parameters["ToDate"].Value = toDate;
+            report.Parameters["UserId"].Value = userId;
+            report.DataSource = modelList;
             return report;
         }
 
@@ -68,20 +118,37 @@ namespace DevEx_360Accounting_Web.Controllers
             return reportModel;
         }
 
+        public ActionResult AuditTrialPartial(long sobId, DateTime fromDate, DateTime toDate)
+        {
+            return PartialView("_AuditTrialPartial", CreateAuditTrialReport(sobId, fromDate, toDate));
+        }
+
         public ActionResult UserwiseEntriesTrialPartial(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
         {
             return PartialView("_UserwiseEntriesTrialPartial", CreateUserwiseEntriesTrialReport(sobId, fromDate, toDate, userId));
         }
 
-        //[HttpPost]
-        //public ActionResult UserwiseEntriesTrial(UserwiseEntriesTrialCriteriaModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        RedirectToAction("UserwiseEntriesTrialPartial", model);
-        //    }
-        //    return View(model);
-        //}
+        public ActionResult AuditTrialReport(long sobId, DateTime fromDate, DateTime toDate)
+        {
+            return View(CreateAuditTrialReport(sobId, fromDate, toDate));
+        }
+
+        public ActionResult UserwiseEntriesTrialReport(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
+        {
+            return View(CreateUserwiseEntriesTrialReport(sobId, fromDate, toDate, userId));
+        }
+
+        public ActionResult AuditTrial()
+        {
+            AuditTrialCriteriaModel model = new AuditTrialCriteriaModel();
+            model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.Id.ToString()
+                }).ToList();
+            return View(model);
+        }
 
         public ActionResult UserwiseEntriesTrial()
         {
