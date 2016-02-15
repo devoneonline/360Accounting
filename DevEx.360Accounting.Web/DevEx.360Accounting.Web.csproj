@@ -417,12 +417,6 @@
     <Compile Include="Reports\UserwiseEntriesTrialReport.Designer.cs">
       <DependentUpon>UserwiseEntriesTrialReport.cs</DependentUpon>
     </Compile>
-    <Compile Include="Reports\UserwiseEntriesTrialReportOld.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Reports\UserwiseEntriesTrialReportOld.Designer.cs">
-      <DependentUpon>UserwiseEntriesTrialReportOld.cs</DependentUpon>
-    </Compile>
     <Compile Include="Reports\UserwiseRole.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -471,9 +465,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\UserwiseEntriesTrialReport.resx">
       <DependentUpon>UserwiseEntriesTrialReport.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\UserwiseEntriesTrialReportOld.resx">
-      <DependentUpon>UserwiseEntriesTrialReportOld.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\UserwiseRole.resx">
       <DependentUpon>UserwiseRole.cs</DependentUpon>
