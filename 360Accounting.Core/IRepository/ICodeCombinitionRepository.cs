@@ -10,5 +10,7 @@ namespace _360Accounting.Core.Interfaces
     public interface ICodeCombinitionRepository : IRepository<CodeCombinition>
     {
         IEnumerable<CodeCombinitionView> GetAll(long companyId, long sobId, string searchText, bool paging, int page, string sort, string sortDir);
+
+        List<CodeCombinition> GetAll(long companyId, long sobId);
     }
 }

@@ -63,8 +63,6 @@ namespace _360Accounting.Core.Entities
 
         public decimal ConversionRate { get; set; }
 
-        //public string CodeCombination { get; set; }
-
         public string LineDescription { get; set; }
 
         public decimal Debit { get; set; }
@@ -79,5 +77,35 @@ namespace _360Accounting.Core.Entities
         public string CCSegment6 { get; set; }
         public string CCSegment7 { get; set; }
         public string CCSegment8 { get; set; }
+    }
+
+    public class Ledger
+    {
+        public string CodeCombination { get; set; }
+
+        public string CodeCombinationName { get; set; }
+
+        public DateTime TransactionDate { get; set; }
+
+        public string Document { get; set; }
+
+        public string Description { get; set; }
+
+        public decimal Debit { get; set; }
+
+        public decimal Credit { get; set; }
+
+        public decimal Balance { get; set; }
+    }
+
+    public class TrialBalance
+    {
+        public string CodeCombination { get; set; }
+
+        public string CodeCombinationName { get; set; }
+
+        public decimal Debit { get; set; }
+
+        public decimal Credit { get; set; }
     }
 }

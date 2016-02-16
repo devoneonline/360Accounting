@@ -339,6 +339,12 @@
     <Content Include="Views\JournalVoucher\AuditTrial.cshtml" />
     <Content Include="Views\JournalVoucher\AuditTrialReport.cshtml" />
     <Content Include="Views\JournalVoucher\_AuditTrialPartial.cshtml" />
+    <Content Include="Views\JournalVoucher\Ledger.cshtml" />
+    <Content Include="Views\JournalVoucher\LedgerReport.cshtml" />
+    <Content Include="Views\JournalVoucher\_LedgerPartial.cshtml" />
+    <Content Include="Views\JournalVoucher\TrialBalance.cshtml" />
+    <Content Include="Views\JournalVoucher\_TrialBalancePartial.cshtml" />
+    <Content Include="Views\JournalVoucher\TrialBalanceReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -398,6 +404,18 @@
     </Compile>
     <Compile Include="Reports\AuditTrialReport.Designer.cs">
       <DependentUpon>AuditTrialReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\LedgerReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\LedgerReport.Designer.cs">
+      <DependentUpon>LedgerReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\TrialBalanceReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\TrialBalanceReport.Designer.cs">
+      <DependentUpon>TrialBalanceReport.cs</DependentUpon>
     </Compile>
     <Compile Include="Reports\UserList.cs">
       <SubType>Component</SubType>
@@ -459,6 +477,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\DemoReport.resx">
       <DependentUpon>DemoReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\LedgerReport.resx">
+      <DependentUpon>LedgerReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\TrialBalanceReport.resx">
+      <DependentUpon>TrialBalanceReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\UserList.resx">
       <DependentUpon>UserList.cs</DependentUpon>

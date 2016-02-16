@@ -12,17 +12,15 @@ namespace _360Accounting.Data.Repositories
 {
     public class CodeCombinitionRepository : Repository, ICodeCombinitionRepository
     {
+        public List<CodeCombinition> GetAll(long companyId, long sobId)
+        {
+            List<CodeCombinition> list = this.Context.CodeCombinitions.Where(x => x.CompanyId == companyId && x.SOBId == sobId).OrderBy(x => x.Id).ToList();
+            return list;
+        }
+
         public IEnumerable<CodeCombinitionView> GetAll(long companyId, long sobId, string searchText, bool paging, int page, string sort, string sortDir)
         {
             IEnumerable<CodeCombinition> codeCombList =
-                //(from a in this.Context.CodeCombinitions
-                // join b in this.Context.Accounts on new { SOBId = a.SOBId, CompanyId = a.CompanyId } equals new { SOBId = b.SOBId, CompanyId = b.CompanyId }
-                // where a.SOBId == sobId && a.CompanyId == companyId
-                // select new CodeCombinitionView
-                // {
-
-                // });
-
                 this.Context.CodeCombinitions.Where(x => x.CompanyId == companyId && x.SOBId == sobId);
             codeCombList = sortDir.ToUpper() == "ASC" ?
                 codeCombList.OrderBy(x => x.SOBId) :

@@ -11,6 +11,16 @@ namespace _360Accounting.Data.Repositories
 {
     public class JournalVoucherRepository : Repository, IJournalVoucherRepository
     {
+        public List<TrialBalance> TrialBalance(long companyId, long sobId, long fromCodeCombinationId, long toCodeCombinationId, long periodId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Ledger> Ledger(long companyId, long sobId, long fromCodeCombinationId, long toCodeCombinationId, DateTime fromDate, DateTime toDate)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<AuditTrial> AuditTrial(long companyId, long sobId, DateTime fromDate, DateTime toDate)
         {
             var data = (from a in this.Context.JournalVouchers
