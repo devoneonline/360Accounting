@@ -62,8 +62,9 @@ namespace _360Accounting.Data.Repositories
 
         public string Update(Account entity)
         {
-            this.Context.Accounts.Attach(entity);
-            this.Context.Entry(entity).State = EntityState.Modified;
+            var originalEntity = this.Context.Accounts.Find(entity.Id);
+            this.Context.Entry(originalEntity).CurrentValues.SetValues(entity);
+            this.Context.Entry(originalEntity).State = EntityState.Modified;
             this.Commit();
             return entity.Id.ToString();
         }

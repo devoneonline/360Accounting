@@ -28,8 +28,9 @@ namespace _360Accounting.Data.Repositories
 
         public string Update(Company entity)
         {
-            this.Context.Companies.Attach(entity);
-            this.Context.Entry(entity).State = EntityState.Modified;
+            var originalEntity = this.Context.Companies.Find(entity.Id);
+            this.Context.Entry(originalEntity).CurrentValues.SetValues(entity);
+            this.Context.Entry(originalEntity).State = EntityState.Modified;
             this.Commit();
             return entity.Id.ToString();
         }

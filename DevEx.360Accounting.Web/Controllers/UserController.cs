@@ -367,7 +367,8 @@ namespace DevEx_360Accounting_Web.Controllers
                     up.LastName = model.LastName;
                     up.PhoneNumber = model.PhoneNumber;
                     up.Email = model.Email;
-                    up.CompanyId = model.CompanyId.Value;
+                    if (AuthenticationHelper.UserRole != UserRoles.SuperAdmin.ToString())
+                        up.CompanyId = AuthenticationHelper.User.CompanyId;
                     up.Save();
 
                     if (!Roles.GetRolesForUser(model.UserName).Contains(model.RoleName))

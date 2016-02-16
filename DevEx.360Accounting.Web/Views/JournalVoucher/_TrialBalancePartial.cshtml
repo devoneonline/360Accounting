@@ -1,0 +1,26 @@
+﻿@model DevEx._360Accounting.Web.Reports.TrialBalanceReport
+
+@Html.DevExpress().DocumentViewer(r =>
+{
+    r.Name = "DocumentViewer";
+    r.Report = (XtraReport)Model;
+    r.CallbackRouteValues = new
+    {
+        Controller = "JournalVoucher",
+        Action = "TrialBalancePartial",
+        sobId = r.Report.Parameters["SOBId"].Value,
+        fromCodeCombinationId = r.Report.Parameters["FromCodeCombinationId"].Value,
+        toCodeCombinationId = r.Report.Parameters["ToCodeCombinationId"].Value,
+        periodId = r.Report.Parameters["PeriodId"].Value
+    };
+    r.ExportRouteValues = new
+    {
+        Controller = "JournalVoucher",
+        Action = "LedgerPartialExport",
+        sobId = r.Report.Parameters["SOBId"].Value,
+        fromCodeCombinationId = r.Report.Parameters["FromCodeCombinationId"].Value,
+        toCodeCombinationId = r.Report.Parameters["ToCodeCombinationId"].Value,
+        periodId = r.Report.Parameters["PeriodId"].Value
+    };
+    r.ToolbarMode = DocumentViewerToolbarMode.StandardToolbar;
+}).GetHtml()

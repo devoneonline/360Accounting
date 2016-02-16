@@ -3,40 +3,95 @@
 @{
     if (Model.Count() > 0)
     {
-        var grid = new WebGrid(canSort: true,
-        ajaxUpdateContainerId: "dvJournalVoucherDetailList", ajaxUpdateCallback: "CallBack");
+        @*var grid = new WebGrid(canSort: true,
+            ajaxUpdateContainerId: "dvJournalVoucherDetailList", ajaxUpdateCallback: "CallBack");
 
-        grid.Bind(Model);
+            grid.Bind(Model);
 
-        @grid.GetHtml(tableStyle: "table table-bordered table-hover table-striped",
-                        mode: WebGridPagerModes.All,
-                        numericLinksCount: 10,
-                        htmlAttributes: new { style = "width:100%", @class = "table", id = "tblVouchers" },
-                        columns: grid.Columns
-                        (
-                        grid.Column("", header: "Actions", style: "ActionLink",
-                                                        format: (item) => Html.Raw("<a class = 'delete' href='" + @Url.Content("~/JournalVoucher/DeleteDetail/") + item.Id + "'><img src='" + @Url.Content("~/Content/images/delete.png") + "' alt='' title='Delete' style='border:0'/></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='" + @Url.Content("~/JournalVoucher/EditDetail/") + item.Id + "'><img src='" + @Url.Content("~/Content/images/edit.png") + "' alt='' title='Edit' style='border:0'/></a>")),
-                        grid.Column(columnName: "CodeCombinationId",
-                                        header: "Account Code",
-                                        canSort: true),
-                        grid.Column("EnteredDr", header: "Debit", canSort: false),
-                        grid.Column("EnteredCr", header: "Credit", canSort: false),
-                        grid.Column("Qty", header: "Qty", canSort: true),
-                        grid.Column("Description", header: "Description", canSort: true),
-                        grid.Column("TaxRateCode", header: "Tax Rate Code", canSort: true),
-                        grid.Column("AccountedDr", header: "Acct-Dr", canSort: false),
-                        grid.Column("AccountedCr", header: "Acct-Cr", canSort: false)))
-    }
-}
+            @grid.GetHtml(tableStyle: "table table-bordered table-hover table-striped",
+                            mode: WebGridPagerModes.All,
+                            numericLinksCount: 10,
+                            htmlAttributes: new { style = "width:100%", @class = "table", id = "tblVouchers" },
+                            columns: grid.Columns
+                            (
+                            grid.Column("", header: "Actions", style: "ActionLink",
+                                                            format: (item) => Html.Raw("<a class = 'delete' href='" + @Url.Content("~/JournalVoucher/DeleteDetail/") + item.Id + "'><img src='" + @Url.Content("~/Content/images/delete.png") + "' alt='' title='Delete' style='border:0'/></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='" + @Url.Content("~/JournalVoucher/EditDetail/") + item.Id + "'><img src='" + @Url.Content("~/Content/images/edit.png") + "' alt='' title='Edit' style='border:0'/></a>")),
+                            grid.Column(columnName: "CodeCombinationId",
+                                            header: "Account Code",
+                                            canSort: true),
+                            grid.Column("EnteredDr", header: "Debit", canSort: false),
+                            grid.Column("EnteredCr", header: "Credit", canSort: false),
+                            grid.Column("Qty", header: "Qty", canSort: true),
+                            grid.Column("Description", header: "Description", canSort: true),
+                            grid.Column("TaxRateCode", header: "Tax Rate Code", canSort: true),
+                            grid.Column("AccountedDr", header: "Acct-Dr", canSort: false),
+                            grid.Column("AccountedCr", header: "Acct-Cr", canSort: false)))*@
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.delete').click(function () {
-            return confirm("Sure! you wanted to delete ?");
+        Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
+                new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
+                new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
+
+        Html.EnableClientValidation();
+        Html.EnableUnobtrusiveJavaScript();
+
+        var grid = Html.DevExpress().GridView(settings =>
+        {
+            settings.Name = "JournalVoucherDetail";
+            settings.Theme = "Office2010Black";
+            settings.KeyFieldName = "Id";
+
+            settings.CallbackRouteValues = new { Controller = "JournalVoucher", Action = "JournalVoucherDetailListPartial" };
+
+            settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+            settings.SettingsBehavior.ConfirmDelete = true;
+
+            settings.SettingsPager.Visible = true;
+            settings.Settings.ShowGroupPanel = false;
+            settings.Settings.ShowFilterRow = false;
+            settings.SettingsBehavior.AllowSort = false;
+            settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+            settings.Columns.Add(column =>
+                {
+                    column.SetDataItemTemplateContent(c =>
+                    {
+                        ViewContext.Writer.Write(
+                            Html.Raw("<a href='" + Url.Content("~/JournalVoucher/EditDetail/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
+                            + "&nbsp;&nbsp;" +
+                            Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/JournalVoucher/DeleteDetail/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
+                        );
+                    });
+                    column.Settings.AllowDragDrop = DefaultBoolean.False;
+                    column.Settings.AllowSort = DefaultBoolean.False;
+                    column.Width = 70;
+                });
+
+            settings.Columns.Add("CodeCombinationId", "Account Code");
+            settings.Columns.Add("EnteredDr", "Debit");
+            settings.Columns.Add("EnteredCr", "Credit");
+            settings.Columns.Add("Qty", "Qty");
+            settings.Columns.Add("Description");
+            settings.Columns.Add("TaxRateCode", "Tax Rate Code");
+            settings.Columns.Add("AccountedDr", "Acct-Dr");
+            settings.Columns.Add("AccountedCr", "Acct-Cr");
         });
-    });
+        if (ViewData["EditError"] != null)
+        {
+            grid.SetEditErrorText((string)ViewData["EditError"]);
+        }
+        grid.Bind(Model).GetHtml();
 
-    function CallBack(context) {
-        $("#dvJournalVoucherDetailList")[0].innerHTML = context;
     }
-</script>
+    }
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.delete').click(function () {
+                return confirm("Sure! you wanted to delete ?");
+            });
+        });
+
+        function CallBack(context) {
+            $("#dvJournalVoucherDetailList")[0].innerHTML = context;
+        }
+    </script>

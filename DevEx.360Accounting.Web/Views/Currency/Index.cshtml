@@ -37,8 +37,9 @@
         });
 
         $('#SOBId').change(function () {
+            debugger;
             $.ajax({
-                url: '@Url.Content("~/Currency/GetCurrencyList")',
+                url: '@Url.Content("~/Currency/CurrencyListPartial")',
                 data: {
                     sobId: $('#SOBId').val()
                 },
@@ -46,7 +47,8 @@
                 type: 'post',
                 error: function (data) { },
                 success: function (data) {
-                    $('#dvList').html(data);
+                    debugger;
+                    $('#dvList').empty().html(data);
                 }
             });
         });

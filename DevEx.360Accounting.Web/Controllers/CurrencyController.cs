@@ -22,8 +22,9 @@ namespace DevEx_360Accounting_Web.Controllers
             sobService = IoC.Resolve<ISetOfBookService>("SetOfBookService");
         }
 
-        public ActionResult Index(CurrencyListModel model)
+        public ActionResult Index()
         {
+            var model = new CurrencyListModel();
             if (model.SetOfBooks == null)
             {
                 model.SetOfBooks = sobService
@@ -35,11 +36,7 @@ namespace DevEx_360Accounting_Web.Controllers
                     }).ToList();
             }
 
-            if (model.SOBId != 0 || model.SetOfBooks != null)
-            {
-                model.Currencies = getCurrencyList(model);
-            }
-                
+            model.SOBId = Convert.ToInt64(model.SetOfBooks.First().Value);
             return View(model);
         }
 
@@ -124,7 +121,7 @@ namespace DevEx_360Accounting_Web.Controllers
         {
             IEnumerable<CurrencyViewModel> currencyList = service.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", true, null, "", "")
                 .Select(x => new CurrencyViewModel(x)).ToList();
-            return PartialView("_List");
+            return PartialView("_List", currencyList);
         }
     }
 }
