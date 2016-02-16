@@ -48,4 +48,64 @@ namespace _360Accounting.Core.Entities
 
         public string EntryType { get; set; }
     }
+
+    public class AuditTrial
+    {
+        public DateTime TransactionDate { get; set; }
+
+        public string Document { get; set; }
+
+        public string Description { get; set; }
+
+        public string PeriodName { get; set; }
+
+        public string CurrencyName { get; set; }
+
+        public decimal ConversionRate { get; set; }
+
+        public string LineDescription { get; set; }
+
+        public decimal Debit { get; set; }
+
+        public decimal Credit { get; set; }
+
+        public string CCSegment1 { get; set; }
+        public string CCSegment2 { get; set; }
+        public string CCSegment3 { get; set; }
+        public string CCSegment4 { get; set; }
+        public string CCSegment5 { get; set; }
+        public string CCSegment6 { get; set; }
+        public string CCSegment7 { get; set; }
+        public string CCSegment8 { get; set; }
+    }
+
+    public class Ledger
+    {
+        public string CodeCombination { get; set; }
+
+        public string CodeCombinationName { get; set; }
+
+        public DateTime TransactionDate { get; set; }
+
+        public string Document { get; set; }
+
+        public string Description { get; set; }
+
+        public decimal Debit { get; set; }
+
+        public decimal Credit { get; set; }
+
+        public decimal Balance { get; set; }
+    }
+
+    public class TrialBalance
+    {
+        public string CodeCombination { get; set; }
+
+        public string CodeCombinationName { get; set; }
+
+        public decimal Debit { get; set; }
+
+        public decimal Credit { get; set; }
+    }
 }

@@ -148,4 +148,118 @@ namespace DevEx_360Accounting_Web.Models
         [Display(Name = "User")]
         public Guid UserId { get; set; }
     }
+
+    public class AuditTrialCriteriaModel
+    {
+        [Required]
+        [Display(Name = "Set of Book")]
+        public long SOBId { get; set; }
+
+        public List<SelectListItem> SetOfBooks { get; set; }
+        
+        [Required]
+        [Display(Name = "From Date")]
+        public DateTime FromDate { get; set; }
+
+        [Required]
+        [Display(Name = "To Date")]
+        public DateTime ToDate { get; set; }
+    }
+
+    public class AuditTrialModel
+    {
+        public DateTime TransactionDate { get; set; }
+
+        public string Document { get; set; }
+
+        public string Description { get; set; }
+
+        public string PeriodName { get; set; }
+
+        public string CurrencyName { get; set; }
+
+        public decimal ConversionRate { get; set; }
+
+        public string CodeCombination { get; set; }
+
+        public string LineDescription { get; set; }
+
+        public decimal Debit { get; set; }
+
+        public decimal Credit { get; set; }
+    }
+
+    public class LedgerCriteriaModel
+    {
+        [Required]
+        [Display(Name = "Set of Book")]
+        public long SOBId { get; set; }
+
+        public List<SelectListItem> SetOfBooks { get; set; }
+
+        [Required]
+        [Display(Name = "From Date")]
+        public DateTime FromDate { get; set; }
+
+        [Required]
+        [Display(Name = "To Date")]
+        public DateTime ToDate { get; set; }
+
+        public List<SelectListItem> CodeCombinations { get; set; }
+
+        public long FromCodeCombinationId { get; set; }
+
+        public long ToCodeCombinationId { get; set; }
+    }
+
+    public class LedgerModel
+    {
+        public string CodeCombination { get; set; }
+
+        public string CodeCombinationName { get; set; }
+
+        public DateTime TransactionDate { get; set; }
+
+        public string Document { get; set; }
+
+        public string Description { get; set; }
+
+        public decimal Debit { get; set; }
+
+        public decimal Credit { get; set; }
+
+        public decimal Balance { get; set; }
+    }
+
+    public class TrialBalanceCriteriaModel
+    {
+        [Required]
+        [Display(Name = "Set of Book")]
+        public long SOBId { get; set; }
+
+        public List<SelectListItem> SetOfBooks { get; set; }
+
+        [Required]
+        [Display(Name = "Period")]
+        public long PeriodId { get; set; }
+
+        public List<SelectListItem> Periods { get; set; }
+
+        public List<SelectListItem> CodeCombinations { get; set; }
+
+        public long FromCodeCombinationId { get; set; }
+
+        public long ToCodeCombinationId { get; set; }
+    }
+
+    public class TrialBalanceModel
+    {
+        public string CodeCombination { get; set; }
+
+        public string CodeCombinationName { get; set; }
+
+        public decimal Debit { get; set; }
+
+        public decimal Credit { get; set; }
+    }
 }

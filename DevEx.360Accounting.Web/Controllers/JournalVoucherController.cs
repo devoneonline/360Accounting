@@ -10,6 +10,8 @@ using System.Web;
 using System.Web.Security;
 using System.Web.Mvc;
 using DevEx._360Accounting.Web.Reports;
+using DevExpress.Web.Mvc;
+using _360Accounting.Common;
 
 namespace DevEx_360Accounting_Web.Controllers
 {
@@ -34,20 +36,145 @@ namespace DevEx_360Accounting_Web.Controllers
         }
 
         #region Reports
-        private UserwiseEntriesTrialReport CreateUserwiseEntriesTrialReport(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
+        public ActionResult TrialBalancePartialExport(long sobId, long fromCodeCombinationId, long toCodeCombinationId, long periodId)
         {
-            //Guid? userId = null;
-            ////Get data in the model
-            //if (username != null)
-            //{
-            //    userId = Guid.Parse(Membership.GetUser(username).ProviderUserKey.ToString());
-            //}
-            List<UserwiseEntriesTrialModel> modelList = mapReportModel(service.UserwiseEntriesTrial(AuthenticationHelper.User.CompanyId, sobId, fromDate, toDate, userId));
-            UserwiseEntriesTrialReport report = new UserwiseEntriesTrialReport();
-            report.DataSource = modelList;
+            return DocumentViewerExtension.ExportTo(CreateTrialBalanceReport(sobId, fromCodeCombinationId, toCodeCombinationId, periodId));
+        }
+
+        public ActionResult LedgerPartialExport(long sobId, long fromCodeCombinationId, long toCodeCombinationId, DateTime fromDate, DateTime toDate)
+        {
+            return DocumentViewerExtension.ExportTo(CreateLedgerReport(sobId, fromCodeCombinationId, toCodeCombinationId, fromDate, toDate));
+        }
+
+        public ActionResult AuditTrialPartialExport(long sobId, DateTime fromDate, DateTime toDate)
+        {
+            return DocumentViewerExtension.ExportTo(CreateAuditTrialReport(sobId, fromDate, toDate), Request);
+        }
+
+        public ActionResult UserwiseEntriesTrialPartialExport(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
+        {
+            return DocumentViewerExtension.ExportTo(CreateUserwiseEntriesTrialReport(sobId, fromDate, toDate, userId), Request);
+        }
+
+        private TrialBalanceReport CreateTrialBalanceReport(long sobId, long fromCodeCombinationId, long toCodeCombinationId, long periodId)
+        {
+            List<TrialBalanceModel> modelList = mapTrialBalanceModel(service.TrialBalance(AuthenticationHelper.User.CompanyId, sobId, fromCodeCombinationId, toCodeCombinationId, periodId));
+            TrialBalanceReport report = new TrialBalanceReport();
             report.Parameters["CompanyName"].Value = companyService
                 .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
-                AuthenticationHelper.User.CompanyId);
+                AuthenticationHelper.User.CompanyId).Name;
+            report.Parameters["SOBId"].Value = sobId;
+            report.Parameters["FromCodeCombinationId"].Value = fromCodeCombinationId;
+            report.Parameters["ToCodeCombinationId"].Value = toCodeCombinationId;
+            report.Parameters["PeriodId"].Value = periodId;
+            report.DataSource = modelList;
+            return report;
+        }
+
+        private List<TrialBalanceModel> mapTrialBalanceModel(List<TrialBalance> list)
+        {
+            List<TrialBalanceModel> reportModel = new List<TrialBalanceModel>();
+            foreach (var record in list)
+            {
+                reportModel.Add(new TrialBalanceModel
+                {
+                    CodeCombination = record.CodeCombination,
+                    CodeCombinationName = record.CodeCombinationName,
+                    Credit = record.Credit,
+                    Debit = record.Debit,                    
+                });
+            }
+
+            return reportModel;
+        }
+
+        private LedgerReport CreateLedgerReport(long sobId, long fromCodeCombinationId, long toCodeCombinationId, DateTime fromDate, DateTime toDate)
+        {
+            List<LedgerModel> modelList = mapLedgerModel(service.Ledger(AuthenticationHelper.User.CompanyId, sobId, fromCodeCombinationId, toCodeCombinationId, fromDate, toDate));
+            LedgerReport report = new LedgerReport();
+            report.Parameters["CompanyName"].Value = companyService
+                .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
+                AuthenticationHelper.User.CompanyId).Name;
+            report.Parameters["SOBId"].Value = sobId;
+            report.Parameters["FromDate"].Value = fromDate;
+            report.Parameters["ToDate"].Value = toDate;
+            report.Parameters["FromCodeCombinationId"].Value = fromCodeCombinationId;
+            report.Parameters["ToCodeCombinationId"].Value = toCodeCombinationId;
+            report.DataSource = modelList;
+            return report;
+        }
+
+        private List<LedgerModel> mapLedgerModel(List<Ledger> list)
+        {
+            List<LedgerModel> reportModel = new List<LedgerModel>();
+            foreach (var record in list)
+            {
+                reportModel.Add(new LedgerModel
+                {
+                    Balance = record.Balance,
+                    Credit = record.Credit,
+                    Debit = record.Debit,
+                    Description = record.Description,
+                    Document = record.Document,
+                    TransactionDate = record.TransactionDate
+                });
+            }
+
+            return reportModel;
+        }
+
+        private AuditTrialReport CreateAuditTrialReport(long sobId, DateTime fromDate, DateTime toDate)
+        {
+            List<AuditTrialModel> modelList = mapAuditTrialModel(service.AuditTrial(AuthenticationHelper.User.CompanyId, sobId, fromDate, toDate));
+            AuditTrialReport report = new AuditTrialReport();
+            report.Parameters["CompanyName"].Value = companyService
+                .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
+                AuthenticationHelper.User.CompanyId).Name;
+            report.Parameters["SOBId"].Value = sobId;
+            report.Parameters["FromDate"].Value = fromDate;
+            report.Parameters["ToDate"].Value = toDate;
+            report.DataSource = modelList;
+            return report;
+        }
+
+        private List<AuditTrialModel> mapAuditTrialModel(List<AuditTrial> list)
+        {
+            List<AuditTrialModel> reportModel = new List<AuditTrialModel>();
+            foreach (var record in list)
+            {
+                reportModel.Add(new AuditTrialModel
+                {
+                    CodeCombination = Utility.Stringize(".", record.CCSegment1,
+                    record.CCSegment2, record.CCSegment3, record.CCSegment4,
+                    record.CCSegment5, record.CCSegment6, record.CCSegment7,
+                    record.CCSegment8),
+                    ConversionRate = record.ConversionRate,
+                    Credit = record.Credit,
+                    CurrencyName = record.CurrencyName,
+                    Debit = record.Debit,
+                    Description = record.Description,
+                    Document = record.Document,
+                    LineDescription = record.LineDescription,
+                    PeriodName = record.PeriodName,
+                    TransactionDate = record.TransactionDate
+                });
+            }
+
+            return reportModel;
+        }
+
+        private UserwiseEntriesTrialReport CreateUserwiseEntriesTrialReport(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
+        {
+            List<UserwiseEntriesTrialModel> modelList = mapReportModel(service.UserwiseEntriesTrial(AuthenticationHelper.User.CompanyId, sobId, fromDate, toDate, userId));
+            UserwiseEntriesTrialReport report = new UserwiseEntriesTrialReport();
+            report.Parameters["CompanyName"].Value = companyService
+                .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
+                AuthenticationHelper.User.CompanyId).Name;
+            report.Parameters["SOBId"].Value = sobId;
+            report.Parameters["FromDate"].Value = fromDate;
+            report.Parameters["ToDate"].Value = toDate;
+            report.Parameters["UserId"].Value = userId;
+            report.DataSource = modelList;
             return report;
         }
 
@@ -68,20 +195,90 @@ namespace DevEx_360Accounting_Web.Controllers
             return reportModel;
         }
 
+        public ActionResult TrialBalancePartial(long sobId, long fromCodeCombinationId, long toCodeCombinationId, long periodId)
+        {
+            return PartialView("_TrialBalancePartial", CreateTrialBalanceReport(sobId, fromCodeCombinationId, toCodeCombinationId, periodId));
+        }
+
+        public ActionResult LedgerPartial(long sobId, long fromCodeCombinationId, long toCodeCombinationId, DateTime fromDate, DateTime toDate)
+        {
+            return PartialView("_LedgerPartial", CreateLedgerReport(sobId, fromCodeCombinationId, toCodeCombinationId, fromDate, toDate));
+        }
+
+        public ActionResult AuditTrialPartial(long sobId, DateTime fromDate, DateTime toDate)
+        {
+            return PartialView("_AuditTrialPartial", CreateAuditTrialReport(sobId, fromDate, toDate));
+        }
+
         public ActionResult UserwiseEntriesTrialPartial(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
         {
             return PartialView("_UserwiseEntriesTrialPartial", CreateUserwiseEntriesTrialReport(sobId, fromDate, toDate, userId));
         }
 
-        //[HttpPost]
-        //public ActionResult UserwiseEntriesTrial(UserwiseEntriesTrialCriteriaModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        RedirectToAction("UserwiseEntriesTrialPartial", model);
-        //    }
-        //    return View(model);
-        //}
+        public ActionResult TrialBalanceReport(long sobId, long fromCodeCombinationId, long toCodeCombinationId, long periodId)
+        {
+            return View(CreateTrialBalanceReport(sobId, fromCodeCombinationId, toCodeCombinationId, periodId));
+        }
+
+        public ActionResult LedgerReport(long sobId, long fromCodeCombinationId, long toCodeCombinationId, DateTime fromDate, DateTime toDate)
+        {
+            return View(CreateLedgerReport(sobId, fromCodeCombinationId, toCodeCombinationId, fromDate, toDate));
+        }
+
+        public ActionResult AuditTrialReport(long sobId, DateTime fromDate, DateTime toDate)
+        {
+            return View(CreateAuditTrialReport(sobId, fromDate, toDate));
+        }
+
+        public ActionResult UserwiseEntriesTrialReport(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
+        {
+            return View(CreateUserwiseEntriesTrialReport(sobId, fromDate, toDate, userId));
+        }
+
+        public JsonResult CodeCombinationList(long sobId)
+        {
+            return Json(getCodeCombinationList(sobId), JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult TrialBalance()
+        {
+            TrialBalanceCriteriaModel model = new TrialBalanceCriteriaModel();
+            model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.Id.ToString()
+                }).ToList();
+            model.CodeCombinations = getCodeCombinationList(Convert.ToInt32(model.SetOfBooks.First().Value));
+            model.Periods = getPeriodList(model.SetOfBooks.First().Value);
+            return View(model);
+        }
+
+        public ActionResult Ledger()
+        {
+            LedgerCriteriaModel model = new LedgerCriteriaModel();
+            model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.Id.ToString()
+                }).ToList();
+
+            model.CodeCombinations = getCodeCombinationList(Convert.ToInt32(model.SetOfBooks.First().Value));
+            return View(model);
+        }
+
+        public ActionResult AuditTrial()
+        {
+            AuditTrialCriteriaModel model = new AuditTrialCriteriaModel();
+            model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.Id.ToString()
+                }).ToList();
+            return View(model);
+        }
 
         public ActionResult UserwiseEntriesTrial()
         {
@@ -390,6 +587,17 @@ namespace DevEx_360Accounting_Web.Controllers
                     .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
             return list;
                 
+        }
+
+        private List<SelectListItem> getCodeCombinationList(long sobId)
+        {
+            List<SelectListItem> list = codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, sobId)
+                .Select(x => new SelectListItem
+                {
+                    Text = Utility.Stringize(".", x.Segment1, x.Segment2, x.Segment3, x.Segment4, x.Segment5, x.Segment6, x.Segment7, x.Segment8),
+                    Value = x.Id.ToString()
+                }).ToList();
+            return list;
         }
         #endregion
 
