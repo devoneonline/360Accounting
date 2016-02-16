@@ -124,7 +124,7 @@ namespace DevEx_360Accounting_Web.Controllers
         {
             IEnumerable<CurrencyViewModel> currencyList = service.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", true, null, "", "")
                 .Select(x => new CurrencyViewModel(x)).ToList();
-            return PartialView("_List");
+            return PartialView("_List", currencyList);
         }
     }
 }

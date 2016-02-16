@@ -8,49 +8,43 @@
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 
-<div class="row">
-    <div class="col-lg-12">
-        <h3 class="page-header">
-            @ViewBag.Title
-        </h3>
+<div class="container">
+    <div class="clearfix">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        @using (Html.BeginForm("Edit", "Currency",
+    FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+
+            @Html.ValidationSummary()
+            @Html.HiddenFor(m => m.SOBId)
+            @Html.HiddenFor(m => m.CompanyId)
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.CurrencyCode)
+                @Html.TextBoxFor(m => m.CurrencyCode, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Name)
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Precision)
+                @Html.DropDownListFor(m => m.Precision, Model.PrecisionList, new { @class = "form-control" })
+            </div>
+
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default tstyCus-btn" />
+                <input type="button" value="Cancel" class="btn btn-default tstyCus-btn" onclick="javascript: window.location.href='@Url.Content("~/Currency")'" />
+            </div>
+        }
     </div>
 </div>
-
-<div class="col-lg-6">
-    @using (Html.BeginForm("Edit", "Currency",
-    FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-    {
-
-        @Html.ValidationSummary()
-        @Html.HiddenFor(m => m.SOBId)
-        @Html.HiddenFor(m => m.CompanyId)
-
-        <div class="form-group">
-            @Html.LabelFor(m => m.CurrencyCode)
-            @Html.TextBoxFor(m => m.CurrencyCode, new { @class = "form-control" })
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(m => m.Name)
-            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.Precision)
-            @Html.DropDownListFor(m => m.Precision, Model.PrecisionList, new { @class = "form-control" })
-        </div>
-
-
-        <div class="form-group">
-            <input type="submit" value="Save" class="btn btn-default" />
-            <input type="button" value="Cancel" class="btn btn-default" id="btnCancel" />
-        </div>
-    }
-</div>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#btnCancel').click(function () {
-            window.location.href = '@Url.Content("~/Currency/Index")';
-        });
-    });
-</script>

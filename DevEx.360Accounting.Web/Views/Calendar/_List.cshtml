@@ -12,8 +12,9 @@ var grid = Html.DevExpress().GridView(settings =>
     settings.SettingsBehavior.ConfirmDelete = true;
 
     settings.SettingsPager.Visible = true;
-    settings.Settings.ShowGroupPanel = true;
-    settings.Settings.ShowFilterRow = true;
+    settings.Settings.ShowGroupPanel = false;
+    settings.Settings.ShowFilterRow = false;
+    settings.SettingsBehavior.AllowSort = false;
     settings.SettingsBehavior.AllowSelectByRowClick = true;
 
     settings.Columns.Add(column =>

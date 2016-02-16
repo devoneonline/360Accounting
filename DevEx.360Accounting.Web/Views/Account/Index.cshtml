@@ -26,9 +26,6 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('.deleteQuestion').click(function () {
-            return confirm("Do you want to delete selected record?");
-        });
         $('#btnSave').click(function () {
             var url = '@Url.Content("~/Account/Create")';
             window.location.href = url;
