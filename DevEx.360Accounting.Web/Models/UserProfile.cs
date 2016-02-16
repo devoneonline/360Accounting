@@ -108,6 +108,8 @@ namespace DevEx_360Accounting_Web.Models
 
         public string Email { get; set; }
 
+        public long CompanyId { get; set; }
+
         public string CompanyName { get; set; }
 
         public string Role { get; set; }

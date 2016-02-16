@@ -339,6 +339,7 @@
     <Content Include="Views\JournalVoucher\AuditTrial.cshtml" />
     <Content Include="Views\JournalVoucher\AuditTrialReport.cshtml" />
     <Content Include="Views\JournalVoucher\_AuditTrialPartial.cshtml" />
+    <Content Include="Views\User\_List.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
