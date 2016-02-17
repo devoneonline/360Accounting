@@ -76,8 +76,9 @@ namespace _360Accounting.Data.Repositories
 
         public string Update(Calendar entity)
         {
-            this.Context.Calendars.Attach(entity);
-            this.Context.Entry(entity).State = EntityState.Modified;
+            var originalEntity = this.Context.Calendars.Find(entity.Id);
+            this.Context.Entry(originalEntity).CurrentValues.SetValues(entity);
+            this.Context.Entry(originalEntity).State = EntityState.Modified;
             this.Commit();
             return entity.Id.ToString();
         }

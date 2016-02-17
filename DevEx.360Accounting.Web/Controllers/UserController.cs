@@ -116,11 +116,17 @@ namespace DevEx_360Accounting_Web.Controllers
 
         #endregion
 
-        public ActionResult Index(MembershipUserListModel model)
+        #endregion
+
+        public ActionResult Index()
         {
-            int totalRecords = 0;
-            MembershipUserCollection memCollection = Membership.GetAllUsers(model.Page ?? 0, Utility.Configuration.GridRows, out totalRecords);
-            model.Users = new List<UserViewModel>();
+            return View();
+        }
+
+        public ActionResult UserListPartial()
+        {
+            List<UserViewModel> modelList = new List<UserViewModel>();
+            MembershipUserCollection memCollection = Membership.GetAllUsers();
             foreach (MembershipUser user in memCollection)
             {
                 UserProfile profile = UserProfile.GetProfile(user.UserName);
@@ -131,13 +137,16 @@ namespace DevEx_360Accounting_Web.Controllers
                 item.LastName = profile.LastName;
                 item.PhoneNumber = profile.PhoneNumber;
                 item.Email = profile.Email;
+                item.CompanyId = profile.CompanyId;
                 item.CompanyName = companyService.GetSingle(profile.CompanyId.ToString(), AuthenticationHelper.User.CompanyId).Name;
                 item.Role = Roles.GetRolesForUser(user.UserName)[0];
-                model.Users.Add(item);
+                modelList.Add(item);
             }
-
-            model.TotalRecords = totalRecords;
-            return View(model);
+            if (AuthenticationHelper.UserRole != UserRoles.SuperAdmin.ToString())
+            {
+                modelList = modelList.Where(x => x.CompanyId == AuthenticationHelper.User.CompanyId && x.Role != UserRoles.SuperAdmin.ToString()).ToList();
+            }
+            return PartialView("_List",modelList);
         }
 
         [AllowAnonymous]
@@ -287,7 +296,6 @@ namespace DevEx_360Accounting_Web.Controllers
             return View();
         }
 
-        #endregion
 
         #endregion
 
@@ -359,7 +367,8 @@ namespace DevEx_360Accounting_Web.Controllers
                     up.LastName = model.LastName;
                     up.PhoneNumber = model.PhoneNumber;
                     up.Email = model.Email;
-                    up.CompanyId = model.CompanyId.Value;
+                    if (AuthenticationHelper.UserRole != UserRoles.SuperAdmin.ToString())
+                        up.CompanyId = AuthenticationHelper.User.CompanyId;
                     up.Save();
 
                     if (!Roles.GetRolesForUser(model.UserName).Contains(model.RoleName))

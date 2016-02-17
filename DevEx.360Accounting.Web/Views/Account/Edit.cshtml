@@ -8,152 +8,147 @@
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 
-<div class="row">
-    <div class="col-lg-12">
-        <h3 class="page-header">
-            @ViewBag.Title
-        </h3>
-    </div>
-</div>
-
-@using (Html.BeginForm("Edit", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    <div class="col-lg-6">
-        @Html.ValidationSummary()
-        @Html.HiddenFor(m => m.CompanyId)
-        @Html.HiddenFor(m => m.Id)
-
-        <div class="form-group">
-            @Html.LabelFor(m => m.SetOfBooks)
-            @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control" })
+<div class="container">
+    <div class="clearfix">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
         </div>
     </div>
-    <div class="col-lg-6">
-        <div class="form-group">
-            <div class="col-md-2">
 
-            </div>
-            <div class="col-md-4">
-                @Html.LabelFor(m => m.SegmentChar1)
-            </div>
-            <div class="col-md-2">
-                @Html.LabelFor(m => m.SegmentChar2)
-            </div>
-            <div class="col-md-2">
-                @Html.LabelFor(m => m.SegmentChar3)
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.SegmentName1, new { @class = "col-md-2 control-label" })
-            <div class="col-md-4">
-                @Html.TextBoxFor(m => m.SegmentName1, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m=> m.SegmentName1)
-            </div>
-            <div class="col-md-2">
-                @Html.TextBoxFor(m => m.SegmentChar1, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.SegmentChar1)
-            </div>
-            <div class="col-md-2">
-                @Html.CheckBoxFor(m => m.SegmentEnabled1)
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.SegmentName2, new { @class = "col-md-2 control-label" })
-            <div class="col-md-4">
-                @Html.TextBoxFor(m => m.SegmentName2, new { @class = "form-control" })
-            </div>
-            <div class="col-md-2">
-                @Html.TextBoxFor(m => m.SegmentChar2, new { @class = "form-control" })
-            </div>
-            <div class="col-md-2">
-                @Html.CheckBoxFor(m => m.SegmentEnabled2)
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.SegmentName3, new { @class = "col-md-2 control-label" })
-            <div class="col-md-4">
-                @Html.TextBoxFor(m => m.SegmentName3, new { @class = "form-control" })
-            </div>
-            <div class="col-md-2">
-                @Html.TextBoxFor(m => m.SegmentChar3, new { @class = "form-control" })
-            </div>
-            <div class="col-md-2">
-                @Html.CheckBoxFor(m => m.SegmentEnabled3)
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.SegmentName4, new { @class = "col-md-2 control-label" })
-            <div class="col-md-4">
-                @Html.TextBoxFor(m => m.SegmentName4, new { @class = "form-control" })
-            </div>
-            <div class="col-md-2">
-                @Html.TextBoxFor(m => m.SegmentChar4, new { @class = "form-control" })
-            </div>
-            <div class="col-md-2">
-                @Html.CheckBoxFor(m => m.SegmentEnabled4)
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.SegmentName5, new { @class = "col-md-2 control-label" })
-            <div class="col-md-4">
-                @Html.TextBoxFor(m => m.SegmentName5, new { @class = "form-control" })
-            </div>
-            <div class="col-md-2">
-                @Html.TextBoxFor(m => m.SegmentChar5, new { @class = "form-control" })
-            </div>
-            <div class="col-md-2">
-                @Html.CheckBoxFor(m => m.SegmentEnabled5)
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.SegmentName6, new { @class = "col-md-2 control-label" })
-            <div class="col-md-4">
-                @Html.TextBoxFor(m => m.SegmentName6, new { @class = "form-control" })
-            </div>
-            <div class="col-md-2">
-                @Html.TextBoxFor(m => m.SegmentChar6, new { @class = "form-control" })
-            </div>
-            <div class="col-md-2">
-                @Html.CheckBoxFor(m => m.SegmentEnabled6)
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.SegmentName7, new { @class = "col-md-2 control-label" })
-            <div class="col-md-4">
-                @Html.TextBoxFor(m => m.SegmentName7, new { @class = "form-control" })
-            </div>
-            <div class="col-md-2">
-                @Html.TextBoxFor(m => m.SegmentChar7, new { @class = "form-control" })
-            </div>
-            <div class="col-md-2">
-                @Html.CheckBoxFor(m => m.SegmentEnabled7)
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.SegmentName8, new { @class = "col-md-2 control-label" })
-            <div class="col-md-4">
-                @Html.TextBoxFor(m => m.SegmentName8, new { @class = "form-control" })
-            </div>
-            <div class="col-md-2">
-                @Html.TextBoxFor(m => m.SegmentChar8, new { @class = "form-control" })
-            </div>
-            <div class="col-md-2">
-                @Html.CheckBoxFor(m => m.SegmentEnabled8)
-            </div>
-        </div>
+    @using (Html.BeginForm("Edit", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        <div class="col-lg-6">
+            @Html.ValidationSummary()
+            @Html.HiddenFor(m => m.CompanyId)
+            @Html.HiddenFor(m => m.Id)
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-                <input type="button" value="Cancel" class="btn btn-default" id="btnCancel" />
+            <div class="form-group">
+                @Html.LabelFor(m => m.SetOfBooks)
+                @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control" })
             </div>
         </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <div class="col-md-2">
+
+                </div>
+                <div class="col-md-5">
+                    @Html.LabelFor(m => m.SegmentChar1)
+                </div>
+                <div class="col-md-3">
+                    @Html.LabelFor(m => m.SegmentChar2)
+                </div>
+                <div class="col-md-2">
+                    @Html.LabelFor(m => m.SegmentChar3)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.SegmentName1, new { @class = "col-md-2 control-label" })
+                <div class="col-md-5">
+                    @Html.TextBoxFor(m => m.SegmentName1, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.SegmentName1)
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(m => m.SegmentChar1, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.SegmentChar1)
+                </div>
+                <div class="col-md-2">
+                    @Html.CheckBoxFor(m => m.SegmentEnabled1)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.SegmentName2, new { @class = "col-md-2 control-label" })
+                <div class="col-md-5">
+                    @Html.TextBoxFor(m => m.SegmentName2, new { @class = "form-control" })
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(m => m.SegmentChar2, new { @class = "form-control" })
+                </div>
+                <div class="col-md-2">
+                    @Html.CheckBoxFor(m => m.SegmentEnabled2)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.SegmentName3, new { @class = "col-md-2 control-label" })
+                <div class="col-md-5">
+                    @Html.TextBoxFor(m => m.SegmentName3, new { @class = "form-control" })
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(m => m.SegmentChar3, new { @class = "form-control" })
+                </div>
+                <div class="col-md-2">
+                    @Html.CheckBoxFor(m => m.SegmentEnabled3)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.SegmentName4, new { @class = "col-md-2 control-label" })
+                <div class="col-md-5">
+                    @Html.TextBoxFor(m => m.SegmentName4, new { @class = "form-control" })
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(m => m.SegmentChar4, new { @class = "form-control" })
+                </div>
+                <div class="col-md-2">
+                    @Html.CheckBoxFor(m => m.SegmentEnabled4)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.SegmentName5, new { @class = "col-md-2 control-label" })
+                <div class="col-md-5">
+                    @Html.TextBoxFor(m => m.SegmentName5, new { @class = "form-control" })
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(m => m.SegmentChar5, new { @class = "form-control" })
+                </div>
+                <div class="col-md-2">
+                    @Html.CheckBoxFor(m => m.SegmentEnabled5)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.SegmentName6, new { @class = "col-md-2 control-label" })
+                <div class="col-md-5">
+                    @Html.TextBoxFor(m => m.SegmentName6, new { @class = "form-control" })
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(m => m.SegmentChar6, new { @class = "form-control" })
+                </div>
+                <div class="col-md-2">
+                    @Html.CheckBoxFor(m => m.SegmentEnabled6)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.SegmentName7, new { @class = "col-md-2 control-label" })
+                <div class="col-md-5">
+                    @Html.TextBoxFor(m => m.SegmentName7, new { @class = "form-control" })
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(m => m.SegmentChar7, new { @class = "form-control" })
+                </div>
+                <div class="col-md-2">
+                    @Html.CheckBoxFor(m => m.SegmentEnabled7)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.SegmentName8, new { @class = "col-md-2 control-label" })
+                <div class="col-md-5">
+                    @Html.TextBoxFor(m => m.SegmentName8, new { @class = "form-control" })
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(m => m.SegmentChar8, new { @class = "form-control" })
+                </div>
+                <div class="col-md-2">
+                    @Html.CheckBoxFor(m => m.SegmentEnabled8)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default tstyCus-btn" />
+                    <input type="button" value="Cancel" class="btn btn-default tstyCus-btn" onclick="javascript: window.location.href='@Url.Content("~/Account")'" />
+                </div>
+            </div>
+        </div>
+    }
 </div>
-}
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#btnCancel').click(function () {
-            window.location = '@Url.Content("~/Account")'
-        });
-    });
-</script>

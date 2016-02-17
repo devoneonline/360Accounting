@@ -345,6 +345,7 @@
     <Content Include="Views\JournalVoucher\TrialBalance.cshtml" />
     <Content Include="Views\JournalVoucher\_TrialBalancePartial.cshtml" />
     <Content Include="Views\JournalVoucher\TrialBalanceReport.cshtml" />
+    <Content Include="Views\User\_List.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
