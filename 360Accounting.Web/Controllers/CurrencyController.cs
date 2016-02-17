@@ -11,6 +11,7 @@ using _360Accounting.Core.Entities;
 
 namespace _360Accounting.Web.Controllers
 {
+    [Authorize]
     public class CurrencyController : Controller
     {
         private ICurrencyService service;
@@ -22,8 +23,9 @@ namespace _360Accounting.Web.Controllers
             sobService = IoC.Resolve<ISetOfBookService>("SetOfBookService");
         }
 
-        public ActionResult Index(CurrencyListModel model)
+        public ActionResult Index()
         {
+            var model = new CurrencyListModel();
             if (model.SetOfBooks == null)
             {
                 model.SetOfBooks = sobService
@@ -35,11 +37,7 @@ namespace _360Accounting.Web.Controllers
                     }).ToList();
             }
 
-            if (model.SOBId != 0 || model.SetOfBooks != null)
-            {
-                model.Currencies = getCurrencyList(model);
-            }
-                
+            model.SOBId = Convert.ToInt64(model.SetOfBooks.First().Value);
             return View(model);
         }
 
@@ -66,7 +64,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Edit(string id)
         {
             CurrencyViewModel model =
-                new CurrencyViewModel(service.GetSingle(id,AuthenticationHelper.User.CompanyId));
+                new CurrencyViewModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
             return View(model);
         }
 
@@ -85,7 +83,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            service.Delete(id,AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.User.CompanyId);
             return RedirectToAction("Index");
         }
 
@@ -115,9 +113,16 @@ namespace _360Accounting.Web.Controllers
                 Name = model.Name,
                 Precision = model.Precision,
                 SOBId = model.SOBId,
-                UpdateDate = DateTime.Now                
+                UpdateDate = DateTime.Now
             };
         }
         #endregion
+
+        public ActionResult CurrencyListPartial(long sobId)
+        {
+            IEnumerable<CurrencyViewModel> currencyList = service.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", true, null, "", "")
+                .Select(x => new CurrencyViewModel(x)).ToList();
+            return PartialView("_List", currencyList);
+        }
     }
 }

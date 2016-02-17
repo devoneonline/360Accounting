@@ -4,75 +4,78 @@
     ViewBag.Title = "Edit Calendar";
 }
 
-<div class="row">
-    <div class="col-lg-12">
-        <h1 class="page-header">
-            @ViewBag.Title
-        </h1>
+<div class="container">
+    <div class="clearfix">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                @ViewBag.Title
+            </h1>
+        </div>
     </div>
-</div>
 
-@using (Html.BeginForm("Edit", "Calendar",
+    @using (Html.BeginForm("Edit", "Calendar",
 FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    @Html.ValidationSummary()
-    @Html.HiddenFor(m => m.SOBId)
-    @Html.HiddenFor(m => m.ClosingStatus)
-    
-    <div class="col-lg-12">
-        <div class="col-md-4">
-            @Html.LabelFor(m => m.PeriodName)
-            @Html.TextBoxFor(m => m.PeriodName, new { @class = "form-control" })
-        </div>
+    {
+        @Html.ValidationSummary()
+        @Html.HiddenFor(m => m.SOBId)
+        @Html.HiddenFor(m => m.ClosingStatus)
 
-        <div class="col-md-4">
-            @Html.LabelFor(m => m.PeriodYear)
-            @Html.TextBoxFor(m => m.PeriodYear, new { @class = "form-control" })
-        </div>
+        <div class="col-lg-12">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.PeriodName)
+                    @Html.TextBoxFor(m => m.PeriodName, new { @class = "form-control" })
+                </div>
+            </div>
 
-        <div class="col-md-4">
-            @Html.LabelFor(m => m.PeriodQuarter)
-            @Html.TextBoxFor(m => m.PeriodQuarter, new { @class = "form-control" })
-        </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.PeriodYear)
+                    @Html.TextBoxFor(m => m.PeriodYear, new { @class = "form-control" })
+                </div>
+            </div>
 
-        <div class="col-md-4">
-            @Html.LabelFor(m => m.SeqNumber)
-            @Html.TextBoxFor(m => m.SeqNumber, new { @readonly = "readonly", @class = "form-control" })
-        </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.PeriodQuarter)
+                    @Html.TextBoxFor(m => m.PeriodQuarter, new { @class = "form-control" })
+                </div>
+            </div>
 
-        <div class="col-md-4">
-            @Html.LabelFor(m => m.StartDate)
-            @Html.TextBoxFor(m => m.StartDate, new { @readonly = "readonly", @class = "form-control" })
-        </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.SeqNumber)
+                    @Html.TextBoxFor(m => m.SeqNumber, new { @readonly = "readonly", @class = "form-control" })
+                </div>
+            </div>
 
-        <div class="col-md-4">
-            @Html.LabelFor(m => m.EndDate)
-            @Html.TextBoxFor(m => m.EndDate, new { @readonly = "readonly", @class = "form-control" })
-        </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.StartDate)
+                    @Html.TextBoxFor(m => m.StartDate, new { @readonly = "readonly", @class = "form-control" })
+                </div>
+            </div>
 
-        <div class="form-group">
-            <div class="col-md-4">
-                @Html.LabelFor(m => m.Adjusting)
-                @Html.CheckBoxFor(m => m.Adjusting)
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.EndDate)
+                    @Html.TextBoxFor(m => m.EndDate, new { @readonly = "readonly", @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Adjusting)
+                    @Html.CheckBoxFor(m => m.Adjusting)
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-default tstyCus-btn" />
+                    <input type="button" value="Cancel" class="btn btn-default tstyCus-btn" onclick="javascript: window.location.href='@Url.Content("~/Calendar")'" />
+                </div>
             </div>
         </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-                <input type="button" value="Cancel" class="btn btn-default" id="btnCancel" />
-            </div>
-        </div>
-    </div>
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('#btnCancel').click(function () {
-                    window.location.href = '@Url.Content("~/Calendar/Index")';
-                });
-            });
-        </script>
     }
-}
+</div>

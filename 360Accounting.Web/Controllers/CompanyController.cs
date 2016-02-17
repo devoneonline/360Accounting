@@ -48,7 +48,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Edit(string id)
         {
-            CompanyModel model = new CompanyModel(service.GetSingle(id,AuthenticationHelper.User.CompanyId));
+            CompanyModel model = new CompanyModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
             return View(model);
         }
 
@@ -66,7 +66,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            service.Delete(id,AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.User.CompanyId);
             return RedirectToAction("Index");
         }
 
@@ -77,6 +77,13 @@ namespace _360Accounting.Web.Controllers
                 Id = model.Id,
                 Name = model.Name
             };
+        }
+
+        public ActionResult CompanyListPartial()
+        {
+            var list = service.GetAll(AuthenticationHelper.User.CompanyId);
+            IEnumerable<CompanyModel> companyList = list.Select(a => new CompanyModel(a));
+            return PartialView("_List", companyList);
         }
     }
 }

@@ -1,42 +1,53 @@
-@{
-	var grid = Html.DevExpress().GridView(settings => {
-        settings.Name = "CalendarList";
-        settings.CallbackRouteValues = new { Controller = "Calendar", Action = "List" };
+@{Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
 
-				settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Calendar", Action = "ListAddNew" };
-        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Calendar", Action = "ListUpdate" };
-        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Calendar", Action = "ListDelete" };
-        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
-        settings.SettingsBehavior.ConfirmDelete = true;
+var grid = Html.DevExpress().GridView(settings =>
+{
+    settings.Name = "CalendarList";
+    settings.Theme = "Office2010Black";
+    settings.CallbackRouteValues = new { Controller = "Calendar", Action = "CurrencyListPartial" };
 
-		settings.CommandColumn.Visible = true;
-        settings.CommandColumn.ShowNewButton = true;
-        settings.CommandColumn.ShowDeleteButton = true;
-        settings.CommandColumn.ShowEditButton = true;
+    settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+    settings.SettingsBehavior.ConfirmDelete = true;
 
-		settings.KeyFieldName = "Id";
+    settings.SettingsPager.Visible = true;
+    settings.Settings.ShowGroupPanel = false;
+    settings.Settings.ShowFilterRow = false;
+    settings.SettingsBehavior.AllowSort = false;
+    settings.SettingsBehavior.AllowSelectByRowClick = true;
 
-		settings.SettingsPager.Visible = true;
-		settings.Settings.ShowGroupPanel = false;
-		settings.Settings.ShowFilterRow = false;
-        settings.SettingsBehavior.AllowSort = false;
-		settings.SettingsBehavior.AllowSelectByRowClick = true;
+    settings.Columns.Add(column =>
+    {
+        column.Caption = "#";
+        column.SetDataItemTemplateContent(c =>
+        {
+            ViewContext.Writer.Write(
+                Html.Raw("<a href='" + Url.Content("~/Calendar/Edit/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
+                    + "&nbsp;" +
+                Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/Calendar/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
+            );
+        });
 
-				settings.Columns.Add("Id");
-				settings.Columns.Add("SOBId");
-				settings.Columns.Add("PeriodName");
-				settings.Columns.Add("PeriodYear");
-				settings.Columns.Add("PeriodQuarter");
-				settings.Columns.Add("SeqNumber");
-				settings.Columns.Add("StartDate");
-				settings.Columns.Add("EndDate");
-				settings.Columns.Add("Adjusting");
-				settings.Columns.Add("ClosingStatus");
-                //settings.Columns.Add("ClosingStatusList");
-                //settings.Columns.Add("SetOfBooks");
-			});
-		if (ViewData["EditError"] != null){
-        grid.SetEditErrorText((string)ViewData["EditError"]);
-    }
+        column.Settings.AllowDragDrop = DefaultBoolean.False;
+        column.Settings.AllowSort = DefaultBoolean.False;
+        column.Width = 70;
+    });
+
+    settings.Columns.Add("Id");
+    settings.Columns.Add("SOBId");
+    settings.Columns.Add("PeriodName");
+    settings.Columns.Add("PeriodYear");
+    settings.Columns.Add("PeriodQuarter");
+    settings.Columns.Add("SeqNumber");
+    settings.Columns.Add("StartDate");
+    settings.Columns.Add("EndDate");
+    settings.Columns.Add("Adjusting");
+    settings.Columns.Add("ClosingStatus");
+});
+if (ViewData["EditError"] != null)
+{
+    grid.SetEditErrorText((string)ViewData["EditError"]);
+}
 }
 @grid.Bind(Model).GetHtml()
