@@ -138,7 +138,7 @@ namespace _360Accounting.Web.Controllers
                 model.SOBName = sobService.GetSingle(sobId.ToString(), AuthenticationHelper.User.CompanyId).Name;
 
                 SessionHelper.Calendar = new CalendarViewModel(calendarService.GetSingle(periodId.ToString(), AuthenticationHelper.User.CompanyId));
-                model.GLDate = SessionHelper.Calendar.StartDate.Value;
+                model.GLDate = SessionHelper.Calendar.StartDate;
                 model.ConversionRate = 1;
 
                 model.PeriodName = SessionHelper.Calendar.PeriodName;

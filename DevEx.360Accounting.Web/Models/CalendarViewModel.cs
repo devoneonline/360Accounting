@@ -53,11 +53,11 @@ namespace DevEx_360Accounting_Web.Models
 
         [Required]
         [Display(Name = "From")]
-        public DateTime? StartDate { get; set; }
+        public DateTime StartDate { get; set; }
 
         [Required]
         [Display(Name = "To")]
-        public DateTime? EndDate { get; set; }
+        public DateTime EndDate { get; set; }
 
         [Required]
         public bool Adjusting { get; set; }

@@ -58,7 +58,7 @@ namespace DevEx_360Accounting_Web.Controllers
 
         private TrialBalanceReport CreateTrialBalanceReport(long sobId, long fromCodeCombinationId, long toCodeCombinationId, long periodId)
         {
-            List<TrialBalanceModel> modelList = mapTrialBalanceModel(service.TrialBalance(AuthenticationHelper.User.CompanyId, sobId, fromCodeCombinationId, toCodeCombinationId, periodId));
+            List<TrialBalanceModel> modelList = mapTrialBalanceModel(service.TrialBalance(AuthenticationHelper.User.CompanyId, sobId, fromCodeCombinationId >= toCodeCombinationId ? toCodeCombinationId : fromCodeCombinationId, toCodeCombinationId <= fromCodeCombinationId ? fromCodeCombinationId : toCodeCombinationId, periodId));
             TrialBalanceReport report = new TrialBalanceReport();
             report.Parameters["CompanyName"].Value = companyService
                 .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
@@ -416,7 +416,7 @@ namespace DevEx_360Accounting_Web.Controllers
                 model.SOBName = sobService.GetSingle(sobId.ToString(), AuthenticationHelper.User.CompanyId).Name;
 
                 SessionHelper.Calendar = new CalendarViewModel(calendarService.GetSingle(periodId.ToString(), AuthenticationHelper.User.CompanyId));
-                model.GLDate = SessionHelper.Calendar.StartDate.Value;
+                model.GLDate = SessionHelper.Calendar.StartDate;
                 model.ConversionRate = 1;
 
                 model.PeriodName = SessionHelper.Calendar.PeriodName;

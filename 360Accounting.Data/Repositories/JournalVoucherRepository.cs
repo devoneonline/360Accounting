@@ -14,36 +14,193 @@ namespace _360Accounting.Data.Repositories
     {
         public List<TrialBalance> TrialBalance(long companyId, long sobId, long fromCodeCombinationId, long toCodeCombinationId, long periodId)
         {
-            throw new NotImplementedException();
+            List<TrialBalance> report = new List<TrialBalance>();
+            DateTime fromDate = this.Context.Calendars.First(x => x.Id == periodId &&
+                x.CompanyId == companyId && x.SOBId == sobId).EndDate;
 
+            List<CodeCombinition> codeCombinations = this.Context.CodeCombinitions
+                .Where(x => x.CompanyId == companyId && x.SOBId == sobId &&
+                x.Id >= fromCodeCombinationId && x.Id <= toCodeCombinationId &&
+                x.AllowedPosting == true).ToList();
 
+            foreach (CodeCombinition codeCombination in codeCombinations)
+            {
+                var account = this.Context.Accounts.Where(x => x.CompanyId == codeCombination.CompanyId &&
+                    x.SOBId == codeCombination.SOBId)
+                    .Select(x => new
+                    {
+                        ChartId = x.Id,
+                        Segment1 = x.SegmentName1,
+                        Segment2 = x.SegmentName2,
+                        Segment3 = x.SegmentName3,
+                        Segment4 = x.SegmentName4,
+                        Segment5 = x.SegmentName5,
+                        Segment6 = x.SegmentName6,
+                        Segment7 = x.SegmentName7,
+                        Segment8 = x.SegmentName8
+                    });
+                decimal balance = getOpeningBalance(fromDate, codeCombination.Id);
+                report.Add(new TrialBalance
+                {
+                    CodeCombination = Utility.Stringize(".", codeCombination.Segment1,
+                    codeCombination.Segment2, codeCombination.Segment3, codeCombination.Segment4,
+                    codeCombination.Segment5, codeCombination.Segment6, codeCombination.Segment7,
+                    codeCombination.Segment8),
+                    CodeCombinationName = Utility.Stringize(".", getCodeCombinationValueName(account.Single().ChartId, codeCombination.Segment1, account.Single().Segment1),
+                    getCodeCombinationValueName(account.Single().ChartId, codeCombination.Segment2, account.Single().Segment2),
+                    getCodeCombinationValueName(account.Single().ChartId, codeCombination.Segment3, account.Single().Segment3),
+                    getCodeCombinationValueName(account.Single().ChartId, codeCombination.Segment4, account.Single().Segment4),
+                    getCodeCombinationValueName(account.Single().ChartId, codeCombination.Segment5, account.Single().Segment5),
+                    getCodeCombinationValueName(account.Single().ChartId, codeCombination.Segment6, account.Single().Segment6),
+                    getCodeCombinationValueName(account.Single().ChartId, codeCombination.Segment7, account.Single().Segment7),
+                    getCodeCombinationValueName(account.Single().ChartId, codeCombination.Segment8, account.Single().Segment8)),
+                    Credit = balance > 0 ? 0 : balance,
+                    Debit = balance < 0 ? 0 : balance
+                });
+            }
+
+            return report;
         }
 
-        public List<Ledger> Ledger(long companyId, long sobId, 
-            long fromCodeCombinationId, long toCodeCombinationId, 
+        private string getCodeCombinationValueName(long chartId, string value, string segment)
+        {
+            string valueName = "";
+            if (value != null)
+            {
+                valueName = this.Context.AccountValues.FirstOrDefault(x => x.ChartId == chartId && x.Value == value
+                    && x.Segment == segment).ValueName;
+            }
+
+            return valueName;
+        }
+
+        public List<Ledger> Ledger(long companyId, long sobId, long fromCodeCombinationId, long toCodeCombinationId, 
             DateTime fromDate, DateTime toDate)
         {
-            throw new NotImplementedException();
+            decimal openingBalance;
+            string codeCombinationCode;
+            string codeCombinationName;
+            List<Ledger> ledger = new List<Ledger>();
 
             //1. Get all combinations of this company, sobId 
             // between (from - to) having allow posting = 1.
-            
+            List<CodeCombinition> codeCombinations = this.Context.CodeCombinitions
+                .Where(x => x.CompanyId == companyId && x.SOBId == sobId &&
+                x.Id >= fromCodeCombinationId && x.Id <= toCodeCombinationId &&
+                x.AllowedPosting == true).ToList();
+
             //2. Loop of each combination
-                //Make opening balance.
-                    //Read all the transactions from glLines
-                    //of this code combination
-                    //having glDate less than fromDate.
-                    //SELECT...
-                    //TransDate
-                    //Desc. Opening As On
-                    //SUM(Debit) - SUM(Credit) ==> Balance Dr(+ve), Cr(-ve)
-            
+            foreach (CodeCombinition codeCombination in codeCombinations)
+            {
+                //To get Code Combination value name
+                var account = this.Context.Accounts.Where(x => x.CompanyId == codeCombination.CompanyId &&
+                    x.SOBId == codeCombination.SOBId)
+                    .Select(x => new
+                    {
+                        ChartId = x.Id,
+                        Segment1 = x.SegmentName1,
+                        Segment2 = x.SegmentName2,
+                        Segment3 = x.SegmentName3,
+                        Segment4 = x.SegmentName4,
+                        Segment5 = x.SegmentName5,
+                        Segment6 = x.SegmentName6,
+                        Segment7 = x.SegmentName7,
+                        Segment8 = x.SegmentName8
+                    });
+
+                codeCombinationCode = Utility.Stringize(".", 
+                    codeCombination.Segment1, 
+                    codeCombination.Segment2, 
+                    codeCombination.Segment3, 
+                    codeCombination.Segment4, 
+                    codeCombination.Segment5, 
+                    codeCombination.Segment6, 
+                    codeCombination.Segment7, 
+                    codeCombination.Segment8);
+
+                codeCombinationName = Utility.Stringize(".", getCodeCombinationValueName(account.Single().ChartId, codeCombination.Segment1, account.Single().Segment1),
+                    getCodeCombinationValueName(account.Single().ChartId, codeCombination.Segment2, account.Single().Segment2),
+                    getCodeCombinationValueName(account.Single().ChartId, codeCombination.Segment3, account.Single().Segment3),
+                    getCodeCombinationValueName(account.Single().ChartId, codeCombination.Segment4, account.Single().Segment4),
+                    getCodeCombinationValueName(account.Single().ChartId, codeCombination.Segment5, account.Single().Segment5),
+                    getCodeCombinationValueName(account.Single().ChartId, codeCombination.Segment6, account.Single().Segment6),
+                    getCodeCombinationValueName(account.Single().ChartId, codeCombination.Segment7, account.Single().Segment7),
+                    getCodeCombinationValueName(account.Single().ChartId, codeCombination.Segment8, account.Single().Segment8));
+
+                //OPENING BALANCE
+                openingBalance = getOpeningBalance(fromDate, codeCombination.Id);
+
+                //SELECT...
+                //TransDate
+                //Desc. Opening As On
+                //SUM(Debit) - SUM(Credit) ==> Balance Dr(+ve), Cr(-ve)
+                ledger.Add(new Ledger
+                {
+                    Balance = openingBalance,
+                    CodeCombination = codeCombinationCode,
+                    CodeCombinationName = codeCombinationName,
+                    Credit = 0,
+                    Debit = 0,
+                    Description = "Opneing Balance",
+                    Document = "",
+                    TransactionDate = fromDate
+                });
+                
                 //Read All transactions from glLines
                 //of this code combination
                 //having glDate between fromDate & toDate
-                //SELECT...
-                //
+                var ledgerTransactions = (from jv in this.Context.JournalVouchers
+                                       join jvd in this.Context.JournalVoucherDetails on jv.Id equals jvd.HeaderId
+                                       where jv.GLDate >= fromDate && jv.GLDate <= toDate &&
+                                       jvd.CodeCombinationId == codeCombination.Id
+                                       select new
+                                       {
+                                           Credit = jvd.AccountedCr,
+                                           Debit = jvd.AccountedDr,
+                                           Description = jvd.Description,
+                                           Document = jv.DocumentNo,
+                                           TransactionDate = jv.GLDate
+                                       }).ToList();
 
+                //Select ledgerTransactions thru loop in ledger...
+                foreach (var transaction in ledgerTransactions)
+                {
+                    ledger.Add(new Ledger 
+                    {
+                        Balance = openingBalance + transaction.Debit - transaction.Credit,
+                        CodeCombination = codeCombinationCode,
+                        CodeCombinationName = codeCombinationName,
+                        Credit = transaction.Credit,
+                        Debit = transaction.Debit,
+                        Description = transaction.Description,
+                        Document = transaction.Document,
+                        TransactionDate = transaction.TransactionDate
+                    });
+
+                    openingBalance = openingBalance + transaction.Debit - transaction.Credit;
+                }
+            }
+
+            return ledger;
+        }
+
+        private decimal getOpeningBalance(DateTime openingDate, long codeCombinationId)
+        {
+            //1. Read all the transactions from glLines
+            //of this code combination
+            //having glDate less than fromDate.
+            //FOR OPENING BALANCE
+            var openingTransactions = (from jv in this.Context.JournalVouchers
+                                       join jvd in this.Context.JournalVoucherDetails on jv.Id equals jvd.HeaderId
+                                       where jv.GLDate < openingDate && jvd.CodeCombinationId == codeCombinationId
+                                       select new
+                                       {
+                                           Credit = jvd.AccountedCr,
+                                           Debit = jvd.AccountedDr
+                                       }).ToList();
+
+            //Make opening balance.
+            return openingTransactions.Sum(x => x.Debit - x.Credit);
         }
 
         public List<AuditTrial> AuditTrial(long companyId, long sobId, DateTime fromDate, DateTime toDate)

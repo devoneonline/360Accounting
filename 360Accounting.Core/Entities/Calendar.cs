@@ -26,9 +26,9 @@ namespace _360Accounting.Core.Entities
 
         public int? SeqNumber { get; set; }
 
-        public DateTime? StartDate { get; set; }
+        public DateTime StartDate { get; set; }
 
-        public DateTime? EndDate { get; set; }
+        public DateTime EndDate { get; set; }
 
         public string ClosingStatus { get; set; }
     }
