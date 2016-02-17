@@ -3,30 +3,6 @@
 @{
     if (Model.Count() > 0)
     {
-        @*var grid = new WebGrid(canSort: true,
-            ajaxUpdateContainerId: "dvJournalVoucherDetailList", ajaxUpdateCallback: "CallBack");
-
-            grid.Bind(Model);
-
-            @grid.GetHtml(tableStyle: "table table-bordered table-hover table-striped",
-                            mode: WebGridPagerModes.All,
-                            numericLinksCount: 10,
-                            htmlAttributes: new { style = "width:100%", @class = "table", id = "tblVouchers" },
-                            columns: grid.Columns
-                            (
-                            grid.Column("", header: "Actions", style: "ActionLink",
-                                                            format: (item) => Html.Raw("<a class = 'delete' href='" + @Url.Content("~/JournalVoucher/DeleteDetail/") + item.Id + "'><img src='" + @Url.Content("~/Content/images/delete.png") + "' alt='' title='Delete' style='border:0'/></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='" + @Url.Content("~/JournalVoucher/EditDetail/") + item.Id + "'><img src='" + @Url.Content("~/Content/images/edit.png") + "' alt='' title='Edit' style='border:0'/></a>")),
-                            grid.Column(columnName: "CodeCombinationId",
-                                            header: "Account Code",
-                                            canSort: true),
-                            grid.Column("EnteredDr", header: "Debit", canSort: false),
-                            grid.Column("EnteredCr", header: "Credit", canSort: false),
-                            grid.Column("Qty", header: "Qty", canSort: true),
-                            grid.Column("Description", header: "Description", canSort: true),
-                            grid.Column("TaxRateCode", header: "Tax Rate Code", canSort: true),
-                            grid.Column("AccountedDr", header: "Acct-Dr", canSort: false),
-                            grid.Column("AccountedCr", header: "Acct-Cr", canSort: false)))*@
-
         Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
                 new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
                 new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });

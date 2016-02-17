@@ -8,55 +8,57 @@
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 
-<div class="row">
-    <div class="col-lg-12">
-        <h3 class="page-header">
-            @ViewBag.Title
-        </h3>
-    </div>
-</div>
-
-@Html.ValidationSummary()
-@Html.HiddenFor(m => m.SOBId)
-@Html.HiddenFor(m => m.CompanyId)
-@Html.HiddenFor(m => m.Id)
-
-@{ int count = 0; }
-<div class="col-lg-6">
-    @foreach (var item in Model.SegmentList)
-    {
-        count++;
-        string comboName = "Combo_" + count.ToString();
-        <div class="form-group">
-            @item.SegmentName
-            @Html.DropDownList(comboName, item.SegmentValueList, new { @class = "form-control autoCombo" })
+<div class="container">
+    <div class="clearfix">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
         </div>
-    }
-</div>
-
-<div class="col-lg-5">
-    <div class="form-group">
-        @Html.LabelFor(m => m.StartDate)
-        @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control" })
     </div>
-</div>
 
-<div class="col-lg-5">
-    <div class="form-group">
-        @Html.LabelFor(m => m.EndDate)
-        @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control" })
+    @Html.ValidationSummary()
+    @Html.HiddenFor(m => m.SOBId)
+    @Html.HiddenFor(m => m.CompanyId)
+    @Html.HiddenFor(m => m.Id)
+
+    @{ int count = 0; }
+    <div class="col-lg-6">
+        @foreach (var item in Model.SegmentList)
+        {
+            count++;
+            string comboName = "Combo_" + count.ToString();
+            <div class="form-group">
+                @item.SegmentName
+                @Html.DropDownList(comboName, item.SegmentValueList, new { @class = "form-control autoCombo" })
+            </div>
+        }
     </div>
-</div>
 
-<div class="col-lg-5">
-    <div class="form-group">
-        @Html.LabelFor(m => m.AllowedPosting)
-        @Html.CheckBoxFor(m => m.AllowedPosting)
+    <div class="col-lg-5">
+        <div class="form-group">
+            @Html.LabelFor(m => m.StartDate)
+            @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control" })
+        </div>
     </div>
-</div>
 
-<div class="col-lg-5">
-    <div class="form-group">
-        <input type="button" value="Save" class="btn btn-default" id="btnSave" onclick="javascript: return SaveValue();" />
+    <div class="col-lg-5">
+        <div class="form-group">
+            @Html.LabelFor(m => m.EndDate)
+            @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="form-group">
+            @Html.LabelFor(m => m.AllowedPosting)
+            @Html.CheckBoxFor(m => m.AllowedPosting)
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="form-group">
+            <input type="button" value="Save" class="btn btn-default tstyCus-btn" id="btnSave" onclick="javascript: return SaveValue();" />
+        </div>
     </div>
 </div>
