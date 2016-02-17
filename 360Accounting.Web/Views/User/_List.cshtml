@@ -1,0 +1,55 @@
+﻿@Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
+
+@{Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
+                new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
+                new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
+
+Html.EnableClientValidation();
+Html.EnableUnobtrusiveJavaScript();
+
+var grid = Html.DevExpress().GridView(settings =>
+{
+    settings.Name = "User";
+    settings.Theme = "Office2010Black";
+    settings.KeyFieldName = "UserId";
+
+    settings.CallbackRouteValues = new { Controller = "User", Action = "UserListPartial" };
+
+    settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+    settings.SettingsBehavior.ConfirmDelete = true;
+
+    settings.SettingsPager.Visible = true;
+    settings.Settings.ShowGroupPanel = false;
+    settings.Settings.ShowFilterRow = false;
+    settings.SettingsBehavior.AllowSort = false;
+    settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+    settings.Columns.Add(column =>
+        {
+            column.SetDataItemTemplateContent(c =>
+            {
+                ViewContext.Writer.Write(
+                    Html.Raw("<a href='" + Url.Content("~/User/Edit/") + DataBinder.Eval(c.DataItem, "UserId") + "'><i class='fa fa-edit'></i></a>")
+                    + "&nbsp;&nbsp;" +
+                    Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/User/Delete/") + DataBinder.Eval(c.DataItem, "UserId") + "'><i class='fa fa-trash-o'></i></a>")
+                );
+            });
+            column.Settings.AllowDragDrop = DefaultBoolean.False;
+            column.Settings.AllowSort = DefaultBoolean.False;
+            column.Width = 70;
+        });
+
+    settings.Columns.Add("UserName", "User Name");
+    settings.Columns.Add("FirstName", "First Name");
+    settings.Columns.Add("LastName", "Last Name");
+    settings.Columns.Add("PhoneNumber", "Contact Number");
+    settings.Columns.Add("Email");
+    settings.Columns.Add("CompanyName", "Company");
+    settings.Columns.Add("Role");
+});
+if (ViewData["EditError"] != null)
+{
+    grid.SetEditErrorText((string)ViewData["EditError"]);
+}
+}
+@grid.Bind(Model).GetHtml()

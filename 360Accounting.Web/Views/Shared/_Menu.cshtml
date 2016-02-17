@@ -4,39 +4,28 @@
     Session.Abandon();
     Response.Redirect("~/User/Login");
 }
-<div class="collapse navbar-collapse navbar-ex1-collapse">
-    <ul class="nav navbar-nav side-nav">
-        @if (AuthenticationHelper.MenuItems !=null)
-        {
-            @ShowMenu(AuthenticationHelper.MenuItems);
-        }
-        @helper ShowMenu(IEnumerable<_360Accounting.Web.Models.FeatureViewModel> items)
-        {
-            foreach (var item in items)
+<ul class="nav navbar-nav">
+    @if (AuthenticationHelper.MenuItems != null)
+    {
+        @ShowMenu(AuthenticationHelper.MenuItems);
+    }
+    @helper ShowMenu(IEnumerable<_360Accounting.Web.Models.FeatureViewModel> items)
+{
+    foreach (var item in items)
+    {
+        <li>
+            @if (item.Features == null || item.Features.Count == 0)
             {
-                <li>
-                    @if (item.Features == null)
-                    {
-                        <a href='@Url.Content(item.Href)'><i class="@item.Class"></i> @item.Name</a>
-                    }
-                    else
-                    {
-                        var _id = "level" + item.Id;
-                        var _pid = "#level" + item.Id;
-                        
-                    ////faisal bhai ye do lines samajh nai aaein, plz samjha dain.
-                    ////***************************************************************
-                        <a href="javascript:;" data-toggle="collapse" data-target="@_pid"><i class="@item.Class"></i> @item.Name </a>
-                        <ul id="@_id" class=" collapse">
-                    @*faisal bhai ye do lines samajh nai aaein, plz samjha dain.
-                    faisal bhai ye do lines samajh nai aaein, plz samjha dain.*@
-                    @*////****************************************************************@
-
-                            @ShowMenu(item.Features)
-                        </ul>
-                    }
-                </li>
+                <a href='@Url.Content(item.Href)'>@item.Name</a>
             }
-        }    
-    </ul>
-</div>
+            else
+            {
+                <a href="#">@item.Name <i class="caret"></i></a>
+                <ul class=" dropdown-menu">
+                    @ShowMenu(item.Features)
+                </ul>
+            }
+        </li>
+    }
+}
+</ul>

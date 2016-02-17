@@ -35,11 +35,95 @@ namespace _360Accounting.Web.Controllers
 
         #region ActionResult
 
-        public ActionResult Index(MembershipUserListModel model)
+        #region Uzair Reports Code
+
+        #region Code for getting reports data
+        //private UserwiseRole CreateUserwiseRoleReport()
+        //{
+        //    List<UserViewModel> modelList = GetUserList();
+        //    UserwiseRole report = new UserwiseRole();
+        //    report.DataSource = modelList;
+        //    report.Parameters["CompanyName"].Value = companyService
+        //        .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
+        //        AuthenticationHelper.User.CompanyId).Name;
+        //    return report;
+        //}
+
+        //private UserList CreateReport()
+        //{
+        //    List<UserViewModel> modelList = GetUserList();
+        //    UserList report = new UserList();
+        //    report.DataSource = modelList;
+        //    report.Parameters["CompanyName"].Value = companyService
+        //        .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
+        //        AuthenticationHelper.User.CompanyId).Name;
+        //    return report;
+        //}
+
+        private List<UserViewModel> GetUserList()
         {
-            int totalRecords = 0;
-            MembershipUserCollection memCollection = Membership.GetAllUsers(model.Page ?? 0, Utility.Configuration.GridRows, out totalRecords);
-            model.Users = new List<UserViewModel>();
+            MembershipUserCollection memCollection = Membership.GetAllUsers();
+            List<UserViewModel> users = new List<UserViewModel>();
+            foreach (MembershipUser user in memCollection)
+            {
+                UserViewModel item = new UserViewModel();
+                item.UserId = Guid.Parse(user.ProviderUserKey.ToString());
+                item.UserName = user.UserName;
+                item.Role = Roles.GetRolesForUser(user.UserName)[0];
+                users.Add(item);
+            }
+
+            return users;
+        }
+
+        public ActionResult UserwiseRole()
+        {
+            return View();
+        }
+
+        public ActionResult UserList()
+        {
+            return View();
+        }
+
+        //public ActionResult UserwiseRolePartial()
+        //{
+        //    return PartialView("_UserwiseRole", CreateUserwiseRoleReport());
+        //}
+
+        //public ActionResult DocumentViewerPartial()
+        //{
+        //    return PartialView("_UserList", CreateReport());
+        //}
+
+        //public ActionResult UserwiseRolePartialExport()
+        //{
+        //    return DocumentViewerExtension.ExportTo(CreateUserwiseRoleReport(), Request);
+        //}
+
+        //public ActionResult DocumentViewerPartialExport()
+        //{
+        //    return DocumentViewerExtension.ExportTo(CreateReport(), Request);
+        //}
+
+        //public ActionResult DemoReport()
+        //{
+        //    return View(new DemoReport());
+        //}
+
+        #endregion
+
+        #endregion
+
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ActionResult UserListPartial()
+        {
+            List<UserViewModel> modelList = new List<UserViewModel>();
+            MembershipUserCollection memCollection = Membership.GetAllUsers();
             foreach (MembershipUser user in memCollection)
             {
                 UserProfile profile = UserProfile.GetProfile(user.UserName);
@@ -50,13 +134,16 @@ namespace _360Accounting.Web.Controllers
                 item.LastName = profile.LastName;
                 item.PhoneNumber = profile.PhoneNumber;
                 item.Email = profile.Email;
+                item.CompanyId = profile.CompanyId;
                 item.CompanyName = companyService.GetSingle(profile.CompanyId.ToString(), AuthenticationHelper.User.CompanyId).Name;
                 item.Role = Roles.GetRolesForUser(user.UserName)[0];
-                model.Users.Add(item);
+                modelList.Add(item);
             }
-
-            model.TotalRecords = totalRecords;
-            return View(model);
+            if (AuthenticationHelper.UserRole != UserRoles.SuperAdmin.ToString())
+            {
+                modelList = modelList.Where(x => x.CompanyId == AuthenticationHelper.User.CompanyId && x.Role != UserRoles.SuperAdmin.ToString()).ToList();
+            }
+            return PartialView("_List", modelList);
         }
 
         [AllowAnonymous]
@@ -206,8 +293,8 @@ namespace _360Accounting.Web.Controllers
             return View();
         }
 
-        #endregion
 
+        #endregion
 
         public ActionResult CreateCompanyFeatureList()
         {
@@ -227,8 +314,8 @@ namespace _360Accounting.Web.Controllers
             fs.AccessType = "company";
             fs.CreateDate = DateTime.Now;
             List<FeatureSetList> fsList = new List<FeatureSetList>();
-            var newValue = featureList.Replace("undefined|","").Replace("undefined±","").Split(new char[] { '±' }, StringSplitOptions.None);
-            foreach(string s in newValue)
+            var newValue = featureList.Replace("undefined|", "").Replace("undefined±", "").Split(new char[] { '±' }, StringSplitOptions.None);
+            foreach (string s in newValue)
             {
                 if (!string.IsNullOrEmpty(s))
                 {
@@ -277,7 +364,8 @@ namespace _360Accounting.Web.Controllers
                     up.LastName = model.LastName;
                     up.PhoneNumber = model.PhoneNumber;
                     up.Email = model.Email;
-                    up.CompanyId = model.CompanyId.Value;
+                    if (AuthenticationHelper.UserRole != UserRoles.SuperAdmin.ToString())
+                        up.CompanyId = AuthenticationHelper.User.CompanyId;
                     up.Save();
 
                     if (!Roles.GetRolesForUser(model.UserName).Contains(model.RoleName))
@@ -345,19 +433,12 @@ namespace _360Accounting.Web.Controllers
             var memUser = Membership.GetUser(userName);
             if (memUser != null)
             {
-                IEnumerable<Feature> featureList = service.GetMenuItemsByUserId(Guid.Parse(memUser.ProviderUserKey.ToString()));
+                List<Feature> featureList = service.GetMenuItemsByUserId(Guid.Parse(memUser.ProviderUserKey.ToString())).ToList();
                 var modelList = featureList.Select(x => new FeatureViewModel(x)).ToList();
                 AuthenticationHelper.MenuItems = modelList;
             }
         }
 
         #endregion
-
-
-        public ActionResult ChartPartial()
-        {
-            var model = new object[0];
-            return PartialView("_ChartPartial", model);
-        }
     }
 }

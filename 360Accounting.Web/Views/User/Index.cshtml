@@ -1,51 +1,24 @@
 ﻿@model _360Accounting.Web.Models.MembershipUserListModel
-
 @{
     ViewBag.Title = "Manage Users";
 }
-<div class="row">
+<div class="container">
+    <div class="clearfix">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
+        </div>
+    </div>
     <div class="col-lg-12">
-        <h3 class="page-header">
-            @ViewBag.Title
-        </h3>
-        @Html.Action("ChartPartial")
-
-
+        <div class="form-group">
+            <input type="button" value="Create New" class="btn btn-default tstyCus-btn" id="btnNew" />
+        </div>
+    </div>
+    <div class="col-lg-12 cusGridWrapper">
+        @Html.Action("UserListPartial")
     </div>
 </div>
-<div class="form-group">
-    <input type="button" value="Create New" class="btn btn-default" id="btnNew" />
-</div>
-    @{
-        if (Model.Users != null)
-        {
-            if (Model.Users.Count > 0)
-            {
-                var grid = new WebGrid(canSort: true,
-                    rowsPerPage: _360Accounting.Common.Utility.Configuration.GridRows);
-                grid.Bind(Model.Users);
-
-                @grid.GetHtml(tableStyle: "table table-bordered table-hover table-striped",
-                            mode: WebGridPagerModes.All,
-                            numericLinksCount: 10,
-                            htmlAttributes: new { style = "width:100%" },
-                            columns: grid.Columns
-                            (
-                            grid.Column("", header: "Actions", style: "ActionLink",
-                                                                       format: (item) => Html.Raw("<a href='" + @Url.Content("~/User/Delete/") + item.UserId + "'><img src='" + @Url.Content("~/Content/images/delete.png") + "' alt='' title='Delete' style='border:0'/></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='" + @Url.Content("~/User/Edit/") + item.UserId + "'><img src='" + @Url.Content("~/Content/images/edit.png") + "' alt='' title='Edit' style='border:0'/></a>")),
-                            grid.Column(columnName: "UserName",
-                                            header: "User Name",
-                                            canSort: true),
-                            grid.Column("FirstName", header: "First Name", canSort: true),
-                            grid.Column("LastName", header: "Last Name", canSort: true),
-                            grid.Column("PhoneNumber", header: "Contact Number", canSort: true),
-                            grid.Column("Email", header: "Email", canSort: true),
-                            grid.Column("CompanyName", header:"Company", canSort:true),
-                            grid.Column("Role", header: "Role", canSort:true)
-                            ))
-            }
-        }
-    }
 <script type="text/javascript">
     $(document).ready(function () {
         $('#btnNew').click(function () {

@@ -98,4 +98,27 @@ namespace _360Accounting.Web.Models
         public long TaxRateCode { get; set; }
         #endregion 
     }
+
+    public class AuditTrialModel
+    {
+        public DateTime TransactionDate { get; set; }
+
+        public string Document { get; set; }
+
+        public string Description { get; set; }
+
+        public string PeriodName { get; set; }
+
+        public string CurrencyName { get; set; }
+
+        public decimal ConversionRate { get; set; }
+
+        public string CodeCombination { get; set; }
+
+        public string LineDescription { get; set; }
+
+        public decimal Debit { get; set; }
+
+        public decimal Credit { get; set; }
+    }
 }

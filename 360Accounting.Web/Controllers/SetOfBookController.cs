@@ -58,7 +58,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Edit(string id)
         {
-            SetOfBookModel model = new SetOfBookModel(service.GetSingle(id,AuthenticationHelper.User.CompanyId));
+            SetOfBookModel model = new SetOfBookModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
             return View(model);
         }
 
@@ -76,7 +76,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            service.Delete(id,AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.User.CompanyId);
             return RedirectToAction("Index");
         }
 
@@ -88,6 +88,13 @@ namespace _360Accounting.Web.Controllers
                 CompanyId = model.CompanyId,
                 Name = model.Name
             };
-        } 
+        }
+
+        public ActionResult SetOfBookPartial()
+        {
+            var list = service.GetByCompanyId(AuthenticationHelper.User.CompanyId);
+            IEnumerable<SetOfBookModel> setofBookList = list.Select(a => new SetOfBookModel(a));
+            return PartialView("_List", setofBookList);
+        }
     }
 }

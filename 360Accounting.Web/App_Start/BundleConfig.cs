@@ -13,7 +13,10 @@ namespace _360Accounting.Web
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/js/jquery.js",
-                        "~/Scripts/js/jquery-ui.js"));
+                        "~/Scripts/js/jquery-ui.js",
+                        "~/Scripts/jquery.smartmenus.min.js",
+                        "~/Scripts/jquery.smartmenus.bootstrap.min.js"
+                        ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -33,7 +36,11 @@ namespace _360Accounting.Web
                       "~/Content/style.css",
                       "~/Content/jquery-ui.css",
                       "~/font-awesome/css/font-awesome.min.css",
-                      "~/awesome-bootstrap-checkbox.css"));
+                      "~/awesome-bootstrap-checkbox.css",
+                      "~/Content/jquery.smartmenus.bootstrap.css",
+                      "~/Content/sm-core-css.css",
+                      "~/Content/sm-simple.css"
+                      ));
         }
     }
 }
