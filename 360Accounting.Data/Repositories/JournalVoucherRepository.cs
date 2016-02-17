@@ -1,4 +1,5 @@
-﻿using _360Accounting.Core.Entities;
+﻿using _360Accounting.Common;
+using _360Accounting.Core.Entities;
 using _360Accounting.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -14,11 +15,35 @@ namespace _360Accounting.Data.Repositories
         public List<TrialBalance> TrialBalance(long companyId, long sobId, long fromCodeCombinationId, long toCodeCombinationId, long periodId)
         {
             throw new NotImplementedException();
+
+
         }
 
-        public List<Ledger> Ledger(long companyId, long sobId, long fromCodeCombinationId, long toCodeCombinationId, DateTime fromDate, DateTime toDate)
+        public List<Ledger> Ledger(long companyId, long sobId, 
+            long fromCodeCombinationId, long toCodeCombinationId, 
+            DateTime fromDate, DateTime toDate)
         {
             throw new NotImplementedException();
+
+            //1. Get all combinations of this company, sobId 
+            // between (from - to) having allow posting = 1.
+            
+            //2. Loop of each combination
+                //Make opening balance.
+                    //Read all the transactions from glLines
+                    //of this code combination
+                    //having glDate less than fromDate.
+                    //SELECT...
+                    //TransDate
+                    //Desc. Opening As On
+                    //SUM(Debit) - SUM(Credit) ==> Balance Dr(+ve), Cr(-ve)
+            
+                //Read All transactions from glLines
+                //of this code combination
+                //having glDate between fromDate & toDate
+                //SELECT...
+                //
+
         }
 
         public List<AuditTrial> AuditTrial(long companyId, long sobId, DateTime fromDate, DateTime toDate)
