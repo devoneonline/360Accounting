@@ -1,0 +1,81 @@
+﻿@model _360Accounting.Web.Models.LedgerCriteriaModel
+
+@{
+    ViewBag.Title = "Ledger";
+}
+
+<div class="container">
+    <div class="clearfix">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
+        </div>
+    </div>
+
+    <div class="clearfix">
+        <div class="col-lg-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.SOBId)
+                @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.FromCodeCombinationId)
+                @Html.DropDownListFor(m => m.FromCodeCombinationId, Model.CodeCombinations, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.ToCodeCombinationId)
+                @Html.DropDownListFor(m => m.ToCodeCombinationId, Model.CodeCombinations, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.FromDate)
+                @Html.TextBoxFor(m => m.FromDate, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.ToDate)
+                @Html.TextBoxFor(m => m.ToDate, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Show" id="btnShow" class="btn btn-default tstyCus-btn" />
+                <input type="button" value="Cancel" class="btn btn-default tstyCus-btn" onclick="javascript: window.location.href='@Url.Content("~/Home/Index")'" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#SOBId').change(
+            function () {
+                var url = '@Url.Content("~/JournalVoucher/CodeCombinationList")';
+
+                $.get(url, { sobId: $(this).val() },
+                function (data) {
+                    var fromCodeCombinationDropdown = $('#FromCodeCombinationId');
+                    fromCodeCombinationDropdown.empty();
+
+                    var toCodeCombinationDropdown = $('#ToCodeCombinationId');
+                    toCodeCombinationDropdown.empty();
+                    for (var i = 0; i < data.length; i++) {
+                        fromCodeCombinationDropdown.append('<option value?+data[i].value+?="">' + data[i].Text + '</option>');
+                        toCodeCombinationDropdown.append('<option value?+data[i].value+?="">' + data[i].Text + '</option>');
+                    }
+                });
+            });
+
+        $('#btnShow').click(function () {
+            var url = '@Url.Content("~/JournalVoucher/LedgerReport?sobId=")' +
+                $('#SOBId').val() +
+                "&fromCodeCombinationId=" + $('#FromCodeCombinationId').val() +
+                "&toCodeCombinationId=" + $('#ToCodeCombinationId').val() +
+                "&fromDate=" + $('#FromDate').val() +
+                "&toDate=" + $('#ToDate').val();
+            window.location.href = url;
+        });
+    });
+</script>

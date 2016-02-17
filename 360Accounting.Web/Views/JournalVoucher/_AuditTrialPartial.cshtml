@@ -1,0 +1,24 @@
+﻿@model _360Accounting.Web.Reports.AuditTrialReport
+
+@Html.DevExpress().DocumentViewer(r =>
+{
+    r.Name = "DocumentViewer";
+    r.Report = (XtraReport)Model;
+    r.CallbackRouteValues = new 
+    { 
+        Controller = "JournalVoucher",
+        Action = "AuditTrialPartial",
+        sobId = r.Report.Parameters["SOBId"].Value,
+        fromDate = r.Report.Parameters["FromDate"].Value,
+        toDate = r.Report.Parameters["ToDate"].Value
+    };
+    r.ExportRouteValues = new
+    {
+        Controller = "JournalVoucher",
+        Action = "AuditTrialPartialExport",
+        sobId = r.Report.Parameters["SOBId"].Value,
+        fromDate = r.Report.Parameters["FromDate"].Value,
+        toDate = r.Report.Parameters["ToDate"].Value
+    };
+    r.ToolbarMode = DocumentViewerToolbarMode.StandardToolbar;
+}).GetHtml()

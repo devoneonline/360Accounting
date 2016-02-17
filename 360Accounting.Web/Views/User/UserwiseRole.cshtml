@@ -1,0 +1,19 @@
+﻿@Html.DevExpress().GetStyleSheets(
+    new StyleSheet { ExtensionSuite = ExtensionSuite.Report }
+)
+
+
+@Html.DevExpress().GetScripts(
+    new Script { ExtensionSuite = ExtensionSuite.Report }
+)
+
+<div class="container">
+    <div class="col-lg-12">
+        <div class="form-control">
+            &nbsp;
+        </div>
+        <div class="clearfix col-lg-12 ">
+            @Html.Action("UserwiseRolePartial")
+        </div>
+    </div>
+</div>

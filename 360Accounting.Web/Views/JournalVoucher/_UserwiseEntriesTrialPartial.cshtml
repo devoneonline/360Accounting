@@ -1,0 +1,18 @@
+﻿@model _360Accounting.Web.Reports.UserwiseEntriesTrialReport
+
+@Html.DevExpress().DocumentViewer(r =>
+{
+    r.Name = "DocumentViewer";
+    r.Report = (XtraReport)Model;
+    r.CallbackRouteValues = new { Controller = "JournalVoucher", Action = "UserwiseEntriesTrialPartial",
+        sobId = r.Report.Parameters["SOBId"].Value,
+        fromDate = r.Report.Parameters["FromDate"].Value,
+        toDate = r.Report.Parameters["ToDate"].Value,
+        userId = r.Report.Parameters["UserId"].Value };
+    r.ExportRouteValues = new { Controller = "JournalVoucher", Action = "UserwiseEntriesTrialPartialExport",
+        sobId = r.Report.Parameters["SOBId"].Value,
+        fromDate = r.Report.Parameters["FromDate"].Value,
+        toDate = r.Report.Parameters["ToDate"].Value,
+        userId = r.Report.Parameters["UserId"].Value };
+    r.ToolbarMode = DocumentViewerToolbarMode.StandardToolbar;
+}).GetHtml()

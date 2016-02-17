@@ -1,0 +1,28 @@
+﻿@model _360Accounting.Web.Reports.LedgerReport
+
+@Html.DevExpress().DocumentViewer(r =>
+{
+    r.Name = "DocumentViewer";
+    r.Report = (XtraReport)Model;
+    r.CallbackRouteValues = new
+    {
+        Controller = "JournalVoucher",
+        Action = "LedgerPartial",
+        sobId = r.Report.Parameters["SOBId"].Value,
+        fromCodeCombinationId = r.Report.Parameters["FromCodeCombinationId"].Value,
+        toCodeCombinationId = r.Report.Parameters["ToCodeCombinationId"].Value,
+        fromDate = r.Report.Parameters["FromDate"].Value,
+        toDate = r.Report.Parameters["ToDate"].Value
+    };
+    r.ExportRouteValues = new
+    {
+        Controller = "JournalVoucher",
+        Action = "LedgerPartialExport",
+        sobId = r.Report.Parameters["SOBId"].Value,
+        fromCodeCombinationId = r.Report.Parameters["FromCodeCombinationId"].Value,
+        toCodeCombinationId = r.Report.Parameters["ToCodeCombinationId"].Value,
+        fromDate = r.Report.Parameters["FromDate"].Value,
+        toDate = r.Report.Parameters["ToDate"].Value
+    };
+    r.ToolbarMode = DocumentViewerToolbarMode.StandardToolbar;
+}).GetHtml()

@@ -1,0 +1,10 @@
+﻿@model _360Accounting.Web.Reports.UserList
+
+@Html.DevExpress().DocumentViewer(r =>
+{
+    r.Name = "DocumentViewer";
+    r.CallbackRouteValues = new { Controller = "User", Action = "DocumentViewerPartial" };
+    r.ExportRouteValues = new { Controller = "User", Action = "DocumentViewerPartialExport" };
+    r.Report = (XtraReport)Model;
+    r.ToolbarMode = DocumentViewerToolbarMode.StandardToolbar;
+}).GetHtml()

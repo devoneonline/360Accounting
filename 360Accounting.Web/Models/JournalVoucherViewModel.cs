@@ -1,8 +1,10 @@
 ﻿using _360Accounting.Core.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
@@ -96,7 +98,72 @@ namespace _360Accounting.Web.Models
         public string Description { get; set; }
 
         public long TaxRateCode { get; set; }
-        #endregion 
+        #endregion
+    }
+
+    public class UserwiseEntriesTrialModel
+    {
+        public UserwiseEntriesTrialModel()
+        {
+        }
+
+        public UserwiseEntriesTrialModel(UserwiseEntriesTrial entity)
+        {
+            this.DocumentNo = entity.DocumentNo;
+            this.EntryType = entity.EntryType;
+            this.TransactionDate = entity.TransactionDate;
+            this.UserId = entity.UserId;
+            this.UserName = entity.UserName;
+        }
+
+        public Guid UserId { get; set; }
+
+        public string UserName { get; set; }
+
+        public DateTime TransactionDate { get; set; }
+
+        public string DocumentNo { get; set; }
+
+        public string EntryType { get; set; }
+    }
+
+    public class UserwiseEntriesTrialCriteriaModel
+    {
+        [Required]
+        [Display(Name = "Set of Book")]
+        public long SOBId { get; set; }
+
+        public List<SelectListItem> SetOfBooks { get; set; }
+
+        public List<SelectListItem> Users { get; set; }
+
+        [Required]
+        [Display(Name = "From Date")]
+        public DateTime FromDate { get; set; }
+
+        [Required]
+        [Display(Name = "To Date")]
+        public DateTime ToDate { get; set; }
+
+        [Display(Name = "User")]
+        public Guid UserId { get; set; }
+    }
+
+    public class AuditTrialCriteriaModel
+    {
+        [Required]
+        [Display(Name = "Set of Book")]
+        public long SOBId { get; set; }
+
+        public List<SelectListItem> SetOfBooks { get; set; }
+
+        [Required]
+        [Display(Name = "From Date")]
+        public DateTime FromDate { get; set; }
+
+        [Required]
+        [Display(Name = "To Date")]
+        public DateTime ToDate { get; set; }
     }
 
     public class AuditTrialModel
@@ -116,6 +183,80 @@ namespace _360Accounting.Web.Models
         public string CodeCombination { get; set; }
 
         public string LineDescription { get; set; }
+
+        public decimal Debit { get; set; }
+
+        public decimal Credit { get; set; }
+    }
+
+    public class LedgerCriteriaModel
+    {
+        [Required]
+        [Display(Name = "Set of Book")]
+        public long SOBId { get; set; }
+
+        public List<SelectListItem> SetOfBooks { get; set; }
+
+        [Required]
+        [Display(Name = "From Date")]
+        public DateTime FromDate { get; set; }
+
+        [Required]
+        [Display(Name = "To Date")]
+        public DateTime ToDate { get; set; }
+
+        public List<SelectListItem> CodeCombinations { get; set; }
+
+        public long FromCodeCombinationId { get; set; }
+
+        public long ToCodeCombinationId { get; set; }
+    }
+
+    public class LedgerModel
+    {
+        public string CodeCombination { get; set; }
+
+        public string CodeCombinationName { get; set; }
+
+        public DateTime TransactionDate { get; set; }
+
+        public string Document { get; set; }
+
+        public string Description { get; set; }
+
+        public decimal Debit { get; set; }
+
+        public decimal Credit { get; set; }
+
+        public decimal Balance { get; set; }
+    }
+
+    public class TrialBalanceCriteriaModel
+    {
+        [Required]
+        [Display(Name = "Set of Book")]
+        public long SOBId { get; set; }
+
+        public List<SelectListItem> SetOfBooks { get; set; }
+
+        [Required]
+        [Display(Name = "Period")]
+        public long PeriodId { get; set; }
+
+        public List<SelectListItem> Periods { get; set; }
+
+        public List<SelectListItem> CodeCombinations { get; set; }
+
+        public long FromCodeCombinationId { get; set; }
+
+        public long ToCodeCombinationId { get; set; }
+    }
+
+    public class TrialBalanceModel
+    {
+        public string CodeCombination { get; set; }
+
+        public string CodeCombinationName { get; set; }
 
         public decimal Debit { get; set; }
 

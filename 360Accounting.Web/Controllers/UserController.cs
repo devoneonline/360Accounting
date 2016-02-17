@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Security;
 using DevExpress.Web.Mvc;
+using _360Accounting.Web.Reports;
 
 namespace _360Accounting.Web.Controllers
 {
@@ -38,27 +39,27 @@ namespace _360Accounting.Web.Controllers
         #region Uzair Reports Code
 
         #region Code for getting reports data
-        //private UserwiseRole CreateUserwiseRoleReport()
-        //{
-        //    List<UserViewModel> modelList = GetUserList();
-        //    UserwiseRole report = new UserwiseRole();
-        //    report.DataSource = modelList;
-        //    report.Parameters["CompanyName"].Value = companyService
-        //        .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
-        //        AuthenticationHelper.User.CompanyId).Name;
-        //    return report;
-        //}
+        private UserwiseRole CreateUserwiseRoleReport()
+        {
+            List<UserViewModel> modelList = GetUserList();
+            UserwiseRole report = new UserwiseRole();
+            report.DataSource = modelList;
+            report.Parameters["CompanyName"].Value = companyService
+                .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
+                AuthenticationHelper.User.CompanyId).Name;
+            return report;
+        }
 
-        //private UserList CreateReport()
-        //{
-        //    List<UserViewModel> modelList = GetUserList();
-        //    UserList report = new UserList();
-        //    report.DataSource = modelList;
-        //    report.Parameters["CompanyName"].Value = companyService
-        //        .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
-        //        AuthenticationHelper.User.CompanyId).Name;
-        //    return report;
-        //}
+        private UserList CreateReport()
+        {
+            List<UserViewModel> modelList = GetUserList();
+            UserList report = new UserList();
+            report.DataSource = modelList;
+            report.Parameters["CompanyName"].Value = companyService
+                .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
+                AuthenticationHelper.User.CompanyId).Name;
+            return report;
+        }
 
         private List<UserViewModel> GetUserList()
         {
@@ -86,25 +87,25 @@ namespace _360Accounting.Web.Controllers
             return View();
         }
 
-        //public ActionResult UserwiseRolePartial()
-        //{
-        //    return PartialView("_UserwiseRole", CreateUserwiseRoleReport());
-        //}
+        public ActionResult UserwiseRolePartial()
+        {
+            return PartialView("_UserwiseRole", CreateUserwiseRoleReport());
+        }
 
-        //public ActionResult DocumentViewerPartial()
-        //{
-        //    return PartialView("_UserList", CreateReport());
-        //}
+        public ActionResult DocumentViewerPartial()
+        {
+            return PartialView("_UserList", CreateReport());
+        }
 
-        //public ActionResult UserwiseRolePartialExport()
-        //{
-        //    return DocumentViewerExtension.ExportTo(CreateUserwiseRoleReport(), Request);
-        //}
+        public ActionResult UserwiseRolePartialExport()
+        {
+            return DocumentViewerExtension.ExportTo(CreateUserwiseRoleReport(), Request);
+        }
 
-        //public ActionResult DocumentViewerPartialExport()
-        //{
-        //    return DocumentViewerExtension.ExportTo(CreateReport(), Request);
-        //}
+        public ActionResult DocumentViewerPartialExport()
+        {
+            return DocumentViewerExtension.ExportTo(CreateReport(), Request);
+        }
 
         //public ActionResult DemoReport()
         //{
