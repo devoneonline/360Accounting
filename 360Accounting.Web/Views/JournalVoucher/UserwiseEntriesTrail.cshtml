@@ -1,7 +1,7 @@
-﻿@model _360Accounting.Web.Models.UserwiseEntriesTrialCriteriaModel
+﻿@model _360Accounting.Web.Models.UserwiseEntriesTrailCriteriaModel
 
 @{
-    ViewBag.Title = "User-wise Entries Trial";
+    ViewBag.Title = "User-wise Entries Trail";
 }
 
 <div class="container">
@@ -16,6 +16,10 @@
 
     <div class="clearfix">
         <div class="col-lg-6">
+            <div id="dvError" class="form-group">
+                
+            </div>
+
             <div class="form-group">
                 @Html.LabelFor(m => m.SOBId)
                 @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control" })
@@ -47,12 +51,53 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#btnShow').click(function () {
-            var url = '@Url.Content("~/JournalVoucher/UserwiseEntriesTrialReport?sobId=")' +
+            var errList = "";
+            var sobId = $('#SOBId').val();
+            if (sobId == null)
+            {
+                errList += "- Invalid SOB Id.<br>";
+            }
+
+            var fromDate = new Date($('#FromDate').val());
+            var toDate = new Date($('#ToDate').val());
+
+            if (fromDate == 'Invalid Date')
+            {
+                errList += "- Invalid From Date.<br>";
+            }
+
+            if (toDate == 'Invalid Date')
+            {
+                errList += "- Invalid To Date.<br>";
+            }
+
+            
+            if (fromDate > toDate)
+            {
+                errList += "- From date must be less than To Date.<br>";
+            }
+
+            var userId = $('#UserId').val();
+
+            if (userId == 0)
+            {
+                errList += "- Invalid user.<br>";
+            }
+
+            if (errList != "")
+            {
+                errList = "<strong>Errors:</strong><br>" + errList;
+                $('#dvError').empty().html(errList);
+            }
+            else
+            {
+                var url = '@Url.Content("~/JournalVoucher/UserwiseEntriesTrailReport?sobId=")' +
                 $('#SOBId').val() +
                 "&fromDate=" + $('#FromDate').val() +
                 "&toDate=" + $('#ToDate').val() +
                 "&userId=" + $('#UserId').val();
-            window.location.href = url;
+                window.location.href = url;
+            }
         });
     });
 </script>

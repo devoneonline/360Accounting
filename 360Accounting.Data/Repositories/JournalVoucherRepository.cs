@@ -82,7 +82,7 @@ namespace _360Accounting.Data.Repositories
             string codeCombinationName;
             List<Ledger> ledger = new List<Ledger>();
 
-            //1. Get all combinations of this company, sobId 
+            //1. Get all combinations of this company, sobId
             // between (from - to) having allow posting = 1.
             List<CodeCombinition> codeCombinations = this.Context.CodeCombinitions
                 .Where(x => x.CompanyId == companyId && x.SOBId == sobId &&
@@ -203,7 +203,7 @@ namespace _360Accounting.Data.Repositories
             return openingTransactions.Sum(x => x.Debit - x.Credit);
         }
 
-        public List<AuditTrial> AuditTrial(long companyId, long sobId, DateTime fromDate, DateTime toDate)
+        public List<AuditTrail> AuditTrail(long companyId, long sobId, DateTime fromDate, DateTime toDate)
         {
             var data = (from a in this.Context.JournalVouchers
                         join b in this.Context.JournalVoucherDetails on a.Id equals b.HeaderId
@@ -212,7 +212,7 @@ namespace _360Accounting.Data.Repositories
                         join e in this.Context.Calendars on a.PeriodId equals e.Id
                         where a.CompanyId == companyId && a.SOBId == sobId &&
                         a.GLDate >= fromDate && a.GLDate <= toDate
-                        select new AuditTrial
+                        select new AuditTrail
                         {
                             CCSegment1 = c.Segment1,
                             CCSegment2 = c.Segment2,
@@ -235,7 +235,7 @@ namespace _360Accounting.Data.Repositories
             return data;
         }
 
-        public List<UserwiseEntriesTrial> UserwiseEntriesTrial(long companyId, long sobId, DateTime fromDate, DateTime toDate, Guid? userId)
+        public List<UserwiseEntriesTrail> UserwiseEntriesTrail(long companyId, long sobId, DateTime fromDate, DateTime toDate, Guid? userId)
         {
             ////Get new Entries
             var newEntries = (from a in this.Context.JournalVouchers
@@ -243,7 +243,7 @@ namespace _360Accounting.Data.Repositories
                         where a.CompanyId == companyId && a.SOBId == sobId &&
                         a.GLDate >= fromDate && a.GLDate <= toDate &&
                         a.CreateDate == a.UpdateDate
-                        select new UserwiseEntriesTrial
+                        select new UserwiseEntriesTrail
                         {
                             UserId = a.CreateBy,
                             UserName = b.Username,
@@ -255,7 +255,7 @@ namespace _360Accounting.Data.Repositories
             if (userId != null)
             {
                 newEntries = newEntries.Where(x => x.UserId == userId)
-                    .Select(x => new UserwiseEntriesTrial
+                    .Select(x => new UserwiseEntriesTrail
                     {
                         UserId = x.UserId,
                         UserName = x.UserName,
@@ -271,7 +271,7 @@ namespace _360Accounting.Data.Repositories
                                    where a.CompanyId == companyId && a.SOBId == sobId &&
                                    a.GLDate >= fromDate && a.GLDate <= toDate &&
                                    a.CreateDate != a.UpdateDate
-                                   select new UserwiseEntriesTrial
+                                   select new UserwiseEntriesTrail
                                    {
                                         UserId = a.CreateBy,
                                         UserName = b.Username,
@@ -283,7 +283,7 @@ namespace _360Accounting.Data.Repositories
             if (userId != null)
             {
                 editEntries = editEntries.Where(x => x.UserId == userId)
-                    .Select(x => new UserwiseEntriesTrial
+                    .Select(x => new UserwiseEntriesTrail
                     {
                         UserId = x.UserId,
                         UserName = x.UserName,
@@ -293,10 +293,10 @@ namespace _360Accounting.Data.Repositories
                     }).ToList();
             }
 
-            List<UserwiseEntriesTrial> data = new List<UserwiseEntriesTrial>();
-            foreach (UserwiseEntriesTrial record in newEntries)
+            List<UserwiseEntriesTrail> data = new List<UserwiseEntriesTrail>();
+            foreach (UserwiseEntriesTrail record in newEntries)
             {
-                data.Add(new UserwiseEntriesTrial
+                data.Add(new UserwiseEntriesTrail
                 {
                     DocumentNo = record.DocumentNo,
                     EntryType = record.EntryType,
@@ -306,9 +306,9 @@ namespace _360Accounting.Data.Repositories
                 });
             }
 
-            foreach (UserwiseEntriesTrial record in editEntries)
+            foreach (UserwiseEntriesTrail record in editEntries)
             {
-                data.Add(new UserwiseEntriesTrial
+                data.Add(new UserwiseEntriesTrail
                 {
                     DocumentNo = record.DocumentNo,
                     EntryType = record.EntryType,

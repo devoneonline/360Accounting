@@ -1,4 +1,4 @@
-﻿@model _360Accounting.Web.Reports.AuditTrialReport
+﻿@model _360Accounting.Web.Reports.AuditTrailReport
 
 @Html.DevExpress().DocumentViewer(r =>
 {
@@ -7,7 +7,7 @@
     r.CallbackRouteValues = new 
     { 
         Controller = "JournalVoucher",
-        Action = "AuditTrialPartial",
+        Action = "AuditTrailPartial",
         sobId = r.Report.Parameters["SOBId"].Value,
         fromDate = r.Report.Parameters["FromDate"].Value,
         toDate = r.Report.Parameters["ToDate"].Value
@@ -15,7 +15,7 @@
     r.ExportRouteValues = new
     {
         Controller = "JournalVoucher",
-        Action = "AuditTrialPartialExport",
+        Action = "AuditTrailPartialExport",
         sobId = r.Report.Parameters["SOBId"].Value,
         fromDate = r.Report.Parameters["FromDate"].Value,
         toDate = r.Report.Parameters["ToDate"].Value

@@ -1,4 +1,4 @@
-﻿@model _360Accounting.Web.Models.AuditTrialCriteriaModel
+﻿@model _360Accounting.Web.Models.AuditTrailCriteriaModel
 
 @{
     ViewBag.Title = "Audit Trial";
@@ -15,6 +15,10 @@
 
     <div class="clearfix">
         <div class="col-lg-6">
+            <div id="dvError" class="form-group">
+
+            </div>
+
             <div class="form-group">
                 @Html.LabelFor(m => m.SOBId)
                 @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control" })
@@ -41,11 +45,41 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#btnShow').click(function () {
-            var url = '@Url.Content("~/JournalVoucher/AuditTrialReport?sobId=")' +
+            var errList = "";
+            var sobId = $('#SOBId').val();
+            if (sobId == null)
+            {
+                errList += "- Invalid SOB Id.<br>";
+            }
+
+            var fromDate = new Date($('#FromDate').val());
+            var toDate = new Date($('#ToDate').val());
+
+            if (fromDate == 'Invalid Date') {
+                errList += "- Please enter valid From Date.<br>";
+            }
+
+            if (toDate == 'Invalid Date') {
+                errList += "- Please enter valid To Date.<br>";
+            }
+
+
+            if (fromDate > toDate) {
+                errList += "- From date must be less than To Date.<br>";
+            }
+
+            if (errList != "") {
+                errList = "<strong>Errors:</strong><br>" + errList;
+                $('#dvError').empty().html(errList);
+            }
+            else
+            {
+                var url = '@Url.Content("~/JournalVoucher/AuditTrailReport?sobId=")' +
                 $('#SOBId').val() +
                 "&fromDate=" + $('#FromDate').val() +
                 "&toDate=" + $('#ToDate').val();
-            window.location.href = url;
+                window.location.href = url;
+            }
         });
     });
 </script>

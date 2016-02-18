@@ -107,7 +107,7 @@ namespace DevEx_360Accounting_Web.Models
         {
         }
 
-        public UserwiseEntriesTrialModel(UserwiseEntriesTrial entity)
+        public UserwiseEntriesTrialModel(UserwiseEntriesTrail entity)
         {
             this.DocumentNo = entity.DocumentNo;
             this.EntryType = entity.EntryType;
@@ -149,7 +149,7 @@ namespace DevEx_360Accounting_Web.Models
         public Guid UserId { get; set; }
     }
 
-    public class AuditTrialCriteriaModel
+    public class AuditTrailCriteriaModel
     {
         [Required]
         [Display(Name = "Set of Book")]
@@ -166,7 +166,7 @@ namespace DevEx_360Accounting_Web.Models
         public DateTime ToDate { get; set; }
     }
 
-    public class AuditTrialModel
+    public class AuditTrailModel
     {
         public DateTime TransactionDate { get; set; }
 

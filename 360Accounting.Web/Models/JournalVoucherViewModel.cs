@@ -101,13 +101,13 @@ namespace _360Accounting.Web.Models
         #endregion
     }
 
-    public class UserwiseEntriesTrialModel
+    public class UserwiseEntriesTrailModel
     {
-        public UserwiseEntriesTrialModel()
+        public UserwiseEntriesTrailModel()
         {
         }
 
-        public UserwiseEntriesTrialModel(UserwiseEntriesTrial entity)
+        public UserwiseEntriesTrailModel(UserwiseEntriesTrail entity)
         {
             this.DocumentNo = entity.DocumentNo;
             this.EntryType = entity.EntryType;
@@ -127,7 +127,7 @@ namespace _360Accounting.Web.Models
         public string EntryType { get; set; }
     }
 
-    public class UserwiseEntriesTrialCriteriaModel
+    public class UserwiseEntriesTrailCriteriaModel
     {
         [Required]
         [Display(Name = "Set of Book")]
@@ -149,7 +149,7 @@ namespace _360Accounting.Web.Models
         public Guid UserId { get; set; }
     }
 
-    public class AuditTrialCriteriaModel
+    public class AuditTrailCriteriaModel
     {
         [Required]
         [Display(Name = "Set of Book")]
@@ -166,7 +166,7 @@ namespace _360Accounting.Web.Models
         public DateTime ToDate { get; set; }
     }
 
-    public class AuditTrialModel
+    public class AuditTrailModel
     {
         public DateTime TransactionDate { get; set; }
 
@@ -207,8 +207,10 @@ namespace _360Accounting.Web.Models
 
         public List<SelectListItem> CodeCombinations { get; set; }
 
+        [Display(Name = "Code Combination From")]
         public long FromCodeCombinationId { get; set; }
 
+        [Display(Name = "Code Combination To")]
         public long ToCodeCombinationId { get; set; }
     }
 

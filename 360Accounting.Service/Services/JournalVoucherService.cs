@@ -28,14 +28,14 @@ namespace _360Accounting.Service
             return this.repository.Ledger(companyId, sobId, fromCodeCombinationId, toCodeCombinationId, fromDate, toDate);
         }
 
-        public List<AuditTrial> AuditTrial(long companyId, long sobId, DateTime fromDate, DateTime toDate)
+        public List<AuditTrail> AuditTrail(long companyId, long sobId, DateTime fromDate, DateTime toDate)
         {
-            return this.repository.AuditTrial(companyId, sobId, fromDate, toDate);
+            return this.repository.AuditTrail(companyId, sobId, fromDate, toDate);
         }
 
-        public List<UserwiseEntriesTrial> UserwiseEntriesTrial(long companyId, long sobId, DateTime fromDate, DateTime toDate, Guid? UserId)
+        public List<UserwiseEntriesTrail> UserwiseEntriesTrail(long companyId, long sobId, DateTime fromDate, DateTime toDate, Guid? UserId)
         {
-            return this.repository.UserwiseEntriesTrial(companyId, sobId, fromDate, toDate, UserId);
+            return this.repository.UserwiseEntriesTrail(companyId, sobId, fromDate, toDate, UserId);
         }
 
         public IEnumerable<JournalVoucherDetail> GetAll(string headerId)

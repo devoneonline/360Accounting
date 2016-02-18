@@ -15,6 +15,10 @@
 
     <div class="clearfix">
         <div class="col-lg-6">
+            <div id="dvError" class="form-group">
+                
+            </div>
+
             <div class="form-group">
                 @Html.LabelFor(m => m.SOBId)
                 @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control" })
@@ -55,27 +59,87 @@
                 var url = '@Url.Content("~/JournalVoucher/CodeCombinationList")';
 
                 $.get(url, { sobId: $(this).val() },
-                function (data) {
+                function (combinations) {
                     var fromCodeCombinationDropdown = $('#FromCodeCombinationId');
                     fromCodeCombinationDropdown.empty();
-
+                    
                     var toCodeCombinationDropdown = $('#ToCodeCombinationId');
                     toCodeCombinationDropdown.empty();
-                    for (var i = 0; i < data.length; i++) {
-                        fromCodeCombinationDropdown.append('<option value?+data[i].value+?="">' + data[i].Text + '</option>');
-                        toCodeCombinationDropdown.append('<option value?+data[i].value+?="">' + data[i].Text + '</option>');
-                    }
+
+                    $.each(combinations, function (i, combination) {
+                        $('<option>',
+                            {
+                                value: combination.Value
+                            }).html(combination.Text).appendTo(toCodeCombinationDropdown);
+
+                        $('<option>',
+                            {
+                                value: combination.Value
+                            }).html(combination.Text).appendTo(fromCodeCombinationDropdown);
+                    });
+
+                    //for (var i = 0; i < data.length; i++) {
+                    //    fromCodeCombinationDropdown.append('<option value?+data[i].value+?="">' + data[i].Text + '</option>');
+                    //    toCodeCombinationDropdown.append('<option value?+data[i].value+?="">' + data[i].Text + '</option>');
+                    //}
+
+
                 });
             });
 
         $('#btnShow').click(function () {
-            var url = '@Url.Content("~/JournalVoucher/LedgerReport?sobId=")' +
-                $('#SOBId').val() +
-                "&fromCodeCombinationId=" + $('#FromCodeCombinationId').val() +
-                "&toCodeCombinationId=" + $('#ToCodeCombinationId').val() +
-                "&fromDate=" + $('#FromDate').val() +
-                "&toDate=" + $('#ToDate').val();
-            window.location.href = url;
+            var errList = "";
+            var sobId = $('#SOBId').val();
+            if (sobId == null) {
+                errList += "- Invalid SOB Id.<br>";
+            }
+
+            var fromCodeCombinationId = $('#FromCodeCombinationId').val();
+            if (fromCodeCombinationId == null)
+            {
+                errList += "- Please enter valid From Code Combination.<br>";
+            }
+
+            var toCodeCombinationId = $('#ToCodeCombinationId').val();
+            if (toCodeCombinationId == null)
+            {
+                errList += "- Please enter valid To Code Combination.<br>";
+            }
+
+            var fromDate = new Date($('#FromDate').val());
+            var toDate = new Date($('#ToDate').val());
+
+            if (fromDate == 'Invalid Date')
+            {
+                errList += "- Please enter valid From Date.<br>";
+            }
+
+            if (toDate == 'Invalid Date')
+            {
+                errList += "- Please enter valid To Date.<br>";
+            }
+
+
+            if (fromDate > toDate)
+            {
+                errList += "- From date must be less than To Date.<br>";
+            }
+
+            if (errList != "")
+            {
+                errList = "<strong>Errors:</strong><br>" + errList;
+                $('#dvError').empty().html(errList);
+            }
+            else
+            {
+                var url = '@Url.Content("~/JournalVoucher/LedgerReport?sobId=")' +
+                    $('#SOBId').val() +
+                    "&fromCodeCombinationId=" + $('#FromCodeCombinationId').val() +
+                    "&toCodeCombinationId=" + $('#ToCodeCombinationId').val() +
+                    "&fromDate=" + $('#FromDate').val() +
+                    "&toDate=" + $('#ToDate').val();
+                window.location.href = url;
+            }
         });
     });
 </script>

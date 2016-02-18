@@ -47,14 +47,14 @@ namespace _360Accounting.Web.Controllers
             return DocumentViewerExtension.ExportTo(CreateLedgerReport(sobId, fromCodeCombinationId, toCodeCombinationId, fromDate, toDate));
         }
 
-        public ActionResult AuditTrialPartialExport(long sobId, DateTime fromDate, DateTime toDate)
+        public ActionResult AuditTrailPartialExport(long sobId, DateTime fromDate, DateTime toDate)
         {
-            return DocumentViewerExtension.ExportTo(CreateAuditTrialReport(sobId, fromDate, toDate), Request);
+            return DocumentViewerExtension.ExportTo(CreateAuditTrailReport(sobId, fromDate, toDate), Request);
         }
 
-        public ActionResult UserwiseEntriesTrialPartialExport(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
+        public ActionResult UserwiseEntriesTrailPartialExport(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
         {
-            return DocumentViewerExtension.ExportTo(CreateUserwiseEntriesTrialReport(sobId, fromDate, toDate, userId), Request);
+            return DocumentViewerExtension.ExportTo(CreateUserwiseEntriesTrailReport(sobId, fromDate, toDate, userId), Request);
         }
 
         private TrialBalanceReport CreateTrialBalanceReport(long sobId, long fromCodeCombinationId, long toCodeCombinationId, long periodId)
@@ -124,10 +124,10 @@ namespace _360Accounting.Web.Controllers
             return reportModel;
         }
 
-        private AuditTrialReport CreateAuditTrialReport(long sobId, DateTime fromDate, DateTime toDate)
+        private AuditTrailReport CreateAuditTrailReport(long sobId, DateTime fromDate, DateTime toDate)
         {
-            List<AuditTrialModel> modelList = mapAuditTrialModel(service.AuditTrial(AuthenticationHelper.User.CompanyId, sobId, fromDate, toDate));
-            AuditTrialReport report = new AuditTrialReport();
+            List<AuditTrailModel> modelList = mapAuditTrialModel(service.AuditTrail(AuthenticationHelper.User.CompanyId, sobId, fromDate, toDate));
+            AuditTrailReport report = new AuditTrailReport();
             report.Parameters["CompanyName"].Value = companyService
                 .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
                 AuthenticationHelper.User.CompanyId).Name;
@@ -138,12 +138,12 @@ namespace _360Accounting.Web.Controllers
             return report;
         }
 
-        private List<AuditTrialModel> mapAuditTrialModel(List<AuditTrial> list)
+        private List<AuditTrailModel> mapAuditTrialModel(List<AuditTrail> list)
         {
-            List<AuditTrialModel> reportModel = new List<AuditTrialModel>();
+            List<AuditTrailModel> reportModel = new List<AuditTrailModel>();
             foreach (var record in list)
             {
-                reportModel.Add(new AuditTrialModel
+                reportModel.Add(new AuditTrailModel
                 {
                     CodeCombination = Utility.Stringize(".", record.CCSegment1,
                     record.CCSegment2, record.CCSegment3, record.CCSegment4,
@@ -164,10 +164,10 @@ namespace _360Accounting.Web.Controllers
             return reportModel;
         }
 
-        private UserwiseEntriesTrialReport CreateUserwiseEntriesTrialReport(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
+        private UserwiseEntriesTrailReport CreateUserwiseEntriesTrailReport(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
         {
-            List<UserwiseEntriesTrialModel> modelList = mapReportModel(service.UserwiseEntriesTrial(AuthenticationHelper.User.CompanyId, sobId, fromDate, toDate, userId));
-            UserwiseEntriesTrialReport report = new UserwiseEntriesTrialReport();
+            List<UserwiseEntriesTrailModel> modelList = mapReportModel(service.UserwiseEntriesTrail(AuthenticationHelper.User.CompanyId, sobId, fromDate, toDate, userId));
+            UserwiseEntriesTrailReport report = new UserwiseEntriesTrailReport();
             report.Parameters["CompanyName"].Value = companyService
                 .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
                 AuthenticationHelper.User.CompanyId).Name;
@@ -179,12 +179,12 @@ namespace _360Accounting.Web.Controllers
             return report;
         }
 
-        private List<UserwiseEntriesTrialModel> mapReportModel(List<UserwiseEntriesTrial> list)
+        private List<UserwiseEntriesTrailModel> mapReportModel(List<UserwiseEntriesTrail> list)
         {
-            List<UserwiseEntriesTrialModel> reportModel = new List<UserwiseEntriesTrialModel>();
+            List<UserwiseEntriesTrailModel> reportModel = new List<UserwiseEntriesTrailModel>();
             foreach (var record in list)
             {
-                reportModel.Add(new UserwiseEntriesTrialModel
+                reportModel.Add(new UserwiseEntriesTrailModel
                 {
                     DocumentNo = record.DocumentNo,
                     EntryType = record.EntryType,
@@ -206,14 +206,14 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_LedgerPartial", CreateLedgerReport(sobId, fromCodeCombinationId, toCodeCombinationId, fromDate, toDate));
         }
 
-        public ActionResult AuditTrialPartial(long sobId, DateTime fromDate, DateTime toDate)
+        public ActionResult AuditTrailPartial(long sobId, DateTime fromDate, DateTime toDate)
         {
-            return PartialView("_AuditTrialPartial", CreateAuditTrialReport(sobId, fromDate, toDate));
+            return PartialView("_AuditTrailPartial", CreateAuditTrailReport(sobId, fromDate, toDate));
         }
 
-        public ActionResult UserwiseEntriesTrialPartial(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
+        public ActionResult UserwiseEntriesTrailPartial(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
         {
-            return PartialView("_UserwiseEntriesTrialPartial", CreateUserwiseEntriesTrialReport(sobId, fromDate, toDate, userId));
+            return PartialView("_UserwiseEntriesTrailPartial", CreateUserwiseEntriesTrailReport(sobId, fromDate, toDate, userId));
         }
 
         public ActionResult TrialBalanceReport(long sobId, long fromCodeCombinationId, long toCodeCombinationId, long periodId)
@@ -226,14 +226,14 @@ namespace _360Accounting.Web.Controllers
             return View(CreateLedgerReport(sobId, fromCodeCombinationId, toCodeCombinationId, fromDate, toDate));
         }
 
-        public ActionResult AuditTrialReport(long sobId, DateTime fromDate, DateTime toDate)
+        public ActionResult AuditTrailReport(long sobId, DateTime fromDate, DateTime toDate)
         {
-            return View(CreateAuditTrialReport(sobId, fromDate, toDate));
+            return View(CreateAuditTrailReport(sobId, fromDate, toDate));
         }
 
-        public ActionResult UserwiseEntriesTrialReport(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
+        public ActionResult UserwiseEntriesTrailReport(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
         {
-            return View(CreateUserwiseEntriesTrialReport(sobId, fromDate, toDate, userId));
+            return View(CreateUserwiseEntriesTrailReport(sobId, fromDate, toDate, userId));
         }
 
         public JsonResult CodeCombinationList(long sobId)
@@ -269,9 +269,9 @@ namespace _360Accounting.Web.Controllers
             return View(model);
         }
 
-        public ActionResult AuditTrial()
+        public ActionResult AuditTrail()
         {
-            AuditTrialCriteriaModel model = new AuditTrialCriteriaModel();
+            AuditTrailCriteriaModel model = new AuditTrailCriteriaModel();
             model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
                 .Select(x => new SelectListItem
                 {
@@ -281,9 +281,9 @@ namespace _360Accounting.Web.Controllers
             return View(model);
         }
 
-        public ActionResult UserwiseEntriesTrial()
+        public ActionResult UserwiseEntriesTrail()
         {
-            UserwiseEntriesTrialCriteriaModel model = new UserwiseEntriesTrialCriteriaModel();
+            UserwiseEntriesTrailCriteriaModel model = new UserwiseEntriesTrailCriteriaModel();
             model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
                 .Select(x => new SelectListItem
                 {

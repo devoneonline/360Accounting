@@ -106,12 +106,7 @@ namespace _360Accounting.Web.Controllers
         {
             return DocumentViewerExtension.ExportTo(CreateReport(), Request);
         }
-
-        //public ActionResult DemoReport()
-        //{
-        //    return View(new DemoReport());
-        //}
-
+        
         #endregion
 
         #endregion

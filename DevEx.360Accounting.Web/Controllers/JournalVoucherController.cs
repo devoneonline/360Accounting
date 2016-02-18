@@ -48,7 +48,7 @@ namespace DevEx_360Accounting_Web.Controllers
 
         public ActionResult AuditTrialPartialExport(long sobId, DateTime fromDate, DateTime toDate)
         {
-            return DocumentViewerExtension.ExportTo(CreateAuditTrialReport(sobId, fromDate, toDate), Request);
+            return DocumentViewerExtension.ExportTo(CreateAuditTrailReport(sobId, fromDate, toDate), Request);
         }
 
         public ActionResult UserwiseEntriesTrialPartialExport(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
@@ -123,9 +123,9 @@ namespace DevEx_360Accounting_Web.Controllers
             return reportModel;
         }
 
-        private AuditTrialReport CreateAuditTrialReport(long sobId, DateTime fromDate, DateTime toDate)
+        private AuditTrialReport CreateAuditTrailReport(long sobId, DateTime fromDate, DateTime toDate)
         {
-            List<AuditTrialModel> modelList = mapAuditTrialModel(service.AuditTrial(AuthenticationHelper.User.CompanyId, sobId, fromDate, toDate));
+            List<AuditTrailModel> modelList = mapAuditTrialModel(service.AuditTrail(AuthenticationHelper.User.CompanyId, sobId, fromDate, toDate));
             AuditTrialReport report = new AuditTrialReport();
             report.Parameters["CompanyName"].Value = companyService
                 .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
@@ -137,12 +137,12 @@ namespace DevEx_360Accounting_Web.Controllers
             return report;
         }
 
-        private List<AuditTrialModel> mapAuditTrialModel(List<AuditTrial> list)
+        private List<AuditTrailModel> mapAuditTrialModel(List<AuditTrail> list)
         {
-            List<AuditTrialModel> reportModel = new List<AuditTrialModel>();
+            List<AuditTrailModel> reportModel = new List<AuditTrailModel>();
             foreach (var record in list)
             {
-                reportModel.Add(new AuditTrialModel
+                reportModel.Add(new AuditTrailModel
                 {
                     CodeCombination = Utility.Stringize(".", record.CCSegment1,
                     record.CCSegment2, record.CCSegment3, record.CCSegment4,
@@ -165,7 +165,7 @@ namespace DevEx_360Accounting_Web.Controllers
 
         private UserwiseEntriesTrialReport CreateUserwiseEntriesTrialReport(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
         {
-            List<UserwiseEntriesTrialModel> modelList = mapReportModel(service.UserwiseEntriesTrial(AuthenticationHelper.User.CompanyId, sobId, fromDate, toDate, userId));
+            List<UserwiseEntriesTrialModel> modelList = mapReportModel(service.UserwiseEntriesTrail(AuthenticationHelper.User.CompanyId, sobId, fromDate, toDate, userId));
             UserwiseEntriesTrialReport report = new UserwiseEntriesTrialReport();
             report.Parameters["CompanyName"].Value = companyService
                 .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
@@ -178,7 +178,7 @@ namespace DevEx_360Accounting_Web.Controllers
             return report;
         }
 
-        private List<UserwiseEntriesTrialModel> mapReportModel(List<UserwiseEntriesTrial> list)
+        private List<UserwiseEntriesTrialModel> mapReportModel(List<UserwiseEntriesTrail> list)
         {
             List<UserwiseEntriesTrialModel> reportModel = new List<UserwiseEntriesTrialModel>();
             foreach (var record in list)
@@ -205,9 +205,9 @@ namespace DevEx_360Accounting_Web.Controllers
             return PartialView("_LedgerPartial", CreateLedgerReport(sobId, fromCodeCombinationId, toCodeCombinationId, fromDate, toDate));
         }
 
-        public ActionResult AuditTrialPartial(long sobId, DateTime fromDate, DateTime toDate)
+        public ActionResult AuditTrailPartial(long sobId, DateTime fromDate, DateTime toDate)
         {
-            return PartialView("_AuditTrialPartial", CreateAuditTrialReport(sobId, fromDate, toDate));
+            return PartialView("_AuditTrailPartial", CreateAuditTrailReport(sobId, fromDate, toDate));
         }
 
         public ActionResult UserwiseEntriesTrialPartial(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
@@ -225,9 +225,9 @@ namespace DevEx_360Accounting_Web.Controllers
             return View(CreateLedgerReport(sobId, fromCodeCombinationId, toCodeCombinationId, fromDate, toDate));
         }
 
-        public ActionResult AuditTrialReport(long sobId, DateTime fromDate, DateTime toDate)
+        public ActionResult AuditTrailReport(long sobId, DateTime fromDate, DateTime toDate)
         {
-            return View(CreateAuditTrialReport(sobId, fromDate, toDate));
+            return View(CreateAuditTrailReport(sobId, fromDate, toDate));
         }
 
         public ActionResult UserwiseEntriesTrialReport(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
@@ -268,9 +268,9 @@ namespace DevEx_360Accounting_Web.Controllers
             return View(model);
         }
 
-        public ActionResult AuditTrial()
+        public ActionResult AuditTrail()
         {
-            AuditTrialCriteriaModel model = new AuditTrialCriteriaModel();
+            AuditTrailCriteriaModel model = new AuditTrailCriteriaModel();
             model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
                 .Select(x => new SelectListItem
                 {

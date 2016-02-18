@@ -6,9 +6,9 @@ using DevExpress.XtraReports.UI;
 
 namespace _360Accounting.Web.Reports
 {
-    public partial class AuditTrialReport : DevExpress.XtraReports.UI.XtraReport
+    public partial class AuditTrailReport : DevExpress.XtraReports.UI.XtraReport
     {
-        public AuditTrialReport()
+        public AuditTrailReport()
         {
             InitializeComponent();
         }

@@ -206,11 +206,11 @@
     <Compile Include="Models\UserCreateModel.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reports\AuditTrialReport.cs">
+    <Compile Include="Reports\AuditTrailReport.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Reports\AuditTrialReport.Designer.cs">
-      <DependentUpon>AuditTrialReport.cs</DependentUpon>
+    <Compile Include="Reports\AuditTrailReport.Designer.cs">
+      <DependentUpon>AuditTrailReport.cs</DependentUpon>
     </Compile>
     <Compile Include="Reports\LedgerReport.cs">
       <SubType>Component</SubType>
@@ -230,11 +230,11 @@
     <Compile Include="Reports\UserList.Designer.cs">
       <DependentUpon>UserList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Reports\UserwiseEntriesTrialReport.cs">
+    <Compile Include="Reports\UserwiseEntriesTrailReport.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Reports\UserwiseEntriesTrialReport.Designer.cs">
-      <DependentUpon>UserwiseEntriesTrialReport.cs</DependentUpon>
+    <Compile Include="Reports\UserwiseEntriesTrailReport.Designer.cs">
+      <DependentUpon>UserwiseEntriesTrailReport.cs</DependentUpon>
     </Compile>
     <Compile Include="Reports\UserwiseRole.cs">
       <SubType>Component</SubType>
@@ -398,18 +398,18 @@
     <Content Include="Views\User\_UserList.cshtml" />
     <Content Include="Views\User\UserwiseRole.cshtml" />
     <Content Include="Views\User\_UserwiseRole.cshtml" />
-    <Content Include="Views\JournalVoucher\_AuditTrialPartial.cshtml" />
-    <Content Include="Views\JournalVoucher\AuditTrial.cshtml" />
-    <Content Include="Views\JournalVoucher\AuditTrialReport.cshtml" />
+    <Content Include="Views\JournalVoucher\_AuditTrailPartial.cshtml" />
+    <Content Include="Views\JournalVoucher\AuditTrail.cshtml" />
+    <Content Include="Views\JournalVoucher\AuditTrailReport.cshtml" />
     <Content Include="Views\JournalVoucher\_LedgerPartial.cshtml" />
     <Content Include="Views\JournalVoucher\_TrialBalancePartial.cshtml" />
-    <Content Include="Views\JournalVoucher\_UserwiseEntriesTrialPartial.cshtml" />
+    <Content Include="Views\JournalVoucher\_UserwiseEntriesTrailPartial.cshtml" />
     <Content Include="Views\JournalVoucher\Ledger.cshtml" />
     <Content Include="Views\JournalVoucher\LedgerReport.cshtml" />
     <Content Include="Views\JournalVoucher\TrialBalance.cshtml" />
     <Content Include="Views\JournalVoucher\TrialBalanceReport.cshtml" />
-    <Content Include="Views\JournalVoucher\UserwiseEntriesTrial.cshtml" />
-    <Content Include="Views\JournalVoucher\UserwiseEntriesTrialReport.cshtml" />
+    <Content Include="Views\JournalVoucher\UserwiseEntriesTrail.cshtml" />
+    <Content Include="Views\JournalVoucher\UserwiseEntriesTrailReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">
@@ -438,8 +438,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\licenses.licx" />
-    <EmbeddedResource Include="Reports\AuditTrialReport.resx">
-      <DependentUpon>AuditTrialReport.cs</DependentUpon>
+    <EmbeddedResource Include="Reports\AuditTrailReport.resx">
+      <DependentUpon>AuditTrailReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\LedgerReport.resx">
       <DependentUpon>LedgerReport.cs</DependentUpon>
@@ -450,8 +450,8 @@
     <EmbeddedResource Include="Reports\UserList.resx">
       <DependentUpon>UserList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\UserwiseEntriesTrialReport.resx">
-      <DependentUpon>UserwiseEntriesTrialReport.cs</DependentUpon>
+    <EmbeddedResource Include="Reports\UserwiseEntriesTrailReport.resx">
+      <DependentUpon>UserwiseEntriesTrailReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\UserwiseRole.resx">
       <DependentUpon>UserwiseRole.cs</DependentUpon>

@@ -36,7 +36,7 @@ namespace _360Accounting.Core.Entities
         ////public List<JournalVoucherDetail> JournalVoucherDetail { get; set; }
     }
 
-    public class UserwiseEntriesTrial
+    public class UserwiseEntriesTrail
     {
         public Guid UserId { get; set; }
 
@@ -49,7 +49,7 @@ namespace _360Accounting.Core.Entities
         public string EntryType { get; set; }
     }
 
-    public class AuditTrial
+    public class AuditTrail
     {
         public DateTime TransactionDate { get; set; }
 
