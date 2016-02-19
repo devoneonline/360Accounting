@@ -28,26 +28,28 @@
                 <br />
                 TotalRecords <b>@grid.TotalRowCount</b>
             </div>
-    
+
             @grid.GetHtml(tableStyle: "table table-bordered table-hover table-striped",
             mode: WebGridPagerModes.All, numericLinksCount: 10,
-                 htmlAttributes: new { style = "width:100%", @class = "table",
-                 id = "tblCodeCombinitions" },
-                 columns:grid.Columns
+                 htmlAttributes: new
+                 {
+                     style = "width:100%",
+                     @class = "table",
+                     id = "tblCodeCombinitions"
+                 },
+                 columns: grid.Columns
                  (grid.Column("", header: "Action", style: "ActionLink",
-                 format: (item) => Html.Raw("<a class = 'delete' href = '" + 
+                 format: (item) => Html.Raw("<a class = 'delete' href = '" +
                      @Url.Content("~/CodeCombinition/Delete/") + item.Id +
                      "'><img src ='" +
-                          @Url.Content("~/Content/Images/delete.png") + "' alt ='' title ='Delete' style = 'border:0'/></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='" +
-                          @Url.Content("~/CodeCombinition/Edit/") + item.Id +
-                     "'><img src='" + 
-                     @Url.Content("~/Content/images/edit.png") + "' alt='' title='Edit' style='border:0'/></a>")),
+                          @Url.Content("~/Content/Images/delete.png") + "' alt ='' title ='Delete' style = 'border:0'/></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#'><img src='" +
+                               @Url.Content("~/Content/images/edit.png") + "' alt='' onclick='EditCodeCombinition("+item.Id+");' title='Edit' style='border:0'/></a>")),
                      grid.Column(columnName: "CodeCombinitionCode",
                      header: "Code Combinition",
                      canSort: true),
-                     grid.Column("StartDate", header: "Start Date", canSort:true),
-                     grid.Column("EndDate", header: "End Date", canSort:true),
-                     grid.Column("AllowedPosting", header:"Allow Posting", canSort:true)                 
+                     grid.Column("StartDate", header: "Start Date", canSort: true),
+                     grid.Column("EndDate", header: "End Date", canSort: true),
+                     grid.Column("AllowedPosting", header: "Allow Posting", canSort: true)
                  )
             )
 
@@ -60,6 +62,21 @@
 }
 
 <script type="text/javascript">
+    function EditCodeCombinition(id) {
+        $.ajax({
+            url: '@Url.Content("~/CodeCombinition/Edit")',
+            data: { id: id, sobId: $('#SOBId').val() },
+            datatype: 'html',
+            type: 'post',
+            error: function (error) { },
+            success: function (data) {
+                $('#dvInput').html(data);
+                $('#dvInput').dialog("open");
+                return false;
+            }
+        });
+    }
+
     $(document).ready(function () {
         $('.delete').click(function () {
             return confirm("Sure! you wanted to delete ?");
