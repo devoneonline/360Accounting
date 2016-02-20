@@ -1,25 +1,31 @@
-﻿@model _360Accounting.Web.Models.AccountListModel
+﻿@Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
+
+@model _360Accounting.Web.Models.AccountListModel
 
 @{
     ViewBag.Title = "Chart Of Accounts";
 }
 
-
-<div class="row">
+<div class="container">
+    <div class="clearfix">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
+        </div>
+    </div>
     <div class="col-lg-12">
-        <h3 class="page-header">
-            @ViewBag.Title
-        </h3>
+        <div class="form-group">
+            <input type="button" id="btnSave" value="Create New" class="btn btn-default tstyCus-btn" />
+        </div>
+    </div>
+    <div class="col-lg-12 cusGridWrapper">
+        @Html.Action("AccountListPartial")
     </div>
 </div>
-<div class="col-lg-12">
-    <div class="form-group">
-        <input type="button" id="btnSave" value="Create New" class="btn btn-default" />
-    </div>
-</div>
-<div class="col-lg-12">
-    @Html.Partial("_List", Model)
-</div>
+
+
+
 <script type="text/javascript">
     $(document).ready(function () {
         $('#btnSave').click(function () {

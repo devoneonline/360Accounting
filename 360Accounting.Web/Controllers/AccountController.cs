@@ -53,7 +53,7 @@ namespace _360Accounting.Web.Controllers
                 else
                 {
                     ModelState.AddModelError("Error", "Account Already exists.");
-                }                
+                }
             }
 
             model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
@@ -64,12 +64,14 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Edit(string id)
         {
-            AccountCreateViewModel model = new AccountCreateViewModel(service.GetSingle(id,AuthenticationHelper.User.CompanyId));
-            SetOfBook sob = sobService.GetSingle(model.SOBId.ToString(),AuthenticationHelper.User.CompanyId);
+            AccountCreateViewModel model = new AccountCreateViewModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            SetOfBook sob = sobService.GetSingle(model.SOBId.ToString(), AuthenticationHelper.User.CompanyId);
             model.SetOfBooks = new List<SelectListItem>();
             model.SetOfBooks.Add(new SelectListItem { Text = sob.Name, Value = sob.Id.ToString() });
 
             return View(model);
+
+            //Opens popup in grid..
         }
 
         [HttpPost]
@@ -77,7 +79,7 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                model.CompanyId = AuthenticationHelper.User.CompanyId;                
+                model.CompanyId = AuthenticationHelper.User.CompanyId;
                 string result = service.Update(mapModel(model));
                 return RedirectToAction("Index");
             }
@@ -87,14 +89,20 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            service.Delete(id,AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.User.CompanyId);
             return RedirectToAction("Index");
+        }
+
+        public ActionResult AccountListPartial()
+        {
+            List<AccountViewModel> accountsList = listAccounts("", false, null, "", "");
+            return PartialView("_List", accountsList);
         }
 
         #region Private Methods
 
         ////private method name should start with small character
-        
+
         private List<AccountViewModel> listAccounts(string searchText, bool paging, int? page, string sort, string sortDir)
         {
             List<AccountViewModel> modelList = service.GetAll(AuthenticationHelper.User.CompanyId, searchText, paging, page, sort, sortDir).Select(x => new AccountViewModel(x)).ToList();
@@ -138,5 +146,6 @@ namespace _360Accounting.Web.Controllers
         }
 
         #endregion
+
     }
 }
