@@ -4,31 +4,33 @@
     ViewBag.Title = "Code Combinition";
 }
 
-<div id="dvCriteria">
-    <div class="row">
-        <div class="col-lg-12">
-            <h3 class="page-header">
-                @ViewBag.Title
-            </h3>
+<div class="container">
+    <div id="dvCriteria">
+        <div class="clearfix">
+            <div class="col-lg-12">
+                <h3 class="page-header">
+                    @ViewBag.Title
+                </h3>
+            </div>
         </div>
-    </div>
-    <div class="col-lg-6">
-        <div class="form-group">
-            @Html.LabelFor(m => m.SetOfBooks)
-            @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks,
+        <div class="col-lg-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.SetOfBooks)
+                @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks,
         new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                <input type="button" id="btnCreate" value="Create New" class="btn btn-default tstyCus-btn" />
+
+                <input type="button" id="btnTestInsert" value="Test Insert" class="btn btn-default tstyCus-btn" />
+
+                <input type="button" id="btnTestUpdate" value="Test Update" class="btn btn-default tstyCus-btn" />
+            </div>
         </div>
-
-        <div class="form-group">
-            <input type="button" id="btnCreate" value="Create New" class="btn btn-default" />
-
-            <input type="button" id="btnTestInsert" value="Test Insert" class="btn btn-default" />
-
-            <input type="button" id="btnTestUpdate" value="Test Update" class="btn btn-default" />
+        <div id="dvList" class="col-lg-12 cusGridWrapper">
+            @Html.Partial("_List", Model)
         </div>
-    </div>
-    <div id="dvList" class="col-lg-12">
-        @Html.Partial("_List", Model)
     </div>
 </div>
 <div id="dvInput">
@@ -40,7 +42,7 @@
         $('#dvInput').dialog({
             modal: true,
             autoOpen: false,
-            height: 400,
+            height: 700,
             width: 500,
         });
     });
@@ -55,9 +57,12 @@
         {
             posting = true;
         }
+        var id = $('#Id').val();
+        var sobId = $('#SOBId').val();
         var url = '@Url.Content("~/Codecombinition/UpdateCodeCombinition")';
-        $.post(url, { segmentValues: segmentValues, allowPosting: posting, startDate: $('#StartDate').val(), endDate: $('#EndDate').val() }, function (result) {
+        $.post(url, { id: id, sobId: sobId, segmentValues: segmentValues, allowPosting: posting, startDate: $('#StartDate').val(), endDate: $('#EndDate').val() }, function (result) {
             $('#dvInput').dialog('close');
+            window.location.href = '@Url.Content("~/CodeCombinition")'
         });
     }
 

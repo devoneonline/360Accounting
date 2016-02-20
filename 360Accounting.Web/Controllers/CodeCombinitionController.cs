@@ -50,19 +50,47 @@ namespace _360Accounting.Web.Controllers
         {
             CodeCombinitionCreateViewModel model =  new CodeCombinitionCreateViewModel();
             model.SegmentList = getSegmentList(sobId);
+            model.SOBId = sobId;
             return PartialView("_Edit", model);
         }
         
-        public ActionResult Edit(long id)
+        public ActionResult Edit(long id, long sobId)
         {
             CodeCombinitionCreateViewModel model = new CodeCombinitionCreateViewModel(service.GetSingle(id.ToString(),AuthenticationHelper.User.CompanyId));
+            model.SegmentList = getSegmentList(sobId);
+            model.SOBId = sobId;
             return PartialView("_Edit", model);
         }
 
-        public ActionResult UpdateCodeCombinition(string segmentValues, bool allowPosting, string startDate, string endDate)
+        public ActionResult UpdateCodeCombinition(long id, long sobId, string segmentValues, bool allowPosting, string startDate, string endDate)
         {
+            var segmentList = segmentValues.Split(new char[] { '±' }).ToList<string>();
+            CodeCombinitionCreateViewModel model = new CodeCombinitionCreateViewModel();
 
-            return Json("success");
+            model.Segment1 = segmentList[0].Substring(2);
+            model.Segment2 = segmentList[1].Substring(2);
+            model.Segment3 = segmentList[2].Substring(2);
+            model.Segment4 = segmentList[3].Substring(2);
+            model.Segment5 = segmentList[4].Substring(2);
+            model.Segment6 = segmentList[5].Substring(2);
+            model.Segment7 = segmentList[6].Substring(2);
+            model.Segment8 = segmentList[7].Substring(2);
+            model.AllowedPosting = allowPosting;
+            model.CompanyId = AuthenticationHelper.User.CompanyId;
+            model.EndDate = endDate == "" ? null : (DateTime?)Convert.ToDateTime(endDate);
+            model.StartDate = startDate == "" ? null : (DateTime?)Convert.ToDateTime(startDate);
+            model.Id = id;
+            model.SOBId = sobId;
+
+            if (model.Id > 0)
+            {
+                string result = service.Update(mapModel(model));
+            }
+            else
+            {
+                string result = service.Insert(mapModel(model));
+            }
+            return Json("Success");
         }
 
 
