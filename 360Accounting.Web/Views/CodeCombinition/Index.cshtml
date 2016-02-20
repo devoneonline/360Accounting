@@ -42,12 +42,13 @@
         $('#dvInput').dialog({
             modal: true,
             autoOpen: false,
-            height: 700,
+            height: 400,
             width: 500,
         });
     });
 
     function SaveValue() {
+        debugger;
         var segmentValues = '';
         $('.autoCombo').each(function (i, item) {
             segmentValues += i + "|" + item.value + "±";

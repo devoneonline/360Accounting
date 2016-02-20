@@ -66,15 +66,42 @@ namespace _360Accounting.Web.Controllers
         {
             var segmentList = segmentValues.Split(new char[] { '±' }).ToList<string>();
             CodeCombinitionCreateViewModel model = new CodeCombinitionCreateViewModel();
+            for (var i = 1; i <= segmentList.Count; i++)
+            {
+                string segmentValue = segmentList[i - 1];
+                if (string.IsNullOrEmpty(segmentValue))
+                    continue;
+                else
+                    segmentValue = segmentValue.Substring(2);
+                switch (i)
+                {
+                    case 1:
+                        model.Segment1 = segmentValue;
+                        break;
+                    case 2:
+                        model.Segment2 = segmentValue;
+                        break;
+                    case 3:
+                        model.Segment3 = segmentValue;
+                        break;
+                    case 4:
+                        model.Segment4 = segmentValue;
+                        break;
+                    case 5:
+                        model.Segment5 = segmentValue;
+                        break;
+                    case 6:
+                        model.Segment6 = segmentValue;
+                        break;
+                    case 7:
+                        model.Segment7 = segmentValue;
+                        break;
+                    case 8:
+                        model.Segment8 = segmentValue;
+                        break;
+                }
+            }
 
-            model.Segment1 = segmentList[0].Substring(2);
-            model.Segment2 = segmentList[1].Substring(2);
-            model.Segment3 = segmentList[2].Substring(2);
-            model.Segment4 = segmentList[3].Substring(2);
-            model.Segment5 = segmentList[4].Substring(2);
-            model.Segment6 = segmentList[5].Substring(2);
-            model.Segment7 = segmentList[6].Substring(2);
-            model.Segment8 = segmentList[7].Substring(2);
             model.AllowedPosting = allowPosting;
             model.CompanyId = AuthenticationHelper.User.CompanyId;
             model.EndDate = endDate == "" ? null : (DateTime?)Convert.ToDateTime(endDate);
