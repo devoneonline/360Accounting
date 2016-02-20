@@ -13,12 +13,13 @@
                 </h3>
             </div>
         </div>
-        <div class="col-lg-6">
+        @Html.HiddenFor(m=> m.SOBId)
+        @*<div class="col-lg-6">
             <div class="form-group">
                 @Html.LabelFor(m => m.SetOfBooks)
                 @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks,
         new { @class = "form-control" })
-            </div>
+            </div>*@
 
             <div class="form-group">
                 <input type="button" id="btnCreate" value="Create New" class="btn btn-default tstyCus-btn" />

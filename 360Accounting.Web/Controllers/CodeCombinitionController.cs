@@ -27,21 +27,25 @@ namespace _360Accounting.Web.Controllers
             accountValueService = IoC.Resolve<IAccountValueService>("AccountValueService");
         }
 
-        public ActionResult Index(CodeCombinitionListModel model)
+        public ActionResult Index(long id, CodeCombinitionListModel model)
         {
-            if (model.SetOfBooks == null)
-            {
-                model.SetOfBooks = sobService
-                    .GetByCompanyId(AuthenticationHelper.User.CompanyId)
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.Name,
-                        Value = x.Id.ToString(),
-                        Selected = x.Id == model.SOBId ? true : false
-                    }).ToList();
-            }
+            //if (model.SetOfBooks == null)
+            //{
+            //    model.SetOfBooks = sobService
+            //        .GetByCompanyId(AuthenticationHelper.User.CompanyId)
+            //        .Select(x => new SelectListItem
+            //        {
+            //            Text = x.Name,
+            //            Value = x.Id.ToString(),
+            //            Selected = x.Id == model.SOBId ? true : false
+            //        }).ToList();
+            //}
 
-            model.CodeCombinitions = service.GetAll(AuthenticationHelper.User.CompanyId, model.SOBId != 0 ? model.SOBId : Convert.ToInt64(model.SetOfBooks.First().Value), model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
+            //model.CodeCombinitions = service.GetAll(AuthenticationHelper.User.CompanyId, model.SOBId != 0 ? model.SOBId : Convert.ToInt64(model.SetOfBooks.First().Value), model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
+            //    .Select(x => new CodeCombinitionViewModel(x)).ToList();
+
+            model.SOBId = id;
+            model.CodeCombinitions = service.GetAll(AuthenticationHelper.User.CompanyId, id, model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
                 .Select(x => new CodeCombinitionViewModel(x)).ToList();
             return View(model);
         }

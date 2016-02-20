@@ -27,14 +27,18 @@ var grid = Html.DevExpress().GridView(settings =>
             column.SetDataItemTemplateContent(c =>
             {
                 ViewContext.Writer.Write(
-                    Html.Raw("<a href='" + Url.Content("~/Account/Edit/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
+                    Html.Raw("<a title='Edit' href='" + Url.Content("~/Account/Edit/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
                     + "&nbsp;&nbsp;" +
-                    Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/Account/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
+                    Html.Raw("<a title='Delete' class='deleteQuestion' href='" + Url.Content("~/Account/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
+                    + "&nbsp;&nbsp;" +
+                    Html.Raw("<a title='Code Combination' href='" + Url.Content("~/CodeCombinition/Index/") + DataBinder.Eval(c.DataItem, "SOBId") + "'><i class='fa fa-codepen'></i></a>")
+                    + "&nbsp;&nbsp;" +
+                    Html.Raw("<a title='Account Values' href='" + Url.Content("~/AccountValue/Index/") + DataBinder.Eval(c.DataItem, "SOBId") + "'><i class='fa fa-book'></i></a>")
                 );
             });
             column.Settings.AllowDragDrop = DefaultBoolean.False;
             column.Settings.AllowSort = DefaultBoolean.False;
-            column.Width = 70;
+            column.Width = 90;
         });
 
     settings.Columns.Add("SOBName", "Set Of Book");
