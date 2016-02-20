@@ -33,7 +33,7 @@
                                             header: "Journal Name",
                                             canSort: true),
                             grid.Column("DocumentNo", header: "Document #", canSort: false),
-                            grid.Column("GLDate", header: "Effective Date", canSort: true),
+                            grid.Column("", header: "Effective Date", format: (item)=> item.GLDate != null? item.GLDate.ToString(_360Accounting.Common.Const.DATE_FORMAT): "", canSort: true),
                             grid.Column("Description", header: "Description", canSort: false)))
         }
         else

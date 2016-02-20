@@ -47,7 +47,7 @@
                      grid.Column(columnName: "CodeCombinitionCode",
                      header: "Code Combinition",
                      canSort: true),
-                     grid.Column("", header: "Start Date", format: (item)=> item.StartDate.ToString(_360Accounting.Common.Const.DATE_FORMAT), canSort: true),
+                     grid.Column("", header: "Start Date", format: (item)=> item.StartDate != null? item.StartDate.ToString(_360Accounting.Common.Const.DATE_FORMAT): "", canSort: true),
                      grid.Column("EndDate", header: "End Date", canSort: true),
                      grid.Column("AllowedPosting", header: "Allow Posting", canSort: true)
                  )

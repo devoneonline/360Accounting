@@ -53,14 +53,14 @@
             <div class="col-lg-6">
                 <div class="form-group">
                     @Html.LabelFor(m => m.StartDate)
-                    @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control" })
+                    @Html.EditorFor(m => m.StartDate, new { @class = "form-control" })
                 </div>
             </div>
         </div>    <div class="clearfix">
             <div class="col-lg-6">
                 <div class="form-group">
                     @Html.LabelFor(m => m.EndDate)
-                    @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control" })
+                    @Html.EditorFor(m => m.EndDate, new { @class = "form-control" })
                 </div>
             </div>
         </div>    <div class="clearfix">
@@ -86,3 +86,11 @@
             </div>
         </div>    }
 </div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('[type=date]').attr('class', 'form-control');
+    });
+
+</script>

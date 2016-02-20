@@ -37,8 +37,8 @@ var grid = Html.DevExpress().GridView(settings =>
     settings.Columns.Add("Segment");
     settings.Columns.Add("ValueName", "Detail");
     settings.Columns.Add("Value");
-    settings.Columns.Add("StartDate");
-    settings.Columns.Add("EndDate");
+    settings.Columns.Add("StartDate").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;
+    settings.Columns.Add("EndDate").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;
     settings.Columns.Add("AccountType");
     settings.Columns.Add("Levl", "Level");
 });
