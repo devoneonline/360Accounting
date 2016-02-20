@@ -195,5 +195,12 @@ namespace _360Accounting.Web.Controllers
             };
         }
         #endregion
+
+        public ActionResult AccountValuesPartial(long sobId, string segment)
+        {
+            IEnumerable<AccountValueViewModel> accountValuesList = service.GetAll(AuthenticationHelper.User.CompanyId).Select(x => new AccountValueViewModel(x));
+            return PartialView("_List", accountValuesList);
+        }
+
     }
 }
