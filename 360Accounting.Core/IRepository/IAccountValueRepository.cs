@@ -12,5 +12,7 @@ namespace _360Accounting.Core.Interfaces
         AccountValue GetAccountValueBySegment(string segment, long chartId);
 
         List<AccountValue> GetAccountValuesBySegment(string segment, long chartId);
+
+        IEnumerable<AccountValue> GetAll(long companyId, string segment);
     }
 }

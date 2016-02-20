@@ -57,5 +57,10 @@ namespace _360Accounting.Service
         {
             return this.repository.Count(companyId);
         }
+
+        public List<AccountValue> GetAll(long companyId, string segment)
+        {
+            return this.repository.GetAll(companyId, segment).ToList();
+        }
     }
 }

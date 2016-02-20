@@ -144,11 +144,7 @@ namespace _360Accounting.Web.Controllers
                         Value = x.Id.ToString()
                     }).ToList();
             }
-
-            if (model.SOBId != 0 || model.SetOfBooks != null)
-            {
-                model.Calendars = getCalendarList(model);
-            }
+            model.SOBId = model.SOBId > 0 ? model.SOBId : Convert.ToInt64(model.SetOfBooks[0].Value.ToString());
 
             return View(model);
         }
@@ -183,11 +179,11 @@ namespace _360Accounting.Web.Controllers
         #endregion
 
         [ValidateInput(false)]
-        public ActionResult CalendarListPartial()
+        public ActionResult CalendarListPartial(long sobId)
         {
-            //var model = new object[0];
-            IEnumerable<CalendarViewModel> model = service.GetAll(AuthenticationHelper.User.CompanyId)
+            List<CalendarViewModel> model = service.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", true, null, "", "")
                 .Select(x => new CalendarViewModel(x)).ToList();
+
             return PartialView("_List", model);
         }
     }
