@@ -113,12 +113,13 @@ namespace _360Accounting.Web.Controllers
 
         #endregion
 
-        public ActionResult Index()
+        public ActionResult Index(long id)
         {
+            ViewBag.CompanyId = id;
             return View();
         }
 
-        public ActionResult UserListPartial()
+        public ActionResult UserListPartial(long companyId)
         {
             List<UserViewModel> modelList = new List<UserViewModel>();
             MembershipUserCollection memCollection = Membership.GetAllUsers();
@@ -137,9 +138,12 @@ namespace _360Accounting.Web.Controllers
                 item.Role = Roles.GetRolesForUser(user.UserName)[0];
                 modelList.Add(item);
             }
+            //TODO: Filtering the data against the selected company.. is this correct?
+            modelList = modelList.Where(x => x.CompanyId == companyId).ToList();
+
             if (AuthenticationHelper.UserRole != UserRoles.SuperAdmin.ToString())
             {
-                modelList = modelList.Where(x => x.CompanyId == AuthenticationHelper.User.CompanyId && x.Role != UserRoles.SuperAdmin.ToString()).ToList();
+                modelList = modelList.Where(x => x.Role != UserRoles.SuperAdmin.ToString()).ToList();
             }
             return PartialView("_List", modelList);
         }
