@@ -34,6 +34,8 @@ namespace _360Accounting.Web.Models
         [Display(Name = "Journal Description")]
         public string Description { get; set; }
 
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Effective Date")]
         public DateTime GLDate { get; set; }
 

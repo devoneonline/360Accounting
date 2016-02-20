@@ -54,6 +54,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $('[type=date]').attr('class', 'form-control');
         $('#SOBId').change(
             function () {
                 var url = '@Url.Content("~/JournalVoucher/CodeCombinationList")';

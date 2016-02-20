@@ -48,7 +48,7 @@ FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 
     <div class="col-lg-3">
         @Html.LabelFor(m => m.GLDate)
-        @Html.TextBoxFor(m => m.GLDate, new { @class = "form-control" })
+        @Html.EditorFor(m => m.GLDate, new { @class = "form-control" })
     </div>
 
     <div class="col-lg-3">
@@ -125,6 +125,8 @@ FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 
         <script type="text/javascript">
             $(document).ready(function () {
+                $('[type=date]').attr('class', 'form-control');
+
                 $('#btnCancel').click(function () {
                     window.location.href = '@Url.Content("~/JournalVoucher/Index")';
                 });

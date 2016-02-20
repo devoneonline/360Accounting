@@ -125,10 +125,10 @@ namespace _360Accounting.Web.Controllers
         }
 
 
-        public ActionResult Delete(string id)
+        public ActionResult Delete(string id, long sobId)
         {
             service.Delete(id,AuthenticationHelper.User.CompanyId);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { id = sobId });
         }
 
         public ActionResult GetCodeCombinitionList(long sobId)

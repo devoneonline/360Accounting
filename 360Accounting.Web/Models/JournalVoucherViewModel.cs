@@ -138,10 +138,14 @@ namespace _360Accounting.Web.Models
         public List<SelectListItem> Users { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "From Date")]
         public DateTime FromDate { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "To Date")]
         public DateTime ToDate { get; set; }
 
@@ -158,10 +162,14 @@ namespace _360Accounting.Web.Models
         public List<SelectListItem> SetOfBooks { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "From Date")]
         public DateTime FromDate { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "To Date")]
         public DateTime ToDate { get; set; }
     }
@@ -198,10 +206,14 @@ namespace _360Accounting.Web.Models
         public List<SelectListItem> SetOfBooks { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "From Date")]
         public DateTime FromDate { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "To Date")]
         public DateTime ToDate { get; set; }
 

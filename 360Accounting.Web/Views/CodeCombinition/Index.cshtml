@@ -64,7 +64,7 @@
         var url = '@Url.Content("~/Codecombinition/UpdateCodeCombinition")';
         $.post(url, { id: id, sobId: sobId, segmentValues: segmentValues, allowPosting: posting, startDate: $('#StartDate').val(), endDate: $('#EndDate').val() }, function (result) {
             $('#dvInput').dialog('close');
-            window.location.href = '@Url.Content("~/CodeCombinition")'
+            window.location.href = '@Url.Content("~/CodeCombinition/Index?Id=")'+sobId
         });
     }
 

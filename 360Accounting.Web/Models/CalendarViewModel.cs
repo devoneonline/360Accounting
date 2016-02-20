@@ -53,11 +53,13 @@ namespace _360Accounting.Web.Models
 
         [Required]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "From")]
         public DateTime StartDate { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "To")]
         public DateTime EndDate { get; set; }
 
