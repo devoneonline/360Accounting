@@ -23,6 +23,7 @@ namespace _360Accounting.Web.Controllers
         private IFeatureService service;
         private ICompanyService companyService;
         private IFeatureSetService featureSetService;
+        private IFeatureSetAccessService featureSetAccessService;
         #endregion
 
         #region Constructor
@@ -31,6 +32,7 @@ namespace _360Accounting.Web.Controllers
             service = IoC.Resolve<IFeatureService>("FeatureService");
             companyService = IoC.Resolve<ICompanyService>("CompanyService");
             featureSetService = IoC.Resolve<IFeatureSetService>("FeatureSetService");
+            featureSetAccessService = IoC.Resolve<IFeatureSetAccessService>("FeatureSetAccessService");
         }
         #endregion
 
@@ -106,7 +108,7 @@ namespace _360Accounting.Web.Controllers
         {
             return DocumentViewerExtension.ExportTo(CreateReport(), Request);
         }
-        
+
         #endregion
 
         #endregion
@@ -333,11 +335,69 @@ namespace _360Accounting.Web.Controllers
         public ActionResult FeatureSet(FeatureSetListModel model)
         {
             int totalRecords = 0;
-            model.FeatureSet = featureSetService.GetAll(long.MaxValue).Select(x => new FeatureSetModel(x)).ToList();
+            model.FeatureSet = featureSetService.GetAll(AuthenticationHelper.User.CompanyId).Select(x => new FeatureSetModel(x)).ToList();
             model.TotalRecords = totalRecords;
             return View(model);
         }
 
+        #region Feature Set Access
+        public ActionResult UserFeatureSet(string featureSetId)
+        {
+            ViewBag.FeatureSetId = featureSetId;
+            //TODO: Is this the way to get users??
+
+            List<SelectUser> modelList = new List<SelectUser>();
+            MembershipUserCollection memCollection = Membership.GetAllUsers();
+            foreach (MembershipUser user in memCollection)
+            {
+                UserProfile profile = UserProfile.GetProfile(user.UserName);
+                SelectUser item = new SelectUser();
+                item.UserId = Guid.Parse(user.ProviderUserKey.ToString());
+                item.UserName = user.UserName;
+                item.CompanyId = profile.CompanyId;
+                item.Selected = featureSetAccessService.GetSingle(AuthenticationHelper.User.CompanyId, user.ProviderUserKey.ToString()) == null ? false : true;
+                item.Role = Roles.GetRolesForUser(user.UserName)[0];
+                modelList.Add(item);
+            }
+            if (AuthenticationHelper.UserRole != UserRoles.SuperAdmin.ToString())
+            {
+                modelList = modelList.Where(x => x.CompanyId == AuthenticationHelper.User.CompanyId && x.Role != UserRoles.SuperAdmin.ToString()).ToList();
+            }
+
+            return View("CheckUsersPartial", modelList);
+        }
+
+        public ActionResult SaveFSforUsers(string featureSetId, string userList)
+        {
+            List<string> UserList = userList.Split(new char[] { '±' }).ToList();
+
+            //Delete
+            List<FeatureSetAccess> tobeRemoved = featureSetAccessService.GetAll(AuthenticationHelper.User.CompanyId).Where(rec => rec.UserId != null).ToList();
+            if (tobeRemoved.Count() > 0)
+            {
+                foreach (var item in tobeRemoved)
+                {
+                    featureSetAccessService.Delete(item.Id.ToString(), Convert.ToInt64(item.CompanyId));
+                }
+            }
+
+            foreach (var item in UserList)
+            {
+                if (!string.IsNullOrEmpty(item))
+                {
+                    featureSetAccessService.Insert(new FeatureSetAccess
+                    {
+                        CompanyId = AuthenticationHelper.User.CompanyId,
+                        FeatureSetId = Convert.ToInt64(featureSetId),
+                        UserId = Guid.Parse(item),
+                        CreateDate = DateTime.Now
+                    });
+                }
+            }
+
+            return Json("Success");
+        }
+        #endregion
 
         #region Helper Methods
 

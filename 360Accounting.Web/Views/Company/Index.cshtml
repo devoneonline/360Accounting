@@ -56,9 +56,9 @@
                             + "&nbsp;" +
                                     Html.Raw("<a title ='Delete Company' class='deleteQuestion' href='" + Url.Content("~/Company/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
                             + "&nbsp;" +
-                                    Html.Raw("<a title='Manage Users' class='deleteQuestion' href='" + Url.Content("~/Company/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-user-md'></i></a>")
+                                    Html.Raw("<a title='Manage Users' href='" + Url.Content("~/User")+ "'><i class='fa fa-user-md'></i></a>")
                             + "&nbsp;" +
-                                    Html.Raw("<a title='Manage Users' class='deleteQuestion' href='" + Url.Content("~/Company/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-cubes'></i></a>")
+                                    Html.Raw("<a title='Manage Features' href='" + Url.Content("~/User/FeatureSet") + "'><i class='fa fa-cubes'></i></a>")
                                 );
                             });
 

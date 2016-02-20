@@ -17,6 +17,11 @@ namespace _360Accounting.Data.Repositories
             return entity;
         }
 
+        public FeatureSetAccess GetSingle(long companyId, string userId)
+        {
+            return this.GetAll(companyId).FirstOrDefault(x => x.UserId == Guid.Parse(userId) && x.CompanyId == companyId);
+        }
+
         public IEnumerable<FeatureSetAccess> GetAll(long companyId)
         {
             IEnumerable<FeatureSetAccess> list = this.Context.FeatureSetAccesses;
