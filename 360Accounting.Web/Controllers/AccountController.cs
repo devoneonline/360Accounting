@@ -23,6 +23,12 @@ namespace _360Accounting.Web.Controllers
             sobService = IoC.Resolve<ISetOfBookService>("SetOfBookService");
         }
 
+        public ActionResult AccountListPartial()
+        {
+            List<AccountViewModel> accountsList = listAccounts("", false, null, "", "");
+            return PartialView("_List", accountsList);
+        }
+
         public ActionResult Index(AccountListModel model)
         {
             model.Accounts = listAccounts(model.SearchText, true, model.Page, model.SortColumn, model.SortDirection);
