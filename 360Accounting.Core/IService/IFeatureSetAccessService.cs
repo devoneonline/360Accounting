@@ -11,5 +11,7 @@ namespace _360Accounting.Core
     public interface IFeatureSetAccessService : IService<FeatureSetAccess>
     {
         FeatureSetAccess GetByFeatureSetId(long companyId, long featureSetId);
+
+        FeatureSetAccess GetSingle(long companyId, string userId);
     }
 }
