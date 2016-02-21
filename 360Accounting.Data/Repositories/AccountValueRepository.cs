@@ -38,6 +38,12 @@ namespace _360Accounting.Data.Repositories
             return valueList;
         }
 
+        public IEnumerable<AccountValue> GetAll(long companyId, string segment)
+        {
+            IEnumerable<AccountValue> valueList = this.Context.AccountValues.Where(rec => rec.Segment == segment);
+            return valueList;
+        }
+
         public string Insert(AccountValue entity)
         {
             this.Context.AccountValues.Add(entity);

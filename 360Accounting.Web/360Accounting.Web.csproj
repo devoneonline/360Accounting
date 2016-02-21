@@ -201,6 +201,7 @@
     <Compile Include="Models\JournalVoucherViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\ManageUserViewModel.cs" />
+    <Compile Include="Models\SelectUser.cs" />
     <Compile Include="Models\SetOfBookListModel.cs" />
     <Compile Include="Models\SetOfBookModel.cs" />
     <Compile Include="Models\UserCreateModel.cs" />
@@ -411,7 +412,7 @@
     <Content Include="Views\JournalVoucher\TrialBalanceReport.cshtml" />
     <Content Include="Views\JournalVoucher\UserwiseEntriesTrail.cshtml" />
     <Content Include="Views\JournalVoucher\UserwiseEntriesTrailReport.cshtml" />
-    <Content Include="Views\User\EditCompanyFeatureList.cshtml" />
+    <Content Include="Views\User\CheckUsersPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

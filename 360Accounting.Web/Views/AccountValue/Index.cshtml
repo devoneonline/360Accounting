@@ -15,8 +15,9 @@
     </div>
     <div class="col-lg-6">
         <div class="form-group">
-            @Html.LabelFor(m => m.SetOfBooks)
-            @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control" })
+            @Html.HiddenFor(m=> m.SOBId)
+            @*@Html.LabelFor(m => m.SetOfBooks)
+            @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control" })*@
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.Segments)
@@ -29,7 +30,7 @@
             <input type="button" id="btnCreate" value="Create New" class="btn btn-default tstyCus-btn" />
         </div>
     </div>
-    <div class="col-lg-12 cusGridWrapper">
+    <div class="col-lg-12 cusGridWrapper" id="ACPartial">
         @Html.Action("AccountValuesPartial", new { sobId = Model.SOBId, segment = Model.Segment })
     </div>
 </div>
@@ -41,18 +42,22 @@
             window.location.href = url;
         });
 
-        $('#SOBId').change(
+        $('#Segment').change(
             function () {
                 var url = '@Url.Content("~/AccountValue/SegmentList")';
 
-                $.get(url, { sobId: $(this).val() },
-                    function (data) {
-                        var segmentDropdown = $('#Segment');
-                        segmentDropdown.empty();
-                        for (var i = 0 ; i < data.length; i++) {
-                            segmentDropdown.append('<option value?+data[i].Value+?="">' + data[i].Text + '</option>');
-                        }
-                    });
+                $.ajax({
+                    url: '@Url.Content("~/AccountValue/AccountValuesPartial")',
+                    data: {
+                        sobId: $('#SOBId').val(), segment: $(this).val()
+                    },
+                    datatype: 'html',
+                    type: 'post',
+                    error: function (data) { },
+                    success: function (data) {
+                        $('#ACPartial').empty().html(data);
+                    }
+                });
             });
     });
 </script>

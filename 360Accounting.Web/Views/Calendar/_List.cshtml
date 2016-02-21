@@ -40,8 +40,8 @@ var grid = Html.DevExpress().GridView(settings =>
     settings.Columns.Add("PeriodYear");
     settings.Columns.Add("PeriodQuarter");
     settings.Columns.Add("SeqNumber");
-    settings.Columns.Add("StartDate");
-    settings.Columns.Add("EndDate");
+    settings.Columns.Add("StartDate").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT; ;
+    settings.Columns.Add("EndDate").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT; ;
     settings.Columns.Add("Adjusting");
     settings.Columns.Add("ClosingStatus");
 });

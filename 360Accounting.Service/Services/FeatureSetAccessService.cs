@@ -23,6 +23,11 @@ namespace _360Accounting.Service
             return this.repository.GetSingle(id,companyId);
         }
 
+        public FeatureSetAccess GetSingle(long companyId, string userId)
+        {
+            return this.repository.GetSingle(companyId, userId);
+        }
+
         public IEnumerable<FeatureSetAccess> GetAll( long companyId)
         {
             return this.repository.GetAll(companyId);

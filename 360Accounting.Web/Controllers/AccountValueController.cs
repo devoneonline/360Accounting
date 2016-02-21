@@ -27,20 +27,13 @@ namespace _360Accounting.Web.Controllers
             accountService = IoC.Resolve<IAccountService>("AccountService");
         }
 
-        public ActionResult Index(AccountValueListModel model)
+        public ActionResult Index(long id, AccountValueListModel model)
         {
-            if (model.SetOfBooks == null)
-            {
-                model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
-                    .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
-            }
-
-            if (model.Segments == null && model.SetOfBooks.Any())
-            {
-                model.Segments = getSegmentList(model.SetOfBooks.First().Value.ToString());
-            }
-
-            model.AccountValues = service.GetAll(AuthenticationHelper.User.CompanyId).Select(x => new AccountValueViewModel(x)).ToList();
+            Session["sobid"] = id;   //TODO:: temporary
+            model.SOBId = id;
+            model.Segments = getSegmentList(model.SOBId.ToString());
+            model.Segment = model.Segments[0].Value;
+        
             return View(model);
         }
 
@@ -52,6 +45,7 @@ namespace _360Accounting.Web.Controllers
                 model.ChartId = accountService.GetAccountBySOBId(sobId.ToString(), AuthenticationHelper.User.CompanyId).Id;
                 model.SetOfBook = sobService.GetSingle(sobId.ToString(),AuthenticationHelper.User.CompanyId).Name;
                 model.Segment = segment;
+                Session["sobid"] = sobId;   //TODO:: temporary
                 return View("Edit", model);
             }
 
@@ -84,7 +78,7 @@ namespace _360Accounting.Web.Controllers
                 else
                 {
                     string result = service.Insert(mapModel(model));
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", new { id = Session["sobid"] });
                 }
             }
 
@@ -94,7 +88,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Delete(string id)
         {
             service.Delete(id, AuthenticationHelper.User.CompanyId);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { id = Session["sobid"] });
         }
 
         #region Private Methods
@@ -198,9 +192,8 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult AccountValuesPartial(long sobId, string segment)
         {
-            IEnumerable<AccountValueViewModel> accountValuesList = service.GetAll(AuthenticationHelper.User.CompanyId).Select(x => new AccountValueViewModel(x));
+            List<AccountValueViewModel> accountValuesList = service.GetAll(AuthenticationHelper.User.CompanyId, segment).Select(x => new AccountValueViewModel(x)).ToList();
             return PartialView("_List", accountValuesList);
         }
-
     }
 }

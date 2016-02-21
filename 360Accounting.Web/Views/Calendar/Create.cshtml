@@ -49,14 +49,14 @@ FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         <div class="col-md-6">
             <div class="form-group">
                 @Html.LabelFor(m => m.StartDate)
-                @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control" })
+                @Html.EditorFor(m => m.StartDate, new { @class = "form-control" })
             </div>
         </div>
 
         <div class="col-md-6">
             <div class="form-group">
                 @Html.LabelFor(m => m.EndDate)
-                @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control" })
+                @Html.EditorFor(m => m.EndDate, new { @class = "form-control" })
             </div>
         </div>
 
@@ -79,6 +79,8 @@ FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $('[type=date]').attr('class', 'form-control');
+
         $('#btnCancel').click(function () {
             window.location.href = '@Url.Content("~/Calendar/Index")';
         });

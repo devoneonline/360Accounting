@@ -40,15 +40,14 @@
                  columns: grid.Columns
                  (grid.Column("", header: "Action", style: "ActionLink",
                  format: (item) => Html.Raw("<a class = 'delete' href = '" +
-                     @Url.Content("~/CodeCombinition/Delete/") + item.Id +
-                     "'><img src ='" +
+                          @Url.Content("~/CodeCombinition/Delete?Id=") + item.Id + "&sobId=" + item.SOBId + "'><img src ='" +
                           @Url.Content("~/Content/Images/delete.png") + "' alt ='' title ='Delete' style = 'border:0'/></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#'><img src='" +
                                @Url.Content("~/Content/images/edit.png") + "' alt='' onclick='EditCodeCombinition("+item.Id+");' title='Edit' style='border:0'/></a>")),
                      grid.Column(columnName: "CodeCombinitionCode",
                      header: "Code Combinition",
                      canSort: true),
-                     grid.Column("", header: "Start Date", format: (item)=> item.StartDate.ToString(_360Accounting.Common.Const.DATE_FORMAT), canSort: true),
-                     grid.Column("EndDate", header: "End Date", canSort: true),
+                     grid.Column("", header: "Start Date", format: (item)=> item.StartDate != null? item.StartDate.ToString(_360Accounting.Common.Const.DATE_FORMAT): "", canSort: true),
+                     grid.Column("", header: "End Date", format: (item)=> item.EndDate != null? item.EndDate.ToString(_360Accounting.Common.Const.DATE_FORMAT): "", canSort: true),
                      grid.Column("AllowedPosting", header: "Allow Posting", canSort: true)
                  )
             )
