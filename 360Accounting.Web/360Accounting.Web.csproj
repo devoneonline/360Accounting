@@ -413,6 +413,7 @@
     <Content Include="Views\JournalVoucher\UserwiseEntriesTrail.cshtml" />
     <Content Include="Views\JournalVoucher\UserwiseEntriesTrailReport.cshtml" />
     <Content Include="Views\User\CheckUsersPartial.cshtml" />
+    <Content Include="Views\User\EditCompanyFeatureList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">
