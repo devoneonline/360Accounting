@@ -8,5 +8,6 @@ namespace _360Accounting.Core.Interfaces
         IEnumerable<FeatureSetList> GetByFeatureSetId(long featureSetId);
         void Insert(List<FeatureSetList> entityList);
 
+        void Delete(FeatureSetList featureSetList);
     }
 }

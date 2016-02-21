@@ -92,11 +92,10 @@
                     $(':checked').each(function (e, i) {
                         flist += $(i).attr('data-id') + "|" + $(i).attr('data-parent-id') + "±";
                     });
-                    var url = '@Url.Content("~/User/UpdateCompanyFeature")';
+                    var url = '@Url.Content("~/User/InsertCompanyFeature")';
                     $.post(url, { companyId: $('#CompanyId').val(), featureName: $('#Name').val(), featureList: flist }, function (result) {
                         window.location.href = '@Url.Content("~/")';
-                    });
-                    
+                    });                    
                 }
                 return false;
             });
@@ -127,5 +126,3 @@
         }
     </script>
 }
-
-

@@ -47,5 +47,10 @@ namespace _360Accounting.Service
         {
             return this.repository.Count(companyId);
         }
+
+        public FeatureSetAccess GetByFeatureSetId(long companyId, long featureSetId)
+        {
+            return this.repository.GetByFeatureSetId(companyId, featureSetId);
+        }
     }
 }

@@ -345,6 +345,16 @@ namespace DevEx_360Accounting_Web.Controllers
             return View(model);
         }
 
+        //public ActionResult EditFeatureSet()
+        //{
+        //    FeatureSetModel model = new FeatureSetModel(service.GetSingle(featureSetService.GetSingle()))
+        //    return View();
+        //}
+
+        //public ActionResult DeleteFeatureSet()
+        //{
+        //    return View();
+        //}
 
         #region Helper Methods
 

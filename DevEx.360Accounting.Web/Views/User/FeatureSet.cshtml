@@ -35,7 +35,7 @@
                         settings.Theme = "Office2010Black";
                         settings.KeyFieldName = "Id";
 
-                        settings.CallbackRouteValues = new { Controller = "Account", Action = "FeatureSetListPartial" };
+                        settings.CallbackRouteValues = new { Controller = "User", Action = "FeatureSet" };
 
                         settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
                         settings.SettingsBehavior.ConfirmDelete = true;
@@ -51,9 +51,9 @@
                                 column.SetDataItemTemplateContent(c =>
                                 {
                                     ViewContext.Writer.Write(
-                                        Html.Raw("<a href='" + Url.Content("~/Account/Edit/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
+                                        Html.Raw("<a href='" + Url.Content("~/User/EditFeatureSet/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
                                         + "&nbsp;&nbsp;" +
-                                        Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/Account/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
+                                        Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/User/DeleteFeatureSet/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
                                     );
                                 });
                                 column.Settings.AllowDragDrop = DefaultBoolean.False;

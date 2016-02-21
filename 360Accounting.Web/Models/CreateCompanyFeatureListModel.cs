@@ -23,7 +23,7 @@ namespace _360Accounting.Web.Models
 
         public List<FeatureViewModel> FeatureList { get; set; }
 
-        public string[] SelectedFeatures { get; set; }
+        public Dictionary<long,long> SelectedFeatures { get; set; }
 
     }
 }

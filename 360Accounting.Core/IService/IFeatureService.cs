@@ -13,5 +13,7 @@ namespace _360Accounting.Core
         IEnumerable<Feature> GetMenuItemsByUserId(Guid userId);
         IEnumerable<Feature> GetSuperAdminMenu();
         void InsertCompanyFeatureSet(FeatureSet fs, FeatureSetAccess fsa);
+
+        void UpdateCompanyFeatureSet(FeatureSet fs, IEnumerable<FeatureSetList> oldFeatureSetList);
     }
 }

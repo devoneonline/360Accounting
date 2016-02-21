@@ -23,6 +23,7 @@ namespace _360Accounting.Web.Controllers
         private IFeatureService service;
         private ICompanyService companyService;
         private IFeatureSetService featureSetService;
+        private IFeatureSetListService featureSetListService;
         #endregion
 
         #region Constructor
@@ -31,6 +32,7 @@ namespace _360Accounting.Web.Controllers
             service = IoC.Resolve<IFeatureService>("FeatureService");
             companyService = IoC.Resolve<ICompanyService>("CompanyService");
             featureSetService = IoC.Resolve<IFeatureSetService>("FeatureSetService");
+            featureSetListService = IoC.Resolve<IFeatureSetListService>("FeatureSetListService");
         }
         #endregion
 
@@ -303,7 +305,7 @@ namespace _360Accounting.Web.Controllers
             return View(model);
         }
 
-        public JsonResult UpdateCompanyFeature(long companyId, string featureName, string featureList)
+        public JsonResult InsertCompanyFeature(long companyId, string featureName, string featureList)
         {
             FeatureSet fs = new FeatureSet();
             fs.Name = featureName;
@@ -318,6 +320,7 @@ namespace _360Accounting.Web.Controllers
                     fsList.Add(new FeatureSetList { FeatureId = long.Parse(s.Split(new char[] { '|' }, StringSplitOptions.None)[0]), FeatureSetId = fs.Id });
                 }
             }
+
             fs.FeatureSetList = fsList;
 
             FeatureSetAccess fsa = new FeatureSetAccess();
@@ -338,6 +341,52 @@ namespace _360Accounting.Web.Controllers
             return View(model);
         }
 
+        public ActionResult EditCompanyFeatureList(string id)
+        {
+            CreateCompanyFeatureListModel model = new CreateCompanyFeatureListModel();
+
+            FeatureSet featureSet = featureSetService.GetSingle(id, AuthenticationHelper.User.CompanyId);            
+            Company company = companyService.GetSingle(AuthenticationHelper.User.CompanyId.ToString(), AuthenticationHelper.User.CompanyId);
+            model.CompanyId = company.Id;
+            model.CompanyList = new List<SelectListItem>();     //This line is added because without initializing it was giving error.
+            model.CompanyList.Add(new SelectListItem { Text = company.Name, Value = company.Id.ToString() });
+            IEnumerable<Feature> featureList = service.GetAll(AuthenticationHelper.User.CompanyId).ToList();
+            model.FeatureList = featureList.Select(x => new FeatureViewModel(x)).ToList();
+            model.Id = featureSet.Id;
+            model.Name = featureSet.Name;
+            model.SelectedFeatures = featureSetListService.GetByFeatureSetId(Convert.ToInt32(id)).ToDictionary(a => a.FeatureId, a => a.FeatureId); //ask faisal bhai what does ToDictionary do.
+            return View(model);
+        }
+
+        public JsonResult UpdateCompanyFeature(long id, long companyId, string featureName, string featureList)
+        {
+            FeatureSet fs = new FeatureSet();
+            fs.Name = featureName;
+            fs.Id = id;
+            fs.AccessType = "company";
+            fs.CreateDate = DateTime.Now;
+            List<FeatureSetList> fsList = new List<FeatureSetList>();
+            var newValue = featureList.Replace("undefined|", "").Replace("undefined±", "").Split(new char[] { '±' }, StringSplitOptions.None);
+            foreach (string s in newValue)
+            {
+                if (!string.IsNullOrEmpty(s))
+                {
+                    fsList.Add(new FeatureSetList { FeatureId = long.Parse(s.Split(new char[] { '|' }, StringSplitOptions.None)[0]), FeatureSetId = fs.Id });
+                }
+            }
+
+            fs.FeatureSetList = fsList;
+
+            service.UpdateCompanyFeatureSet(fs, featureSetListService.GetByFeatureSetId(id));
+
+            return Json("Success");
+        }
+
+        public ActionResult DeleteFeatureSet(string id)
+        {
+            featureSetService.Delete(id, AuthenticationHelper.User.CompanyId);
+            return RedirectToAction("Index");
+        }
 
         #region Helper Methods
 

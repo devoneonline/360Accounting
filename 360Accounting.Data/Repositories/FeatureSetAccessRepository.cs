@@ -53,5 +53,11 @@ namespace _360Accounting.Data.Repositories
         {
             return this.Context.SaveChanges();
         }
+
+        public FeatureSetAccess GetByFeatureSetId(long companyId, long featureSetId)
+        {
+            FeatureSetAccess fsa = this.Context.FeatureSetAccesses.FirstOrDefault(x => x.CompanyId == companyId & x.FeatureSetId == featureSetId);
+            return fsa;
+        }
     }
 }

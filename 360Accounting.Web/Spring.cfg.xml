@@ -17,7 +17,6 @@
   <object name="CurrencyRepository" type="_360Accounting.Data.Repositories.CurrencyRepository, 360Accounting.Data"> </object>
   <object name="JournalVoucherRepository" type="_360Accounting.Data.Repositories.JournalVoucherRepository, 360Accounting.Data"> </object>
 
-
   <object name="FeatureService" type="_360Accounting.Service.FeatureService, 360Accounting.Service" >
     <constructor-arg name="featureRepository" ref="FeatureRepository" />
     <constructor-arg name="fsRepo" ref="FeatureSetRepository" />  
@@ -27,6 +26,10 @@
   <object name="FeatureSetService" type="_360Accounting.Service.FeatureSetService, 360Accounting.Service" >
     <constructor-arg name="featureSetRepository" ref="FeatureSetRepository" />
   </object>
+  <object name="FeatureSetListService" type="_360Accounting.Service.FeatureSetListService, 360Accounting.Service" >
+    <constructor-arg name="featureSetListRepository" ref="FeatureSetListRepository" />
+  </object>
+  
   <object name="CompanyService" type="_360Accounting.Service.CompanyService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="CompanyRepository" />
   </object>
@@ -51,12 +54,6 @@
   <object name="JournalVoucherService" type="_360Accounting.Service.JournalVoucherService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="JournalVoucherRepository" />
   </object>
-
-
-
-
-
-
 </objects>
 
 

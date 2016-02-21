@@ -68,9 +68,9 @@ namespace _360Accounting.Service
         public void InsertCompanyFeatureSet(FeatureSet fs, FeatureSetAccess fsa)
         {
             var result = this.fsRepo.Insert(fs);
-
+            
             long outValue = 0;
-            if (long.TryParse(result, out outValue))
+            if (long.TryParse(result, out outValue))    //faisal bhai sidha sidha convert.toint32 q nhi kia itni lambi q ki???
             {
                 foreach (var f in fs.FeatureSetList)
                 {
@@ -80,6 +80,39 @@ namespace _360Accounting.Service
                 fsa.FeatureSetId = outValue;
                 result = this.fsaRepo.Insert(fsa);
             }
+        }
+
+        public void UpdateCompanyFeatureSet(FeatureSet fs, IEnumerable<FeatureSetList> oldFeatureSetList)
+        {
+            foreach (var featureSetList in fs.FeatureSetList)
+            {
+                List<FeatureSetList> fls = oldFeatureSetList.Where(x => x.FeatureId == featureSetList.FeatureId && x.FeatureSetId == featureSetList.FeatureSetId)
+                    .Select(a => new FeatureSetList()).ToList();
+
+                if (fls.Count() == 0)
+                {
+                    string result = fslRepo.Insert(featureSetList);
+                    featureSetList.Id = Convert.ToInt32(result);
+                }
+                else
+                {
+                    featureSetList.Id = fls.First().Id;
+                }
+            }
+
+            foreach (var featureSetList in oldFeatureSetList)
+            {
+                List<FeatureSetList> fls = fs.FeatureSetList.Where(x => x.FeatureId == featureSetList.FeatureId && x.FeatureSetId == featureSetList.FeatureSetId)
+                    .Select(a => new FeatureSetList()).ToList();
+
+                if (fls.Count() == 0)
+                {
+                    fls = null;
+                    fslRepo.Delete(featureSetList);
+                    
+                }
+            }
+            fsRepo.Update(fs);
         }
     }
 }

@@ -40,7 +40,8 @@ namespace _360Accounting.Data.Repositories
 
         public void Delete(string id, long companyId)
         {
-            this.Context.FeatureSetLists.Remove(this.GetSingle(id, companyId));
+            FeatureSetList featureSetList = this.GetSingle(id, companyId);
+            this.Context.FeatureSetLists.Remove(featureSetList);
             this.Commit();
         }
 
@@ -67,6 +68,12 @@ namespace _360Accounting.Data.Repositories
                 this.Context.FeatureSetLists.Add(entity);
             }
             this.Commit();
+        }
+
+        public void Delete(FeatureSetList featureSetList)
+        {
+            this.Context.FeatureSetLists.Remove(featureSetList);
+            this.Commit();            
         }
     }
 }

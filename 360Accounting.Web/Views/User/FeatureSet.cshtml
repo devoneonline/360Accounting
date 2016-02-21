@@ -52,9 +52,9 @@
                                 column.SetDataItemTemplateContent(c =>
                                 {
                                     ViewContext.Writer.Write(
-                                        Html.Raw("<a href='" + Url.Content("~/Account/Edit/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
+                                        Html.Raw("<a href='" + Url.Content("~/User/EditCompanyFeatureList/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
                                         + "&nbsp;&nbsp;" +
-                                        Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/Account/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
+                                        Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/User/DeleteFeatureSet/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
                                     );
                                 });
                                 column.Settings.AllowDragDrop = DefaultBoolean.False;
@@ -78,6 +78,10 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $('.deleteQuestion').click(function () {
+            return confirm("Sure! you wanted to delete ?");
+        });
+
         $('#btnNew').click(function () {
             window.location.href = '@Url.Content("~/User/CreateCompanyFeatureList")';
         });
