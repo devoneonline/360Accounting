@@ -53,3 +53,10 @@ if (ViewData["EditError"] != null)
 }
 }
 @grid.Bind(Model).GetHtml()
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.deleteQuestion').click(function () {
+            return confirm("Sure! you wanted to delete ?");
+        });
+    });
+</script>

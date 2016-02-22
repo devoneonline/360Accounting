@@ -54,6 +54,9 @@
   <object name="JournalVoucherService" type="_360Accounting.Service.JournalVoucherService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="JournalVoucherRepository" />
   </object>
+  <object name="FeatureSetAccessService" type="_360Accounting.Service.FeatureSetAccessService, 360Accounting.Service" >
+    <constructor-arg name="featureSetAccessRepository" ref="FeatureSetAccessRepository" />
+  </object>
 </objects>
 
 
