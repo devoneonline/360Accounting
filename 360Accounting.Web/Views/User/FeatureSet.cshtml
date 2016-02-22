@@ -55,6 +55,8 @@
                                         Html.Raw("<a href='" + Url.Content("~/User/EditCompanyFeatureList/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
                                         + "&nbsp;&nbsp;" +
                                         Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/User/DeleteFeatureSet/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
+                                        + "&nbsp;&nbsp;" +
+                                        Html.Raw("<a title='Add Users' href='showCompanyUsers(" + DataBinder.Eval(c.DataItem, "Id") + ");'><i class='fa fa-users'></i></a>")
                                     );
                                 });
                                 column.Settings.AllowDragDrop = DefaultBoolean.False;
@@ -85,5 +87,42 @@
         $('#btnNew').click(function () {
             window.location.href = '@Url.Content("~/User/CreateCompanyFeatureList")';
         });
+
+        function showCompanyUsers(received) {
+            $.ajax({
+                url: '@Url.Content("~/User/UserFeatureSet")',
+                data: {
+                    featureSetId: received
+                },
+                datatype: 'html',
+                type: 'get',
+                error: function (data) { },
+                success: function (data) {
+                    $('#FeatureSetContainer').hide();
+                    $('#UserListPopup').empty().html(data);
+                }
+            })
+        }
+
+        function SaveUsers() {
+            $('#FeatureSetContainer').show();
+            $('#UserListContainer').hide();
+            var featureSetId = $('#featureSetId').val();
+            var userList = '';
+
+            $('.cboxUsers:checked').each(function (index, item) {
+                userList += '±' + $(item).attr('data-id');
+            })
+
+            var url = '@Url.Content("~/User/SaveFSforUsers")';
+            $.post(url, { featureSetId: featureSetId, userList: userList }, function (result) {
+                window.location.href = '@Url.Content("~/User/FeatureSet")';
+            });
+        }
+
+        function CancelUsers() {
+            $('#FeatureSetContainer').show();
+            $('#UserListContainer').hide();
+        }
     });
 </script>
