@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?><!--
+﻿<?xml version="1.0" ?><!--
   For more information on how to configure your ASP.NET application, please visit
   http://go.microsoft.com/fwlink/?LinkId=301880
   -->
@@ -25,8 +25,6 @@
     <add name="_360Accounting" connectionString="Server=localhost; Database=360Accounting; User Id=sa; Password=sa2008;" providerName="System.Data.SqlClient" />
   </connectionStrings>
   <system.web>
-	  <customErrors mode="Off"/>
-	  <sessionState timeout="20" mode="InProc"></sessionState>
     <authentication mode="Forms">
       <forms loginUrl="/User/Login" cookieless="UseCookies" protection="All" timeout="30" path="/"></forms>
     </authentication>
@@ -42,7 +40,7 @@
         <add name="_360RoleProvider" applicationName="/" type="System.Web.Security.SqlRoleProvider, System.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" connectionStringName="_360Accounting" />
       </providers>
     </roleManager>
-    <compilation targetFramework="4.5">
+    <compilation debug="true" targetFramework="4.5">
       <assemblies>
         <add assembly="DevExpress.Data.v14.2, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
         <add assembly="DevExpress.Web.v14.2, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -52,26 +50,25 @@
         <add assembly="DevExpress.Web.ASPxThemes.v14.2, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
         <add assembly="DevExpress.Web.ASPxPivotGrid.v14.2, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
         <add assembly="DevExpress.Utils.v14.2, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <!--<add assembly="DevExpress.Office.v14.2.Core, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />-->
-        <!--<add assembly="DevExpress.RichEdit.v14.2.Core, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.Office.v14.2.Core, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.RichEdit.v14.2.Core, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
         <add assembly="DevExpress.SpellChecker.v14.2.Core, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
         <add assembly="DevExpress.Charts.v14.2.Core, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
         <add assembly="DevExpress.XtraCharts.v14.2, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
         <add assembly="DevExpress.XtraGauges.v14.2.Core, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
         <add assembly="DevExpress.XtraGauges.v14.2.Presets, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <add assembly="DevExpress.Web.ASPxGauges.v14.2, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />-->
+        <add assembly="DevExpress.Web.ASPxGauges.v14.2, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
         <add assembly="DevExpress.XtraCharts.v14.2.Web, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
         <add assembly="DevExpress.Printing.v14.2.Core, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
         <add assembly="DevExpress.XtraReports.v14.2, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
         <add assembly="DevExpress.XtraReports.v14.2.Web, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-        <!--<add assembly="DevExpress.XtraPivotGrid.v14.2, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />-->
-
-		  <add assembly="DevExpress.PivotGrid.v14.2.Core, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-		<add assembly="DevExpress.XtraScheduler.v14.2.Core, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.XtraPivotGrid.v14.2, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.PivotGrid.v14.2.Core, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+        <add assembly="DevExpress.XtraScheduler.v14.2.Core, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
         <add assembly="DevExpress.Web.ASPxScheduler.v14.2, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
         <add assembly="DevExpress.Spreadsheet.v14.2.Core, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
         <add assembly="DevExpress.Web.ASPxSpreadsheet.v14.2, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-		  <!--<add assembly="DevExpress.Xpo.v14.2, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />-->
+        <add assembly="DevExpress.Xpo.v14.2, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
         <add assembly="DevExpress.DataAccess.v14.2, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
         <add assembly="DevExpress.Dashboard.v14.2.Core, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
         <add assembly="DevExpress.Dashboard.v14.2.Web, Version=14.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -101,9 +98,9 @@
         <add namespace="DevExpress.Web.ASPxHtmlEditor" />
         <add namespace="DevExpress.Web.ASPxSpellChecker" />
         <add namespace="DevExpress.Web.ASPxThemes" />
-        <!--<add namespace="DevExpress.Web.ASPxTreeList" />
+        <add namespace="DevExpress.Web.ASPxTreeList" />
         <add namespace="DevExpress.XtraCharts" />
-        <add namespace="DevExpress.XtraCharts.Web" />-->
+        <add namespace="DevExpress.XtraCharts.Web" />
         <add namespace="DevExpress.XtraReports" />
         <add namespace="DevExpress.XtraReports.UI" />
         <add namespace="DevExpress.XtraReports.Web" />

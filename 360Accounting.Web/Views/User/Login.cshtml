@@ -47,8 +47,6 @@
         <div id="page-wrapper">
             @using (Html.BeginForm("Login", "User", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
-                @Html.AntiForgeryToken()
-
                 <div class="container-fluid height100p">
                     <div class="acc-loginMainWrap height100p">
                         <div class="acc-loginInnerWrap">
