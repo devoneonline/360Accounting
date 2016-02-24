@@ -290,6 +290,12 @@ namespace _360Accounting.Web.Controllers
             return View();
         }
 
+        public ActionResult Delete(Guid id)
+        {
+            var memUser = Membership.GetUser(id);
+            Membership.DeleteUser(memUser.UserName);
+            return RedirectToAction("Index");
+        }
 
         #endregion
 

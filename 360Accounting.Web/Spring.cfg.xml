@@ -26,7 +26,7 @@
   <object name="FeatureSetService" type="_360Accounting.Service.FeatureSetService, 360Accounting.Service" >
     <constructor-arg name="featureSetRepository" ref="FeatureSetRepository" />
   </object>
-    <object name="FeatureSetAccessService" type="_360Accounting.Service.FeatureSetAccessService, 360Accounting.Service" >
+  <object name="FeatureSetAccessService" type="_360Accounting.Service.FeatureSetAccessService, 360Accounting.Service" >
     <constructor-arg name="featureSetAccessRepository" ref="FeatureSetAccessRepository" />
   </object>
   <object name="FeatureSetListService" type="_360Accounting.Service.FeatureSetListService, 360Accounting.Service" >

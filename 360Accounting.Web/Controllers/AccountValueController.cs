@@ -40,11 +40,13 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Create(long sobId, string segment)
         {
             AccountValueViewModel model = new AccountValueViewModel();
-            if (accountService.GetAccountBySOBId(sobId.ToString(), AuthenticationHelper.User.CompanyId) != null)
+            Account account = accountService.GetAccountBySOBId(sobId.ToString(), AuthenticationHelper.User.CompanyId);
+            if (account != null)
             {
-                model.ChartId = accountService.GetAccountBySOBId(sobId.ToString(), AuthenticationHelper.User.CompanyId).Id;
+                model.ChartId = account.Id;
                 model.SetOfBook = sobService.GetSingle(sobId.ToString(),AuthenticationHelper.User.CompanyId).Name;
                 model.Segment = segment;
+                model.ValueChar = getSegmentCharacters(segment, account);
                 Session["sobid"] = sobId;   //TODO:: temporary
                 return View("Edit", model);
             }
@@ -92,6 +94,46 @@ namespace _360Accounting.Web.Controllers
         }
 
         #region Private Methods
+        public int? getSegmentCharacters(string segment, Account account)
+        {
+            if (segment == account.SegmentName1)
+            {
+                return account.SegmentChar1;
+            }
+            else if (segment == account.SegmentName2)
+            {
+                return account.SegmentChar2;
+            }
+            else if (segment == account.SegmentName3)
+            {
+                return account.SegmentChar3;
+            }
+            else if (segment == account.SegmentName4)
+            {
+                return account.SegmentChar4;
+            }
+            else if (segment == account.SegmentName5)
+            {
+                return account.SegmentChar5;
+            }
+            else if (segment == account.SegmentName6)
+            {
+                return account.SegmentChar6;
+            }
+            else if (segment == account.SegmentName7)
+            {
+                return account.SegmentChar7;
+            }
+            else if (segment == account.SegmentName8)
+            {
+                return account.SegmentChar8;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
         private List<SelectListItem> getSegmentList(string sobId)
         {
             Account account = accountService.GetAccountBySOBId(sobId, AuthenticationHelper.User.CompanyId);

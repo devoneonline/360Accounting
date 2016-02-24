@@ -59,7 +59,7 @@ FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         <div class="col-lg-3">
             <div class="form-group">
                 @Html.LabelFor(m => m.GLDate)
-                @Html.TextBoxFor(m => m.GLDate, new { @class = "form-control" })
+                @Html.EditorFor(m => m.GLDate, new { @class = "form-control" })
             </div>
         </div>
 
@@ -101,7 +101,7 @@ FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             <div class="col-lg-3">
                 <div class="form-group">
                     @Html.LabelFor(m => m.AccountedDr)
-                    @Html.TextBoxFor(m => m.AccountedDr, new { @class = "form-control" })
+                    @Html.TextBoxFor(m => m.AccountedDr, new { @readonly = "readonly", @class = "form-control" })
                 </div>
             </div>
         </div>
@@ -115,7 +115,7 @@ FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             <div class="col-lg-3">
                 <div class="form-group">
                     @Html.LabelFor(m => m.AccountedCr)
-                    @Html.TextBoxFor(m => m.AccountedCr, new { @class = "form-control" })
+                    @Html.TextBoxFor(m => m.AccountedCr, new { @readonly = "readonly", @class = "form-control" })
                 </div>
             </div>
         </div>
@@ -143,3 +143,24 @@ FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         </div>
     }
 </div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('[type=date]').attr('class', 'form-control');
+
+        $('#EnteredDr').change(function () {
+            debugger;
+            var conversionRate = $('#ConversionRate').val();
+            var value = $(this).val();
+            $('#AccountedDr').val(parseInt(value) * parseInt(conversionRate));
+        });
+
+        $('#EnteredCr').change(function () {
+            debugger;
+            var conversionRate = $('#ConversionRate').val();
+            var value = $(this).val();
+            $('#AccountedCr').val(parseInt(value) * parseInt(conversionRate));
+        });
+    });
+</script>
