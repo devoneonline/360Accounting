@@ -155,7 +155,6 @@ namespace _360Accounting.Web.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
         public ActionResult Login(LoginViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
@@ -178,7 +177,6 @@ namespace _360Accounting.Web.Controllers
             return View(model);
         }
 
-        [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
             FormsAuthentication.SignOut();
@@ -203,7 +201,6 @@ namespace _360Accounting.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult ManageUser(UserProfileViewModel model)
         {
             if (ModelState.IsValid)
