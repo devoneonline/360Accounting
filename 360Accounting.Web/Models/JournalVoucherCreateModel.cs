@@ -48,6 +48,7 @@ namespace _360Accounting.Web.Models
         public decimal ConversionRate { get; set; }
 
         [Display(Name = "Account Code")]
+        [Required]
         public long CodeCombinationId { get; set; }
 
         public List<SelectListItem> CodeCombinationList { get; set; }
