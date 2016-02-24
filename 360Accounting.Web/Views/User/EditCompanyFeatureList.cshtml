@@ -65,27 +65,47 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.cbox').click(function () {
-                var contId = $(this).attr('data-id');
-                var parentId = $(this).attr('data-parent-id');
+            function SetChild(id, value){
+                $('[data-parent-id=' + id + ']').each(function (index, item) {
+                    $('[data-parent-id=' + id + ']').prop('checked', value);
+                    SetChild($(item).attr('data-id'), value);
+                })
+            };
 
-                if ($('[data-id=' + contId + ']').prop('checked') == true) {
-                    $('[data-parent-id=' + contId + ']').prop('checked', true);
-                    if (parentId != '') {
-                        if ($('[data-id=' + parentId + ']').prop('checked') == false) {
-                            $('[data-id=' + parentId + ']').prop('checked', true);
-                        }
-                    }
+            function SetParent(id, value) {
+                var siblings = $('[data-parent-id=' + id + ']:' + value);
+                if (siblings.length == 0)
+                {
+                    $('[data-id=' + id + ']').prop('checked', value);
+                    SetParent($(this).attr('data-parent-id'), value);
                 }
-                else {
-                    $('[data-parent-id=' + contId + ']').prop('checked', false);
-                    if ($('[data-id=' + parentId + ']').prop('checked') == true) {
-                        var siblings = $('[data-parent-id=' + parentId + ']:checked');
-                        if (siblings.length == 0) {
-                            $('[data-id=' + parentId + ']').prop('checked', false);
-                        }
-                    }
-                }
+            };
+
+            $('.cbox').click(function () {
+                debugger;
+                SetChild($(this).attr('data-id'), $(this).prop('checked'));
+
+                SetParent($(this).attr('data-parent-id'), $(this).prop('checked'));
+                //var contId = $(this).attr('data-id');
+                //var parentId = $(this).attr('data-parent-id');
+
+                //if ($('[data-id=' + contId + ']').prop('checked') == true) {
+                //    $('[data-parent-id=' + contId + ']').prop('checked', true);
+                //    if (parentId != '') {
+                //        if ($('[data-id=' + parentId + ']').prop('checked') == false) {
+                //            $('[data-id=' + parentId + ']').prop('checked', true);
+                //        }
+                //    }
+                //}
+                //else {
+                //    $('[data-parent-id=' + contId + ']').prop('checked', false);
+                //    if ($('[data-id=' + parentId + ']').prop('checked') == true) {
+                //        var siblings = $('[data-parent-id=' + parentId + ']:checked');
+                //        if (siblings.length == 0) {
+                //            $('[data-id=' + parentId + ']').prop('checked', false);
+                //        }
+                //    }
+                //}
 
             });
 
