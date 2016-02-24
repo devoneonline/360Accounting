@@ -73,19 +73,49 @@
             };
 
             function SetParent(id, value) {
-                var siblings = $('[data-parent-id=' + id + ']:' + value);
-                if (siblings.length == 0)
+                $('[data-id=' + id + ']').prop('checked', value);
+                var parentId = $('[data-id=' + id + ']').attr('data-parent-id');
+                if (parentId != "")
                 {
-                    $('[data-id=' + id + ']').prop('checked', value);
-                    SetParent($(this).attr('data-parent-id'), value);
+                    var siblings = $('[data-parent-id=' + parentId + ']:checked');
+                    if (value == true)
+                    {
+                        if (siblings.length == 1) {
+                            SetParent(parentId, value);
+                        }
+                    }
+                    else
+                    {
+                        if (siblings.length == 0) {
+                            SetParent(parentId, value);
+                        }
+                    }
                 }
             };
 
             $('.cbox').click(function () {
-                debugger;
                 SetChild($(this).attr('data-id'), $(this).prop('checked'));
 
-                SetParent($(this).attr('data-parent-id'), $(this).prop('checked'));
+                var parentId = $(this).attr('data-parent-id')
+                if (parentId != "")
+                {
+                    var siblings = $('[data-parent-id=' + parentId + ']:checked');
+
+                    if ($(this).prop('checked') == true)
+                    {
+                        var siblings = $('[data-parent-id=' + parentId + ']:checked');
+                        if (siblings.length == 1) {
+                            SetParent(parentId, $(this).prop('checked'));
+                        }
+                    }
+                    else
+                    {
+                        if (siblings.length == 0)
+                        {
+                            SetParent(parentId, $(this).prop('checked'));
+                        }
+                    }
+                }
                 //var contId = $(this).attr('data-id');
                 //var parentId = $(this).attr('data-parent-id');
 
