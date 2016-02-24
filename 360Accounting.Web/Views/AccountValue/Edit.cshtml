@@ -17,6 +17,7 @@
         @Html.ValidationSummary()
         @Html.HiddenFor(m => m.ChartId)
         @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.ValueChar)
 
         <div class="clearfix">
             <div class="col-lg-6">
@@ -91,6 +92,8 @@
 
     $(document).ready(function () {
         $('[type=date]').attr('class', 'form-control');
+
+
     });
 
 </script>
