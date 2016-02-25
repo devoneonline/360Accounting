@@ -87,5 +87,10 @@ namespace _360Accounting.Service
         {
             return this.repository.Count(companyId);
         }
+
+        public void DeleteJVDetail(string id)
+        {
+            this.repository.DeleteJvDetail(id);
+        }
     }
 }

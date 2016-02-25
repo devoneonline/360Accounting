@@ -390,7 +390,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult DeleteFeatureSet(string id)
         {
             featureSetService.Delete(id, AuthenticationHelper.User.CompanyId);
-            return RedirectToAction("Index");
+            return RedirectToAction("FeatureSet");
         }
 
         #region Feature Set Access

@@ -404,5 +404,12 @@ namespace _360Accounting.Data.Repositories
         {
             return this.Context.SaveChanges();
         }
+
+        public void DeleteJvDetail(string id)
+        {
+            this.Context.JournalVoucherDetails.Remove
+                (this.Context.JournalVoucherDetails
+                .FirstOrDefault(x => x.Id == Convert.ToInt32(id)));
+        }
     }
 }

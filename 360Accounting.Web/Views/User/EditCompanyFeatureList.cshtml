@@ -148,7 +148,7 @@
                     });
                     var url = '@Url.Content("~/User/UpdateCompanyFeature")';
                     $.post(url, { id: $('#Id').val(), companyId: $('#CompanyId').val(), featureName: $('#Name').val(), featureList: flist }, function (result) {
-                        window.location.href = '@Url.Content("~/")';
+                        window.location.href = '@Url.Content("~/User/FeatureSet")';
                     });
                 }
                 return false;

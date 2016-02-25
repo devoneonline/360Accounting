@@ -309,6 +309,115 @@ namespace _360Accounting.Web.Controllers
         }
         #endregion
 
+        public ActionResult Delete(string id)
+        {
+            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            return RedirectToAction("Index", new JournalVoucherListModel());
+        }
+
+        public ActionResult DeleteJVDetail(string id)
+        {
+            JournalVoucherDetailModel detail =
+                SessionHelper.JournalVoucher
+                .JournalVoucherDetail.FirstOrDefault
+                (x => x.Id == Convert.ToInt32(id));
+            SessionHelper.JournalVoucher.JournalVoucherDetail.Remove(detail);
+            service.DeleteJVDetail(id);
+
+            return RedirectToAction("Edit", new JournalVoucherCreateModel
+            {
+                ConversionRate = SessionHelper.JournalVoucher.ConversionRate,
+                CurrencyId = SessionHelper.JournalVoucher.CurrencyId,
+                CurrencyName = currencyService
+                .GetSingle(SessionHelper.JournalVoucher.CurrencyId.ToString(),
+                AuthenticationHelper.User.CompanyId).Name,
+                Description = SessionHelper.JournalVoucher.Description,
+                DocumentNo = SessionHelper.JournalVoucher.DocumentNo,
+                GLDate = SessionHelper.JournalVoucher.GLDate,
+                HeaderId = SessionHelper.JournalVoucher.Id,
+                JournalName = SessionHelper.JournalVoucher.JournalName,
+                PeriodId = SessionHelper.JournalVoucher.PeriodId,
+                PeriodName = calendarService
+                .GetSingle(SessionHelper.JournalVoucher.PeriodId.ToString(),
+                AuthenticationHelper.User.CompanyId).PeriodName,
+                SOBId = SessionHelper.JournalVoucher.SOBId,
+                SOBName = sobService
+                .GetSingle(SessionHelper.JournalVoucher.SOBId.ToString(),
+                AuthenticationHelper.User.CompanyId).Name
+            });
+        }
+
+        public ActionResult EditJVDetail(string id)
+        {
+            JournalVoucherDetailModel detail = 
+                SessionHelper.JournalVoucher
+                .JournalVoucherDetail.FirstOrDefault
+                (x => x.Id == Convert.ToInt32(id));
+            SessionHelper.JournalVoucher.JournalVoucherDetail.Remove(detail);
+            JournalVoucherCreateModel model = new JournalVoucherCreateModel();
+            model.AccountedCr = detail.AccountedCr;
+            model.AccountedDr = detail.AccountedDr;
+            model.CodeCombinationId = detail.CodeCombinationId;
+            //model.CodeCombinationList = ...Ye poochna hai
+            model.ConversionRate = SessionHelper.JournalVoucher.ConversionRate;
+            model.CurrencyId = SessionHelper.JournalVoucher.CurrencyId;
+            model.CurrencyName= currencyService
+                .GetSingle(SessionHelper.JournalVoucher
+                .CurrencyId.ToString(),
+                AuthenticationHelper.User.CompanyId).Name;
+            model.Description = SessionHelper.JournalVoucher.Description;
+            model.DocumentNo = SessionHelper.JournalVoucher.DocumentNo;
+            model.EnteredCr = detail.EnteredCr;
+            model.EnteredDr = detail.EnteredDr;
+            model.GLDate = SessionHelper.JournalVoucher.GLDate;
+            model.GLLinesDescription = detail.Description;
+            model.HeaderId = SessionHelper.JournalVoucher.Id;
+            model.Id = Convert.ToInt32(id);
+            model.JournalName = SessionHelper.JournalVoucher.JournalName;
+            model.PeriodId = SessionHelper.JournalVoucher.PeriodId;
+            model.PeriodName = calendarService
+                .GetSingle(SessionHelper.JournalVoucher.PeriodId.ToString(),
+                AuthenticationHelper.User.CompanyId).PeriodName;
+            //model.PostingFlag = ... Ye poochna hai
+            model.Qty = detail.Qty;
+            model.SOBId = SessionHelper.JournalVoucher.SOBId;
+            model.SOBName = sobService
+                .GetSingle(SessionHelper.JournalVoucher.SOBId.ToString(),
+                AuthenticationHelper.User.CompanyId).Name;
+            model.TaxRateCode = detail.TaxRateCode;
+
+            return RedirectToAction("Edit", model);
+        }
+
+        public ActionResult GetEdit(string id)
+        {
+            SessionHelper.JournalVoucher = new 
+                JournalVoucherViewModel(service
+                .GetSingle(id, AuthenticationHelper.User.CompanyId));
+
+            return RedirectToAction("Edit", new JournalVoucherCreateModel 
+            {
+                ConversionRate = SessionHelper.JournalVoucher.ConversionRate,
+                CurrencyId = SessionHelper.JournalVoucher.CurrencyId,
+                CurrencyName = currencyService
+                .GetSingle(SessionHelper.JournalVoucher.CurrencyId.ToString(),
+                AuthenticationHelper.User.CompanyId).Name,
+                Description = SessionHelper.JournalVoucher.Description,
+                DocumentNo = SessionHelper.JournalVoucher.DocumentNo,
+                GLDate = SessionHelper.JournalVoucher.GLDate,
+                HeaderId = SessionHelper.JournalVoucher.Id,
+                JournalName = SessionHelper.JournalVoucher.JournalName,
+                PeriodId = SessionHelper.JournalVoucher.PeriodId,
+                PeriodName = calendarService
+                .GetSingle(SessionHelper.JournalVoucher.PeriodId.ToString(),
+                AuthenticationHelper.User.CompanyId).PeriodName,
+                SOBId = SessionHelper.JournalVoucher.SOBId,
+                SOBName = sobService
+                .GetSingle(SessionHelper.JournalVoucher.SOBId.ToString(),
+                AuthenticationHelper.User.CompanyId).Name
+            });
+        }
+
         public ActionResult GetJournalVoucherList(string sobId, string periodId, string currencyId)
         {
             JournalVoucherListModel model = new JournalVoucherListModel();
@@ -367,12 +476,16 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Edit(JournalVoucherCreateModel model)
         {
+
+            //////////Ye code change hojai ga...////////////////////////////
             model.CodeCombinationList = codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, model.SOBId, "", false, null, "", "")
                     .Select(x => new SelectListItem
                     {
                         Text = x.CodeCombinitionCode,
                         Value = x.Id.ToString()
                     }).ToList();
+            //////////...Ye code change hojai ga////////////////////////////
+
             return View(model);
         }
 

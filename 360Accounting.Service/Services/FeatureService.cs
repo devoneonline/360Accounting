@@ -100,18 +100,25 @@ namespace _360Accounting.Service
                 }
             }
 
+            List<FeatureSetList> tobeDeleted = new List<FeatureSetList>();
             foreach (var featureSetList in oldFeatureSetList)
             {
-                List<FeatureSetList> fls = fs.FeatureSetList.Where(x => x.FeatureId == featureSetList.FeatureId && x.FeatureSetId == featureSetList.FeatureSetId)
+                var fls = fs.FeatureSetList.Where(x => x.FeatureId == featureSetList.FeatureId && x.FeatureSetId == featureSetList.FeatureSetId)
                     .Select(a => new FeatureSetList()).ToList();
 
                 if (fls.Count() == 0)
                 {
-                    fls = null;
-                    fslRepo.Delete(featureSetList);
+                    tobeDeleted.Add(featureSetList);
                     
                 }
             }
+
+            //TODO: There is already an open DataReader associated with this Command which must be closed first. on above logic..
+            foreach (var item in tobeDeleted)
+            {
+                fslRepo.Delete(item);
+            }
+
             fsRepo.Update(fs);
         }
     }
