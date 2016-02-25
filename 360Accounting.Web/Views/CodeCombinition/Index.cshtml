@@ -24,9 +24,9 @@
             <div class="form-group">
                 <input type="button" id="btnCreate" value="Create New" class="btn btn-default tstyCus-btn" />
 
-                <input type="button" id="btnTestInsert" value="Test Insert" class="btn btn-default tstyCus-btn" />
+                @*<input type="button" id="btnTestInsert" value="Test Insert" class="btn btn-default tstyCus-btn" />
 
-                <input type="button" id="btnTestUpdate" value="Test Update" class="btn btn-default tstyCus-btn" />
+                <input type="button" id="btnTestUpdate" value="Test Update" class="btn btn-default tstyCus-btn" />*@
             </div>
         </div>
         <div id="dvList" class="col-lg-12 cusGridWrapper">
@@ -71,7 +71,7 @@
     $(document).ready(function () {
         $('#dvInput').css({overflow: "hidden" });
 
-        $('#btnTestUpdate').click(function () {
+        @*$('#btnTestUpdate').click(function () {
             $.ajax({
                 url: '@Url.Content("~/CodeCombinition/Test")',
                 data: { task: 'Update' },
@@ -91,7 +91,7 @@
                 error: function (error) { alert("Insert Unsuccessful") },
                 success: function (data) { alert("Insert Successful") }
             });
-        });
+        });*@
 
         $('#SOBId').change(function () {
             $.ajax({
