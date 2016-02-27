@@ -26,6 +26,9 @@ var grid = Html.DevExpress().GridView(settings =>
                 Html.Raw("<a href='" + Url.Content("~/Calendar/Edit/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
                     + "&nbsp;" +
                 Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/Calendar/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
+                + "&nbsp;" +
+                Html.Raw("<a href='" + Url.Content("~/Calendar/ChangeStatus/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-power-off'></i></a>")
+                
             );
         });
 

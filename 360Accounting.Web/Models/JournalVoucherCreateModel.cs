@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _360Accounting.Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,6 +10,11 @@ namespace _360Accounting.Web.Models
 {
     public class JournalVoucherCreateModel
     {
+        public JournalVoucherCreateModel()
+        {
+            this.GLDate = Utility.CurrentDate();
+        }
+
         public long Id { get; set; }
 
         public long HeaderId { get; set; }
