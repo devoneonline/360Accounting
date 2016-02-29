@@ -12,6 +12,8 @@ namespace _360Accounting.Web
     {
         private const string SESSION_USER = "USER_PROFILE";
         private const string SESSION_MENU_ITEMS = "MENU_ITEMS";
+        private const string SESSION_JV = "SESSION_JV";
+
 
         public static UserProfile User
         {
@@ -47,6 +49,19 @@ namespace _360Accounting.Web
             set
             {
                 HttpContext.Current.Session[SESSION_MENU_ITEMS] = value;
+            }
+        }
+
+        public static GLHeaderModel JV
+        {
+            get
+            {
+                return HttpContext.Current.Session[SESSION_JV] == null ? null :
+                    (GLHeaderModel)HttpContext.Current.Session[SESSION_JV];
+            }
+            set
+            {
+                HttpContext.Current.Session[SESSION_JV] = value;
             }
         }
     }
