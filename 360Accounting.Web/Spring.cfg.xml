@@ -17,6 +17,11 @@
   <object name="CurrencyRepository" type="_360Accounting.Data.Repositories.CurrencyRepository, 360Accounting.Data"> </object>
   <object name="JournalVoucherRepository" type="_360Accounting.Data.Repositories.JournalVoucherRepository, 360Accounting.Data"> </object>
 
+  <object name="GLHeaderRepository" type="_360Accounting.Data.Repositories.GLHeaderRepository, 360Accounting.Data"> </object>
+  <object name="GLLineRepository" type="_360Accounting.Data.Repositories.GLLineRepository, 360Accounting.Data"> </object>
+
+  
+    
   <object name="FeatureService" type="_360Accounting.Service.FeatureService, 360Accounting.Service" >
     <constructor-arg name="featureRepository" ref="FeatureRepository" />
     <constructor-arg name="fsRepo" ref="FeatureSetRepository" />  
@@ -57,6 +62,15 @@
   <object name="JournalVoucherService" type="_360Accounting.Service.JournalVoucherService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="JournalVoucherRepository" />
   </object>
+
+  <object name="GLHeaderService" type="_360Accounting.Service.GLHeaderService, 360Accounting.Service">
+    <constructor-arg name="repo" ref="GLHeaderRepository" />
+  </object>
+  <object name="GLLineService" type="_360Accounting.Service.GLLineService, 360Accounting.Service">
+    <constructor-arg name="repo" ref="GLLineRepository" />
+  </object>
+
+
 </objects>
 
 

@@ -9,6 +9,16 @@ namespace _360Accounting.Common
 {
     public sealed class Utility
     {
+        public static DateTime CurrentDate()
+        {
+            return DateTime.Now;
+        }
+
+        public static DateTime FromDate()
+        {
+            return DateTime.Now.AddDays(-7);
+        }
+
         public static string Stringize(string delimeter, params string[] value)
         {
             StringBuilder sb = new StringBuilder();

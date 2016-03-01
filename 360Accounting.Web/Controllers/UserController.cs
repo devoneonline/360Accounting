@@ -229,7 +229,8 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Create()
         {
-            return View(new UserCreateModel());
+            UserCreateModel model = new UserCreateModel();
+            return View(model);
         }
 
         [HttpPost]
@@ -486,6 +487,8 @@ namespace _360Accounting.Web.Controllers
                     up.Email = model.Email;
                     if (AuthenticationHelper.UserRole != UserRoles.SuperAdmin.ToString())
                         up.CompanyId = AuthenticationHelper.User.CompanyId;
+                    else
+                        up.CompanyId = model.CompanyId ?? 0;
                     up.Save();
 
                     if (!Roles.GetRolesForUser(model.UserName).Contains(model.RoleName))

@@ -185,6 +185,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Common\AuthenticationHelper.cs" />
+    <Compile Include="Common\DataProvider.cs" />
     <Compile Include="Common\SessionHelper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AccountValueController.cs" />
@@ -194,6 +195,7 @@
     <Compile Include="Controllers\CurrencyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JournalVoucherController.cs" />
+    <Compile Include="Controllers\JVController.cs" />
     <Compile Include="Controllers\SetOfBookController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -219,6 +221,7 @@
     <Compile Include="Models\JournalVoucherCreateModel.cs" />
     <Compile Include="Models\JournalVoucherListModel.cs" />
     <Compile Include="Models\JournalVoucherViewModel.cs" />
+    <Compile Include="Models\JVModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\ManageUserViewModel.cs" />
     <Compile Include="Models\SelectUser.cs" />
@@ -440,6 +443,10 @@
     <Content Include="Views\JournalVoucher\UserwiseEntriesTrailReport.cshtml" />
     <Content Include="Views\User\CheckUsersPartial.cshtml" />
     <Content Include="Views\User\EditCompanyFeatureList.cshtml" />
+    <Content Include="Views\JV\createPartial.cshtml" />
+    <Content Include="Views\JV\Create.cshtml" />
+    <Content Include="Views\JV\Index.cshtml" />
+    <Content Include="Views\JV\_List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

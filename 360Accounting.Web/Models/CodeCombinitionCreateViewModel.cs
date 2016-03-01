@@ -32,6 +32,7 @@ namespace _360Accounting.Web.Models
         {
             this.AllowedPosting = entity.AllowedPosting;
             this.CompanyId = entity.CompanyId;
+            this.StartDate = entity.StartDate;
             this.EndDate = entity.EndDate;
             this.Id = entity.Id;
             this.Segment1 = entity.Segment1;
