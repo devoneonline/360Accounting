@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "360Accounting.Web", "360Acc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "360Accounting.Test", "360Accounting.Test\360Accounting.Test.csproj", "{EA96B162-E0EC-4F50-B5E1-95BBB2BF6BA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevEx.360Accounting.Web", "DevEx.360Accounting.Web\DevEx.360Accounting.Web.csproj", "{B00BA04A-598C-4171-8A01-DC6EBF42A72E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,10 +45,6 @@ Global
 		{EA96B162-E0EC-4F50-B5E1-95BBB2BF6BA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA96B162-E0EC-4F50-B5E1-95BBB2BF6BA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA96B162-E0EC-4F50-B5E1-95BBB2BF6BA3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B00BA04A-598C-4171-8A01-DC6EBF42A72E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B00BA04A-598C-4171-8A01-DC6EBF42A72E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B00BA04A-598C-4171-8A01-DC6EBF42A72E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B00BA04A-598C-4171-8A01-DC6EBF42A72E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

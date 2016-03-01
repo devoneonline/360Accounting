@@ -66,6 +66,7 @@
     <Compile Include="Entities\FeatureSetList.cs" />
     <Compile Include="Entities\JournalVoucher.cs" />
     <Compile Include="Entities\JournalVoucherDetail.cs" />
+    <Compile Include="Entities\JV.cs" />
     <Compile Include="Entities\SetOfBook.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Interfaces\ICore360.cs" />
@@ -80,6 +81,8 @@
     <Compile Include="IRepository\IFeatureSetAccessRepository.cs" />
     <Compile Include="IRepository\IFeatureSetListRepository.cs" />
     <Compile Include="IRepository\IFeatureSetRepository.cs" />
+    <Compile Include="IRepository\IGLHeaderRepository.cs" />
+    <Compile Include="IRepository\IGLLineRepository.cs" />
     <Compile Include="IRepository\IJournalVoucherRepository.cs" />
     <Compile Include="IRepository\IRepository.cs" />
     <Compile Include="Interfaces\IService.cs" />
@@ -94,7 +97,9 @@
     <Compile Include="IService\IFeatureSetAccessService.cs" />
     <Compile Include="IService\IFeatureSetListService.cs" />
     <Compile Include="IService\IFeatureSetService.cs" />
+    <Compile Include="IService\IGLLineService.cs" />
     <Compile Include="IService\IJournalVoucherService.cs" />
+    <Compile Include="IService\IGLHeaderService.cs" />
     <Compile Include="IService\ISetOfBookService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
