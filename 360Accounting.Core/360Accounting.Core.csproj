@@ -77,6 +77,7 @@
     <Compile Include="IRepository\ICodeCombinitionRepository.cs" />
     <Compile Include="IRepository\ICompanyRepository.cs" />
     <Compile Include="IRepository\ICurrencyRepository.cs" />
+    <Compile Include="IRepository\ICustomerRepository.cs" />
     <Compile Include="IRepository\IFeatureRepository.cs" />
     <Compile Include="IRepository\IFeatureSetAccessRepository.cs" />
     <Compile Include="IRepository\IFeatureSetListRepository.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="IService\ICodeCombinitionService.cs" />
     <Compile Include="IService\ICompanyService.cs" />
     <Compile Include="IService\ICurrencyService.cs" />
+    <Compile Include="IService\ICustomerService.cs" />
     <Compile Include="IService\IFeatureService.cs" />
     <Compile Include="IService\IFeatureSetAccessService.cs" />
     <Compile Include="IService\IFeatureSetListService.cs" />

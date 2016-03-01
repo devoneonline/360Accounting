@@ -19,6 +19,11 @@ namespace _360Accounting.Common
             return DateTime.Now.AddDays(-7);
         }
 
+        public static DateTime ToDate()
+        {
+            return DateTime.Now.AddDays(7);
+        }
+
         public static string Stringize(string delimeter, params string[] value)
         {
             StringBuilder sb = new StringBuilder();

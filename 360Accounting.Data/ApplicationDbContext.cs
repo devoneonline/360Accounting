@@ -64,8 +64,8 @@ namespace _360Accounting.Data
             modelBuilder.Entity<Customer>().ToTable("tbCustomer");
             modelBuilder.Entity<Customer>().HasKey(t => t.Id);
 
-            //modelBuilder.Entity<aspnet_User>().ToTable("aspnet_Users");
-            //modelBuilder.Entity<aspnet_User>().HasKey(t => t.UserId);
+            modelBuilder.Entity<aspnet_User>().ToTable("aspnet_Users");
+            modelBuilder.Entity<aspnet_User>().HasKey(t => t.UserId);
 
             //modelBuilder.Entity<JournalVoucherDetail>().ToTable("tbGLLines");
             //modelBuilder.Entity<JournalVoucherDetail>().HasKey(t => t.Id);

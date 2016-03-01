@@ -16,12 +16,18 @@
   <object name="CodeCombinitionRepository" type="_360Accounting.Data.Repositories.CodeCombinitionRepository, 360Accounting.Data"> </object>
   <object name="CurrencyRepository" type="_360Accounting.Data.Repositories.CurrencyRepository, 360Accounting.Data"> </object>
   <object name="JournalVoucherRepository" type="_360Accounting.Data.Repositories.JournalVoucherRepository, 360Accounting.Data"> </object>
+  <object name="CustomerRepository" type="_360Accounting.Data.Repositories.CustomerRepository, 360Accounting.Data"> </object>
 
   <object name="GLHeaderRepository" type="_360Accounting.Data.Repositories.GLHeaderRepository, 360Accounting.Data"> </object>
   <object name="GLLineRepository" type="_360Accounting.Data.Repositories.GLLineRepository, 360Accounting.Data"> </object>
 
+
   
     
+  
+  <object name="CustomerService" type="_360Accounting.Service.CustomerService, 360Accounting.Service" >
+    <constructor-arg name="repo" ref="CustomerRepository" />
+  </object>  
   <object name="FeatureService" type="_360Accounting.Service.FeatureService, 360Accounting.Service" >
     <constructor-arg name="featureRepository" ref="FeatureRepository" />
     <constructor-arg name="fsRepo" ref="FeatureSetRepository" />  
