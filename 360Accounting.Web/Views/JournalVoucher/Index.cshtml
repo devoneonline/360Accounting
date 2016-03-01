@@ -1,4 +1,6 @@
-﻿@model _360Accounting.Web.Models.JournalVoucherListModel
+﻿@Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
+
+@model _360Accounting.Web.Models.JournalVoucherListModel
 
 @{
     ViewBag.Title = "Journal Vouchers";
@@ -46,6 +48,7 @@
         @Html.Action("JournalVoucherPartial")
     </div>
 </div>
+
 <script type="text/javascript">
     $(document).ready(function () {
         $('#btnCreate').click(function () {

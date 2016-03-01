@@ -28,6 +28,11 @@ namespace _360Accounting.Service
             return this.repository.GetAll(companyId);
         }
 
+        public IEnumerable<FeatureSet> GetAll()
+        {
+            return this.repository.GetAll();
+        }
+
         public string Insert(FeatureSet entity)
         {
             return this.repository.Insert(entity);
