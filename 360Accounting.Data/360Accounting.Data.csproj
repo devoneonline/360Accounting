@@ -63,6 +63,8 @@
     <Compile Include="Repositories\CodeCombinitionRepository.cs" />
     <Compile Include="Repositories\CompanyRepository.cs" />
     <Compile Include="Repositories\CurrencyRepository.cs" />
+    <Compile Include="Repositories\TaxRepository.cs" />
+    <Compile Include="Repositories\CustomerSiteRepository.cs" />
     <Compile Include="Repositories\CustomerRepository.cs" />
     <Compile Include="Repositories\FeatureRepository.cs" />
     <Compile Include="Repositories\FeatureSetAccessRepository.cs" />

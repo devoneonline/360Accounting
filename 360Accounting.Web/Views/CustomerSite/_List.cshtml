@@ -7,11 +7,11 @@ Html.EnableUnobtrusiveJavaScript();
 
 var grid = Html.DevExpress().GridView(settings =>
 {
-    settings.Name = "Customer";
+    settings.Name = "CustomerSite";
     settings.Theme = "Office2010Black";
     settings.KeyFieldName = "Id";
 
-    settings.CallbackRouteValues = new { Controller = "Customer", Action = "CustomerListPartial" };
+    settings.CallbackRouteValues = new { Controller = "CustomerSite", Action = "CustomerSiteListPartial" };
 
     //settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
     settings.SettingsBehavior.ConfirmDelete = true;
@@ -27,11 +27,9 @@ var grid = Html.DevExpress().GridView(settings =>
             column.SetDataItemTemplateContent(c =>
             {
                 ViewContext.Writer.Write(
-                    Html.Raw("<a title='Edit' href='" + Url.Content("~/Customer/Edit/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
+                    Html.Raw("<a title='Edit' href='" + Url.Content("~/CustomerSite/Edit?Id=") + DataBinder.Eval(c.DataItem, "Id") + "&CustomerId=" + DataBinder.Eval(c.DataItem, "CustomerId") + "'><i class='fa fa-edit'></i></a>")
                     + "&nbsp;&nbsp;" +
-                    Html.Raw("<a title='Delete' class='deleteQuestion' href='" + Url.Content("~/Customer/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
-                    + "&nbsp;&nbsp;" +
-                    Html.Raw("<a title='Customer Site' href='" + Url.Content("~/CustomerSite/Index/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-map-marker'></i></a>")
+                    Html.Raw("<a title='Delete' class='deleteQuestion' href='" + Url.Content("~/CustomerSite/Delete?Id=") + DataBinder.Eval(c.DataItem, "Id") + "&CustomerId=" + DataBinder.Eval(c.DataItem, "CustomerId") + "'><i class='fa fa-trash-o'></i></a>")
                 );
             });
             column.Settings.AllowDragDrop = DefaultBoolean.False;
@@ -39,11 +37,13 @@ var grid = Html.DevExpress().GridView(settings =>
             column.Width = 70;
         });
 
-    settings.Columns.Add("CustomerName", "Customer Name");
-    settings.Columns.Add("ContactNo", "Contact No.");
-    settings.Columns.Add("Address");
+    settings.Columns.Add("SiteName", "Name");
+    settings.Columns.Add("SiteAddress", "Address");
+    settings.Columns.Add("SiteContact", "Contact");
     settings.Columns.Add("StartDate", "Start Date").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;
     settings.Columns.Add("EndDate", "End Date").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;
+    settings.Columns.Add("CodeCombinationId", "Receivable A/c.");
+    settings.Columns.Add("TaxCodeId", "Sales Tax");
 });
 if (ViewData["EditError"] != null)
 {

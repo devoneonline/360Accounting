@@ -28,12 +28,17 @@ namespace _360Accounting.Service
             return this.repository.GetAll(companyId, sobId, searchText, paging, page ?? 1, sort, sortDir);
         }
 
+        public IEnumerable<CodeCombinitionView> GetAllCodeCombinitionView(long companyId)
+        {
+            return this.repository.GetAllCodeCombinitionView(companyId);
+        }
+
         public CodeCombinition GetSingle(string id, long companyId)
         {
             return this.repository.GetSingle(id,companyId);
         }
 
-        public IEnumerable<CodeCombinition> GetAll( long companyId)
+        public IEnumerable<CodeCombinition> GetAll(long companyId)
         {
             return this.repository.GetAll(companyId);
         }

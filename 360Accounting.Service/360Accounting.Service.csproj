@@ -58,6 +58,8 @@
     <Compile Include="Services\CodeCombinitionService.cs" />
     <Compile Include="Services\CompanyService.cs" />
     <Compile Include="Services\CurrencyService.cs" />
+    <Compile Include="Services\TaxService.cs" />
+    <Compile Include="Services\CustomerSiteService.cs" />
     <Compile Include="Services\CustomerService.cs" />
     <Compile Include="Services\FeatureService.cs" />
     <Compile Include="Services\FeatureSetAccessService.cs" />

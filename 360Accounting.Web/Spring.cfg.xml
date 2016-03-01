@@ -17,14 +17,20 @@
   <object name="CurrencyRepository" type="_360Accounting.Data.Repositories.CurrencyRepository, 360Accounting.Data"> </object>
   <object name="JournalVoucherRepository" type="_360Accounting.Data.Repositories.JournalVoucherRepository, 360Accounting.Data"> </object>
   <object name="CustomerRepository" type="_360Accounting.Data.Repositories.CustomerRepository, 360Accounting.Data"> </object>
+  <object name="CustomerSiteRepository" type="_360Accounting.Data.Repositories.CustomerSiteRepository, 360Accounting.Data"> </object>
+  <object name="TaxRepository" type="_360Accounting.Data.Repositories.TaxRepository, 360Accounting.Data"> </object>
 
   <object name="GLHeaderRepository" type="_360Accounting.Data.Repositories.GLHeaderRepository, 360Accounting.Data"> </object>
   <object name="GLLineRepository" type="_360Accounting.Data.Repositories.GLLineRepository, 360Accounting.Data"> </object>
 
 
   
-    
-  
+  <object name="TaxService" type="_360Accounting.Service.TaxService, 360Accounting.Service" >
+    <constructor-arg name="repo" ref="TaxRepository" />
+  </object>        
+  <object name="CustomerSiteService" type="_360Accounting.Service.CustomerSiteService, 360Accounting.Service" >
+    <constructor-arg name="repo" ref="CustomerSiteRepository" />
+  </object>    
   <object name="CustomerService" type="_360Accounting.Service.CustomerService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="CustomerRepository" />
   </object>  

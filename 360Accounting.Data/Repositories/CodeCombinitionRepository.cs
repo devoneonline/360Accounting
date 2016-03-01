@@ -52,6 +52,13 @@ namespace _360Accounting.Data.Repositories
             return codeComblist;
         }
 
+        public IEnumerable<CodeCombinitionView> GetAllCodeCombinitionView(long companyId)
+        {
+            IEnumerable<CodeCombinition> codeCombList =
+                this.Context.CodeCombinitions.Where(x => x.CompanyId == companyId);
+            return codeCombList.Select(x => GetCodeCombViewByCodeCombEntity(x)).ToList();
+        }
+
         public string Insert(CodeCombinition entity)
         {
             this.Context.CodeCombinitions.Add(entity);

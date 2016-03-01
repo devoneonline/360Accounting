@@ -193,6 +193,7 @@
     <Compile Include="Controllers\CodeCombinitionController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CurrencyController.cs" />
+    <Compile Include="Controllers\CustomerSiteController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JournalVoucherController.cs" />
@@ -219,6 +220,7 @@
     <Compile Include="Models\CurrencyListModel.cs" />
     <Compile Include="Models\CurrencyViewModel.cs" />
     <Compile Include="Models\CustomerListModel.cs" />
+    <Compile Include="Models\CustomerSiteModel.cs" />
     <Compile Include="Models\CustomerModel.cs" />
     <Compile Include="Models\FeatureViewModel.cs" />
     <Compile Include="Models\JournalVoucherCreateModel.cs" />
@@ -368,6 +370,9 @@
     <Content Include="Spring.cfg.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\CustomerSite\Edit.cshtml" />
+    <Content Include="Views\CustomerSite\Index.cshtml" />
+    <Content Include="Views\CustomerSite\_List.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

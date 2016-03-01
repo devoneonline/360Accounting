@@ -22,6 +22,8 @@ namespace _360Accounting.Data
 
         public DbSet<Customer> Customers { get; set; }
 
+        public DbSet<CustomerSite> CustomerSites { get; set; }
+
         public DbSet<SetOfBook> SetOfBooks { get; set; }
 
         public DbSet<Feature> Features { get; set; }
@@ -54,6 +56,8 @@ namespace _360Accounting.Data
 
         public DbSet<GLLines> GLLines { get; set; }
 
+        public DbSet<Tax> Taxes { get; set; }
+
         #endregion
 
         #region Binders
@@ -63,6 +67,12 @@ namespace _360Accounting.Data
             ////base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Customer>().ToTable("tbCustomer");
             modelBuilder.Entity<Customer>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<CustomerSite>().ToTable("tbCustomerSite");
+            modelBuilder.Entity<CustomerSite>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<Tax>().ToTable("tbTax");
+            modelBuilder.Entity<Tax>().HasKey(t => t.Id);
 
             modelBuilder.Entity<aspnet_User>().ToTable("aspnet_Users");
             modelBuilder.Entity<aspnet_User>().HasKey(t => t.UserId);

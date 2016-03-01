@@ -59,6 +59,9 @@
     <Compile Include="Entities\Company.cs" />
     <Compile Include="Entities\Currency.cs" />
     <Compile Include="Entities\Customer.cs" />
+    <Compile Include="Entities\CustomerSite.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Entities\EntityBase.cs" />
     <Compile Include="Entities\Feature.cs" />
     <Compile Include="Entities\FeatureSet.cs" />
@@ -68,6 +71,9 @@
     <Compile Include="Entities\JournalVoucherDetail.cs" />
     <Compile Include="Entities\JV.cs" />
     <Compile Include="Entities\SetOfBook.cs" />
+    <Compile Include="Entities\Tax.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Entities\User.cs" />
     <Compile Include="Interfaces\ICore360.cs" />
     <Compile Include="IoC.cs" />
@@ -77,6 +83,8 @@
     <Compile Include="IRepository\ICodeCombinitionRepository.cs" />
     <Compile Include="IRepository\ICompanyRepository.cs" />
     <Compile Include="IRepository\ICurrencyRepository.cs" />
+    <Compile Include="IRepository\ITaxRepository.cs" />
+    <Compile Include="IRepository\ICustomerSiteRepository.cs" />
     <Compile Include="IRepository\ICustomerRepository.cs" />
     <Compile Include="IRepository\IFeatureRepository.cs" />
     <Compile Include="IRepository\IFeatureSetAccessRepository.cs" />
@@ -94,6 +102,8 @@
     <Compile Include="IService\ICodeCombinitionService.cs" />
     <Compile Include="IService\ICompanyService.cs" />
     <Compile Include="IService\ICurrencyService.cs" />
+    <Compile Include="IService\ITaxService.cs" />
+    <Compile Include="IService\ICustomerSiteService.cs" />
     <Compile Include="IService\ICustomerService.cs" />
     <Compile Include="IService\IFeatureService.cs" />
     <Compile Include="IService\IFeatureSetAccessService.cs" />

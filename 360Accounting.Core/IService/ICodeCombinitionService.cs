@@ -13,5 +13,7 @@ namespace _360Accounting.Core
         IEnumerable<CodeCombinitionView> GetAll(long companyId, long sobId, string searchText, bool paging, int? page, string sort, string sortDir);
 
         List<CodeCombinition> GetAll(long companyId, long sobId);
+
+        IEnumerable<CodeCombinitionView> GetAllCodeCombinitionView(long companyId);
     }
 }
