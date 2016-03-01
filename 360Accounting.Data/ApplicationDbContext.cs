@@ -20,6 +20,8 @@ namespace _360Accounting.Data
 
         #region DbSets
 
+        public DbSet<Customer> Customers { get; set; }
+
         public DbSet<SetOfBook> SetOfBooks { get; set; }
 
         public DbSet<Feature> Features { get; set; }
@@ -55,8 +57,11 @@ namespace _360Accounting.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ////base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<aspnet_User>().ToTable("aspnet_Users");
-            modelBuilder.Entity<aspnet_User>().HasKey(t => t.UserId);
+            modelBuilder.Entity<Customer>().ToTable("tbCustomer");
+            modelBuilder.Entity<Customer>().HasKey(t => t.Id);
+
+            //modelBuilder.Entity<aspnet_User>().ToTable("aspnet_Users");
+            //modelBuilder.Entity<aspnet_User>().HasKey(t => t.UserId);
 
             modelBuilder.Entity<JournalVoucherDetail>().ToTable("tbGLLines");
             modelBuilder.Entity<JournalVoucherDetail>().HasKey(t => t.Id);

@@ -58,6 +58,7 @@
     <Compile Include="Entities\CodeCombinitionView.cs" />
     <Compile Include="Entities\Company.cs" />
     <Compile Include="Entities\Currency.cs" />
+    <Compile Include="Entities\Customer.cs" />
     <Compile Include="Entities\EntityBase.cs" />
     <Compile Include="Entities\Feature.cs" />
     <Compile Include="Entities\FeatureSet.cs" />
