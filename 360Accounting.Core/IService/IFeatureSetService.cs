@@ -10,5 +10,6 @@ namespace _360Accounting.Core
 {
     public interface IFeatureSetService : IService<FeatureSet>
     {
+        IEnumerable<FeatureSet> GetAll();
     }
 }

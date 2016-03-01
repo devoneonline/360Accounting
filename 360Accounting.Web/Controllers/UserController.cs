@@ -115,12 +115,13 @@ namespace _360Accounting.Web.Controllers
 
         #endregion
 
-        public ActionResult Index()
+        public ActionResult Index(long? Id)
         {
+            ViewBag.CompanyId = Id;
             return View();
         }
 
-        public ActionResult UserListPartial()
+        public ActionResult UserListPartial(long? companyId)
         {
             List<UserViewModel> modelList = new List<UserViewModel>();
             MembershipUserCollection memCollection = Membership.GetAllUsers();
@@ -139,6 +140,11 @@ namespace _360Accounting.Web.Controllers
                 item.Role = Roles.GetRolesForUser(user.UserName)[0];
                 modelList.Add(item);
             }
+            if (companyId != null)
+            {
+                modelList = modelList.Where(rec => rec.CompanyId == companyId).ToList();
+            }
+            //Is this Correct need to verify Ahsan..
             if (AuthenticationHelper.UserRole != UserRoles.SuperAdmin.ToString())
             {
                 modelList = modelList.Where(x => x.CompanyId == AuthenticationHelper.User.CompanyId && x.Role != UserRoles.SuperAdmin.ToString()).ToList();
@@ -338,10 +344,15 @@ namespace _360Accounting.Web.Controllers
             return Json("Success");
         }
 
-        public ActionResult FeatureSet(FeatureSetListModel model)
+        public ActionResult FeatureSet(long? Id)
         {
             int totalRecords = 0;
-            model.FeatureSet = featureSetService.GetAll(long.MaxValue).Select(x => new FeatureSetModel(x)).ToList();
+            FeatureSetListModel model = new FeatureSetListModel();
+            if (Id != null)
+                model.FeatureSet = featureSetService.GetAll(Id.Value).Select(x => new FeatureSetModel(x)).ToList();
+            else
+                model.FeatureSet = featureSetService.GetAll().Select(x => new FeatureSetModel(x)).ToList();
+            
             model.TotalRecords = totalRecords;
             return View(model);
         }

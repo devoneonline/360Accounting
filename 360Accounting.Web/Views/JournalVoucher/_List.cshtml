@@ -2,6 +2,9 @@
             new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
             new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
 
+  Html.EnableClientValidation();
+  Html.EnableUnobtrusiveJavaScript();
+            
 var grid = Html.DevExpress().GridView(settings =>
 {
     settings.Name = "JournalVoucher";
@@ -49,7 +52,7 @@ if (ViewData["EditError"] != null)
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('.delete').click(function () {
+        $('.deleteQuestion').click(function () {
             return confirm("Sure! you wanted to delete ?");
         });
     });

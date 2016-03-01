@@ -10,5 +10,6 @@ namespace _360Accounting.Core.Interfaces
 {
     public interface IFeatureSetRepository : IRepository<FeatureSet>
     {
+        IEnumerable<FeatureSet> GetAll();
     }
 }
