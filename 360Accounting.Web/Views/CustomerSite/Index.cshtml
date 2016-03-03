@@ -3,7 +3,7 @@
 @model List<_360Accounting.Web.Models.CustomerSiteModel>
 
 @{
-    ViewBag.Title = "Customer Master";
+    ViewBag.Title = "Customer Sites";
 }
 
 <div class="container">
@@ -26,7 +26,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#btnNew').click(function () {
-            window.location.href = '@Url.Content("~/CustomerSite/Edit?customerId=" +ViewBag.CustomerId+"&Id=null")';
+            window.location.href = '@Url.Content("~/CustomerSite/Edit?customerId=" +ViewBag.CustomerId+"&id=null")';
         });
     });
 </script>

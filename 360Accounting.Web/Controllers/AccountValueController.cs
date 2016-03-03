@@ -75,7 +75,7 @@ namespace _360Accounting.Web.Controllers
                 if (model.Id > 0)
                 {
                     string result = service.Update(mapModel(model));
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", new { id = Session["sobid"] });
                 }
                 else
                 {

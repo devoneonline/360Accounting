@@ -33,14 +33,14 @@
 <div class="col-lg-5">
     <div class="form-group">
         @Html.LabelFor(m => m.StartDate)
-        @Html.TextBoxFor(m => m.StartDate, Model.StartDate.Value.ToShortDateString(), new { @readonly = "readonly", @class = "form-control" })
+        @Html.EditorFor(m => m.StartDate, new { @class = "form-control" })
     </div>
 </div>
 
 <div class="col-lg-5">
     <div class="form-group">
         @Html.LabelFor(m => m.EndDate)
-        @Html.TextBoxFor(m => m.EndDate, Model.StartDate.Value.ToShortDateString(), new { @readonly = "readonly", @class = "form-control" })
+        @Html.EditorFor(m => m.EndDate, new { @class = "form-control" })
     </div>
 </div>
 
@@ -60,4 +60,6 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+
 

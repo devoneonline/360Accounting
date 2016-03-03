@@ -1,6 +1,7 @@
 ﻿using _360Accounting.Core;
 using _360Accounting.Core.Entities;
 using _360Accounting.Web.Models;
+using _360Accounting.Web.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,19 +23,41 @@ namespace _360Accounting.Web
             codeCombinitionService = IoC.Resolve<ICodeCombinitionService>("CodeCombinitionService");
         }
 
-        public static IList<GLHeaderModel> GetGLHeaders()
+        public static GLHeaderModel GetGLHeaders(string id)
         {
-            IList<GLHeader> entityList = service.GetAll(AuthenticationHelper.User.CompanyId).ToList();
+            return new GLHeaderModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));            
+        }
+
+        public static IList<GLHeaderModel> GetGLHeaders(long sobId, long periodId, long currencyId)
+        {
+            IList<GLHeader> entityList = service.GetAll(AuthenticationHelper.User.CompanyId, sobId, periodId, currencyId).ToList();
             IList<GLHeaderModel> modelList = entityList.Select(x => new GLHeaderModel(x)).ToList();
+            return modelList;
+        }
+
+        public static IList<GLLinesModel> GetGLLines(string id)
+        {
+            GLHeaderModel header = SessionHelper.JV;
+            IList<GLLinesModel> modelList;
+            if (header == null)
+            {
+                modelList = lineService.GetAll(AuthenticationHelper.User.CompanyId, id).Select(x => new GLLinesModel(x)).ToList();
+            }
+            else
+            {
+                //Ye code kab chalega???
+                modelList = header.GlLines;
+            }
             return modelList;
         }
 
         public static IList<GLLinesModel> GetGLLines()
         {
-            GLHeaderModel header = AuthenticationHelper.JV;
+            GLHeaderModel header = SessionHelper.JV;
             IList<GLLinesModel> modelList;
             if (header == null)
             {
+                //Ye code kb chalega???
                 modelList = lineService.GetAll(0).Select(x => new GLLinesModel(x)).ToList();
             }
             else
@@ -44,12 +67,9 @@ namespace _360Accounting.Web
             return modelList;
         }
 
-        public static IList<SelectListItem> GetAccounts()
+        public static IList<SelectListItem> GetAccounts(long sobId)
         {
-
-            //TODO: need to set setofbook dynamically
-
-            return codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, 6, "", false, null, "", "")   
+            return codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", false, null, "", "")   
                     .Select(x => new SelectListItem
                     {
                         Text = x.CodeCombinitionCode,
@@ -61,7 +81,7 @@ namespace _360Accounting.Web
         {
             bool isNewRecord=true;
 
-            GLHeaderModel header = AuthenticationHelper.JV;
+            GLHeaderModel header = SessionHelper.JV;
             if (header==null)
             {
                 throw new Exception("No voucher information available!");
@@ -104,7 +124,7 @@ namespace _360Accounting.Web
 
         public static void Insert(GLLinesModel model)
         {
-            GLHeaderModel header = AuthenticationHelper.JV;
+            GLHeaderModel header = SessionHelper.JV;
             header.GlLines.Add(model);
         }
 
@@ -124,7 +144,7 @@ namespace _360Accounting.Web
             entity.GLDate = model.GLDate;
             entity.PeriodId = model.PeriodId;
             entity.SOBId = model.SOBId;
-            if (model.Id>0)
+            if (model.Id == 0)
             {
                 entity.CreateDate = DateTime.Now;
             }

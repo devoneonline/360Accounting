@@ -61,7 +61,10 @@
             })
 
             if (continueCreate) {
-                var url = '@Url.Content("~/JournalVoucher/Create?sobId=")' + $('#SOBId').val() + "&periodId=" + $('#PeriodId').val() + "&currencyId=" + $('#CurrencyId').val()
+                var url = '@Url.Content("~/JournalVoucher/Create?sobId=")' +
+                    $('#SOBId').val() +
+                    "&periodId=" + $('#PeriodId').val() +
+                    "&currencyId=" + $('#CurrencyId').val()
                 window.location.href = url;
             }
             else

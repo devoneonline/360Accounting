@@ -11,12 +11,17 @@ namespace _360Accounting.Data.Repositories
 {
     public class GLHeaderRepository:Repository, IGLHeaderRepository
     {
-
         public GLHeader GetSingle(string id, long companyId)
         {
             GLHeader entity = this.GetAll(companyId)
                 .FirstOrDefault(x => x.Id == Convert.ToInt64(id));
             return entity;
+        }
+
+        public IEnumerable<GLHeader> GetAll(long companyId, long sobId, long periodId, long currencyId)
+        {
+            IEnumerable<GLHeader> entityList = this.Context.GLHeaders.Where(x => x.CompanyId == companyId && x.CurrencyId == currencyId & x.PeriodId == periodId && x.SOBId == sobId);
+            return entityList;
         }
 
         public IEnumerable<GLHeader> GetAll(long companyId)

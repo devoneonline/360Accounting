@@ -81,6 +81,9 @@ FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     $(document).ready(function () {
         $('[type=date]').attr('class', 'form-control');
 
+        @*$('#StartDate').val(new DateTime(@_360Accounting.Common.Utility.CurrentDate()));
+        $('#EndDate').val(@_360Accounting.Common.Utility.CurrentDate());*@
+
         $('#btnCancel').click(function () {
             window.location.href = '@Url.Content("~/Calendar/Index")';
         });

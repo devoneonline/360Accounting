@@ -55,7 +55,7 @@ namespace _360Accounting.Web.Controllers
             CodeCombinitionCreateViewModel model =  new CodeCombinitionCreateViewModel();
             model.SegmentList = getSegmentList(sobId);
             model.SOBId = sobId;
-            return PartialView("_Edit", model);
+            return PartialView("_Create", model);
         }
         
         public ActionResult Edit(long id, long sobId)
@@ -138,47 +138,6 @@ namespace _360Accounting.Web.Controllers
                 .Select(x => new CodeCombinitionViewModel(x)).ToList();
             return PartialView("_List", model);
         }
-
-        //public ActionResult Test(string task)
-        //{
-        //    CodeCombinitionCreateViewModel model = new CodeCombinitionCreateViewModel();
-        //    model.SOBId = 18;
-        //    model.SegmentList = getSegmentList(model.SOBId);
-
-        //    if (task == "Update")
-        //    {
-        //        model.Id = 1;
-        //    }
-
-        //    model.Segment1 = "00003";     ////To be decided
-        //    model.Segment2 = "0002";     ////To be decided
-        //    model.Segment3 = "0001";     ////To be decided
-        //    ////model.Segment4 = "";     ////To be decided
-        //    ////model.Segment5 = "";     ////To be decided
-        //    ////model.Segment6 = "";     ////To be decided
-        //    ////model.Segment7 = "";     ////To be decided
-        //    ////model.Segment8 = "";     ////To be decided            
-        //    model.StartDate = new DateTime(2016, 1, 1);
-        //    model.EndDate = new DateTime(2016, 12, 31);
-        //    model.AllowedPosting = true;
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        model.CompanyId = AuthenticationHelper.User.CompanyId;
-        //        if (model.Id > 0)
-        //        {
-        //            string result = service.Update(mapModel(model));
-        //        }
-        //        else
-        //        {
-        //            string result = service.Insert(mapModel(model));
-        //        }
-
-        //        return RedirectToAction("Index", model);
-        //    }
-
-        //    return View(model);
-        //}
 
         #region Private Methods
         private CodeCombinition mapModel(CodeCombinitionCreateViewModel model)

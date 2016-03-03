@@ -9,5 +9,6 @@ namespace _360Accounting.Core.Interfaces
 {
     public interface IGLHeaderRepository : IRepository<GLHeader>
     {
+        IEnumerable<GLHeader> GetAll(long companyId, long sobId, long periodId, long currencyId);
     }
 }

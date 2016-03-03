@@ -1,4 +1,5 @@
-﻿using _360Accounting.Core.Entities;
+﻿using _360Accounting.Common;
+using _360Accounting.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -35,7 +36,7 @@ namespace _360Accounting.Web.Models
 
         public GLHeaderModel()
         {
-
+            this.GLDate = Utility.CurrentDate();
         }
 
         public GLHeaderModel(GLHeader entity )

@@ -8,6 +8,61 @@ namespace _360Accounting.Web.Mvc
 {
     public class SessionHelper
     {
+        private const string SESSION_JV = "SESSION_JV";
+
+        ////used in jv
+        //public static long CurrencyId
+        //{
+        //    get
+        //    {
+        //        return Convert.ToInt64(HttpContext.Current.Session["CurrencyId"].ToString());
+        //    }
+        //    set
+        //    {
+        //        HttpContext.Current.Session["CurrencyId"] = value;
+        //    }
+        //}
+
+        ////used in jv
+        //public static long PeriodId
+        //{
+        //    get
+        //    {
+        //        return Convert.ToInt64(HttpContext.Current.Session["PeriodId"].ToString());
+        //    }
+        //    set
+        //    {
+        //        HttpContext.Current.Session["PeriodId"] = value;
+        //    }
+        //}
+
+        //used in customer sites
+
+        public static GLHeaderModel JV
+        {
+            get
+            {
+                return HttpContext.Current.Session[SESSION_JV] == null ? null :
+                    (GLHeaderModel)HttpContext.Current.Session[SESSION_JV];
+            }
+            set
+            {
+                HttpContext.Current.Session[SESSION_JV] = value;
+            }
+        }
+
+        public static long SOBId
+        {
+            get
+            {
+                return Convert.ToInt64(HttpContext.Current.Session["SOBId"].ToString());
+            }
+            set
+            {
+                HttpContext.Current.Session["SOBId"] = value;
+            }
+        }
+
         public static JournalVoucherViewModel JournalVoucher
         {
             get

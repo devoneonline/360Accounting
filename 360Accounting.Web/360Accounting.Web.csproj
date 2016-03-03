@@ -459,6 +459,7 @@
     <Content Include="Views\Customer\Index.cshtml" />
     <Content Include="Views\Customer\_List.cshtml" />
     <Content Include="Views\Customer\Edit.cshtml" />
+    <Content Include="Views\CodeCombinition\_Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

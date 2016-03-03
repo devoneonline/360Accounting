@@ -9,7 +9,7 @@ var grid = Html.DevExpress().GridView(settings =>
     settings.Theme = "Office2010Black";
     settings.KeyFieldName = "Id";
 
-    settings.CallbackRouteValues = new { Controller = "JV", Action = "JVPartial" };
+    settings.CallbackRouteValues = new { Controller = "JV", Action = "JVPartialWithModel" };
 
     settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
     settings.SettingsBehavior.ConfirmDelete = true;
@@ -54,6 +54,7 @@ if (ViewData["EditError"] != null)
         });
     });
 
+    //what is this, I don't know.. Uzair Ashraf Usman Kunda
     function CallBack(context) {
         $("#dvJournalVoucherList")[0].innerHTML = context;
     }

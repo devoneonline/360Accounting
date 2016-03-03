@@ -10,5 +10,6 @@ namespace _360Accounting.Core
 {
     public interface IGLLineService : IService<GLLines>
     {
+        IEnumerable<GLLines> GetAll(long companyId, string headerId);
     }
 }
