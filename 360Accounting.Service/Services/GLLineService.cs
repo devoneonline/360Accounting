@@ -54,5 +54,9 @@ namespace _360Accounting.Service
             return this.repository.Count(companyId);
         }
 
+        public IEnumerable<GLLines> GetAll(long companyId, string headerId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
