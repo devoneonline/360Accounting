@@ -41,12 +41,18 @@ namespace _360Accounting.Web.Controllers
         }
         #endregion
 
+        public ActionResult Delete(string id)
+        {
+            DataProvider.Delete(id);
+            return RedirectToAction("Index");
+        }
+
         public ActionResult Edit(string id)
         {
             GLHeaderModel model = DataProvider.GetGLHeaders(id);
             SessionHelper.SOBId = model.SOBId;
-            model.GlLines = DataProvider.GetGLLines();
-            SessionHelper.JV = model;            
+            model.GlLines = DataProvider.GetGLLines(id);
+            SessionHelper.JV = model;
             return View("Create", model);
         }
 
@@ -131,12 +137,35 @@ namespace _360Accounting.Web.Controllers
                 ViewData["EditError"] = "Please, correct all errors.";
             return PartialView("createPartial", DataProvider.GetGLLines());
         }
+
+        public ActionResult DeleteDetailPartial(GLLinesModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    GLHeaderModel header = SessionHelper.JV;
+                    header.GlLines.Remove(model);
+                    SessionHelper.JV = header;
+                    IList<GLLinesModel> glLines = DataProvider.GetGLLines();
+                    return PartialView("createPartial", glLines);
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            return PartialView("createPartial");
+        }
         
         public ActionResult SaveVoucher(string journalName, string glDate, string cRate, string descr)
         {
             try
             {
                 DataProvider.Update(journalName, glDate, cRate, descr);
+                SessionHelper.JV = null;
                 return Json("Success");
             }
             catch (Exception e)

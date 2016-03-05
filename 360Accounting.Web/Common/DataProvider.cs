@@ -5,6 +5,7 @@ using _360Accounting.Web.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Mvc;
 
@@ -34,37 +35,15 @@ namespace _360Accounting.Web
             IList<GLHeaderModel> modelList = entityList.Select(x => new GLHeaderModel(x)).ToList();
             return modelList;
         }
-
-        public static IList<GLLinesModel> GetGLLines(string id)
+        
+        public static IList<GLLinesModel> GetGLLines(string headerId)
         {
-            GLHeaderModel header = SessionHelper.JV;
-            IList<GLLinesModel> modelList;
-            if (header == null)
-            {
-                modelList = lineService.GetAll(AuthenticationHelper.User.CompanyId, id).Select(x => new GLLinesModel(x)).ToList();
-            }
-            else
-            {
-                //Ye code kab chalega???
-                modelList = header.GlLines;
-            }
-            return modelList;
+            return getGLLinesData(headerId);
         }
 
         public static IList<GLLinesModel> GetGLLines()
         {
-            GLHeaderModel header = SessionHelper.JV;
-            IList<GLLinesModel> modelList;
-            if (header == null)
-            {
-                //Ye code kb chalega???
-                modelList = lineService.GetAll(0).Select(x => new GLLinesModel(x)).ToList();
-            }
-            else
-            {
-                modelList = header.GlLines;
-            }
-            return modelList;
+            return getGLLinesData();
         }
 
         public static IList<SelectListItem> GetAccounts(long sobId)
@@ -125,9 +104,40 @@ namespace _360Accounting.Web
         public static void Insert(GLLinesModel model)
         {
             GLHeaderModel header = SessionHelper.JV;
-            header.GlLines.Add(model);
+            if (model.Id == 0)
+            {
+                header.GlLines.Add(model);
+            }
+            else
+            {
+                GLLinesModel glLine = header.GlLines.FirstOrDefault(x => x.Id == model.Id);
+                header.GlLines.Remove(glLine);
+                header.GlLines.Add(model);
+            }
         }
 
+        internal static void Delete(string id)
+        {
+            service.Delete(id, AuthenticationHelper.User.CompanyId);
+        }
+
+        #region Private Methods
+        private static IList<GLLinesModel> getGLLinesData([Optional]string headerId)
+        {
+            GLHeaderModel header = SessionHelper.JV;
+            IList<GLLinesModel> modelList;
+            if (header == null)
+            {
+                ////Edit mai ye chalta hai
+                modelList = lineService.GetAll(AuthenticationHelper.User.CompanyId, Convert.ToInt32(headerId)).Select(x => new GLLinesModel(x)).ToList();
+            }
+            else
+            {
+                ////New mode mai ye chalta hai
+                modelList = header.GlLines;
+            }
+            return modelList;
+        }
 
         private static GLHeader GetEntityByModel(GLHeaderModel model)
         {
@@ -164,8 +174,8 @@ namespace _360Accounting.Web
             entity.Description = model.Description;
             entity.EnteredCr = model.EnteredCr;
             entity.EnteredDr = model.EnteredDr;
-            entity.AccountedCr = model.EnteredCr * Convert.ToDouble(conversionRate);
-            entity.AccountedDr = model.EnteredDr * Convert.ToDouble(conversionRate);
+            entity.AccountedCr = model.EnteredCr * conversionRate;
+            entity.AccountedDr = model.EnteredDr * conversionRate;
             entity.Qty = model.Quantity;
             entity.TaxRateCode = model.TaxRateCode;
             if (model.Id == 0)
@@ -176,6 +186,6 @@ namespace _360Accounting.Web
             entity.UpdateDate = DateTime.Now;
             return entity;
         }
-
+        #endregion
     }
 }

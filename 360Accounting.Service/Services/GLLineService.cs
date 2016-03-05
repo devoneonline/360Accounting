@@ -17,8 +17,7 @@ namespace _360Accounting.Service
         {
             this.repository = repo;
         }
-
-
+        
         public GLLines GetSingle(string id, long companyId)
         {
             return this.repository.GetSingle(id, companyId);
@@ -54,9 +53,9 @@ namespace _360Accounting.Service
             return this.repository.Count(companyId);
         }
 
-        public IEnumerable<GLLines> GetAll(long companyId, string headerId)
+        public IList<GLLines> GetAll(long companyId, long headerId)
         {
-            throw new NotImplementedException();
+            return this.repository.GetAll(companyId, headerId);
         }
     }
 }

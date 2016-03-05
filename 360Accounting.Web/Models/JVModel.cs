@@ -60,11 +60,11 @@ namespace _360Accounting.Web.Models
         public long Id { get; set; }
         public long HeaderId { get; set; }
         public long CodeCombinationId { get; set; }
-        public double EnteredDr { get; set; }
-        public double EnteredCr { get; set; }
-        public double AccountedDr { get; set; }
-        public double AccountedCr { get; set; }
-        public double Quantity { get; set; }
+        public decimal EnteredDr { get; set; }
+        public decimal EnteredCr { get; set; }
+        public decimal AccountedDr { get; set; }
+        public decimal AccountedCr { get; set; }
+        public decimal Quantity { get; set; }
         public string Description { get; set; }
         public long TaxRateCode { get; set; }
 
