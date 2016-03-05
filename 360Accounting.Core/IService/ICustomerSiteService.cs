@@ -10,6 +10,6 @@ namespace _360Accounting.Core
 {
     public interface ICustomerSiteService : IService<CustomerSite>
     {
-        IEnumerable<CustomerSite> GetAllbyCustomerId(long CustomerId);
+        IEnumerable<CustomerSiteView> GetAllbyCustomerId(long CustomerId);
     }
 }

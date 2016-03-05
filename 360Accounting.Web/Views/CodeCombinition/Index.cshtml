@@ -13,33 +13,25 @@
                 </h3>
             </div>
         </div>
-        @Html.HiddenFor(m=> m.SOBId)
-        @*<div class="col-lg-6">
-            <div class="form-group">
-                @Html.LabelFor(m => m.SetOfBooks)
-                @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks,
-        new { @class = "form-control" })
-            </div>*@
-
+        @Html.HiddenFor(m => m.SOBId)
+        <div class="col-lg-12">
             <div class="form-group">
                 <input type="button" id="btnCreate" value="Create New" class="btn btn-default tstyCus-btn" />
-
-                @*<input type="button" id="btnTestInsert" value="Test Insert" class="btn btn-default tstyCus-btn" />
-
-                <input type="button" id="btnTestUpdate" value="Test Update" class="btn btn-default tstyCus-btn" />*@
             </div>
         </div>
-        <div id="dvList" class="col-lg-12 cusGridWrapper">
-            @Html.Partial("_List", Model)
-        </div>
+    </div>
+    <div id="dvList" class="col-lg-12 cusGridWrapper">
+        @Html.Partial("_List", Model)
     </div>
 </div>
+
 <div id="dvInput">
 
 </div>
 
 <script type="text/javascript">
     $(function () {
+        $.noConflict();
         $('#dvInput').dialog({
             modal: true,
             autoOpen: false,
@@ -55,8 +47,7 @@
             segmentValues += i + "|" + item.value + "±";
         });
         var posting = false;
-        if ($('#AllowedPosting').prop("checked") == true)
-        {
+        if ($('#AllowedPosting').prop("checked") == true) {
             posting = true;
         }
         var id = $('#Id').val();
@@ -64,12 +55,12 @@
         var url = '@Url.Content("~/Codecombinition/UpdateCodeCombinition")';
         $.post(url, { id: id, sobId: sobId, segmentValues: segmentValues, allowPosting: posting, startDate: $('#StartDate').val(), endDate: $('#EndDate').val() }, function (result) {
             $('#dvInput').dialog('close');
-            window.location.href = '@Url.Content("~/CodeCombinition/Index?Id=")'+sobId
+            window.location.href = '@Url.Content("~/CodeCombinition/Index?Id=")' + sobId
         });
     }
 
     $(document).ready(function () {
-        $('#dvInput').css({overflow: "hidden" });
+        $('#dvInput').css({ overflow: "hidden" });
 
         @*$('#btnTestUpdate').click(function () {
             $.ajax({

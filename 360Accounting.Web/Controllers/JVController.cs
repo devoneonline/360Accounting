@@ -111,6 +111,7 @@ namespace _360Accounting.Web.Controllers
                 model.CurrencyId = currencyId;
                 model.GlLines = DataProvider.GetGLLines();
                 SessionHelper.JV = model;
+                model.DocumentNo = DataProvider.GetDocNo(AuthenticationHelper.User.CompanyId, periodId, sobId, currencyId);
             }
             return View(model);
         }

@@ -220,6 +220,7 @@
     <Compile Include="Models\CurrencyListModel.cs" />
     <Compile Include="Models\CurrencyViewModel.cs" />
     <Compile Include="Models\CustomerListModel.cs" />
+    <Compile Include="Models\CustomerSiteViewModel.cs" />
     <Compile Include="Models\CustomerSiteModel.cs" />
     <Compile Include="Models\CustomerModel.cs" />
     <Compile Include="Models\FeatureViewModel.cs" />

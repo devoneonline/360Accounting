@@ -92,8 +92,17 @@
 
     $(document).ready(function () {
         $('[type=date]').attr('class', 'form-control');
-
-
     });
+
+    //Validation for Account Value char length..
+    $('#Value').keypress(function(e){
+        var valueLength = $('#ValueChar').val();
+        if(valueLength != "" || valueLength > 0 || typeof valueLength != 'undefined')
+        {
+            valueLength = parseInt(valueLength);
+            if(typeof valueLength == 'number' && $(this).val().length == valueLength)
+                e.preventDefault();
+        }
+    })
 
 </script>
