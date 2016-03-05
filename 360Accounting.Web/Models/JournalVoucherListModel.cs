@@ -28,7 +28,7 @@ namespace _360Accounting.Web.Models
 
         public long CurrencyId { get; set; }
 
-        public List<JournalVoucherViewModel> JournalVouchers { get; set; }
+        //public List<JournalVoucherViewModel> JournalVouchers { get; set; }
 
         public string SearchText { get; set; }
 

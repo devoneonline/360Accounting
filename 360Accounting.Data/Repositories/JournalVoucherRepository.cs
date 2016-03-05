@@ -74,7 +74,7 @@ namespace _360Accounting.Data.Repositories
             return valueName;
         }
 
-        public List<Ledger> Ledger(long companyId, long sobId, long fromCodeCombinationId, long toCodeCombinationId, 
+        public List<Ledger> Ledger(long companyId, long sobId, long fromCodeCombinationId, long toCodeCombinationId,
             DateTime fromDate, DateTime toDate)
         {
             decimal openingBalance;
@@ -108,14 +108,14 @@ namespace _360Accounting.Data.Repositories
                         Segment8 = x.SegmentName8
                     });
 
-                codeCombinationCode = Utility.Stringize(".", 
-                    codeCombination.Segment1, 
-                    codeCombination.Segment2, 
-                    codeCombination.Segment3, 
-                    codeCombination.Segment4, 
-                    codeCombination.Segment5, 
-                    codeCombination.Segment6, 
-                    codeCombination.Segment7, 
+                codeCombinationCode = Utility.Stringize(".",
+                    codeCombination.Segment1,
+                    codeCombination.Segment2,
+                    codeCombination.Segment3,
+                    codeCombination.Segment4,
+                    codeCombination.Segment5,
+                    codeCombination.Segment6,
+                    codeCombination.Segment7,
                     codeCombination.Segment8);
 
                 codeCombinationName = Utility.Stringize(".", getCodeCombinationValueName(account.Single().ChartId, codeCombination.Segment1, account.Single().Segment1),
@@ -145,27 +145,27 @@ namespace _360Accounting.Data.Repositories
                     Document = "",
                     TransactionDate = fromDate
                 });
-                
+
                 //Read All transactions from glLines
                 //of this code combination
                 //having glDate between fromDate & toDate
                 var ledgerTransactions = (from jv in this.Context.JournalVouchers
-                                       join jvd in this.Context.JournalVoucherDetails on jv.Id equals jvd.HeaderId
-                                       where jv.GLDate >= fromDate && jv.GLDate <= toDate &&
-                                       jvd.CodeCombinationId == codeCombination.Id
-                                       select new
-                                       {
-                                           Credit = jvd.AccountedCr,
-                                           Debit = jvd.AccountedDr,
-                                           Description = jvd.Description,
-                                           Document = jv.DocumentNo,
-                                           TransactionDate = jv.GLDate
-                                       }).ToList();
+                                          join jvd in this.Context.JournalVoucherDetails on jv.Id equals jvd.HeaderId
+                                          where jv.GLDate >= fromDate && jv.GLDate <= toDate &&
+                                          jvd.CodeCombinationId == codeCombination.Id
+                                          select new
+                                          {
+                                              Credit = jvd.AccountedCr,
+                                              Debit = jvd.AccountedDr,
+                                              Description = jvd.Description,
+                                              Document = jv.DocumentNo,
+                                              TransactionDate = jv.GLDate
+                                          }).ToList();
 
                 //Select ledgerTransactions thru loop in ledger...
                 foreach (var transaction in ledgerTransactions)
                 {
-                    ledger.Add(new Ledger 
+                    ledger.Add(new Ledger
                     {
                         Balance = openingBalance + transaction.Debit - transaction.Credit,
                         CodeCombination = codeCombinationCode,
@@ -239,19 +239,19 @@ namespace _360Accounting.Data.Repositories
         {
             ////Get new Entries
             var newEntries = (from a in this.Context.JournalVouchers
-                        join b in this.Context.Users on a.CreateBy equals b.UserId
-                        where a.CompanyId == companyId && a.SOBId == sobId &&
-                        a.GLDate >= fromDate && a.GLDate <= toDate &&
-                        a.CreateDate == a.UpdateDate
-                        select new UserwiseEntriesTrail
-                        {
-                            UserId = a.CreateBy,
-                            UserName = b.Username,
-                            TransactionDate = a.GLDate,
-                            DocumentNo = a.DocumentNo,
-                            EntryType = "New"
-                        }).ToList();
-            
+                              join b in this.Context.Users on a.CreateBy equals b.UserId
+                              where a.CompanyId == companyId && a.SOBId == sobId &&
+                              a.GLDate >= fromDate && a.GLDate <= toDate &&
+                              a.CreateDate == a.UpdateDate
+                              select new UserwiseEntriesTrail
+                              {
+                                  UserId = a.CreateBy,
+                                  UserName = b.Username,
+                                  TransactionDate = a.GLDate,
+                                  DocumentNo = a.DocumentNo,
+                                  EntryType = "New"
+                              }).ToList();
+
             if (userId != null)
             {
                 newEntries = newEntries.Where(x => x.UserId == userId)
@@ -267,18 +267,18 @@ namespace _360Accounting.Data.Repositories
 
             ////Get edit Entries
             var editEntries = (from a in this.Context.JournalVouchers
-                                   join b in this.Context.Users on a.UpdateBy equals b.UserId
-                                   where a.CompanyId == companyId && a.SOBId == sobId &&
-                                   a.GLDate >= fromDate && a.GLDate <= toDate &&
-                                   a.CreateDate != a.UpdateDate
-                                   select new UserwiseEntriesTrail
-                                   {
-                                        UserId = a.CreateBy,
-                                        UserName = b.Username,
-                                        TransactionDate = a.GLDate,
-                                        DocumentNo = a.DocumentNo,
-                                        EntryType = "Edit"
-                                   }).ToList();
+                               join b in this.Context.Users on a.UpdateBy equals b.UserId
+                               where a.CompanyId == companyId && a.SOBId == sobId &&
+                               a.GLDate >= fromDate && a.GLDate <= toDate &&
+                               a.CreateDate != a.UpdateDate
+                               select new UserwiseEntriesTrail
+                               {
+                                   UserId = a.CreateBy,
+                                   UserName = b.Username,
+                                   TransactionDate = a.GLDate,
+                                   DocumentNo = a.DocumentNo,
+                                   EntryType = "Edit"
+                               }).ToList();
 
             if (userId != null)
             {
@@ -341,7 +341,7 @@ namespace _360Accounting.Data.Repositories
             this.Commit();
             return entity.Id.ToString();
         }
-        
+
         public IEnumerable<JournalVoucher> GetAll(long companyId, string searchText, bool paging, int page, string sort, string sortDir)
         {
             IEnumerable<JournalVoucher> voucherList = this.Context.JournalVouchers.Where(x => x.CompanyId == companyId);

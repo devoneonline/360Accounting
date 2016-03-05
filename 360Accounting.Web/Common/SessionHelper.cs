@@ -63,18 +63,18 @@ namespace _360Accounting.Web.Mvc
             }
         }
 
-        public static JournalVoucherViewModel JournalVoucher
-        {
-            get
-            {
-                return HttpContext.Current.Session["JournalVoucher"] == null ? new JournalVoucherViewModel()
-                    : (JournalVoucherViewModel)HttpContext.Current.Session["JournalVoucher"];
-            }
-            set
-            {
-                HttpContext.Current.Session["JournalVoucher"] = value;
-            }
-        }
+        //public static JournalVoucherViewModel JournalVoucher
+        //{
+        //    get
+        //    {
+        //        return HttpContext.Current.Session["JournalVoucher"] == null ? new JournalVoucherViewModel()
+        //            : (JournalVoucherViewModel)HttpContext.Current.Session["JournalVoucher"];
+        //    }
+        //    set
+        //    {
+        //        HttpContext.Current.Session["JournalVoucher"] = value;
+        //    }
+        //}
 
         public static CalendarViewModel Calendar
         {
