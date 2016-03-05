@@ -11,7 +11,6 @@ namespace _360Accounting.Data.Repositories
 {
     public class GLHeaderRepository:Repository, IGLHeaderRepository
     {
-
         public GLHeader GetSingle(string id, long companyId)
         {
             GLHeader entity = this.GetAll(companyId)
@@ -24,6 +23,11 @@ namespace _360Accounting.Data.Repositories
             GLHeader entity = this.GetAll(CompanyId)
                 .Where(x => x.PeriodId == PeriodId && x.SOBId == SOBId && x.CurrencyId == CurrencyId).OrderByDescending(rec => rec.Id).First();
             return entity;
+        }
+        public IEnumerable<GLHeader> GetAll(long companyId, long sobId, long periodId, long currencyId)
+        {
+            IEnumerable<GLHeader> entityList = this.Context.GLHeaders.Where(x => x.CompanyId == companyId && x.CurrencyId == currencyId & x.PeriodId == periodId && x.SOBId == sobId);
+            return entityList;
         }
 
         public IEnumerable<GLHeader> GetAll(long companyId)

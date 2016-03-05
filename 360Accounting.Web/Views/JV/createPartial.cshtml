@@ -11,8 +11,8 @@
             settings.CallbackRouteValues = new { Controller = "JV", Action = "CreatePartial" };
             settings.CustomActionRouteValues = new { Controller = "Editing", Action = "ChangeEditModePartial" };
             settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "JV", Action = "AddNewPartial" };
-            settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "JV", Action = "EditModesUpdatePartial" };
-            settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "JV", Action = "EditModesDeletePartial" };
+            settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "JV", Action = "AddNewPartial" };
+            settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "JV", Action = "DeleteDetailPartial" };
             settings.SettingsEditing.Mode = GridViewEditingMode.EditForm;
             settings.SettingsBehavior.ConfirmDelete = true;
             settings.SettingsPopup.EditForm.Width = 600;
@@ -30,7 +30,7 @@
 
                 column.ColumnType = MVCxGridViewColumnType.ComboBox;
                 var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
-                comboBoxProperties.DataSource = DataProvider.GetAccounts();
+                comboBoxProperties.DataSource = DataProvider.GetAccounts(_360Accounting.Web.Mvc.SessionHelper.SOBId);
                 comboBoxProperties.TextField = "Text";
                 comboBoxProperties.ValueField = "Value";
                 comboBoxProperties.ValueType = typeof(int);

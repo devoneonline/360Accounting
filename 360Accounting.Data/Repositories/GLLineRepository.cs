@@ -18,9 +18,15 @@ namespace _360Accounting.Data.Repositories
             return entity;
         }
 
+        public IList<GLLines> GetAll(long companyId, long headerId)
+        {
+            IList<GLLines> entityList = this.Context.GLLines.Where(x => x.HeaderId == headerId).ToList();
+            return entityList;
+        }
+
         public IEnumerable<GLLines> GetAll(long companyId)
         {
-            IEnumerable<GLLines> entityList = this.Context.GLLines.Where(x => x.HeaderId == companyId);
+            IEnumerable<GLLines> entityList = this.Context.GLLines;
             return entityList;
         }
 

@@ -1,9 +1,11 @@
 ﻿using _360Accounting.Core;
 using _360Accounting.Core.Entities;
 using _360Accounting.Web.Models;
+using _360Accounting.Web.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Mvc;
 
@@ -22,26 +24,26 @@ namespace _360Accounting.Web
             codeCombinitionService = IoC.Resolve<ICodeCombinitionService>("CodeCombinitionService");
         }
 
-        public static IList<GLHeaderModel> GetGLHeaders()
+        public static GLHeaderModel GetGLHeaders(string id)
         {
-            IList<GLHeader> entityList = service.GetAll(AuthenticationHelper.User.CompanyId).ToList();
+            return new GLHeaderModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+        }
+
+        public static IList<GLHeaderModel> GetGLHeaders(long sobId, long periodId, long currencyId)
+        {
+            IList<GLHeader> entityList = service.GetAll(AuthenticationHelper.User.CompanyId, sobId, periodId, currencyId).ToList();
             IList<GLHeaderModel> modelList = entityList.Select(x => new GLHeaderModel(x)).ToList();
             return modelList;
         }
 
+        public static IList<GLLinesModel> GetGLLines(string headerId)
+        {
+            return getGLLinesData(headerId);
+        }
+
         public static IList<GLLinesModel> GetGLLines()
         {
-            GLHeaderModel header = AuthenticationHelper.JV;
-            IList<GLLinesModel> modelList;
-            if (header == null)
-            {
-                modelList = lineService.GetAll(0).Select(x => new GLLinesModel(x)).ToList();
-            }
-            else
-            {
-                modelList = header.GlLines;
-            }
-            return modelList;
+            return getGLLinesData();
         }
 
         public static string GetDocNo(long companyId, long periodId, long sobId, long currencyId)
@@ -66,13 +68,9 @@ namespace _360Accounting.Web
 
             return yearDigit + monthDigit + docNo;
         }
-
-        public static IList<SelectListItem> GetAccounts()
+        public static IList<SelectListItem> GetAccounts(long sobId)
         {
-
-            //TODO: need to set setofbook dynamically
-
-            return codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, 6, "", false, null, "", "")
+            return codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", false, null, "", "")
                     .Select(x => new SelectListItem
                     {
                         Text = x.CodeCombinitionCode,
@@ -84,7 +82,7 @@ namespace _360Accounting.Web
         {
             bool isNewRecord = true;
 
-            GLHeaderModel header = AuthenticationHelper.JV;
+            GLHeaderModel header = SessionHelper.JV;
             if (header == null)
             {
                 throw new Exception("No voucher information available!");
@@ -127,10 +125,41 @@ namespace _360Accounting.Web
 
         public static void Insert(GLLinesModel model)
         {
-            GLHeaderModel header = AuthenticationHelper.JV;
-            header.GlLines.Add(model);
+            GLHeaderModel header = SessionHelper.JV;
+            if (model.Id == 0)
+            {
+                header.GlLines.Add(model);
+            }
+            else
+            {
+                GLLinesModel glLine = header.GlLines.FirstOrDefault(x => x.Id == model.Id);
+                header.GlLines.Remove(glLine);
+                header.GlLines.Add(model);
+            }
         }
 
+        internal static void Delete(string id)
+        {
+            service.Delete(id, AuthenticationHelper.User.CompanyId);
+        }
+
+        #region Private Methods
+        private static IList<GLLinesModel> getGLLinesData([Optional]string headerId)
+        {
+            GLHeaderModel header = SessionHelper.JV;
+            IList<GLLinesModel> modelList;
+            if (header == null)
+            {
+                ////Edit mai ye chalta hai
+                modelList = lineService.GetAll(AuthenticationHelper.User.CompanyId, Convert.ToInt32(headerId)).Select(x => new GLLinesModel(x)).ToList();
+            }
+            else
+            {
+                ////New mode mai ye chalta hai
+                modelList = header.GlLines;
+            }
+            return modelList;
+        }
 
         private static GLHeader GetEntityByModel(GLHeaderModel model)
         {
@@ -147,7 +176,7 @@ namespace _360Accounting.Web
             entity.GLDate = model.GLDate;
             entity.PeriodId = model.PeriodId;
             entity.SOBId = model.SOBId;
-            if (model.Id > 0)
+            if (model.Id == 0)
             {
                 entity.CreateDate = DateTime.Now;
             }
@@ -167,8 +196,8 @@ namespace _360Accounting.Web
             entity.Description = model.Description;
             entity.EnteredCr = model.EnteredCr;
             entity.EnteredDr = model.EnteredDr;
-            entity.AccountedCr = model.EnteredCr * Convert.ToDouble(conversionRate);
-            entity.AccountedDr = model.EnteredDr * Convert.ToDouble(conversionRate);
+            entity.AccountedCr = model.EnteredCr * conversionRate;
+            entity.AccountedDr = model.EnteredDr * conversionRate;
             entity.Qty = model.Quantity;
             entity.TaxRateCode = model.TaxRateCode;
             if (model.Id == 0)
@@ -179,6 +208,6 @@ namespace _360Accounting.Web
             entity.UpdateDate = DateTime.Now;
             return entity;
         }
-
+        #endregion
     }
 }

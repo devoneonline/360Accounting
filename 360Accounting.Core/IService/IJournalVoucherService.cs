@@ -16,9 +16,9 @@ namespace _360Accounting.Core
 
         IEnumerable<JournalVoucherDetail> GetAll(string headerId);
 
-        string Insert(JournalVoucherDetail entity);
+        //string Insert(JournalVoucherDetail entity);
 
-        string Update(JournalVoucherDetail entity);
+        //string Update(JournalVoucherDetail entity);
 
         List<UserwiseEntriesTrail> UserwiseEntriesTrail(long companyId, long sobId, DateTime fromDate, DateTime toDate, Guid? UserId);
 
@@ -26,6 +26,6 @@ namespace _360Accounting.Core
 
         List<Ledger> Ledger(long companyId, long sobId, long fromCodeCombinationId, long toCodeCombinationId, DateTime fromDate, DateTime toDate);
 
-        void DeleteJVDetail(string id);
+        //void DeleteJVDetail(string id);
     }
 }

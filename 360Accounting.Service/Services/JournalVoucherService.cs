@@ -22,7 +22,7 @@ namespace _360Accounting.Service
         {
             return this.repository.TrialBalance(companyId, sobId, fromCodeCombinationId, toCodeCombinationId, periodId);
         }
-        
+
         public List<Ledger> Ledger(long companyId, long sobId, long fromCodeCombinationId, long toCodeCombinationId, DateTime fromDate, DateTime toDate)
         {
             return this.repository.Ledger(companyId, sobId, fromCodeCombinationId, toCodeCombinationId, fromDate, toDate);
@@ -52,7 +52,7 @@ namespace _360Accounting.Service
         {
             return this.repository.Update(entity);
         }
-        
+
         public IEnumerable<JournalVoucher> GetAll(long companyId, string searchText, bool paging, int? page, string sort, string sortDir)
         {
             return this.repository.GetAll(companyId, searchText, paging, page ?? 1, sort, sortDir);

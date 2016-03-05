@@ -22,7 +22,7 @@ namespace _360Accounting.Web.Controllers
         private ICompanyService companyService;
         private IJournalVoucherService service;
         private ISetOfBookService sobService;
-        private ICurrencyService currencyService;
+        //private ICurrencyService currencyService;
         private ICalendarService calendarService;
         private ICodeCombinitionService codeCombinitionService;
 
@@ -31,7 +31,7 @@ namespace _360Accounting.Web.Controllers
             companyService = IoC.Resolve<ICompanyService>("CompanyService");
             service = IoC.Resolve<IJournalVoucherService>("JournalVoucherService");
             sobService = IoC.Resolve<ISetOfBookService>("SetOfBookService");
-            currencyService = IoC.Resolve<ICurrencyService>("CurrencyService");
+            //currencyService = IoC.Resolve<ICurrencyService>("CurrencyService");
             calendarService = IoC.Resolve<ICalendarService>("CalendarService");
             codeCombinitionService = IoC.Resolve<ICodeCombinitionService>("CodeCombinitionService");
         }
@@ -309,384 +309,345 @@ namespace _360Accounting.Web.Controllers
         }
         #endregion
 
-        public ActionResult Delete(string id)
-        {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
-            return RedirectToAction("Index", new JournalVoucherListModel());
-        }
+        //public ActionResult Delete(string id)
+        //{
+        //    service.Delete(id, AuthenticationHelper.User.CompanyId);
+        //    return RedirectToAction("Index", new JournalVoucherListModel());
+        //}
 
-        public ActionResult DeleteJVDetail(string id)
-        {
-            JournalVoucherDetailModel detail =
-                SessionHelper.JournalVoucher
-                .JournalVoucherDetail.FirstOrDefault
-                (x => x.Id == Convert.ToInt32(id));
-            SessionHelper.JournalVoucher.JournalVoucherDetail.Remove(detail);
-            service.DeleteJVDetail(id);
+        //public ActionResult DeleteJVDetail(string id)
+        //{
+        //    JournalVoucherDetailModel detail =
+        //        SessionHelper.JournalVoucher
+        //        .JournalVoucherDetail.FirstOrDefault
+        //        (x => x.Id == Convert.ToInt32(id));
+        //    SessionHelper.JournalVoucher.JournalVoucherDetail.Remove(detail);
+        //    service.DeleteJVDetail(id);
 
-            return RedirectToAction("Edit", new JournalVoucherCreateModel
-            {
-                ConversionRate = SessionHelper.JournalVoucher.ConversionRate,
-                CurrencyId = SessionHelper.JournalVoucher.CurrencyId,
-                CurrencyName = currencyService
-                .GetSingle(SessionHelper.JournalVoucher.CurrencyId.ToString(),
-                AuthenticationHelper.User.CompanyId).Name,
-                Description = SessionHelper.JournalVoucher.Description,
-                DocumentNo = SessionHelper.JournalVoucher.DocumentNo,
-                GLDate = SessionHelper.JournalVoucher.GLDate,
-                HeaderId = SessionHelper.JournalVoucher.Id,
-                JournalName = SessionHelper.JournalVoucher.JournalName,
-                PeriodId = SessionHelper.JournalVoucher.PeriodId,
-                PeriodName = calendarService
-                .GetSingle(SessionHelper.JournalVoucher.PeriodId.ToString(),
-                AuthenticationHelper.User.CompanyId).PeriodName,
-                SOBId = SessionHelper.JournalVoucher.SOBId,
-                SOBName = sobService
-                .GetSingle(SessionHelper.JournalVoucher.SOBId.ToString(),
-                AuthenticationHelper.User.CompanyId).Name
-            });
-        }
+        //    return RedirectToAction("Edit", new JournalVoucherCreateModel
+        //    {
+        //        ConversionRate = SessionHelper.JournalVoucher.ConversionRate,
+        //        CurrencyId = SessionHelper.JournalVoucher.CurrencyId,
+        //        CurrencyName = currencyService
+        //        .GetSingle(SessionHelper.JournalVoucher.CurrencyId.ToString(),
+        //        AuthenticationHelper.User.CompanyId).Name,
+        //        Description = SessionHelper.JournalVoucher.Description,
+        //        DocumentNo = SessionHelper.JournalVoucher.DocumentNo,
+        //        GLDate = SessionHelper.JournalVoucher.GLDate,
+        //        HeaderId = SessionHelper.JournalVoucher.Id,
+        //        JournalName = SessionHelper.JournalVoucher.JournalName,
+        //        PeriodId = SessionHelper.JournalVoucher.PeriodId,
+        //        PeriodName = calendarService
+        //        .GetSingle(SessionHelper.JournalVoucher.PeriodId.ToString(),
+        //        AuthenticationHelper.User.CompanyId).PeriodName,
+        //        SOBId = SessionHelper.JournalVoucher.SOBId,
+        //        SOBName = sobService
+        //        .GetSingle(SessionHelper.JournalVoucher.SOBId.ToString(),
+        //        AuthenticationHelper.User.CompanyId).Name
+        //    });
+        //}
 
-        public ActionResult EditJVDetail(string id)
-        {
-            JournalVoucherDetailModel detail = 
-                SessionHelper.JournalVoucher
-                .JournalVoucherDetail.FirstOrDefault
-                (x => x.Id == Convert.ToInt32(id));
-            SessionHelper.JournalVoucher.JournalVoucherDetail.Remove(detail);
-            JournalVoucherCreateModel model = new JournalVoucherCreateModel();
-            model.AccountedCr = detail.AccountedCr;
-            model.AccountedDr = detail.AccountedDr;
-            model.CodeCombinationId = detail.CodeCombinationId;
-            //model.CodeCombinationList = ...Ye poochna hai
-            model.ConversionRate = SessionHelper.JournalVoucher.ConversionRate;
-            model.CurrencyId = SessionHelper.JournalVoucher.CurrencyId;
-            model.CurrencyName= currencyService
-                .GetSingle(SessionHelper.JournalVoucher
-                .CurrencyId.ToString(),
-                AuthenticationHelper.User.CompanyId).Name;
-            model.Description = SessionHelper.JournalVoucher.Description;
-            model.DocumentNo = SessionHelper.JournalVoucher.DocumentNo;
-            model.EnteredCr = detail.EnteredCr;
-            model.EnteredDr = detail.EnteredDr;
-            model.GLDate = SessionHelper.JournalVoucher.GLDate;
-            model.GLLinesDescription = detail.Description;
-            model.HeaderId = SessionHelper.JournalVoucher.Id;
-            model.Id = Convert.ToInt32(id);
-            model.JournalName = SessionHelper.JournalVoucher.JournalName;
-            model.PeriodId = SessionHelper.JournalVoucher.PeriodId;
-            model.PeriodName = calendarService
-                .GetSingle(SessionHelper.JournalVoucher.PeriodId.ToString(),
-                AuthenticationHelper.User.CompanyId).PeriodName;
-            //model.PostingFlag = ... Ye poochna hai
-            model.Qty = detail.Qty;
-            model.SOBId = SessionHelper.JournalVoucher.SOBId;
-            model.SOBName = sobService
-                .GetSingle(SessionHelper.JournalVoucher.SOBId.ToString(),
-                AuthenticationHelper.User.CompanyId).Name;
-            model.TaxRateCode = detail.TaxRateCode;
+        //public ActionResult EditJVDetail(string id)
+        //{
+        //    JournalVoucherDetailModel detail =
+        //        SessionHelper.JournalVoucher
+        //        .JournalVoucherDetail.FirstOrDefault
+        //        (x => x.Id == Convert.ToInt32(id));
+        //    SessionHelper.JournalVoucher.JournalVoucherDetail.Remove(detail);
+        //    JournalVoucherCreateModel model = new JournalVoucherCreateModel();
+        //    model.AccountedCr = detail.AccountedCr;
+        //    model.AccountedDr = detail.AccountedDr;
+        //    model.CodeCombinationId = detail.CodeCombinationId;
+        //    //model.CodeCombinationList = ...Ye poochna hai
+        //    model.ConversionRate = SessionHelper.JournalVoucher.ConversionRate;
+        //    model.CurrencyId = SessionHelper.JournalVoucher.CurrencyId;
+        //    model.CurrencyName = currencyService
+        //        .GetSingle(SessionHelper.JournalVoucher
+        //        .CurrencyId.ToString(),
+        //        AuthenticationHelper.User.CompanyId).Name;
+        //    model.Description = SessionHelper.JournalVoucher.Description;
+        //    model.DocumentNo = SessionHelper.JournalVoucher.DocumentNo;
+        //    model.EnteredCr = detail.EnteredCr;
+        //    model.EnteredDr = detail.EnteredDr;
+        //    model.GLDate = SessionHelper.JournalVoucher.GLDate;
+        //    model.GLLinesDescription = detail.Description;
+        //    model.HeaderId = SessionHelper.JournalVoucher.Id;
+        //    model.Id = Convert.ToInt32(id);
+        //    model.JournalName = SessionHelper.JournalVoucher.JournalName;
+        //    model.PeriodId = SessionHelper.JournalVoucher.PeriodId;
+        //    model.PeriodName = calendarService
+        //        .GetSingle(SessionHelper.JournalVoucher.PeriodId.ToString(),
+        //        AuthenticationHelper.User.CompanyId).PeriodName;
+        //    //model.PostingFlag = ... Ye poochna hai
+        //    model.Qty = detail.Qty;
+        //    model.SOBId = SessionHelper.JournalVoucher.SOBId;
+        //    model.SOBName = sobService
+        //        .GetSingle(SessionHelper.JournalVoucher.SOBId.ToString(),
+        //        AuthenticationHelper.User.CompanyId).Name;
+        //    model.TaxRateCode = detail.TaxRateCode;
 
-            return RedirectToAction("Edit", model);
-        }
+        //    return RedirectToAction("Edit", model);
+        //}
 
-        public ActionResult GetEdit(string id)
-        {
-            SessionHelper.JournalVoucher = new 
-                JournalVoucherViewModel(service
-                .GetSingle(id, AuthenticationHelper.User.CompanyId));
+        //public ActionResult GetEdit(string id)
+        //{
+        //    SessionHelper.JournalVoucher = new
+        //        JournalVoucherViewModel(service
+        //        .GetSingle(id, AuthenticationHelper.User.CompanyId));
 
-            return RedirectToAction("Edit", new JournalVoucherCreateModel 
-            {
-                ConversionRate = SessionHelper.JournalVoucher.ConversionRate,
-                CurrencyId = SessionHelper.JournalVoucher.CurrencyId,
-                CurrencyName = currencyService
-                .GetSingle(SessionHelper.JournalVoucher.CurrencyId.ToString(),
-                AuthenticationHelper.User.CompanyId).Name,
-                Description = SessionHelper.JournalVoucher.Description,
-                DocumentNo = SessionHelper.JournalVoucher.DocumentNo,
-                GLDate = SessionHelper.JournalVoucher.GLDate,
-                HeaderId = SessionHelper.JournalVoucher.Id,
-                JournalName = SessionHelper.JournalVoucher.JournalName,
-                PeriodId = SessionHelper.JournalVoucher.PeriodId,
-                PeriodName = calendarService
-                .GetSingle(SessionHelper.JournalVoucher.PeriodId.ToString(),
-                AuthenticationHelper.User.CompanyId).PeriodName,
-                SOBId = SessionHelper.JournalVoucher.SOBId,
-                SOBName = sobService
-                .GetSingle(SessionHelper.JournalVoucher.SOBId.ToString(),
-                AuthenticationHelper.User.CompanyId).Name
-            });
-        }
+        //    return RedirectToAction("Edit", new JournalVoucherCreateModel
+        //    {
+        //        ConversionRate = SessionHelper.JournalVoucher.ConversionRate,
+        //        CurrencyId = SessionHelper.JournalVoucher.CurrencyId,
+        //        CurrencyName = currencyService
+        //        .GetSingle(SessionHelper.JournalVoucher.CurrencyId.ToString(),
+        //        AuthenticationHelper.User.CompanyId).Name,
+        //        Description = SessionHelper.JournalVoucher.Description,
+        //        DocumentNo = SessionHelper.JournalVoucher.DocumentNo,
+        //        GLDate = SessionHelper.JournalVoucher.GLDate,
+        //        HeaderId = SessionHelper.JournalVoucher.Id,
+        //        JournalName = SessionHelper.JournalVoucher.JournalName,
+        //        PeriodId = SessionHelper.JournalVoucher.PeriodId,
+        //        PeriodName = calendarService
+        //        .GetSingle(SessionHelper.JournalVoucher.PeriodId.ToString(),
+        //        AuthenticationHelper.User.CompanyId).PeriodName,
+        //        SOBId = SessionHelper.JournalVoucher.SOBId,
+        //        SOBName = sobService
+        //        .GetSingle(SessionHelper.JournalVoucher.SOBId.ToString(),
+        //        AuthenticationHelper.User.CompanyId).Name
+        //    });
+        //}
 
-        public ActionResult GetJournalVoucherList(string sobId, string periodId, string currencyId)
-        {
-            JournalVoucherListModel model = new JournalVoucherListModel();
-            model.SOBId = Convert.ToInt32(sobId);
-            model.PeriodId = Convert.ToInt32(periodId);
-            model.CurrencyId = Convert.ToInt32(currencyId);
-            model.JournalVouchers = getJournalVouchers(model);
-            return PartialView("_List", model);
-        }
+        //public ActionResult GetJournalVoucherList(string sobId, string periodId, string currencyId)
+        //{
+        //    JournalVoucherListModel model = new JournalVoucherListModel();
+        //    model.SOBId = Convert.ToInt32(sobId);
+        //    model.PeriodId = Convert.ToInt32(periodId);
+        //    model.CurrencyId = Convert.ToInt32(currencyId);
+        //    model.JournalVouchers = getJournalVouchers(model);
+        //    return PartialView("_List", model);
+        //}
 
-        [HttpPost]
-        public ActionResult Edit(JournalVoucherCreateModel model, string submit)
-        {
-            if (ModelState.IsValid)
-            {
-                if (model.GLDate < SessionHelper.Calendar.StartDate || model.GLDate > SessionHelper.Calendar.EndDate)
-                {
-                    ModelState.AddModelError("Error", "Invalid Effective date");
-                }
-                else
-                {
-                    SessionHelper.JournalVoucher = mapModel(model, SessionHelper.JournalVoucher);
+        //[HttpPost]
+        //public ActionResult Edit(JournalVoucherCreateModel model, string submit)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        if (model.GLDate < SessionHelper.Calendar.StartDate || model.GLDate > SessionHelper.Calendar.EndDate)
+        //        {
+        //            ModelState.AddModelError("Error", "Invalid Effective date");
+        //        }
+        //        else
+        //        {
+        //            SessionHelper.JournalVoucher = mapModel(model, SessionHelper.JournalVoucher);
 
-                    if (submit == "Save")
-                    {
-                        long result = saveJournalVoucher(SessionHelper.JournalVoucher);
-                        if (result > 0)
-                        {
-                            return RedirectToAction("Index");
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("Error", "Unable to save!");
-                        }
-                    }
-                    else
-                    {
-                        ////model.HeaderId = ?????,
-                        ////model.Id = ????,
-                        ////model.CodeCombinationId = ????;
-                        model.GLLinesDescription = "";
-                        model.EnteredDr = 0;
-                        model.AccountedDr = 0;
-                        model.EnteredCr = 0;
-                        model.AccountedCr = 0;
-                        model.Qty = 0;
-                        model.TaxRateCode = 0;
+        //            if (submit == "Save")
+        //            {
+        //                long result = saveJournalVoucher(SessionHelper.JournalVoucher);
+        //                if (result > 0)
+        //                {
+        //                    return RedirectToAction("Index");
+        //                }
+        //                else
+        //                {
+        //                    ModelState.AddModelError("Error", "Unable to save!");
+        //                }
+        //            }
+        //            else
+        //            {
+        //                ////model.HeaderId = ?????,
+        //                ////model.Id = ????,
+        //                ////model.CodeCombinationId = ????;
+        //                model.GLLinesDescription = "";
+        //                model.EnteredDr = 0;
+        //                model.AccountedDr = 0;
+        //                model.EnteredCr = 0;
+        //                model.AccountedCr = 0;
+        //                model.Qty = 0;
+        //                model.TaxRateCode = 0;
 
-                        return RedirectToAction("Edit", model);
-                        //return View("Edit", model);
-                    }
-                }
-            }
-            return View(model);
-        }
+        //                return RedirectToAction("Edit", model);
+        //                //return View("Edit", model);
+        //            }
+        //        }
+        //    }
+        //    return View(model);
+        //}
 
-        public ActionResult Edit(JournalVoucherCreateModel model)
-        {
+        //public ActionResult Edit(JournalVoucherCreateModel model)
+        //{
 
-            //////////Ye code change hojai ga...////////////////////////////
-            model.CodeCombinationList = codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, model.SOBId, "", false, null, "", "")
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.CodeCombinitionCode,
-                        Value = x.Id.ToString()
-                    }).ToList();
-            //////////...Ye code change hojai ga////////////////////////////
+        //    //////////Ye code change hojai ga...////////////////////////////
+        //    model.CodeCombinationList = codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, model.SOBId, "", false, null, "", "")
+        //            .Select(x => new SelectListItem
+        //            {
+        //                Text = x.CodeCombinitionCode,
+        //                Value = x.Id.ToString()
+        //            }).ToList();
+        //    //////////...Ye code change hojai ga////////////////////////////
 
-            return View(model);
-        }
+        //    return View(model);
+        //}
 
-        [HttpPost]
-        public ActionResult Create(JournalVoucherCreateModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                if (model.GLDate < SessionHelper.Calendar.StartDate || model.GLDate > SessionHelper.Calendar.EndDate)
-                {
-                    ModelState.AddModelError("Error", "Invalid Effective date");
-                }
-                else
-                {
-                    SessionHelper.JournalVoucher = mapModel(model, SessionHelper.JournalVoucher);
+        //[HttpPost]
+        //public ActionResult Create(JournalVoucherCreateModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        if (model.GLDate < SessionHelper.Calendar.StartDate || model.GLDate > SessionHelper.Calendar.EndDate)
+        //        {
+        //            ModelState.AddModelError("Error", "Invalid Effective date");
+        //        }
+        //        else
+        //        {
+        //            SessionHelper.JournalVoucher = mapModel(model, SessionHelper.JournalVoucher);
 
-                    ////model.HeaderId = ?????,
-                    ////model.Id = ????,
-                    ////model.CodeCombinationId = ????;
-                    model.GLLinesDescription = "";
-                    model.EnteredDr = 0;
-                    model.AccountedDr = 0;
-                    model.EnteredCr = 0;
-                    model.AccountedCr = 0;
-                    model.Qty = 0;
-                    model.TaxRateCode = 0;
+        //            ////model.HeaderId = ?????,
+        //            ////model.Id = ????,
+        //            ////model.CodeCombinationId = ????;
+        //            model.GLLinesDescription = "";
+        //            model.EnteredDr = 0;
+        //            model.AccountedDr = 0;
+        //            model.EnteredCr = 0;
+        //            model.AccountedCr = 0;
+        //            model.Qty = 0;
+        //            model.TaxRateCode = 0;
 
-                    return RedirectToAction("Edit", model);
-                }
-            }
-            return View(model);
-        }
+        //            return RedirectToAction("Edit", model);
+        //        }
+        //    }
+        //    return View(model);
+        //}
 
-        public ActionResult Create(long sobId, long periodId, long currencyId)
-        {
-            if (sobId > 0 && periodId > 0 && currencyId > 0)
-            {
-                JournalVoucherCreateModel model = new JournalVoucherCreateModel();
-                model.SOBId = sobId;
-                model.PeriodId = periodId;
-                model.CurrencyId = currencyId;
-                model.SOBName = sobService.GetSingle(sobId.ToString(), AuthenticationHelper.User.CompanyId).Name;
+        //public ActionResult Create(long sobId, long periodId, long currencyId)
+        //{
+        //    if (sobId > 0 && periodId > 0 && currencyId > 0)
+        //    {
+        //        JournalVoucherCreateModel model = new JournalVoucherCreateModel();
+        //        model.SOBId = sobId;
+        //        model.PeriodId = periodId;
+        //        model.CurrencyId = currencyId;
+        //        model.SOBName = sobService.GetSingle(sobId.ToString(), AuthenticationHelper.User.CompanyId).Name;
 
-                SessionHelper.Calendar = new CalendarViewModel(calendarService.GetSingle(periodId.ToString(), AuthenticationHelper.User.CompanyId));
-                model.GLDate = SessionHelper.Calendar.StartDate;
-                model.ConversionRate = 1;
+        //        SessionHelper.Calendar = new CalendarViewModel(calendarService.GetSingle(periodId.ToString(), AuthenticationHelper.User.CompanyId));
+        //        model.GLDate = SessionHelper.Calendar.StartDate;
+        //        model.ConversionRate = 1;
 
-                model.PeriodName = SessionHelper.Calendar.PeriodName;
-                model.CurrencyName = currencyService.GetSingle(currencyId.ToString(), AuthenticationHelper.User.CompanyId).Name;
-                model.CodeCombinationList = codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, model.SOBId, "", false, null, "", "")
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.CodeCombinitionCode,
-                        Value = x.Id.ToString()
-                    }).ToList();
+        //        model.PeriodName = SessionHelper.Calendar.PeriodName;
+        //        model.CurrencyName = currencyService.GetSingle(currencyId.ToString(), AuthenticationHelper.User.CompanyId).Name;
+        //        model.CodeCombinationList = codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, model.SOBId, "", false, null, "", "")
+        //            .Select(x => new SelectListItem
+        //            {
+        //                Text = x.CodeCombinitionCode,
+        //                Value = x.Id.ToString()
+        //            }).ToList();
 
-                return View(model);
-            }
-            else
-            {
-                return RedirectToAction("Index");
-            }
-        }
+        //        return View(model);
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("Index");
+        //    }
+        //}
 
-        public JsonResult CurrencyList(string sobId)
-        {
-            return Json(getCurrencyList(sobId), JsonRequestBehavior.AllowGet);
-        }
+        //public JsonResult CurrencyList(string sobId)
+        //{
+        //    return Json(getCurrencyList(sobId), JsonRequestBehavior.AllowGet);
+        //}
 
-        public JsonResult PeriodList(string sobId)
-        {
-            return Json(getPeriodList(sobId), JsonRequestBehavior.AllowGet);
-        }
+        //public JsonResult PeriodList(string sobId)
+        //{
+        //    return Json(getPeriodList(sobId), JsonRequestBehavior.AllowGet);
+        //}
 
-        public ActionResult Index(JournalVoucherListModel model)
-        {
-            if (model.SetOfBooks == null)
-            {
-                model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
-                    .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
-                model.SOBId = model.SetOfBooks.Any() ? Convert.ToInt32(model.SetOfBooks.First().Value) : 0;
-            }
+        //public ActionResult Index(JournalVoucherListModel model)
+        //{
+        //    if (model.SetOfBooks == null)
+        //    {
+        //        model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
+        //            .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
+        //        model.SOBId = model.SetOfBooks.Any() ? Convert.ToInt32(model.SetOfBooks.First().Value) : 0;
+        //    }
 
-            if (model.Periods == null && model.SetOfBooks.Any())
-            {
-                model.Periods = getPeriodList(model.SetOfBooks.First().Value);
-                model.PeriodId = model.Periods.Any() ? Convert.ToInt32(model.Periods.First().Value) : 0;
-            }
+        //    if (model.Periods == null && model.SetOfBooks.Any())
+        //    {
+        //        model.Periods = getPeriodList(model.SetOfBooks.First().Value);
+        //        model.PeriodId = model.Periods.Any() ? Convert.ToInt32(model.Periods.First().Value) : 0;
+        //    }
 
-            if (model.Currencies == null && model.SetOfBooks.Any())
-            {
-                model.Currencies = getCurrencyList(model.SetOfBooks.First().Value);
-                model.CurrencyId = model.Currencies.Any() ? Convert.ToInt32(model.Currencies.First().Value) : 0;
-            }
+        //    if (model.Currencies == null && model.SetOfBooks.Any())
+        //    {
+        //        model.Currencies = getCurrencyList(model.SetOfBooks.First().Value);
+        //        model.CurrencyId = model.Currencies.Any() ? Convert.ToInt32(model.Currencies.First().Value) : 0;
+        //    }
 
-            model.JournalVouchers = getJournalVouchers(model);
+        //    model.JournalVouchers = getJournalVouchers(model);
 
-            return View(model);
-        }
+        //    return View(model);
+        //}
 
         #region Private Methods
-        private JournalVoucherViewModel mapModel(JournalVoucherCreateModel model, JournalVoucherViewModel jv)
-        {
-            jv.CompanyId = AuthenticationHelper.User.CompanyId;
-            jv.ConversionRate = model.ConversionRate;
-            jv.CurrencyId = model.CurrencyId;
-            jv.Description = model.Description;
-            jv.DocumentNo = model.DocumentNo;
-            jv.GLDate = model.GLDate;
-            jv.Id = model.HeaderId;
-            jv.JournalName = model.JournalName;
-            if (jv.JournalVoucherDetail == null)
-            {
-                jv.JournalVoucherDetail = new List<JournalVoucherDetailModel>();
-            }
-            jv.JournalVoucherDetail.Add(new JournalVoucherDetailModel
-            {
-                AccountedCr = model.AccountedCr,
-                AccountedDr = model.AccountedDr,
-                CodeCombinationId = model.CodeCombinationId,
-                Description = model.GLLinesDescription,
-                EnteredCr = model.EnteredCr,
-                EnteredDr = model.EnteredDr,
-                HeaderId = model.HeaderId,
-                Id = model.Id,
-                Qty = model.Qty,
-                TaxRateCode = model.TaxRateCode
-            });
+        
+        //private long saveJournalVoucher(JournalVoucherViewModel model)
+        //{
+        //    JournalVoucher entity = new JournalVoucher();
+        //    entity.CompanyId = AuthenticationHelper.User.CompanyId;
+        //    entity.ConversionRate = model.ConversionRate;
+        //    entity.CreateDate = DateTime.Now;
+        //    entity.CurrencyId = model.CurrencyId;
+        //    entity.Description = model.Description;
+        //    entity.DocumentNo = model.DocumentNo;
+        //    entity.GLDate = model.GLDate;
+        //    entity.Id = model.Id;
+        //    entity.JournalName = model.JournalName;
+        //    entity.PeriodId = model.PeriodId;
+        //    //entity.PostingFlag = codeCombinitionService.GetSingle(model.CodeCombinationId.ToString(), AuthenticationHelper.User.CompanyId).AllowedPosting;
+        //    entity.PostingFlag = true;
+        //    entity.SOBId = model.SOBId;
+        //    entity.UpdateDate = DateTime.Now;
 
-            jv.PeriodId = model.PeriodId;
-            jv.SOBId = model.SOBId;
-            return jv;
-        }
+        //    if (entity.Id == 0)
+        //    {
+        //        entity.Id = Convert.ToInt32(service.Insert(entity));
+        //    }
+        //    else
+        //    {
+        //        entity.Id = Convert.ToInt32(service.Update(entity));
+        //    }
 
-        private long saveJournalVoucher(JournalVoucherViewModel model)
-        {
-            JournalVoucher entity = new JournalVoucher();
-            entity.CompanyId = AuthenticationHelper.User.CompanyId;
-            entity.ConversionRate = model.ConversionRate;
-            entity.CreateDate = DateTime.Now;
-            entity.CurrencyId = model.CurrencyId;
-            entity.Description = model.Description;
-            entity.DocumentNo = model.DocumentNo;
-            entity.GLDate = model.GLDate;
-            entity.Id = model.Id;
-            entity.JournalName = model.JournalName;
-            entity.PeriodId = model.PeriodId;
-            //entity.PostingFlag = codeCombinitionService.GetSingle(model.CodeCombinationId.ToString(), AuthenticationHelper.User.CompanyId).AllowedPosting;
-            entity.PostingFlag = true;
-            entity.SOBId = model.SOBId;
-            entity.UpdateDate = DateTime.Now;
+        //    if (model.JournalVoucherDetail.Any())
+        //    {
+        //        foreach (var detail in model.JournalVoucherDetail)
+        //        {
+        //            detail.HeaderId = entity.Id;
 
-            if (entity.Id == 0)
-            {
-                entity.Id = Convert.ToInt32(service.Insert(entity));
-            }
-            else
-            {
-                entity.Id = Convert.ToInt32(service.Update(entity));
-            }
+        //            JournalVoucherDetail entityDetail = new JournalVoucherDetail();
+        //            entityDetail.AccountedCr = detail.AccountedCr;
+        //            entityDetail.AccountedDr = detail.AccountedDr;
+        //            entityDetail.CodeCombinationId = detail.CodeCombinationId;
+        //            entityDetail.CreateDate = DateTime.Now;
+        //            entityDetail.Description = detail.Description;
+        //            entityDetail.EnteredCr = detail.EnteredCr;
+        //            entityDetail.EnteredDr = detail.EnteredDr;
+        //            entityDetail.HeaderId = detail.HeaderId;
+        //            entityDetail.Id = detail.Id;
+        //            entityDetail.Qty = detail.Qty;
+        //            entityDetail.TaxRateCode = detail.TaxRateCode;
+        //            entityDetail.UpdateDate = DateTime.Now;
 
-            if (model.JournalVoucherDetail.Any())
-            {
-                foreach (var detail in model.JournalVoucherDetail)
-                {
-                    detail.HeaderId = entity.Id;
+        //            if (entityDetail.Id == 0)
+        //            {
+        //                entityDetail.Id = Convert.ToInt32(service.Insert(entityDetail));
+        //            }
+        //            else
+        //            {
+        //                entityDetail.Id = Convert.ToInt32(service.Update(entityDetail));
+        //            }
+        //        }
+        //    }
 
-                    JournalVoucherDetail entityDetail = new JournalVoucherDetail();
-                    entityDetail.AccountedCr = detail.AccountedCr;
-                    entityDetail.AccountedDr = detail.AccountedDr;
-                    entityDetail.CodeCombinationId = detail.CodeCombinationId;
-                    entityDetail.CreateDate = DateTime.Now;
-                    entityDetail.Description = detail.Description;
-                    entityDetail.EnteredCr = detail.EnteredCr;
-                    entityDetail.EnteredDr = detail.EnteredDr;
-                    entityDetail.HeaderId = detail.HeaderId;
-                    entityDetail.Id = detail.Id;
-                    entityDetail.Qty = detail.Qty;
-                    entityDetail.TaxRateCode = detail.TaxRateCode;
-                    entityDetail.UpdateDate = DateTime.Now;
-
-                    if (entityDetail.Id == 0)
-                    {
-                        entityDetail.Id = Convert.ToInt32(service.Insert(entityDetail));
-                    }
-                    else
-                    {
-                        entityDetail.Id = Convert.ToInt32(service.Update(entityDetail));
-                    }
-                }
-            }
-
-            return entity.Id;
-        }
-
-        private List<JournalVoucherViewModel> getJournalVouchers(JournalVoucherListModel model)
-        {
-            List<JournalVoucherViewModel> list = service.GetAll(AuthenticationHelper.User.CompanyId, model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
-                .Select(x => new JournalVoucherViewModel(x)).ToList();
-            return list;
-        }
+        //    return entity.Id;
+        //}
 
         private List<SelectListItem> getPeriodList(string sobId)
         {
@@ -695,13 +656,13 @@ namespace _360Accounting.Web.Controllers
             return list;
         }
 
-        private List<SelectListItem> getCurrencyList(string sobId)
-        {
-            List<SelectListItem> list = currencyService.GetAll(AuthenticationHelper.User.CompanyId, Convert.ToInt32(sobId))
-                    .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
-            return list;
+        //private List<SelectListItem> getCurrencyList(string sobId)
+        //{
+        //    List<SelectListItem> list = currencyService.GetAll(AuthenticationHelper.User.CompanyId, Convert.ToInt32(sobId))
+        //            .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
+        //    return list;
 
-        }
+        //}
 
         private List<SelectListItem> getCodeCombinationList(long sobId)
         {
@@ -715,12 +676,12 @@ namespace _360Accounting.Web.Controllers
         }
         #endregion
 
-        public ActionResult JournalVoucherPartial()
-        {
-            IEnumerable<JournalVoucherViewModel> list = service.GetAll(AuthenticationHelper.User.CompanyId, "", true, null, "", "")
-                .Select(x => new JournalVoucherViewModel(x));
+        //public ActionResult JournalVoucherPartial()
+        //{
+        //    IEnumerable<JournalVoucherViewModel> list = service.GetAll(AuthenticationHelper.User.CompanyId, "", true, null, "", "")
+        //        .Select(x => new JournalVoucherViewModel(x));
 
-            return PartialView("_List");
-        }
+        //    return PartialView("_List");
+        //}
     }
 }

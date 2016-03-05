@@ -85,7 +85,7 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (model.StartDate < SessionHelper.Calendar.EndDate)
+                if (SessionHelper.Calendar != null && model.StartDate < SessionHelper.Calendar.EndDate)
                 {
                     ModelState.AddModelError("Error", "Start date is overlaping with previous period!");
                 }
@@ -119,8 +119,8 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Create(long sobId)
         {
             CalendarViewModel model = new CalendarViewModel();
-            model.SOBId = sobId;
             SessionHelper.Calendar = model;
+            model.SOBId = sobId;            
             return View(model);
         }
 

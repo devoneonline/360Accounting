@@ -27,6 +27,10 @@ namespace _360Accounting.Service
         {
             return this.repository.GetSingle(CompanyId, PeriodId, SOBId, CurrencyId);
         }
+        public IEnumerable<GLHeader> GetAll(long companyId, long sobId, long periodId, long currencyId)
+        {
+            return this.repository.GetAll(companyId, sobId, periodId, currencyId);
+        }
 
         public IEnumerable<GLHeader> GetAll(long companyId)
         {

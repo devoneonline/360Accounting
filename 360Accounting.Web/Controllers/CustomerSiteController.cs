@@ -53,15 +53,15 @@ namespace _360Accounting.Web.Controllers
             return View(model);
         }
 
-        public ActionResult Edit(long? Id, long CustomerId)
+        public ActionResult Edit(long customerId, long? id)
         {
             CustomerSiteModel model;
-            if (Id != null)
-                model = new CustomerSiteModel(service.GetSingle(Id.Value.ToString(), AuthenticationHelper.User.CompanyId));
+            if (id != null)
+                model = new CustomerSiteModel(service.GetSingle(id.Value.ToString(), AuthenticationHelper.User.CompanyId));
             else
             {
                 model = new CustomerSiteModel();
-                model.CustomerId = CustomerId;
+                model.CustomerId = customerId;
             }
 
             model.TaxCode = taxService.GetAll(AuthenticationHelper.User.CompanyId)
@@ -70,6 +70,7 @@ namespace _360Accounting.Web.Controllers
                     Text = x.TaxName,
                     Value = x.Id.ToString()
                 }).ToList();
+
             model.CodeCombination = codeCombinationService.GetAllCodeCombinitionView(AuthenticationHelper.User.CompanyId)
                     .Select(x => new SelectListItem
                     {
@@ -109,9 +110,9 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_List", list);
         }
 
-        public ActionResult Create()
-        {
-            return View(new CustomerSiteModel());
-        }
+        //public ActionResult Create()
+        //{
+        //    return View(new CustomerSiteModel());
+        //}
     }
 }

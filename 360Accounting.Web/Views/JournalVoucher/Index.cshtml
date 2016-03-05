@@ -1,4 +1,4 @@
-﻿@Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
+﻿@*@Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
 
 @model _360Accounting.Web.Models.JournalVoucherListModel
 
@@ -61,7 +61,10 @@
             })
 
             if (continueCreate) {
-                var url = '@Url.Content("~/JournalVoucher/Create?sobId=")' + $('#SOBId').val() + "&periodId=" + $('#PeriodId').val() + "&currencyId=" + $('#CurrencyId').val()
+                var url = '@Url.Content("~/JournalVoucher/Create?sobId=")' +
+                    $('#SOBId').val() +
+                    "&periodId=" + $('#PeriodId').val() +
+                    "&currencyId=" + $('#CurrencyId').val()
                 window.location.href = url;
             }
             else
@@ -111,4 +114,4 @@
             });
         });
     });
-</script>
+</script>*@
