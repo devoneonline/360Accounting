@@ -40,6 +40,7 @@ namespace _360Accounting.Web.Controllers
                 model.PeriodId = periodId;
                 model.CurrencyId = currencyId;
                 model.GlLines = DataProvider.GetGLLines();
+                model.DocumentNo = DataProvider.GetDocNo(AuthenticationHelper.User.CompanyId, periodId, sobId, currencyId);
                 AuthenticationHelper.JV = model;
             }
             return View(model);

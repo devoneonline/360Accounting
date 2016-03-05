@@ -9,9 +9,9 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
-    public class CustomerSiteModel
+    public class CustomerSiteViewModel
     {
-        public CustomerSiteModel(CustomerSite entity)
+        public CustomerSiteViewModel(CustomerSiteView entity)
         {
             if (entity != null)
             {
@@ -24,10 +24,12 @@ namespace _360Accounting.Web.Models
                 this.EndDate = entity.EndDate;
                 this.Id = entity.Id;
                 this.StartDate = entity.StartDate;
+                this.CodeCombinationName = entity.CodeCombinationName;
+                this.TaxCodeName = entity.TaxCodeName;
             }
         }
 
-        public CustomerSiteModel()
+        public CustomerSiteViewModel()
         {
             this.StartDate = Utility.CurrentDate();
             this.EndDate = Utility.ToDate();
@@ -52,8 +54,12 @@ namespace _360Accounting.Web.Models
         [Display(Name = "Tax Code")]
         public long TaxCodeId { get; set; }
 
+        public string TaxCodeName { get; set; }
+
         [Display(Name = "Code Combination")]
         public long CodeCombinationId { get; set; }
+
+        public string CodeCombinationName { get; set; }
 
         public List<SelectListItem> TaxCode { get; set; }
 

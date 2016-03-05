@@ -44,12 +44,35 @@ namespace _360Accounting.Web
             return modelList;
         }
 
+        public static string GetDocNo(long companyId, long periodId, long sobId, long currencyId)
+        {
+            var currentDocument = service.GetSingle(companyId, periodId, sobId, currencyId);
+            string newDocNo = "";
+            if (currentDocument != null)
+            {
+                int outVal;
+                bool isNumeric = int.TryParse(currentDocument.DocumentNo, out outVal);
+                if (isNumeric && currentDocument.DocumentNo.Length == 8)
+                {
+                    newDocNo = (int.Parse(currentDocument.DocumentNo) + 1).ToString();
+                    return newDocNo;
+                }
+            }
+
+            //Create New DocNum..
+            string yearDigit = DateTime.Now.ToString("yy");
+            string monthDigit = DateTime.Now.ToString("MM");
+            string docNo = int.Parse("1").ToString().PadLeft(4, '0');
+
+            return yearDigit + monthDigit + docNo;
+        }
+
         public static IList<SelectListItem> GetAccounts()
         {
 
             //TODO: need to set setofbook dynamically
 
-            return codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, 6, "", false, null, "", "")   
+            return codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, 6, "", false, null, "", "")
                     .Select(x => new SelectListItem
                     {
                         Text = x.CodeCombinitionCode,
@@ -59,10 +82,10 @@ namespace _360Accounting.Web
 
         public static void Update(string journalName, string glDate, string cRate, string descr)
         {
-            bool isNewRecord=true;
+            bool isNewRecord = true;
 
             GLHeaderModel header = AuthenticationHelper.JV;
-            if (header==null)
+            if (header == null)
             {
                 throw new Exception("No voucher information available!");
             }
@@ -74,21 +97,21 @@ namespace _360Accounting.Web
             GLHeader entity = GetEntityByModel(header);
 
             string result = string.Empty;
-            if (header.Id>0)    //update
+            if (header.Id > 0)    //update
             {
-                isNewRecord=false;
-               result= service.Update(entity);
+                isNewRecord = false;
+                result = service.Update(entity);
             }
             else
             {
-                result= service.Insert(entity);
+                result = service.Insert(entity);
             }
 
             if (!string.IsNullOrEmpty(result))
             {
-                foreach(var line in header.GlLines)
+                foreach (var line in header.GlLines)
                 {
-                    GLLines lineEntity = GetEntityByModel(line,header.ConversionRate);
+                    GLLines lineEntity = GetEntityByModel(line, header.ConversionRate);
                     lineEntity.HeaderId = Convert.ToInt64(result);
                     if (isNewRecord)
                     {
@@ -124,7 +147,7 @@ namespace _360Accounting.Web
             entity.GLDate = model.GLDate;
             entity.PeriodId = model.PeriodId;
             entity.SOBId = model.SOBId;
-            if (model.Id>0)
+            if (model.Id > 0)
             {
                 entity.CreateDate = DateTime.Now;
             }

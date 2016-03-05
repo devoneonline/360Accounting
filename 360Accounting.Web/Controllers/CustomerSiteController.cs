@@ -46,10 +46,10 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Index(long Id)//CustomerId
         {
             ViewBag.CustomerId = Id;
-            List<CustomerSiteModel> model = new List<CustomerSiteModel>();
-            IEnumerable<CustomerSite> list;
-            list = service.GetAll(Id);
-            model = list.Select(a => new CustomerSiteModel(a)).ToList();
+            List<CustomerSiteViewModel> model = new List<CustomerSiteViewModel>();
+            IEnumerable<CustomerSiteView> list;
+            list = service.GetAllbyCustomerId(Id);
+            model = list.Select(a => new CustomerSiteViewModel(a)).ToList();
             return View(model);
         }
 

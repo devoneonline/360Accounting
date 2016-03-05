@@ -23,6 +23,7 @@ namespace _360Accounting.Web.Models
             this.Name = entity.Name;
             this.Precision = entity.Precision;
             this.SOBId = entity.SOBId;
+            this.PrecisionName = PrecisionList.Where(rec => rec.Value == entity.Precision.ToString()).FirstOrDefault().Text;
             ////this.SOBName = entity.SOBName;
         }
         #endregion
@@ -46,6 +47,8 @@ namespace _360Accounting.Web.Models
 
         [Display(Name = "Precision")]
         public int Precision { get; set; }
+
+        public string PrecisionName { get; set; }
 
         public List<SelectListItem> PrecisionList
         {

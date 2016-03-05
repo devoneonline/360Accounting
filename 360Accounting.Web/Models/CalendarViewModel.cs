@@ -1,4 +1,5 @@
-﻿using _360Accounting.Core.Entities;
+﻿using _360Accounting.Common;
+using _360Accounting.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,6 +14,8 @@ namespace _360Accounting.Web.Models
         #region Constructors
         public CalendarViewModel()
         {
+            this.StartDate = Utility.FromDate();
+            this.EndDate = Utility.ToDate();
         }
 
         public CalendarViewModel(Calendar entity)

@@ -1,4 +1,5 @@
-﻿using _360Accounting.Core.Entities;
+﻿using _360Accounting.Common;
+using _360Accounting.Core.Entities;
 using _360Accounting.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -18,19 +19,38 @@ namespace _360Accounting.Data.Repositories
             return custSite;
         }
 
-        public IEnumerable<CustomerSite> GetAllbyCustomerId(long customerId)
+        public IEnumerable<CustomerSiteView> GetAllbyCustomerId(long customerId)
         {
-            IEnumerable<CustomerSite> CustomerSiteList = this.Context.CustomerSites
-                .Where(x => x.CustomerId == customerId);
-            return CustomerSiteList;
+            var query = from a in this.Context.CustomerSites
+                        join b in this.Context.Taxes on a.TaxCodeId equals b.Id
+                        join c in this.Context.CodeCombinitions on a.CodeCombinationId equals c.Id
+                        where a.CustomerId == customerId
+                        select new CustomerSiteView
+                        {
+                            CodeCombinationId = a.CodeCombinationId,
+                            CodeCombinationName = c.SOBId.ToString(), //TODO: Get the actual thing..
+                            CreateBy = a.CreateBy,
+                            CreateDate = a.CreateDate,
+                            CustomerId = a.CustomerId,
+                            EndDate = a.EndDate,
+                            Id = a.Id,
+                            SiteAddress = a.SiteAddress,
+                            SiteContact = a.SiteContact,
+                            SiteName = a.SiteName,
+                            StartDate = a.StartDate,
+                            TaxCodeId = a.TaxCodeId,
+                            TaxCodeName = b.TaxName,
+                            UpdateBy = a.UpdateBy,
+                            UpdateDate = a.UpdateDate
+                        };
+            return query;
         }
 
         public IEnumerable<CustomerSite> GetAll(long companyId)
         {
             //TODO: do we need to get all by company id here?
-            IEnumerable<CustomerSite> CustomerSiteList = this.Context.CustomerSites
-                .Where(x => x.CustomerId == companyId);
-            return CustomerSiteList;
+            IEnumerable<CustomerSite> customerSites = this.Context.CustomerSites;
+            return customerSites;
         }
 
         public string Insert(CustomerSite entity)

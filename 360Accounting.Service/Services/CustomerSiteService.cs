@@ -28,7 +28,7 @@ namespace _360Accounting.Service
             return this.repository.GetAll(companyId);
         }
 
-        public IEnumerable<CustomerSite> GetAllbyCustomerId(long customerId)
+        public IEnumerable<CustomerSiteView> GetAllbyCustomerId(long customerId)
         {
             return this.repository.GetAllbyCustomerId(customerId);
         }

@@ -9,6 +9,6 @@ namespace _360Accounting.Core.Interfaces
 {
     public interface ICustomerSiteRepository : IRepository<CustomerSite>
     {
-        IEnumerable<CustomerSite> GetAllbyCustomerId(long CustomerId);
+        IEnumerable<CustomerSiteView> GetAllbyCustomerId(long CustomerId);
     }
 }

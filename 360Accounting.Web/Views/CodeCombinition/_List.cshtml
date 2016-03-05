@@ -1,57 +1,58 @@
-﻿@model _360Accounting.Web.Models.CodeCombinitionListModel
+﻿@Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
+
+@model _360Accounting.Web.Models.CodeCombinitionListModel
 
 @{
     if (Model.CodeCombinitions != null)
     {
         if (Model.CodeCombinitions.Count() > 0)
         {
-            var grid = new WebGrid(canSort: true, rowsPerPage: 20,
-                ajaxUpdateContainerId: "dvCodeCombinitionList",
-                ajaxUpdateCallback: "CallBack");
+            Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
 
-            if (Model.Page == null)
+            var grid = Html.DevExpress().GridView(settings =>
             {
-                grid.PageIndex = 0;
-            }
-            else
+                settings.Name = "CodeCombinition";
+                settings.Theme = "Office2010Black";
+                settings.KeyFieldName = "Id";
+
+                settings.CallbackRouteValues = new { Controller = "CodeCombinition", Action = "CodeCombinitionPartial" };
+
+                settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+                settings.SettingsBehavior.ConfirmDelete = true;
+
+                settings.SettingsPager.Visible = true;
+                settings.Settings.ShowGroupPanel = false;
+                settings.Settings.ShowFilterRow = false;
+                settings.SettingsBehavior.AllowSort = false;
+                settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+                settings.Columns.Add(column =>
+                {
+                    column.Caption = "#";
+                    column.SetDataItemTemplateContent(c =>
+                    {
+                        ViewContext.Writer.Write(
+                            Html.Raw("<a href='#' onclick='EditCodeCombinition(" + DataBinder.Eval(c.DataItem, "Id") + ")'><i class='fa fa-edit'></i></a>")
+                            + "&nbsp;" +
+                            Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/CodeCombinition/Delete?Id=") + DataBinder.Eval(c.DataItem, "Id") + "&SOBId=" + DataBinder.Eval(c.DataItem, "SOBId") + "'><i class='fa fa-trash-o'></i></a>")
+                        );
+                    });
+                    column.Settings.AllowDragDrop = DefaultBoolean.False;
+                    column.Settings.AllowSort = DefaultBoolean.False;
+                    column.Width = 70;
+                });
+                settings.Columns.Add("CodeCombinitionCode", "Code Combinition");
+                settings.Columns.Add("StartDate").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;
+                settings.Columns.Add("EndDate").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;
+                settings.Columns.Add("AllowedPosting", "Allow Posting");
+            });
+            if (ViewData["EditError"] != null)
             {
-                grid.PageIndex = Model.Page.Value - 1;
+                grid.SetEditErrorText((string)ViewData["EditError"]);
             }
-
-            grid.Bind(Model.CodeCombinitions, rowCount: Model.TotalRecords,
-                autoSortAndPage: false);
-
-            <div class="col-sm-offset-10">
-                @{ var startrow = (grid.RowsPerPage * grid.PageIndex) + 1;}
-                @{ var endrow = (startrow + grid.Rows.Count - 1);}
-                Displaying: <b>@startrow - @endrow</b>
-                <br />
-                TotalRecords <b>@grid.TotalRowCount</b>
-            </div>
-
-            @grid.GetHtml(tableStyle: "table table-bordered table-hover table-striped",
-            mode: WebGridPagerModes.All, numericLinksCount: 10,
-                 htmlAttributes: new
-                 {
-                     style = "width:100%",
-                     @class = "table",
-                     id = "tblCodeCombinitions"
-                 },
-                 columns: grid.Columns
-                 (grid.Column("", header: "Action", style: "ActionLink",
-                 format: (item) => Html.Raw("<a class = 'delete' href = '" +
-                          @Url.Content("~/CodeCombinition/Delete?Id=") + item.Id + "&sobId=" + item.SOBId + "'><img src ='" +
-                          @Url.Content("~/Content/Images/delete.png") + "' alt ='' title ='Delete' style = 'border:0'/></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#'><img src='" +
-                               @Url.Content("~/Content/images/edit.png") + "' alt='' onclick='EditCodeCombinition("+item.Id+");' title='Edit' style='border:0'/></a>")),
-                     grid.Column(columnName: "CodeCombinitionCode",
-                     header: "Code Combinition",
-                     canSort: true),
-                     grid.Column("", header: "Start Date", format: (item)=> item.StartDate != null? item.StartDate.ToString(_360Accounting.Common.Const.DATE_FORMAT): "", canSort: true),
-                     grid.Column("", header: "End Date", format: (item)=> item.EndDate != null? item.EndDate.ToString(_360Accounting.Common.Const.DATE_FORMAT): "", canSort: true),
-                     grid.Column("AllowedPosting", header: "Allow Posting", canSort: true)
-                 )
-            )
-
+            grid.Bind(Model.CodeCombinitions).GetHtml();
         }
         else
         {
@@ -77,7 +78,7 @@
     }
 
     $(document).ready(function () {
-        $('.delete').click(function () {
+        $('.deleteQuestion').click(function () {
             return confirm("Sure! you wanted to delete ?");
         });
     });

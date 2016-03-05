@@ -10,5 +10,6 @@ namespace _360Accounting.Core
 {
     public interface IGLHeaderService : IService<GLHeader>
     {
+        GLHeader GetSingle(long CompanyId, long PeriodId, long SOBId, long CurrencyId);
     }
 }
