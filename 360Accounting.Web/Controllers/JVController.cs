@@ -58,6 +58,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Index(JournalVoucherListModel model)
         {
+            SessionHelper.JV = null;
             if (model.SetOfBooks == null)
             {
                 model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
@@ -138,7 +139,26 @@ namespace _360Accounting.Web.Controllers
             return PartialView("createPartial", DataProvider.GetGLLines());
         }
 
-        public ActionResult DeleteDetailPartial(GLLinesModel model)
+        [HttpPost, ValidateInput(false)]
+        public ActionResult UpdatePartial(GLLinesModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    DataProvider.UpdateGLLine(model);
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            return PartialView("createPartial", DataProvider.GetGLLines());
+        }
+
+        public ActionResult DeletePartial(GLLinesModel model)
         {
             if (ModelState.IsValid)
             {

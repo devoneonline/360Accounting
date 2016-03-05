@@ -309,6 +309,96 @@ namespace _360Accounting.Web.Controllers
         }
         #endregion
 
+        #region Private Methods
+
+        //private long saveJournalVoucher(JournalVoucherViewModel model)
+        //{
+        //    JournalVoucher entity = new JournalVoucher();
+        //    entity.CompanyId = AuthenticationHelper.User.CompanyId;
+        //    entity.ConversionRate = model.ConversionRate;
+        //    entity.CreateDate = DateTime.Now;
+        //    entity.CurrencyId = model.CurrencyId;
+        //    entity.Description = model.Description;
+        //    entity.DocumentNo = model.DocumentNo;
+        //    entity.GLDate = model.GLDate;
+        //    entity.Id = model.Id;
+        //    entity.JournalName = model.JournalName;
+        //    entity.PeriodId = model.PeriodId;
+        //    //entity.PostingFlag = codeCombinitionService.GetSingle(model.CodeCombinationId.ToString(), AuthenticationHelper.User.CompanyId).AllowedPosting;
+        //    entity.PostingFlag = true;
+        //    entity.SOBId = model.SOBId;
+        //    entity.UpdateDate = DateTime.Now;
+
+        //    if (entity.Id == 0)
+        //    {
+        //        entity.Id = Convert.ToInt32(service.Insert(entity));
+        //    }
+        //    else
+        //    {
+        //        entity.Id = Convert.ToInt32(service.Update(entity));
+        //    }
+
+        //    if (model.JournalVoucherDetail.Any())
+        //    {
+        //        foreach (var detail in model.JournalVoucherDetail)
+        //        {
+        //            detail.HeaderId = entity.Id;
+
+        //            JournalVoucherDetail entityDetail = new JournalVoucherDetail();
+        //            entityDetail.AccountedCr = detail.AccountedCr;
+        //            entityDetail.AccountedDr = detail.AccountedDr;
+        //            entityDetail.CodeCombinationId = detail.CodeCombinationId;
+        //            entityDetail.CreateDate = DateTime.Now;
+        //            entityDetail.Description = detail.Description;
+        //            entityDetail.EnteredCr = detail.EnteredCr;
+        //            entityDetail.EnteredDr = detail.EnteredDr;
+        //            entityDetail.HeaderId = detail.HeaderId;
+        //            entityDetail.Id = detail.Id;
+        //            entityDetail.Qty = detail.Qty;
+        //            entityDetail.TaxRateCode = detail.TaxRateCode;
+        //            entityDetail.UpdateDate = DateTime.Now;
+
+        //            if (entityDetail.Id == 0)
+        //            {
+        //                entityDetail.Id = Convert.ToInt32(service.Insert(entityDetail));
+        //            }
+        //            else
+        //            {
+        //                entityDetail.Id = Convert.ToInt32(service.Update(entityDetail));
+        //            }
+        //        }
+        //    }
+
+        //    return entity.Id;
+        //}
+
+        private List<SelectListItem> getPeriodList(string sobId)
+        {
+            List<SelectListItem> list = calendarService.GetAll(AuthenticationHelper.User.CompanyId, Convert.ToInt32(sobId))
+                    .Select(x => new SelectListItem { Text = x.PeriodName, Value = x.Id.ToString() }).ToList();
+            return list;
+        }
+
+        //private List<SelectListItem> getCurrencyList(string sobId)
+        //{
+        //    List<SelectListItem> list = currencyService.GetAll(AuthenticationHelper.User.CompanyId, Convert.ToInt32(sobId))
+        //            .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
+        //    return list;
+
+        //}
+
+        private List<SelectListItem> getCodeCombinationList(long sobId)
+        {
+            List<SelectListItem> list = codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, sobId)
+                .Select(x => new SelectListItem
+                {
+                    Text = Utility.Stringize(".", x.Segment1, x.Segment2, x.Segment3, x.Segment4, x.Segment5, x.Segment6, x.Segment7, x.Segment8),
+                    Value = x.Id.ToString()
+                }).ToList();
+            return list;
+        }
+        #endregion
+
         //public ActionResult Delete(string id)
         //{
         //    service.Delete(id, AuthenticationHelper.User.CompanyId);
@@ -585,96 +675,6 @@ namespace _360Accounting.Web.Controllers
 
         //    return View(model);
         //}
-
-        #region Private Methods
-        
-        //private long saveJournalVoucher(JournalVoucherViewModel model)
-        //{
-        //    JournalVoucher entity = new JournalVoucher();
-        //    entity.CompanyId = AuthenticationHelper.User.CompanyId;
-        //    entity.ConversionRate = model.ConversionRate;
-        //    entity.CreateDate = DateTime.Now;
-        //    entity.CurrencyId = model.CurrencyId;
-        //    entity.Description = model.Description;
-        //    entity.DocumentNo = model.DocumentNo;
-        //    entity.GLDate = model.GLDate;
-        //    entity.Id = model.Id;
-        //    entity.JournalName = model.JournalName;
-        //    entity.PeriodId = model.PeriodId;
-        //    //entity.PostingFlag = codeCombinitionService.GetSingle(model.CodeCombinationId.ToString(), AuthenticationHelper.User.CompanyId).AllowedPosting;
-        //    entity.PostingFlag = true;
-        //    entity.SOBId = model.SOBId;
-        //    entity.UpdateDate = DateTime.Now;
-
-        //    if (entity.Id == 0)
-        //    {
-        //        entity.Id = Convert.ToInt32(service.Insert(entity));
-        //    }
-        //    else
-        //    {
-        //        entity.Id = Convert.ToInt32(service.Update(entity));
-        //    }
-
-        //    if (model.JournalVoucherDetail.Any())
-        //    {
-        //        foreach (var detail in model.JournalVoucherDetail)
-        //        {
-        //            detail.HeaderId = entity.Id;
-
-        //            JournalVoucherDetail entityDetail = new JournalVoucherDetail();
-        //            entityDetail.AccountedCr = detail.AccountedCr;
-        //            entityDetail.AccountedDr = detail.AccountedDr;
-        //            entityDetail.CodeCombinationId = detail.CodeCombinationId;
-        //            entityDetail.CreateDate = DateTime.Now;
-        //            entityDetail.Description = detail.Description;
-        //            entityDetail.EnteredCr = detail.EnteredCr;
-        //            entityDetail.EnteredDr = detail.EnteredDr;
-        //            entityDetail.HeaderId = detail.HeaderId;
-        //            entityDetail.Id = detail.Id;
-        //            entityDetail.Qty = detail.Qty;
-        //            entityDetail.TaxRateCode = detail.TaxRateCode;
-        //            entityDetail.UpdateDate = DateTime.Now;
-
-        //            if (entityDetail.Id == 0)
-        //            {
-        //                entityDetail.Id = Convert.ToInt32(service.Insert(entityDetail));
-        //            }
-        //            else
-        //            {
-        //                entityDetail.Id = Convert.ToInt32(service.Update(entityDetail));
-        //            }
-        //        }
-        //    }
-
-        //    return entity.Id;
-        //}
-
-        private List<SelectListItem> getPeriodList(string sobId)
-        {
-            List<SelectListItem> list = calendarService.GetAll(AuthenticationHelper.User.CompanyId, Convert.ToInt32(sobId))
-                    .Select(x => new SelectListItem { Text = x.PeriodName, Value = x.Id.ToString() }).ToList();
-            return list;
-        }
-
-        //private List<SelectListItem> getCurrencyList(string sobId)
-        //{
-        //    List<SelectListItem> list = currencyService.GetAll(AuthenticationHelper.User.CompanyId, Convert.ToInt32(sobId))
-        //            .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
-        //    return list;
-
-        //}
-
-        private List<SelectListItem> getCodeCombinationList(long sobId)
-        {
-            List<SelectListItem> list = codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, sobId)
-                .Select(x => new SelectListItem
-                {
-                    Text = Utility.Stringize(".", x.Segment1, x.Segment2, x.Segment3, x.Segment4, x.Segment5, x.Segment6, x.Segment7, x.Segment8),
-                    Value = x.Id.ToString()
-                }).ToList();
-            return list;
-        }
-        #endregion
 
         //public ActionResult JournalVoucherPartial()
         //{

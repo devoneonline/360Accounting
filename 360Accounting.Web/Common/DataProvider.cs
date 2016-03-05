@@ -101,19 +101,18 @@ namespace _360Accounting.Web
             }
         }
 
+        public static void UpdateGLLine(GLLinesModel model)
+        {
+            GLHeaderModel header = SessionHelper.JV;
+            GLLinesModel glLine = header.GlLines.FirstOrDefault(x => x.Id == model.Id);
+            header.GlLines.Remove(glLine);
+            header.GlLines.Add(model);
+        }
+
         public static void Insert(GLLinesModel model)
         {
             GLHeaderModel header = SessionHelper.JV;
-            if (model.Id == 0)
-            {
-                header.GlLines.Add(model);
-            }
-            else
-            {
-                GLLinesModel glLine = header.GlLines.FirstOrDefault(x => x.Id == model.Id);
-                header.GlLines.Remove(glLine);
-                header.GlLines.Add(model);
-            }
+            header.GlLines.Add(model);
         }
 
         internal static void Delete(string id)
