@@ -4,12 +4,18 @@
 {
     r.Name = "DocumentViewer";
     r.Report = (XtraReport)Model;
-    r.CallbackRouteValues = new { Controller = "JournalVoucher", Action = "UserwiseEntriesTrailPartial",
+    r.CallbackRouteValues = new
+    {
+        Controller = "JV",
+        Action = "UserwiseEntriesTrailPartial",
         sobId = r.Report.Parameters["SOBId"].Value,
         fromDate = r.Report.Parameters["FromDate"].Value,
         toDate = r.Report.Parameters["ToDate"].Value,
         userId = r.Report.Parameters["UserId"].Value };
-    r.ExportRouteValues = new { Controller = "JournalVoucher", Action = "UserwiseEntriesTrailPartailExport",
+    r.ExportRouteValues = new
+    {
+        Controller = "JV",
+        Action = "UserwiseEntriesTrailPartailExport",
         sobId = r.Report.Parameters["SOBId"].Value,
         fromDate = r.Report.Parameters["FromDate"].Value,
         toDate = r.Report.Parameters["ToDate"].Value,

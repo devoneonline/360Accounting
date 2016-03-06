@@ -1,96 +1,76 @@
-﻿using _360Accounting.Core;
-using _360Accounting.Core.Entities;
-using _360Accounting.Core.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//using _360Accounting.Core;
+//using _360Accounting.Core.Entities;
+//using _360Accounting.Core.Interfaces;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
 
-namespace _360Accounting.Service
-{
-    public class JournalVoucherService : IJournalVoucherService
-    {
-        private IJournalVoucherRepository repository;
+//namespace _360Accounting.Service
+//{
+//    public class JournalVoucherService : IJournalVoucherService
+//    {
+//        private IJournalVoucherRepository repository;
 
-        public JournalVoucherService(IJournalVoucherRepository repo)
-        {
-            this.repository = repo;
-        }
+//        public JournalVoucherService(IJournalVoucherRepository repo)
+//        {
+//            this.repository = repo;
+//        }
 
-        public List<TrialBalance> TrialBalance(long companyId, long sobId, long fromCodeCombinationId, long toCodeCombinationId, long periodId)
-        {
-            return this.repository.TrialBalance(companyId, sobId, fromCodeCombinationId, toCodeCombinationId, periodId);
-        }
+//        public IEnumerable<JournalVoucherDetail> GetAll(string headerId)
+//        {
+//            return this.repository.GetAll(headerId);
+//        }
 
-        public List<Ledger> Ledger(long companyId, long sobId, long fromCodeCombinationId, long toCodeCombinationId, DateTime fromDate, DateTime toDate)
-        {
-            return this.repository.Ledger(companyId, sobId, fromCodeCombinationId, toCodeCombinationId, fromDate, toDate);
-        }
+//        public string Insert(JournalVoucherDetail entity)
+//        {
+//            return this.repository.Insert(entity);
+//        }
 
-        public List<AuditTrail> AuditTrail(long companyId, long sobId, DateTime fromDate, DateTime toDate)
-        {
-            return this.repository.AuditTrail(companyId, sobId, fromDate, toDate);
-        }
+//        public string Update(JournalVoucherDetail entity)
+//        {
+//            return this.repository.Update(entity);
+//        }
 
-        public List<UserwiseEntriesTrail> UserwiseEntriesTrail(long companyId, long sobId, DateTime fromDate, DateTime toDate, Guid? UserId)
-        {
-            return this.repository.UserwiseEntriesTrail(companyId, sobId, fromDate, toDate, UserId);
-        }
+//        public IEnumerable<JournalVoucher> GetAll(long companyId, string searchText, bool paging, int? page, string sort, string sortDir)
+//        {
+//            return this.repository.GetAll(companyId, searchText, paging, page ?? 1, sort, sortDir);
+//        }
 
-        public IEnumerable<JournalVoucherDetail> GetAll(string headerId)
-        {
-            return this.repository.GetAll(headerId);
-        }
+//        public JournalVoucher GetSingle(string id, long companyId)
+//        {
+//            return this.repository.GetSingle(id, companyId);
+//        }
 
-        public string Insert(JournalVoucherDetail entity)
-        {
-            return this.repository.Insert(entity);
-        }
+//        public IEnumerable<JournalVoucher> GetAll(long companyId)
+//        {
+//            return this.repository.GetAll(companyId);
+//        }
 
-        public string Update(JournalVoucherDetail entity)
-        {
-            return this.repository.Update(entity);
-        }
+//        public string Insert(JournalVoucher entity)
+//        {
+//            return this.repository.Insert(entity);
+//        }
 
-        public IEnumerable<JournalVoucher> GetAll(long companyId, string searchText, bool paging, int? page, string sort, string sortDir)
-        {
-            return this.repository.GetAll(companyId, searchText, paging, page ?? 1, sort, sortDir);
-        }
+//        public string Update(JournalVoucher entity)
+//        {
+//            return this.repository.Update(entity);
+//        }
 
-        public JournalVoucher GetSingle(string id, long companyId)
-        {
-            return this.repository.GetSingle(id, companyId);
-        }
+//        public void Delete(string id, long companyId)
+//        {
+//            this.repository.Delete(id, companyId);
+//        }
 
-        public IEnumerable<JournalVoucher> GetAll(long companyId)
-        {
-            return this.repository.GetAll(companyId);
-        }
+//        public int Count(long companyId)
+//        {
+//            return this.repository.Count(companyId);
+//        }
 
-        public string Insert(JournalVoucher entity)
-        {
-            return this.repository.Insert(entity);
-        }
-
-        public string Update(JournalVoucher entity)
-        {
-            return this.repository.Update(entity);
-        }
-
-        public void Delete(string id, long companyId)
-        {
-            this.repository.Delete(id, companyId);
-        }
-
-        public int Count(long companyId)
-        {
-            return this.repository.Count(companyId);
-        }
-
-        public void DeleteJVDetail(string id)
-        {
-            this.repository.DeleteJvDetail(id);
-        }
-    }
-}
+//        public void DeleteJVDetail(string id)
+//        {
+//            this.repository.DeleteJvDetail(id);
+//        }
+//    }
+//}

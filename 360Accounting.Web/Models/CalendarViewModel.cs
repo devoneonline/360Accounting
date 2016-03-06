@@ -14,8 +14,8 @@ namespace _360Accounting.Web.Models
         #region Constructors
         public CalendarViewModel()
         {
-            this.StartDate = Utility.FromDate();
-            this.EndDate = Utility.ToDate();
+            this.StartDate = Const.FromDate;
+            this.EndDate = Const.ToDate;
         }
 
         public CalendarViewModel(Calendar entity)

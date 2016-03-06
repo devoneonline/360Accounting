@@ -1,11 +1,10 @@
-﻿@model _360Accounting.Web.Models.TrialBalanceCriteriaModel
+﻿@model _360Accounting.Web.Models.LedgerCriteriaModel
 
 @{
-    ViewBag.Title = "Trial Balance";
+    ViewBag.Title = "Ledger";
 }
 
 <div class="container">
-
     <div class="clearfix">
         <div class="col-lg-12">
             <h3 class="page-header">
@@ -36,8 +35,13 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(m => m.PeriodId)
-                @Html.DropDownListFor(m => m.PeriodId, Model.Periods, new { @class = "form-control" })
+                @Html.LabelFor(m => m.FromDate)
+                @Html.TextBoxFor(m => m.FromDate, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.ToDate)
+                @Html.TextBoxFor(m => m.ToDate, new { @class = "form-control" })
             </div>
 
             <div class="form-group">
@@ -50,22 +54,18 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $('[type=date]').attr('class', 'form-control');
         $('#SOBId').change(
             function () {
-                var url = '@Url.Content("~/JournalVoucher/CodeCombinationList")';
-                var url2 = '@Url.Content("~/JournalVoucher/PeriodList")';
+                var url = '@Url.Content("~/JV/CodeCombinationList")';
 
                 $.get(url, { sobId: $(this).val() },
                 function (combinations) {
                     var fromCodeCombinationDropdown = $('#FromCodeCombinationId');
                     fromCodeCombinationDropdown.empty();
-
+                    
                     var toCodeCombinationDropdown = $('#ToCodeCombinationId');
                     toCodeCombinationDropdown.empty();
-                    //for (var i = 0; i < data.length; i++) {
-                    //    fromCodeCombinationDropdown.append('<option value?+data[i].value+?="">' + data[i].Text + '</option>');
-                    //    toCodeCombinationDropdown.append('<option value?+data[i].value+?="">' + data[i].Text + '</option>');
-                    //}
 
                     $.each(combinations, function (i, combination) {
                         $('<option>',
@@ -78,23 +78,13 @@
                                 value: combination.Value
                             }).html(combination.Text).appendTo(fromCodeCombinationDropdown);
                     });
-                });
-
-                $.get(url2, { sobId: $(this).val() },
-                function (periods) {
-                    var periodDropdown = $('#PeriodId');
-                    periodDropdown.empty();
-
-                    $.each(periods, function (i, period) {
-                        $('<option>',
-                            {
-                                value: period.Value
-                            }).html(period.Text).appendTo(periodDropdown);
-                    });
 
                     //for (var i = 0; i < data.length; i++) {
-                    //    periodDropdown.append('<option value?+data[i].value+?="">' + data[i].Text + '</option>');
+                    //    fromCodeCombinationDropdown.append('<option value?+data[i].value+?="">' + data[i].Text + '</option>');
+                    //    toCodeCombinationDropdown.append('<option value?+data[i].value+?="">' + data[i].Text + '</option>');
                     //}
+
+
                 });
             });
 
@@ -106,33 +96,51 @@
             }
 
             var fromCodeCombinationId = $('#FromCodeCombinationId').val();
-            if (fromCodeCombinationId == null) {
+            if (fromCodeCombinationId == null)
+            {
                 errList += "- Please enter valid From Code Combination.<br>";
             }
 
             var toCodeCombinationId = $('#ToCodeCombinationId').val();
-            if (toCodeCombinationId == null) {
+            if (toCodeCombinationId == null)
+            {
                 errList += "- Please enter valid To Code Combination.<br>";
             }
 
-            var periodId = $('#PeriodId').val();
-            if (periodId == null) {
-                errList += "- Please enter valid Period.<br>";
+            var fromDate = new Date($('#FromDate').val());
+            var toDate = new Date($('#ToDate').val());
+
+            if (fromDate == 'Invalid Date')
+            {
+                errList += "- Please enter valid From Date.<br>";
             }
 
-            if (errList != "") {
+            if (toDate == 'Invalid Date')
+            {
+                errList += "- Please enter valid To Date.<br>";
+            }
+
+
+            if (fromDate > toDate)
+            {
+                errList += "- From date must be less than To Date.<br>";
+            }
+
+            if (errList != "")
+            {
                 errList = "<strong>Errors:</strong><br>" + errList;
                 $('#dvError').empty().html(errList);
             }
-            else {
-                var url = '@Url.Content("~/JournalVoucher/TrialBalanceReport?sobId=")' +
+            else
+            {
+                var url = '@Url.Content("~/JV/LedgerReport?sobId=")' +
                     $('#SOBId').val() +
                     "&fromCodeCombinationId=" + $('#FromCodeCombinationId').val() +
                     "&toCodeCombinationId=" + $('#ToCodeCombinationId').val() +
-                    "&periodId=" + $('#PeriodId').val();
+                    "&fromDate=" + $('#FromDate').val() +
+                    "&toDate=" + $('#ToDate').val();
                 window.location.href = url;
             }
         });
     });
 </script>
-

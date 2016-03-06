@@ -29,8 +29,8 @@ namespace _360Accounting.Web.Models
 
         public CustomerSiteModel()
         {
-            this.StartDate = Utility.CurrentDate();
-            this.EndDate = Utility.ToDate();
+            this.StartDate = Const.CurrentDate;
+            this.EndDate = Const.ToDate;
         }
 
         public long Id { get; set; }

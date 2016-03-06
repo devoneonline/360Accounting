@@ -15,7 +15,7 @@
   <object name="CalendarRepository" type="_360Accounting.Data.Repositories.CalendarRepository, 360Accounting.Data"> </object>
   <object name="CodeCombinitionRepository" type="_360Accounting.Data.Repositories.CodeCombinitionRepository, 360Accounting.Data"> </object>
   <object name="CurrencyRepository" type="_360Accounting.Data.Repositories.CurrencyRepository, 360Accounting.Data"> </object>
-  <object name="JournalVoucherRepository" type="_360Accounting.Data.Repositories.JournalVoucherRepository, 360Accounting.Data"> </object>
+  <!--<object name="JournalVoucherRepository" type="_360Accounting.Data.Repositories.JournalVoucherRepository, 360Accounting.Data"> </object>-->
   <object name="CustomerRepository" type="_360Accounting.Data.Repositories.CustomerRepository, 360Accounting.Data"> </object>
   <object name="CustomerSiteRepository" type="_360Accounting.Data.Repositories.CustomerSiteRepository, 360Accounting.Data"> </object>
   <object name="TaxRepository" type="_360Accounting.Data.Repositories.TaxRepository, 360Accounting.Data"> </object>
@@ -71,9 +71,9 @@
   <object name="CurrencyService" type="_360Accounting.Service.CurrencyService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="CurrencyRepository" />
   </object>
-  <object name="JournalVoucherService" type="_360Accounting.Service.JournalVoucherService, 360Accounting.Service" >
+  <!--<object name="JournalVoucherService" type="_360Accounting.Service.JournalVoucherService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="JournalVoucherRepository" />
-  </object>
+  </object>-->
 
   <object name="GLHeaderService" type="_360Accounting.Service.GLHeaderService, 360Accounting.Service">
     <constructor-arg name="repo" ref="GLHeaderRepository" />

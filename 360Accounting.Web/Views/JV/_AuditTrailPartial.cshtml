@@ -6,7 +6,7 @@
     r.Report = (XtraReport)Model;
     r.CallbackRouteValues = new 
     { 
-        Controller = "JournalVoucher",
+        Controller = "JV",
         Action = "AuditTrailPartial",
         sobId = r.Report.Parameters["SOBId"].Value,
         fromDate = r.Report.Parameters["FromDate"].Value,
@@ -14,7 +14,7 @@
     };
     r.ExportRouteValues = new
     {
-        Controller = "JournalVoucher",
+        Controller = "JV",
         Action = "AuditTrailPartialExport",
         sobId = r.Report.Parameters["SOBId"].Value,
         fromDate = r.Report.Parameters["FromDate"].Value,

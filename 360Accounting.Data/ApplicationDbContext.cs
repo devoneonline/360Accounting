@@ -46,9 +46,9 @@ namespace _360Accounting.Data
 
         public DbSet<Calendar> Calendars { get; set; }
 
-        public DbSet<JournalVoucher> JournalVouchers { get; set; }
+        //public DbSet<JournalVoucher> JournalVouchers { get; set; }
 
-        public DbSet<JournalVoucherDetail> JournalVoucherDetails { get; set; }
+        //public DbSet<JournalVoucherDetail> JournalVoucherDetails { get; set; }
 
         public DbSet<aspnet_User> Users { get; set; }
 

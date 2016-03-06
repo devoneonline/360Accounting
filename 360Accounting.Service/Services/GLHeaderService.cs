@@ -56,5 +56,25 @@ namespace _360Accounting.Service
         {
             return this.repository.Count(companyId);
         }
+
+        public List<TrialBalance> TrialBalance(long companyId, long sobId, long fromCodeCombinationId, long toCodeCombinationId, long periodId)
+        {
+            return this.repository.TrialBalance(companyId, sobId, fromCodeCombinationId, toCodeCombinationId, periodId);
+        }
+
+        public List<Ledger> Ledger(long companyId, long sobId, long fromCodeCombinationId, long toCodeCombinationId, DateTime fromDate, DateTime toDate)
+        {
+            return this.repository.Ledger(companyId, sobId, fromCodeCombinationId, toCodeCombinationId, fromDate, toDate);
+        }
+
+        public List<AuditTrail> AuditTrail(long companyId, long sobId, DateTime fromDate, DateTime toDate)
+        {
+            return this.repository.AuditTrail(companyId, sobId, fromDate, toDate);
+        }
+
+        public List<UserwiseEntriesTrail> UserwiseEntriesTrail(long companyId, long sobId, DateTime fromDate, DateTime toDate, Guid? UserId)
+        {
+            return this.repository.UserwiseEntriesTrail(companyId, sobId, fromDate, toDate, UserId);
+        }
     }
 }

@@ -11,5 +11,13 @@ namespace _360Accounting.Core.Interfaces
     {
         GLHeader GetSingle(long CompanyId, long PeriodId, long SOBId, long CurrencyId);
         IEnumerable<GLHeader> GetAll(long companyId, long sobId, long periodId, long currencyId);
+
+        List<UserwiseEntriesTrail> UserwiseEntriesTrail(long companyId, long sobId, DateTime fromDate, DateTime toDate, Guid? UserId);
+
+        List<AuditTrail> AuditTrail(long companyId, long sobId, DateTime fromDate, DateTime toDate);
+
+        List<Ledger> Ledger(long companyId, long sobId, long fromCodeCombinationId, long toCodeCombinationId, DateTime fromDate, DateTime toDate);
+
+        List<TrialBalance> TrialBalance(long companyId, long sobId, long fromCodeCombinationId, long toCodeCombinationId, long periodId);
     }
 }

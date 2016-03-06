@@ -36,7 +36,7 @@ namespace _360Accounting.Web.Models
 
         public GLHeaderModel()
         {
-            this.GLDate = Utility.CurrentDate();
+            this.GLDate = Const.CurrentDate;
         }
 
         public GLHeaderModel(GLHeader entity )
