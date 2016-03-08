@@ -1,4 +1,12 @@
-﻿@{
+﻿@*<div class="row">
+    <div class="col-lg-12">
+        <div class="navbar-right">
+            <input type="button" value="Add New" id="btnAddNew" class="btn btn-default tstyCus-btn" />
+        </div>
+    </div>
+</div>*@
+
+@{
     Html.EnableClientValidation();
     Html.EnableUnobtrusiveJavaScript();
 
@@ -29,7 +37,7 @@
 
                 column.ColumnType = MVCxGridViewColumnType.ComboBox;
                 var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
-                comboBoxProperties.DataSource = DataProvider.GetAccounts(_360Accounting.Web.Mvc.SessionHelper.SOBId);
+                comboBoxProperties.DataSource = JVHelper.GetAccounts(_360Accounting.Web.SessionHelper.SOBId);
                 comboBoxProperties.TextField = "Text";
                 comboBoxProperties.ValueField = "Value";
                 comboBoxProperties.ValueType = typeof(int);
@@ -85,3 +93,11 @@
     }
 }
 @grid.Bind(Model).GetHtml()
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnAddNew').click(function () {
+            window.location.href = '@Url.Content("~/JV/AddNewPartial")';
+        });
+    });
+</script>

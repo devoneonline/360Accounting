@@ -1,7 +1,7 @@
 ﻿using _360Accounting.Core;
 using _360Accounting.Core.Entities;
 using _360Accounting.Web.Models;
-using _360Accounting.Web.Mvc;
+using _360Accounting.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +11,13 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web
 {
-    public static class DataProvider
+    public static class JVHelper
     {
         private static IGLHeaderService service;
         private static IGLLineService lineService;
         private static ICodeCombinitionService codeCombinitionService;
 
-        static DataProvider()
+        static JVHelper()
         {
             service = IoC.Resolve<IGLHeaderService>("GLHeaderService");
             lineService = IoC.Resolve<IGLLineService>("GLLineService");
@@ -68,6 +68,7 @@ namespace _360Accounting.Web
 
             return yearDigit + monthDigit + docNo;
         }
+
         public static IList<SelectListItem> GetAccounts(long sobId)
         {
             return codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", false, null, "", "")
@@ -91,6 +92,7 @@ namespace _360Accounting.Web
             header.GLDate = Convert.ToDateTime(glDate);
             header.ConversionRate = Convert.ToDecimal(cRate);
             header.Description = descr;
+            header.DocumentNo = JVHelper.GetDocNo(AuthenticationHelper.User.CompanyId, header.PeriodId, header.SOBId, header.CurrencyId);
 
             GLHeader entity = GetEntityByModel(header);
 
@@ -156,6 +158,8 @@ namespace _360Accounting.Web
             {
                 ////New mode mai ye chalta hai
                 modelList = header.GlLines;
+                
+                
             }
             return modelList;
         }

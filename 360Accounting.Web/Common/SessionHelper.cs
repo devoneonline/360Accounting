@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace _360Accounting.Web.Mvc
+namespace _360Accounting.Web
 {
     public class SessionHelper
     {

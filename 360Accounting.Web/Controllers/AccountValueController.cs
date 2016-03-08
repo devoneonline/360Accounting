@@ -1,4 +1,5 @@
-﻿using _360Accounting.Core;
+﻿using _360Accounting.Common;
+using _360Accounting.Core;
 using _360Accounting.Core.Entities;
 using _360Accounting.Data.Repositories;
 using _360Accounting.Service;
@@ -46,8 +47,10 @@ namespace _360Accounting.Web.Controllers
                 model.ChartId = account.Id;
                 model.SetOfBook = sobService.GetSingle(sobId.ToString(),AuthenticationHelper.User.CompanyId).Name;
                 model.Segment = segment;
+                model.StartDate = Const.CurrentDate;
+                model.EndDate = Const.ToDate;
                 model.ValueChar = getSegmentCharacters(segment, account);
-                Session["sobid"] = sobId;   //TODO:: temporary
+                SessionHelper.SOBId = sobId;   //TODO:: temporary
                 return View("Edit", model);
             }
 

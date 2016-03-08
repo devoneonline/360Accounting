@@ -1,5 +1,5 @@
 ﻿using _360Accounting.Core;
-using _360Accounting.Web.Mvc;
+using _360Accounting.Web;
 using _360Accounting.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -345,15 +345,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            DataProvider.Delete(id);
+            JVHelper.Delete(id);
             return RedirectToAction("Index");
         }
 
         public ActionResult Edit(string id)
         {
-            GLHeaderModel model = DataProvider.GetGLHeaders(id);
+            GLHeaderModel model = JVHelper.GetGLHeaders(id);
             SessionHelper.SOBId = model.SOBId;
-            model.GlLines = DataProvider.GetGLLines(id);
+            model.GlLines = JVHelper.GetGLLines(id);
             SessionHelper.JV = model;
             return View("Create", model);
         }
@@ -387,7 +387,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult JVPartialWithModel(JournalVoucherListModel model)
         {
             SessionHelper.SOBId = model.SOBId;
-            return PartialView("_List", DataProvider
+            return PartialView("_List", JVHelper
                 .GetGLHeaders(model.SOBId, model.PeriodId,
                 model.CurrencyId));
         }
@@ -395,7 +395,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult JVPartial(long sobId, long periodId, long currencyId)
         {
             SessionHelper.SOBId = sobId;
-            return PartialView("_List", DataProvider
+            return PartialView("_List", JVHelper
                 .GetGLHeaders(sobId, periodId, currencyId));
         }
 
@@ -411,16 +411,16 @@ namespace _360Accounting.Web.Controllers
                 model.SOBId = sobId;
                 model.PeriodId = periodId;
                 model.CurrencyId = currencyId;
-                model.GlLines = DataProvider.GetGLLines();
+                model.GlLines = new List<GLLinesModel>();
                 SessionHelper.JV = model;
-                model.DocumentNo = DataProvider.GetDocNo(AuthenticationHelper.User.CompanyId, periodId, sobId, currencyId);
+                model.DocumentNo = "New";
             }
             return View(model);
         }
 
         public ActionResult CreatePartial()
         {
-            return PartialView("createPartial", DataProvider.GetGLLines());
+            return PartialView("createPartial", JVHelper.GetGLLines());
         }
 
         [HttpPost, ValidateInput(false)]
@@ -430,7 +430,7 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
-                    DataProvider.Insert(model);
+                    JVHelper.Insert(model);
                 }
                 catch (Exception e)
                 {
@@ -439,7 +439,7 @@ namespace _360Accounting.Web.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("createPartial", DataProvider.GetGLLines());
+            return PartialView("createPartial", JVHelper.GetGLLines());
         }
 
         [HttpPost, ValidateInput(false)]
@@ -449,7 +449,7 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
-                    DataProvider.UpdateGLLine(model);
+                    JVHelper.UpdateGLLine(model);
                 }
                 catch (Exception e)
                 {
@@ -458,7 +458,7 @@ namespace _360Accounting.Web.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("createPartial", DataProvider.GetGLLines());
+            return PartialView("createPartial", JVHelper.GetGLLines());
         }
 
         public ActionResult DeletePartial(GLLinesModel model)
@@ -470,7 +470,7 @@ namespace _360Accounting.Web.Controllers
                     GLHeaderModel header = SessionHelper.JV;
                     header.GlLines.Remove(model);
                     SessionHelper.JV = header;
-                    IList<GLLinesModel> glLines = DataProvider.GetGLLines();
+                    IList<GLLinesModel> glLines = JVHelper.GetGLLines();
                     return PartialView("createPartial", glLines);
                 }
                 catch (Exception e)
@@ -487,7 +487,7 @@ namespace _360Accounting.Web.Controllers
         {
             try
             {
-                DataProvider.Update(journalName, glDate, cRate, descr);
+                JVHelper.Update(journalName, glDate, cRate, descr);
                 SessionHelper.JV = null;
                 return Json("Success");
             }

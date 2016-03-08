@@ -1,4 +1,5 @@
-﻿using _360Accounting.Core;
+﻿using _360Accounting.Common;
+using _360Accounting.Core;
 using _360Accounting.Core.Entities;
 using _360Accounting.Data.Repositories;
 using _360Accounting.Service;
@@ -55,6 +56,8 @@ namespace _360Accounting.Web.Controllers
             CodeCombinitionCreateViewModel model =  new CodeCombinitionCreateViewModel();
             model.SegmentList = getSegmentList(sobId);
             model.SOBId = sobId;
+            model.StartDate = Const.CurrentDate;
+            model.EndDate = Const.ToDate;
             return PartialView("_Create", model);
         }
         

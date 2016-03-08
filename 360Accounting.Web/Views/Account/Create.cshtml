@@ -1,6 +1,6 @@
-﻿@model _360Accounting.Web.Models.AccountCreateViewModel
+﻿@*@model _360Accounting.Web.Models.AccountCreateViewModel
 @{
-    ViewBag.Title = "Create Account";
+    ViewBag.Title = "Account";
 }
 <div class="container">
     <div class="clearfix">
@@ -11,7 +11,7 @@
         </div>
     </div>
     <div class="clearfix">
-        @using (Html.BeginForm("Create", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        @using (Html.BeginForm("Edit", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             <div class="col-lg-6">
                 @Html.ValidationSummary()
@@ -146,4 +146,4 @@
             </div>
         }
     </div>
-</div>
+</div>*@
