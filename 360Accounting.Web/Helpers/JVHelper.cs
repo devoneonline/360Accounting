@@ -71,12 +71,25 @@ namespace _360Accounting.Web
 
         public static IList<SelectListItem> GetAccounts(long sobId)
         {
-            return codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", false, null, "", "")
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.CodeCombinitionCode,
-                        Value = x.Id.ToString()
-                    }).ToList();
+            if (SessionHelper.Calendar != null)
+            {
+                return codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", false, null, "", "")
+                    .Where(rec => rec.StartDate >= SessionHelper.Calendar.StartDate && rec.EndDate <= SessionHelper.Calendar.EndDate)
+                        .Select(x => new SelectListItem
+                        {
+                            Text = x.CodeCombinitionCode,
+                            Value = x.Id.ToString()
+                        }).ToList();
+            }
+            else
+            {
+                return codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", false, null, "", "")
+                        .Select(x => new SelectListItem
+                        {
+                            Text = x.CodeCombinitionCode,
+                            Value = x.Id.ToString()
+                        }).ToList();
+            }
         }
 
         public static void Update(string journalName, string glDate, string cRate, string descr)

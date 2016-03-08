@@ -402,20 +402,40 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Create(long sobId, long periodId, long currencyId)
         {
             SessionHelper.SOBId = sobId;
+            SessionHelper.Calendar = new CalendarViewModel(calendarService.GetSingle(periodId.ToString(), AuthenticationHelper.User.CompanyId));
 
             GLHeaderModel model = SessionHelper.JV;
             if (model == null)
             {
-                model = new GLHeaderModel();
-                model.CompanyId = AuthenticationHelper.User.CompanyId;
-                model.SOBId = sobId;
-                model.PeriodId = periodId;
-                model.CurrencyId = currencyId;
-                model.GlLines = new List<GLLinesModel>();
+                model = new GLHeaderModel
+                {
+                    CompanyId = AuthenticationHelper.User.CompanyId,
+                    SOBId = sobId,
+                    PeriodId = periodId,
+                    CurrencyId = currencyId,
+                    GlLines = new List<GLLinesModel>(),
+                    DocumentNo = "New",
+                    GLDate = SessionHelper.Calendar.StartDate
+                };
                 SessionHelper.JV = model;
-                model.DocumentNo = "New";
             }
             return View(model);
+        }
+
+        public JsonResult CheckGLDate(DateTime glDate, long periodId)
+        {
+            bool returnData = true;
+            if (periodId > 0)
+            {
+                if (SessionHelper.Calendar != null)
+                {
+                    if (glDate < SessionHelper.Calendar.StartDate || glDate > SessionHelper.Calendar.EndDate)
+                        returnData = false;
+                    else
+                        returnData = true;
+                }
+            }
+            return Json(returnData);
         }
 
         public ActionResult CreatePartial()
@@ -430,7 +450,25 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
-                    JVHelper.Insert(model);
+                    bool validated = false;
+                    if (model.EnteredCr > 0 && model.EnteredDr > 0)
+                    {
+                        ViewData["EditError"] = "Both debit and credit can not be entered in one entry.";
+                        return PartialView("createPartial", JVHelper.GetGLLines());
+                    }
+                    if (SessionHelper.JV != null)
+                    {
+                        model.Id = SessionHelper.JV.GlLines.Count() + 1;
+                        if (SessionHelper.JV.GlLines.Any(rec => rec.CodeCombinationId == model.CodeCombinationId))
+                            ViewData["EditError"] = "Duplicate accounts can not be added.";
+                        else
+                            validated = true;
+                    }
+                    else
+                        model.Id = 1;
+
+                    if (validated)
+                        JVHelper.Insert(model);
                 }
                 catch (Exception e)
                 {
@@ -487,9 +525,19 @@ namespace _360Accounting.Web.Controllers
         {
             try
             {
-                JVHelper.Update(journalName, glDate, cRate, descr);
-                SessionHelper.JV = null;
-                return Json("Success");
+                bool saved = false;
+                if (SessionHelper.JV != null)
+                {
+                    if (SessionHelper.JV.GlLines.Sum(cri => cri.EnteredDr) == SessionHelper.JV.GlLines.Sum(cri => cri.EnteredCr))
+                    {
+                        JVHelper.Update(journalName, glDate, cRate, descr);
+                        SessionHelper.JV = null;
+                        saved = true;
+                    }
+                    else
+                        ViewData["EditError"] = "The sum of Debit and Credit should be equal.";
+                }
+                return Json(saved);
             }
             catch (Exception e)
             {

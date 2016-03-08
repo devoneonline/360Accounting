@@ -68,24 +68,32 @@
             }
             else
                 alert('Please select the values.');
+        });
 
-            @*window.location.href = '@Url.Content("~/JV/Create")' +
-                "?sobId=" + $('#SOBId').val() +
-                "&periodId=" + $('#PeriodId').val() +
-                "&currencyId=" + $('#CurrencyId').val();*@
+        jQuery.ajaxSetup({ async: false });
+
+        function RefreshGrid() {
+            var url3 = '@Url.Content("~/JV/JVPartial")';
+
+            $.get(url3, { sobId: $('#SOBId').val(), periodId: $('#PeriodId').val(), currencyId: $('#CurrencyId').val() },
+                function (data) {
+                    $('#dvList').html(data);
+                });
+        }
+
+        $('#PeriodId, #CurrencyId').change(function () {
+            RefreshGrid();
         });
 
         $('#SOBId').change(function () {
             var url1 = '@Url.Content("~/JV/PeriodList")';
             var url2 = '@Url.Content("~/JV/CurrencyList")';
-            var url3 = '@Url.Content("~/JV/JVPartial")';
 
             $.get(url1, { sobId: $(this).val() },
                 function (data) {
                     var periodDropdown = $('#PeriodId');
                     periodDropdown.empty();
                     for (var i = 0; i < data.length; i++) {
-                        //periodDropdown.append('<option value?+data[i].Value+?="">' + data[i].Text + '</option>');
                         periodDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
                     }
                 });
@@ -95,30 +103,11 @@
                     var currencyDropdown = $('#CurrencyId');
                     currencyDropdown.empty();
                     for (var i = 0; i < data.length; i++) {
-                        //currencyDropdown.append('<option value?+data[i].Value+?="">' + data[i].Text + '</option>');
                         currencyDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
                     }
                 });
 
-            $.get(url3, { sobId: $('#SOBId').val(), periodId: $('#PeriodId').val(), currencyId: $('#CurrencyId').val() },
-                function (data) {
-                    $('#dvList').html(data);
-                });
-
-            @*$.ajax({
-                url: '@Url.Content("~/JV/JVPartial")',
-                data: {
-                    sobId: $('#SOBId').val(),
-                    periodId: $('#PeriodId').val(),
-                    currencyId: $('#CurrencyId').val()
-                },
-                datatype: 'html',
-                type: 'post',
-                error: function () { alert("Error in Fetch"); },
-                success: function (data) {
-                    $('#dvList').html(data);
-                }
-            });*@
+            RefreshGrid();
         });
     });
 </script>

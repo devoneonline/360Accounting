@@ -5,7 +5,6 @@
         </div>
     </div>
 </div>*@
-
 @{
     Html.EnableClientValidation();
     Html.EnableUnobtrusiveJavaScript();
@@ -25,11 +24,14 @@
             settings.SettingsPopup.EditForm.Width = 600;
             settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
 
+            //Client side validation is allowed on Batch Edit mode.
+            //settings.ClientSideEvents.BatchEditStartEditing = String.Format("function() {{ PrintHello(); }}");
+
             settings.CommandColumn.Visible = true;
             settings.CommandColumn.ShowNewButton = true;
             settings.CommandColumn.ShowDeleteButton = true;
             settings.CommandColumn.ShowEditButton = true;
-
+            
             settings.Columns.Add(column =>
             {
                 column.FieldName = "CodeCombinationId";
@@ -47,7 +49,6 @@
             {
                 column.FieldName = "EnteredDr";
                 column.Caption = "Debit";
-
                 column.ColumnType = MVCxGridViewColumnType.SpinEdit;
                 var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
                 spinEditProperties.NumberType = SpinEditNumberType.Float;
@@ -56,12 +57,14 @@
                 spinEditProperties.MinValue = 0;
                 spinEditProperties.MaxValue = 100000000;
                 spinEditProperties.SpinButtons.ShowLargeIncrementButtons = true;
+
+                //spinEditProperties.ClientSideEvents.ValueChanged = String.Format("function(s, e) {{ CheckVal(s, e); }}");
             });
             settings.Columns.Add(column =>
             {
                 column.FieldName = "EnteredCr";
                 column.Caption = "Credit";
-
+                
                 column.ColumnType = MVCxGridViewColumnType.SpinEdit;
                 var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
                 spinEditProperties.NumberType = SpinEditNumberType.Float;
@@ -70,6 +73,8 @@
                 spinEditProperties.MinValue = 0;
                 spinEditProperties.MaxValue = 100000000;
                 spinEditProperties.SpinButtons.ShowLargeIncrementButtons = true;
+                
+                //spinEditProperties.ClientSideEvents.ValueChanged = String.Format("function(s, e) {{ CheckVal(s, e); }}");
             });
             settings.Columns.Add(column =>
             {
@@ -100,4 +105,8 @@
             window.location.href = '@Url.Content("~/JV/AddNewPartial")';
         });
     });
+
+    function CheckVal(s, e) {
+        alert('Hello');
+    }
 </script>

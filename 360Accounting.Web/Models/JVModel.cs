@@ -70,7 +70,8 @@ namespace _360Accounting.Web.Models
 
         public GLLinesModel()
         {
-
+            this.EnteredCr = 0;
+            this.EnteredDr = 0;
         }
 
         public GLLinesModel(GLLines entity)

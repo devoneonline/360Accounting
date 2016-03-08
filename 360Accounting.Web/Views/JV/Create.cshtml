@@ -4,7 +4,6 @@
 @model _360Accounting.Web.Models.GLHeaderModel
 
 <div class="container">
-
     @using (Html.BeginForm())
     {
         @Html.HiddenFor(model=> model.Id)
@@ -70,6 +69,24 @@
     $(document).ready(function () {
         $('#GLDate').attr('class', 'form-control');
 
+        $('#GLDate').blur(function () {
+            $.ajax({
+                url: '@Url.Content("~/JV/CheckGLDate")',
+                data: { glDate: $(this).val(), periodId: $('#PeriodId').val() },
+                type: 'post',
+                datatype: 'json',
+                success: function (data) {
+                    if (!data) {
+                        alert('GL Date must lie in the range of current period.')
+                        $('#btnSave').attr('disabled', true)
+                    }
+                    else
+                        $('#btnSave').attr('disabled', false)
+                },
+                error: function () { }
+            })
+        })
+
         $('#btnCancel').click(function () {
             if (confirm('Do you want to leave this page?')) {
                 window.location.href = '@Url.Content("~/JV")';
@@ -85,7 +102,8 @@
             var url = '@Url.Content("~/JV/SaveVoucher")';
             $.post(url, { journalName: journalName, glDate: glDate, cRate: cRate, descr: descr },
                 function (result) {
-                    window.location.href = '@Url.Content("~/JV")'
+                    if (result)
+                        window.location.href = '@Url.Content("~/JV")';
                 });
         });
     });
