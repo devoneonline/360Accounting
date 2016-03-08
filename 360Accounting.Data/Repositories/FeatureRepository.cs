@@ -67,7 +67,8 @@ namespace _360Accounting.Data.Repositories
 
         public IEnumerable<Feature> GetSuperAdminMenu()
         {
-            return this.Context.Features.Where(x => x.Id == 8).Include(x => x.Features);
+            IEnumerable<Feature> features = this.Context.Features.Where(x => x.Id == 8).Include(x => x.Features);
+            return features;
         }
     }
 }
