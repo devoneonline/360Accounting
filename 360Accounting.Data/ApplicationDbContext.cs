@@ -20,6 +20,8 @@ namespace _360Accounting.Data
 
         #region DbSets
 
+        public DbSet<InvoiceSource> InvoiceSources { get; set; }
+
         public DbSet<Customer> Customers { get; set; }
 
         public DbSet<CustomerSite> CustomerSites { get; set; }
@@ -65,6 +67,10 @@ namespace _360Accounting.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ////base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<InvoiceSource>().ToTable("tbInvoiceSource");
+            modelBuilder.Entity<InvoiceSource>().HasKey(t => t.Id);
+
             modelBuilder.Entity<Customer>().ToTable("tbCustomer");
             modelBuilder.Entity<Customer>().HasKey(t => t.Id);
 

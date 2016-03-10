@@ -48,7 +48,7 @@ namespace _360Accounting.Web.Controllers
                 model.SetOfBook = sobService.GetSingle(sobId.ToString(),AuthenticationHelper.User.CompanyId).Name;
                 model.Segment = segment;
                 model.StartDate = Const.CurrentDate;
-                model.EndDate = Const.ToDate;
+                model.EndDate = Const.EndDate;
                 model.ValueChar = getSegmentCharacters(segment, account);
                 SessionHelper.SOBId = sobId;   //TODO:: temporary
                 return View("Edit", model);

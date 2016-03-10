@@ -15,13 +15,12 @@ namespace _360Accounting.Web
     {
         private static IGLHeaderService service;
         private static IGLLineService lineService;
-        private static ICodeCombinitionService codeCombinitionService;
+        
 
         static JVHelper()
         {
             service = IoC.Resolve<IGLHeaderService>("GLHeaderService");
             lineService = IoC.Resolve<IGLLineService>("GLLineService");
-            codeCombinitionService = IoC.Resolve<ICodeCombinitionService>("CodeCombinitionService");
         }
 
         public static GLHeaderModel GetGLHeaders(string id)
@@ -69,28 +68,7 @@ namespace _360Accounting.Web
             return yearDigit + monthDigit + docNo;
         }
 
-        public static IList<SelectListItem> GetAccounts(long sobId)
-        {
-            if (SessionHelper.Calendar != null)
-            {
-                return codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", false, null, "", "")
-                    .Where(rec => rec.StartDate >= SessionHelper.Calendar.StartDate && rec.EndDate <= SessionHelper.Calendar.EndDate)
-                        .Select(x => new SelectListItem
-                        {
-                            Text = x.CodeCombinitionCode,
-                            Value = x.Id.ToString()
-                        }).ToList();
-            }
-            else
-            {
-                return codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", false, null, "", "")
-                        .Select(x => new SelectListItem
-                        {
-                            Text = x.CodeCombinitionCode,
-                            Value = x.Id.ToString()
-                        }).ToList();
-            }
-        }
+        
 
         public static void Update(string journalName, string glDate, string cRate, string descr)
         {

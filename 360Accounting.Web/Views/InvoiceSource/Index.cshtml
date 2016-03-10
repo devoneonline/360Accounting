@@ -1,0 +1,63 @@
+﻿@Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
+
+@model _360Accounting.Web.Models.InvoiceSourceListModel
+
+@{
+    ViewBag.Title = "Invoice Sources";
+}
+
+<div class="container">
+    <div class="clearfix">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="form-group">
+            @Html.LabelFor(m => m.SetOfBooks)
+            @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="col-lg-12">
+        <div class="form-group">
+            <input type="button" id="btnCreate" value="Create New" class="btn btn-default tstyCus-btn" />
+        </div>
+    </div>
+    <div id="dvList" class="col-lg-12 cusGridWrapper">
+        @Html.Action("InvoiceSourceListPartial", new { sobId = Model.SOBId })
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnCreate').click(function () {
+            var url = '@Url.Content("~/InvoiceSource/Create?sobId=")' +
+                $('#SOBId').val();
+            window.location.href = url;
+        });
+
+        $('#SOBId').change(function () {
+            $('#dvList').html("Please wait...");
+            $.ajax({
+                url: '@Url.Content("~/InvoiceSource/InvoiceSourceListPartial")',
+                data: {
+                    sobId: $('#SOBId').val()
+                },
+                datatype: 'html',
+                type: 'post',
+                error: function (data) { alert(data); },
+                success: function (data) {
+                    $('#dvList').empty();
+                    $('#dvList').html(data);
+                }
+            });
+        });
+    });
+</script>
+
+
+

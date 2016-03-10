@@ -45,5 +45,23 @@ namespace _360Accounting.Web
             entity.UpdateDate = DateTime.Now;
             return entity;
         }
+
+        public static InvoiceSource GetEntityByModel(InvoiceSourceViewModel model)
+        {
+            if (model == null) return null;
+
+            return new InvoiceSource
+            {
+                //CodeCombinationId = model.CodeCombinationId,
+                CompanyId = AuthenticationHelper.User.CompanyId,
+                CreateDate = DateTime.Now,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                Description = model.Description,
+                Id = model.Id,
+                SOBId = model.SOBId,
+                UpdateDate = DateTime.Now
+            };
+        }
     }
 }

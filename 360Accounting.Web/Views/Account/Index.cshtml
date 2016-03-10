@@ -16,7 +16,7 @@
     </div>
     <div class="col-lg-12">
         <div class="form-group">
-            <input type="button" id="btnSave" value="Create New" class="btn btn-default tstyCus-btn" />
+            <input type="button" id="btnCreate" value="Create New" class="btn btn-default tstyCus-btn" />
         </div>
     </div>
     <div class="col-lg-12 cusGridWrapper">
@@ -28,7 +28,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#btnSave').click(function () {
+        $('#btnCreate').click(function () {
             var url = '@Url.Content("~/Account/Create")';
             window.location.href = url;
         });

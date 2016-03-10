@@ -57,7 +57,7 @@ namespace _360Accounting.Web.Controllers
             model.SegmentList = getSegmentList(sobId);
             model.SOBId = sobId;
             model.StartDate = Const.CurrentDate;
-            model.EndDate = Const.ToDate;
+            model.EndDate = Const.EndDate;
             return PartialView("_Create", model);
         }
         

@@ -30,7 +30,7 @@ namespace _360Accounting.Web.Models
         public CustomerSiteModel()
         {
             this.StartDate = Const.CurrentDate;
-            this.EndDate = Const.ToDate;
+            this.EndDate = Const.EndDate;
         }
 
         public long Id { get; set; }
@@ -43,6 +43,7 @@ namespace _360Accounting.Web.Models
         public string SiteName { get; set; }
 
         [Display(Name = "Site Address")]
+        [StringLength(255, MinimumLength = 0)]
         public string SiteAddress { get; set; }
 
         [Display(Name = "Contact")]

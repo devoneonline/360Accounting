@@ -15,7 +15,7 @@ namespace _360Accounting.Web.Models
         public CalendarViewModel()
         {
             this.StartDate = Const.CurrentDate;
-            this.EndDate = Const.ToDate;
+            this.EndDate = Const.EndDate;
         }
 
         public CalendarViewModel(Calendar entity)

@@ -37,7 +37,7 @@ namespace _360Accounting.Web.Controllers
                     }).ToList();
             }
 
-            model.SOBId = Convert.ToInt64(model.SetOfBooks.First().Value);
+            model.SOBId = Convert.ToInt64(model.SetOfBooks.FirstOrDefault().Value);
             return View(model);
         }
 

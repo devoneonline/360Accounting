@@ -185,6 +185,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Common\AuthenticationHelper.cs" />
+    <Compile Include="Controllers\InvoiceSourceController.cs" />
     <Compile Include="Helpers\AccountHelper.cs" />
     <Compile Include="Helpers\AccountValueHelper.cs" />
     <Compile Include="Helpers\CalendarHelper.cs" />
@@ -193,6 +194,7 @@
     <Compile Include="Helpers\CurrencyHelper.cs" />
     <Compile Include="Helpers\CustomerHelper.cs" />
     <Compile Include="Helpers\CustomerSiteHelper.cs" />
+    <Compile Include="Helpers\InvoiceSourceHelper.cs" />
     <Compile Include="Helpers\JVHelper.cs" />
     <Compile Include="Common\SessionHelper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -235,6 +237,7 @@
     <Compile Include="Models\CustomerSiteModel.cs" />
     <Compile Include="Models\CustomerModel.cs" />
     <Compile Include="Models\FeatureViewModel.cs" />
+    <Compile Include="Models\InvoiceSourceViewModel.cs" />
     <Compile Include="Models\JournalVoucherCreateModel.cs" />
     <Compile Include="Models\JournalVoucherListModel.cs" />
     <Compile Include="Models\JournalVoucherViewModel.cs" />
@@ -472,6 +475,9 @@
     <Content Include="Views\Customer\_List.cshtml" />
     <Content Include="Views\Customer\Edit.cshtml" />
     <Content Include="Views\CodeCombinition\_Create.cshtml" />
+    <Content Include="Views\InvoiceSource\Index.cshtml" />
+    <Content Include="Views\InvoiceSource\Edit.cshtml" />
+    <Content Include="Views\InvoiceSource\_List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

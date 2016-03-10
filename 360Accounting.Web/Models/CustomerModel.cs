@@ -23,7 +23,7 @@ namespace _360Accounting.Web.Models
         public CustomerModel()
         {
             this.StartDate = Const.CurrentDate;
-            this.EndDate = Const.ToDate;
+            this.EndDate = Const.EndDate;
         }
 
         public long Id { get; set; }

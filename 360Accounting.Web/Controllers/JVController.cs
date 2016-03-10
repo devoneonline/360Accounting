@@ -293,8 +293,8 @@ namespace _360Accounting.Web.Controllers
                 }).ToList();
 
             model.CodeCombinations = getCodeCombinationList(Convert.ToInt32(model.SetOfBooks.First().Value));
-            model.FromDate = Const.FromDate;
-            model.ToDate = Const.ToDate;
+            model.FromDate = Const.StartDate;
+            model.ToDate = Const.EndDate;
             return View(model);
         }
 
@@ -307,8 +307,8 @@ namespace _360Accounting.Web.Controllers
                     Text = x.Name,
                     Value = x.Id.ToString()
                 }).ToList();
-            model.FromDate = Const.FromDate;
-            model.ToDate = Const.ToDate;
+            model.FromDate = Const.StartDate;
+            model.ToDate = Const.EndDate;
             return View(model);
         }
 
@@ -336,8 +336,8 @@ namespace _360Accounting.Web.Controllers
                 });
             }
 
-            model.FromDate = Const.FromDate;
-            model.ToDate = Const.ToDate;
+            model.FromDate = Const.StartDate;
+            model.ToDate = Const.EndDate;
 
             return View(model);
         }

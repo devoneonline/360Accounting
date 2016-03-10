@@ -22,9 +22,12 @@
 
   <object name="GLHeaderRepository" type="_360Accounting.Data.Repositories.GLHeaderRepository, 360Accounting.Data"> </object>
   <object name="GLLineRepository" type="_360Accounting.Data.Repositories.GLLineRepository, 360Accounting.Data"> </object>
+  <object name="InvoiceSourceRepository" type="_360Accounting.Data.Repositories.InvoiceSourceRepository, 360Accounting.Data"> </object>
 
 
-  
+  <object name="InvoiceSourceService" type="_360Accounting.Service.InvoiceSourceService, 360Accounting.Service" >
+    <constructor-arg name="repo" ref="InvoiceSourceRepository" />
+  </object>
   <object name="TaxService" type="_360Accounting.Service.TaxService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="TaxRepository" />
   </object>        
