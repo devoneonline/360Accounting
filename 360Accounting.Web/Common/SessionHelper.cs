@@ -63,6 +63,19 @@ namespace _360Accounting.Web
             }
         }
 
+        //TODO: this is temporary because of the issue 40 in task list.
+        public static int PrecisionLimit
+        {
+            get
+            {
+                return Convert.ToInt32(HttpContext.Current.Session["PrecissionLimit"].ToString());
+            }
+            set
+            {
+                HttpContext.Current.Session["PrecissionLimit"] = value;
+            }
+        }
+
         //public static JournalVoucherViewModel JournalVoucher
         //{
         //    get

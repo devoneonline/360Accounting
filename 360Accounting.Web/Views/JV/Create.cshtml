@@ -77,7 +77,8 @@
                 datatype: 'json',
                 success: function (data) {
                     if (!data) {
-                        alert('GL Date must lie in the range of current period.')
+                        alert('GL Date must lie in the range of current period.');
+                        $('#GLDate').focus();
                         $('#btnSave').attr('disabled', true)
                     }
                     else
@@ -102,8 +103,10 @@
             var url = '@Url.Content("~/JV/SaveVoucher")';
             $.post(url, { journalName: journalName, glDate: glDate, cRate: cRate, descr: descr },
                 function (result) {
-                    if (result)
+                    if (result.success)
                         window.location.href = '@Url.Content("~/JV")';
+                    else
+                        alert(result.message);
                 });
         });
     });

@@ -37,6 +37,11 @@ namespace _360Accounting.Core.Entities
                 this.CreateDate = DateTime.Now;
             }
 
+            if (this.CreateDate == DateTime.MinValue)
+            {
+                this.CreateDate = DateTime.Now;
+            }
+
             return true;
         }
     }
