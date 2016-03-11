@@ -50,6 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Receipt.cs" />
+    <Compile Include="Entities\Bank.cs" />
+    <Compile Include="Entities\BankAccount.cs" />
     <Compile Include="Entities\Account.cs" />
     <Compile Include="Entities\AccountValue.cs" />
     <Compile Include="Entities\AccountView.cs" />
@@ -78,6 +81,9 @@
     <Compile Include="Entities\User.cs" />
     <Compile Include="Interfaces\ICore360.cs" />
     <Compile Include="IoC.cs" />
+    <Compile Include="IRepository\IReceiptRepository.cs" />
+    <Compile Include="IRepository\IBankAccountRepository.cs" />
+    <Compile Include="IRepository\IBankRepository.cs" />
     <Compile Include="IRepository\IAccountRepository.cs" />
     <Compile Include="IRepository\IAccountValueRepository.cs" />
     <Compile Include="IRepository\ICalendarRepository.cs" />
@@ -98,6 +104,9 @@
     <Compile Include="IRepository\IRepository.cs" />
     <Compile Include="Interfaces\IService.cs" />
     <Compile Include="IRepository\ISetOfBookRepository.cs" />
+    <Compile Include="IService\IBankService.cs" />
+    <Compile Include="IService\IBankAccountService.cs" />
+    <Compile Include="IService\IReceiptService.cs" />
     <Compile Include="IService\IAccountService.cs" />
     <Compile Include="IService\IAccountValueService.cs" />
     <Compile Include="IService\ICalendarService.cs" />

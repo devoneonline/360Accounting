@@ -60,6 +60,12 @@ namespace _360Accounting.Data
 
         public DbSet<Tax> Taxes { get; set; }
 
+        public DbSet<Bank> Banks { get; set; }
+
+        public DbSet<BankAccount> BankAccounts { get; set; }
+
+        public DbSet<Receipt> Receipts { get; set; }
+
         #endregion
 
         #region Binders
