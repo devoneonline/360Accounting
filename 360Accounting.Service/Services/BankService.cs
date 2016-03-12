@@ -28,6 +28,11 @@ namespace _360Accounting.Service
             return this.repository.GetAll(companyId);
         }
 
+        public IEnumerable<Bank> GetBySOBId(long sobId)
+        {
+            return this.repository.GetBySOBId(sobId);
+        }
+
         public string Insert(Bank entity)
         {
             return this.repository.Insert(entity);

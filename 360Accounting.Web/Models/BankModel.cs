@@ -1,4 +1,5 @@
-﻿using _360Accounting.Core.Entities;
+﻿using _360Accounting.Common;
+using _360Accounting.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,6 +14,8 @@ namespace _360Accounting.Web.Models
         #region Constructors
         public BankModel()
         {
+            this.StartDate = Const.StartDate;
+            this.EndDate = Const.EndDate;
         }
 
         public BankModel(Bank entity)
@@ -29,6 +32,7 @@ namespace _360Accounting.Web.Models
         #region Properties
         public long Id { get; set; }
 
+        [Display(Name = "Bank Name")]
         public string BankName { get; set; }
 
         public string Remarks { get; set; }
@@ -37,12 +41,12 @@ namespace _360Accounting.Web.Models
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Start Date")]
+        [Display(Name = "Date From")]
         public DateTime StartDate { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "End Date")]
+        [Display(Name = "Date To")]
         public DateTime EndDate { get; set; }
 
         #endregion

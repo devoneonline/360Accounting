@@ -1,0 +1,53 @@
+﻿@Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
+
+@model _360Accounting.Web.Models.BankAccountListModel
+
+@{
+    ViewBag.Title = "Bank Accounts";
+}
+
+<div class="container">
+    <div class="clearfix">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
+        </div>
+    </div>
+
+    @Html.HiddenFor(m => m.BankId)
+
+    <div class="clearfix">
+        <div class="form-group col-lg-12 ">
+            <input type="button" value="Create New" class="btn btn-default tstyCus-btn" id="btnNew" />
+        </div>
+        <div id="dvList" class="col-lg-12 cusGridWrapper">
+            @Html.Action("BankAccountListPartial", new { bankId = Model.BankId })
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnNew').click(function () {
+            var url = '@Url.Content("~/BankAccount/Create?bankId=")' + $('#BankId').val();
+            window.location.href = url;
+        });
+
+        $('#SOBId').change(function () {
+            $('#dvList').html("Please wait..");
+            $.ajax({
+                url: '@Url.Content("~/BankAccount/BankAccountListPartial")',
+                data: {
+                    sobId: $('#BankId').val()
+                },
+                datatype: 'html',
+                type: 'post',
+                error: function (data) { alert(data); },
+                success: function (data) {
+                    $('#dvList').empty();
+                    $('#dvList').html(data);
+                }
+            });
+        });
+    });
+</script>

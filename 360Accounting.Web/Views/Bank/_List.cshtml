@@ -1,0 +1,60 @@
+﻿@{Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
+
+Html.EnableClientValidation();
+Html.EnableUnobtrusiveJavaScript();
+
+var grid = Html.DevExpress().GridView(settings =>
+{
+    settings.Name = "Bank";
+    settings.Theme = "Office2010Black";
+    settings.KeyFieldName = "Id";
+
+    settings.CallbackRouteValues = new { Controller = "Bank", Action = "BankListPartial" };
+
+    //settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+    settings.SettingsBehavior.ConfirmDelete = true;
+
+    settings.SettingsPager.Visible = true;
+    settings.Settings.ShowGroupPanel = false;
+    settings.Settings.ShowFilterRow = false;
+    settings.SettingsBehavior.AllowSort = false;
+    settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+    settings.Columns.Add(column =>
+        {
+            column.SetDataItemTemplateContent(c =>
+            {
+                ViewContext.Writer.Write(
+                    Html.Raw("<a title='Edit' href='" + Url.Content("~/Bank/Edit/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
+                    + "&nbsp;&nbsp;" +
+                    Html.Raw("<a title='Delete' class='deleteQuestion' href='" + Url.Content("~/Bank/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
+                    + "&nbsp;&nbsp;" +
+                    Html.Raw("<a title='Bank Account' href='" + Url.Content("~/BankAccount/Index/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-map-marker'></i></a>")
+                );
+            });
+            column.Settings.AllowDragDrop = DefaultBoolean.False;
+            column.Settings.AllowSort = DefaultBoolean.False;
+            column.Width = 70;
+        });
+
+    settings.Columns.Add("BankName", "Bank Name");
+    settings.Columns.Add("Remarks", "Remarks");
+    settings.Columns.Add("StartDate", "Start Date").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;
+    settings.Columns.Add("EndDate", "End Date").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;
+});
+if (ViewData["EditError"] != null)
+{
+    grid.SetEditErrorText((string)ViewData["EditError"]);
+}
+}
+@grid.Bind(Model).GetHtml()
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.deleteQuestion').click(function () {
+            return confirm("Sure! you wanted to delete ?");
+        });
+    });
+</script>

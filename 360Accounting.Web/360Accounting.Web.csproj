@@ -185,6 +185,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Common\AuthenticationHelper.cs" />
+    <Compile Include="Controllers\BankAccountController.cs" />
+    <Compile Include="Controllers\BankController.cs" />
     <Compile Include="Controllers\InvoiceSourceController.cs" />
     <Compile Include="Helpers\AccountHelper.cs" />
     <Compile Include="Helpers\AccountValueHelper.cs" />
@@ -220,6 +222,10 @@
     <Compile Include="Models\AccountListModel.cs" />
     <Compile Include="Models\AccountValueListModel.cs" />
     <Compile Include="Models\BankAccountModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\BankAccountListModel.cs" />
+    <Compile Include="Models\BankAccountViewModel.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\ReceiptListModel.cs" />
@@ -486,6 +492,12 @@
     <Content Include="Views\InvoiceSource\Index.cshtml" />
     <Content Include="Views\InvoiceSource\Edit.cshtml" />
     <Content Include="Views\InvoiceSource\_List.cshtml" />
+    <Content Include="Views\Bank\_List.cshtml" />
+    <Content Include="Views\Bank\Create.cshtml" />
+    <Content Include="Views\Bank\Index.cshtml" />
+    <Content Include="Views\BankAccount\_List.cshtml" />
+    <Content Include="Views\BankAccount\Create.cshtml" />
+    <Content Include="Views\BankAccount\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

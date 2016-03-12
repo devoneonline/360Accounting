@@ -18,7 +18,7 @@ namespace _360Accounting.Service
             this.repository = repo;
         }
 
-        public IEnumerable<BankAccount> GetBankAccounts(string bankId, long companyId)
+        public IEnumerable<BankAccount> GetBankAccounts(long bankId, long companyId)
         {
             return this.repository.GetBankAccounts(bankId, companyId);
         }
@@ -35,12 +35,18 @@ namespace _360Accounting.Service
 
         public string Insert(BankAccount entity)
         {
-            return this.repository.Insert(entity);
+            if (entity.IsValid())
+                return this.repository.Insert(entity);
+            else
+                return "Entity is not in valid state";
         }
 
         public string Update(BankAccount entity)
         {
-            return this.repository.Update(entity);
+            if (entity.IsValid())
+                return this.repository.Update(entity);
+            else
+                return "Entity is not in valid state";
         }
 
         public void Delete(string id, long companyId)

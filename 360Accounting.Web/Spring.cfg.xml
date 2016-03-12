@@ -19,6 +19,9 @@
   <object name="CustomerRepository" type="_360Accounting.Data.Repositories.CustomerRepository, 360Accounting.Data"> </object>
   <object name="CustomerSiteRepository" type="_360Accounting.Data.Repositories.CustomerSiteRepository, 360Accounting.Data"> </object>
   <object name="TaxRepository" type="_360Accounting.Data.Repositories.TaxRepository, 360Accounting.Data"> </object>
+  <object name="BankRepository" type="_360Accounting.Data.Repositories.BankRepository, 360Accounting.Data"> </object>
+  <object name="BankAccountRepository" type="_360Accounting.Data.Repositories.BankAccountRepository, 360Accounting.Data"> </object>
+  <object name="ReceiptRepository" type="_360Accounting.Data.Repositories.ReceiptRepository, 360Accounting.Data"> </object>
 
   <object name="GLHeaderRepository" type="_360Accounting.Data.Repositories.GLHeaderRepository, 360Accounting.Data"> </object>
   <object name="GLLineRepository" type="_360Accounting.Data.Repositories.GLLineRepository, 360Accounting.Data"> </object>
@@ -36,6 +39,15 @@
   </object>    
   <object name="CustomerService" type="_360Accounting.Service.CustomerService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="CustomerRepository" />
+  </object>  
+    <object name="BankService" type="_360Accounting.Service.BankService, 360Accounting.Service" >
+    <constructor-arg name="repo" ref="BankRepository" />
+  </object>  
+        <object name="BankAccountService" type="_360Accounting.Service.BankAccountService, 360Accounting.Service" >
+    <constructor-arg name="repo" ref="BankAccountRepository" />
+  </object>  
+    <object name="ReceiptService" type="_360Accounting.Service.ReceiptService, 360Accounting.Service" >
+    <constructor-arg name="repo" ref="ReceiptRepository" />
   </object>  
   <object name="FeatureService" type="_360Accounting.Service.FeatureService, 360Accounting.Service" >
     <constructor-arg name="featureRepository" ref="FeatureRepository" />
