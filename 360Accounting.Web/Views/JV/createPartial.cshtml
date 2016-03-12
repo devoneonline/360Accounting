@@ -32,7 +32,9 @@
 
                 column.ColumnType = MVCxGridViewColumnType.ComboBox;
                 var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
-                comboBoxProperties.DataSource = CodeCombinationHelper.GetAccounts(_360Accounting.Web.SessionHelper.SOBId);
+                comboBoxProperties.DataSource = CodeCombinationHelper.GetAccounts(_360Accounting.Web.SessionHelper.SOBId, 
+                    _360Accounting.Web.SessionHelper.Calendar.StartDate,
+                    _360Accounting.Web.SessionHelper.Calendar.EndDate);
                 comboBoxProperties.TextField = "Text";
                 comboBoxProperties.ValueField = "Value";
                 comboBoxProperties.ValueType = typeof(int);

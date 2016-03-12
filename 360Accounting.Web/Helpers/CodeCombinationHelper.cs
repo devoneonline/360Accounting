@@ -18,12 +18,12 @@ namespace _360Accounting.Web
             service = IoC.Resolve<ICodeCombinitionService>("CodeCombinitionService");
         }
 
-        public static IList<SelectListItem> GetAccounts(long sobId)
+        public static IList<SelectListItem> GetAccounts(long sobId, DateTime startDate, DateTime endDate)
         {
             if (SessionHelper.Calendar != null)
             {
                 return service.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", false, null, "", "")
-                    .Where(rec => rec.StartDate >= SessionHelper.Calendar.StartDate && rec.EndDate <= SessionHelper.Calendar.EndDate)
+                    .Where(rec => rec.StartDate >= startDate && rec.EndDate <= endDate)
                         .Select(x => new SelectListItem
                         {
                             Text = x.CodeCombinitionCode,

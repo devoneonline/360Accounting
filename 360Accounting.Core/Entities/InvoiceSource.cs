@@ -12,8 +12,7 @@ namespace _360Accounting.Core.Entities
         [Key]
         public long Id { get; set; }
         public long SOBId { get; set; }
-        ///TODO: Need to Add Code combination field
-        //public long CodeCombinationId { get; set; }
+        public long CodeCombinationId { get; set; }
         public long CompanyId { get; set; }
         public string Description { get; set; }
         public DateTime StartDate { get; set; }

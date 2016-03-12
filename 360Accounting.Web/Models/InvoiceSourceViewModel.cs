@@ -19,7 +19,7 @@ namespace _360Accounting.Web.Models
 
         public InvoiceSourceViewModel(InvoiceSource entity)
         {
-            //this.CodeCombinationId = entity.CodeCombinationId;
+            this.CodeCombinationId = entity.CodeCombinationId;
             this.StartDate = entity.StartDate;
             this.EndDate = entity.EndDate;
             this.Description = entity.Description;
@@ -29,10 +29,10 @@ namespace _360Accounting.Web.Models
 
         public long Id { get; set; }
         public long SOBId { get; set; }
-        //public long CodeCombinationId { get; set; }
+        public long CodeCombinationId { get; set; }
 
-        //[Display(Name = "Account Code")]
-        //public List<SelectListItem> CodeCombinations { get; set; }
+        [Display(Name = "Account Code")]
+        public IList<SelectListItem> CodeCombinations { get; set; }
         //public List<SelectListItem> SetOfBooks { get; set; }
         //public long CompanyId { get; set; }
 

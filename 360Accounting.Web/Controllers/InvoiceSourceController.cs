@@ -49,8 +49,10 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Create(long sobId)
         {
+            SessionHelper.SOBId = sobId;
             InvoiceSourceViewModel model = new InvoiceSourceViewModel();
             model.SOBId = sobId;
+            model.CodeCombinations = CodeCombinationHelper.GetAccounts(sobId, model.StartDate, model.EndDate);
             return View("Edit", model);
         }
 
