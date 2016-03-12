@@ -52,6 +52,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\BankAccountService.cs" />
+    <Compile Include="Services\BankService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Services\ReceiptService.cs" />
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\AccountValueService.cs" />
     <Compile Include="Services\CalendarService.cs" />

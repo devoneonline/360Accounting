@@ -219,6 +219,14 @@
     <Compile Include="Models\AccountCreateViewModel.cs" />
     <Compile Include="Models\AccountListModel.cs" />
     <Compile Include="Models\AccountValueListModel.cs" />
+    <Compile Include="Models\BankAccountModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\ReceiptListModel.cs" />
+    <Compile Include="Models\BankModel.cs" />
+    <Compile Include="Models\BankListModel.cs" />
+    <Compile Include="Models\ReceiptViewModel.cs" />
+    <Compile Include="Models\ReceiptModel.cs" />
     <Compile Include="Models\AccountValueViewModel.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\AccValueCreateModel.cs" />

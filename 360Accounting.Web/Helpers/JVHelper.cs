@@ -15,12 +15,20 @@ namespace _360Accounting.Web
     {
         private static IGLHeaderService service;
         private static IGLLineService lineService;
-        
+
 
         static JVHelper()
         {
             service = IoC.Resolve<IGLHeaderService>("GLHeaderService");
             lineService = IoC.Resolve<IGLLineService>("GLLineService");
+        }
+
+        public static GLHeaderModel GetVoucher(string id)
+        {
+            GLHeaderModel jvHeader = new GLHeaderModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            jvHeader.GlLines = getGLLinesByHeaderId(id);
+
+            return jvHeader;
         }
 
         public static GLHeaderModel GetGLHeaders(string id)
@@ -67,10 +75,9 @@ namespace _360Accounting.Web
 
             return yearDigit + monthDigit + docNo;
         }
-        
-        public static void Update(string journalName, string glDate, string cRate, string descr)
+        public static void Update(GLHeaderModel jv)
         {
-            bool isNewRecord = true;
+            GLHeader entity = GetEntityByModel(jv);
 
             GLHeaderModel header = SessionHelper.JV;
             if (header == null)
@@ -86,29 +93,41 @@ namespace _360Accounting.Web
             GLHeader entity = Mappers.GetEntityByModel(header);
 
             string result = string.Empty;
-            if (header.Id > 0)    //update
+            if (entity.IsValid())
             {
-                isNewRecord = false;
-                result = service.Update(entity);
-            }
-            else
-            {
-                result = service.Insert(entity);
-            }
+                if (jv.Id > 0)
+                    result = service.Update(entity);
+                else
+                    result = service.Insert(entity);
 
-            if (!string.IsNullOrEmpty(result))
-            {
-                foreach (var line in header.GlLines)
+                if (!string.IsNullOrEmpty(result))
                 {
-                    GLLines lineEntity = GetEntityByModel(line, header.ConversionRate);
-                    lineEntity.HeaderId = Convert.ToInt64(result);
-                    if (isNewRecord)
+                    var savedLines = getGLLinesByHeaderId(result);
+                    if (savedLines.Count() > jv.GlLines.Count())
                     {
-                        lineService.Insert(lineEntity);
+                        var tobeDeleted = savedLines.Take(savedLines.Count() - jv.GlLines.Count());
+                        foreach (var item in tobeDeleted)
+                        {
+                            lineService.Delete(item.Id.ToString(), AuthenticationHelper.User.CompanyId);
+                        }
+                        savedLines = getGLLinesByHeaderId(result);
                     }
-                    else
+
+                    foreach (var line in jv.GlLines)
                     {
-                        lineService.Update(lineEntity);
+                        GLLines lineEntity = GetEntityByModel(line, jv.ConversionRate);
+                        if (lineEntity.IsValid())
+                        {
+                            lineEntity.HeaderId = Convert.ToInt64(result);
+                            if (savedLines.Count() > 0)
+                            {
+                                lineEntity.Id = savedLines.FirstOrDefault().Id;
+                                savedLines.Remove(savedLines.FirstOrDefault(rec => rec.Id == lineEntity.Id));
+                                lineService.Update(lineEntity);
+                            }
+                            else
+                                lineService.Insert(lineEntity);
+                        }
                     }
                 }
             }
@@ -117,9 +136,21 @@ namespace _360Accounting.Web
         public static void UpdateGLLine(GLLinesModel model)
         {
             GLHeaderModel header = SessionHelper.JV;
+            header.GlLines.FirstOrDefault(x => x.Id == model.Id).AccountedCr = model.AccountedCr;
+            header.GlLines.FirstOrDefault(x => x.Id == model.Id).AccountedDr = model.AccountedDr;
+            header.GlLines.FirstOrDefault(x => x.Id == model.Id).CodeCombinationId = model.CodeCombinationId;
+            header.GlLines.FirstOrDefault(x => x.Id == model.Id).Description = model.Description;
+            header.GlLines.FirstOrDefault(x => x.Id == model.Id).EnteredCr = model.EnteredCr;
+            header.GlLines.FirstOrDefault(x => x.Id == model.Id).EnteredDr = model.EnteredDr;
+            header.GlLines.FirstOrDefault(x => x.Id == model.Id).Quantity = model.Quantity;
+            header.GlLines.FirstOrDefault(x => x.Id == model.Id).TaxRateCode = model.TaxRateCode;
+        }
+
+        public static void DeleteGLLine(GLLinesModel model)
+        {
+            GLHeaderModel header = SessionHelper.JV;
             GLLinesModel glLine = header.GlLines.FirstOrDefault(x => x.Id == model.Id);
             header.GlLines.Remove(glLine);
-            header.GlLines.Add(model);
         }
 
         public static void Insert(GLLinesModel model)
@@ -139,18 +170,64 @@ namespace _360Accounting.Web
             GLHeaderModel header = SessionHelper.JV;
             IList<GLLinesModel> modelList;
             if (header == null)
-            {
-                ////Edit mai ye chalta hai
                 modelList = lineService.GetAll(AuthenticationHelper.User.CompanyId, Convert.ToInt32(headerId)).Select(x => new GLLinesModel(x)).ToList();
-            }
             else
-            {
-                ////New mode mai ye chalta hai
                 modelList = header.GlLines;
-                
-                
-            }
+
             return modelList;
+        }
+
+        private static IList<GLLinesModel> getGLLinesByHeaderId(string headerId)
+        {
+            return lineService.GetAll(AuthenticationHelper.User.CompanyId, Convert.ToInt32(headerId)).Select(x => new GLLinesModel(x)).ToList();
+        }
+
+        private static GLHeader GetEntityByModel(GLHeaderModel model)
+        {
+            if (model == null) return null;
+
+            GLHeader entity = new GLHeader();
+            entity.Id = model.Id;
+            entity.JournalName = model.JournalName;
+            entity.CompanyId = model.CompanyId;
+            entity.ConversionRate = model.ConversionRate;
+            entity.CurrencyId = model.CurrencyId;
+            entity.Description = model.Description;
+            entity.DocumentNo = model.DocumentNo;
+            entity.GLDate = model.GLDate;
+            entity.PeriodId = model.PeriodId;
+            entity.SOBId = model.SOBId;
+            if (model.Id == 0)
+            {
+                entity.CreateDate = DateTime.Now;
+            }
+            entity.UpdateBy = entity.CreateBy;
+            entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
+
+        private static GLLines GetEntityByModel(GLLinesModel model, decimal conversionRate)
+        {
+            if (model == null) return null;
+
+            GLLines entity = new GLLines();
+            entity.Id = model.Id;
+            entity.HeaderId = model.HeaderId;
+            entity.CodeCombinationId = model.CodeCombinationId;
+            entity.Description = model.Description;
+            entity.EnteredCr = model.EnteredCr;
+            entity.EnteredDr = model.EnteredDr;
+            entity.AccountedCr = model.EnteredCr * conversionRate;
+            entity.AccountedDr = model.EnteredDr * conversionRate;
+            entity.Qty = model.Quantity;
+            entity.TaxRateCode = model.TaxRateCode;
+            if (model.Id == 0)
+            {
+                entity.CreateDate = DateTime.Now;
+            }
+            entity.UpdateBy = entity.CreateBy;
+            entity.UpdateDate = DateTime.Now;
+            return entity;
         }
         #endregion
     }

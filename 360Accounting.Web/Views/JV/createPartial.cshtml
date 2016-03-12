@@ -1,11 +1,4 @@
-﻿@*<div class="row">
-    <div class="col-lg-12">
-        <div class="navbar-right">
-            <input type="button" value="Add New" id="btnAddNew" class="btn btn-default tstyCus-btn" />
-        </div>
-    </div>
-</div>*@
-@{
+﻿@{
     Html.EnableClientValidation();
     Html.EnableUnobtrusiveJavaScript();
 
@@ -52,6 +45,11 @@
                 column.ColumnType = MVCxGridViewColumnType.SpinEdit;
                 var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
                 spinEditProperties.NumberType = SpinEditNumberType.Float;
+                if (SessionHelper.PrecisionLimit > 0)
+                    spinEditProperties.NumberType = SpinEditNumberType.Float;
+                else
+                    spinEditProperties.NumberType = SpinEditNumberType.Integer;
+                spinEditProperties.DecimalPlaces = SessionHelper.PrecisionLimit;
                 spinEditProperties.DisplayFormatString = "c";
                 spinEditProperties.DisplayFormatInEditMode = true;
                 spinEditProperties.MinValue = 0;
@@ -67,7 +65,11 @@
                 
                 column.ColumnType = MVCxGridViewColumnType.SpinEdit;
                 var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
-                spinEditProperties.NumberType = SpinEditNumberType.Float;
+                if (SessionHelper.PrecisionLimit > 0)
+                    spinEditProperties.NumberType = SpinEditNumberType.Float;
+                else
+                    spinEditProperties.NumberType = SpinEditNumberType.Integer;
+                spinEditProperties.DecimalPlaces = SessionHelper.PrecisionLimit;
                 spinEditProperties.DisplayFormatString = "c";
                 spinEditProperties.DisplayFormatInEditMode = true;
                 spinEditProperties.MinValue = 0;
@@ -85,6 +87,7 @@
                 var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
                 spinEditProperties.NumberType = SpinEditNumberType.Float;
                 spinEditProperties.DisplayFormatString = "c";
+                spinEditProperties.NumberFormat = SpinEditNumberFormat.Number;
                 spinEditProperties.DisplayFormatInEditMode = true;
                 spinEditProperties.MinValue = 0;
                 spinEditProperties.MaxValue = 100000000;
@@ -105,8 +108,4 @@
             window.location.href = '@Url.Content("~/JV/AddNewPartial")';
         });
     });
-
-    function CheckVal(s, e) {
-        alert('Hello');
-    }
 </script>

@@ -349,11 +349,17 @@ namespace _360Accounting.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Edit(string id)
+        public ActionResult Edit(string id, long currencyId, long sobId, long periodId)
         {
             GLHeaderModel model = JVHelper.GetGLHeaders(id);
             SessionHelper.SOBId = model.SOBId;
+            SessionHelper.Calendar = new CalendarViewModel(calendarService.GetSingle(periodId.ToString(), AuthenticationHelper.User.CompanyId));
+            SessionHelper.PrecisionLimit = currencyService.GetSingle(currencyId.ToString(), AuthenticationHelper.User.CompanyId).Precision;
+
             model.GlLines = JVHelper.GetGLLines(id);
+            model.CurrencyId = currencyId;
+            model.SOBId = sobId;
+            model.PeriodId = periodId;
             SessionHelper.JV = model;
             return View("Create", model);
         }
@@ -403,6 +409,7 @@ namespace _360Accounting.Web.Controllers
         {
             SessionHelper.SOBId = sobId;
             SessionHelper.Calendar = new CalendarViewModel(calendarService.GetSingle(periodId.ToString(), AuthenticationHelper.User.CompanyId));
+            SessionHelper.PrecisionLimit = currencyService.GetSingle(currencyId.ToString(), AuthenticationHelper.User.CompanyId).Precision;
 
             GLHeaderModel model = SessionHelper.JV;
             if (model == null)
@@ -506,7 +513,7 @@ namespace _360Accounting.Web.Controllers
                 try
                 {
                     GLHeaderModel header = SessionHelper.JV;
-                    header.GlLines.Remove(model);
+                    JVHelper.DeleteGLLine(model);
                     SessionHelper.JV = header;
                     IList<GLLinesModel> glLines = JVHelper.GetGLLines();
                     return PartialView("createPartial", glLines);
@@ -523,6 +530,7 @@ namespace _360Accounting.Web.Controllers
         
         public ActionResult SaveVoucher(string journalName, string glDate, string cRate, string descr)
         {
+            string message = "";
             try
             {
                 bool saved = false;
@@ -530,19 +538,27 @@ namespace _360Accounting.Web.Controllers
                 {
                     if (SessionHelper.JV.GlLines.Sum(cri => cri.EnteredDr) == SessionHelper.JV.GlLines.Sum(cri => cri.EnteredCr))
                     {
-                        JVHelper.Update(journalName, glDate, cRate, descr);
+                        SessionHelper.JV.JournalName = journalName;
+                        SessionHelper.JV.GLDate = Convert.ToDateTime(glDate);
+                        SessionHelper.JV.ConversionRate = Convert.ToDecimal(cRate);
+                        SessionHelper.JV.Description = descr;
+                        SessionHelper.JV.DocumentNo = JVHelper.GetDocNo(AuthenticationHelper.User.CompanyId, SessionHelper.JV.PeriodId, SessionHelper.JV.SOBId, SessionHelper.JV.CurrencyId);
+
+                        JVHelper.Update(SessionHelper.JV);
                         SessionHelper.JV = null;
                         saved = true;
                     }
                     else
-                        ViewData["EditError"] = "The sum of Debit and Credit should be equal.";
+                        message = "The sum of Debit and Credit should be equal.";
                 }
-                return Json(saved);
+                else
+                    message = "No voucher information available!";
+                return Json(new { success = saved, message = message });
             }
             catch (Exception e)
             {
-                ViewData["EditError"] = e.Message;
-                return Json("Failure");
+                message = e.Message;
+                return Json(new { success = false, message = message });
             }
         }
 
