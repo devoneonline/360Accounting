@@ -134,6 +134,15 @@ namespace _360Accounting.Data
 
             modelBuilder.Entity<FeatureSetAccess>().ToTable("dbo.tbFeatureSetAccess");
             modelBuilder.Entity<FeatureSetAccess>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<Bank>().ToTable("tbBank");
+            modelBuilder.Entity<Bank>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<BankAccount>().ToTable("tbBankAccount");
+            modelBuilder.Entity<BankAccount>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<Receipt>().ToTable("dbo.tbReceipt");
+            modelBuilder.Entity<Receipt>().HasKey(t => t.Id);
         }
 
         #endregion

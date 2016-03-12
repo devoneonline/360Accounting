@@ -9,16 +9,16 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
-    public class BankAccountModel
+    public class BankAccountViewModel
     {
         #region Constructors
-        public BankAccountModel()
+        public BankAccountViewModel()
         {
             this.StartDate = Const.StartDate;
             this.EndDate = Const.EndDate;
         }
 
-        public BankAccountModel(BankAccount entity)
+        public BankAccountViewModel(BankAccount entity)
         {
             this.AccountName = entity.AccountName;
             this.AdditionalInformation = entity.AdditionalInformation;
@@ -37,25 +37,32 @@ namespace _360Accounting.Web.Models
 
         public long BankId { get; set; }
 
+        [Display(Name = "Bank Account")]
         public string AccountName { get; set; }
 
+        [Display(Name = "Information")]
         public string AdditionalInformation { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Start Date")]
+        [Display(Name = "Date From")]
         public DateTime StartDate { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "End Date")]
+        [Display(Name = "Date To")]
         public DateTime EndDate { get; set; }
 
+        [Display(Name = "Cash Combinition")]
         public long Cash_CCID { get; set; }
 
+        [Display(Name = "Remittance Combinition")]
         public long RemitCash_CCID { get; set; }
 
+        [Display(Name = "Confirm Combinition")]
         public long Confirm_CCID { get; set; }
+
+        public List<SelectListItem> CodeCombinition { get; set; }
 
         #endregion
     }

@@ -19,12 +19,18 @@ namespace _360Accounting.Data.Repositories
             return bank;
         }
 
+        public IEnumerable<Bank> GetBySOBId(long sobId)
+        {
+            var query = this.Context.Banks.Where(rec => rec.SOBId == sobId);
+            return query;
+        }
+
         public IEnumerable<Bank> GetAll(long companyId)
         {
             var query = from a in this.Context.Banks
                         join b in this.Context.SetOfBooks on a.SOBId equals b.Id
                         join c in this.Context.Companies on b.CompanyId equals c.Id
-                        where c.Id == Convert.ToInt64(companyId)
+                        where c.Id == companyId
                         select a;
 
             return query;
@@ -39,7 +45,7 @@ namespace _360Accounting.Data.Repositories
 
         public string Update(Bank entity)
         {
-            var originalEntity = this.Context.Accounts.Find(entity.Id);
+            var originalEntity = this.Context.Banks.Find(entity.Id);
             this.Context.Entry(originalEntity).CurrentValues.SetValues(entity);
             this.Context.Entry(originalEntity).State = EntityState.Modified;
             this.Commit();

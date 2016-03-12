@@ -9,6 +9,6 @@ namespace _360Accounting.Core.Interfaces
 {
     public interface IBankAccountRepository : IRepository<BankAccount>
     {
-        IEnumerable<BankAccount> GetBankAccounts(string bankId, long companyId);
+        IEnumerable<BankAccount> GetBankAccounts(long bankId, long companyId);
     }
 }

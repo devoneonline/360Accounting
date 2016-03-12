@@ -12,13 +12,13 @@ namespace _360Accounting.Data.Repositories
 {
     public class BankAccountRepository : Repository, IBankAccountRepository
     {
-        public IEnumerable<BankAccount> GetBankAccounts(string bankId, long companyId)
+        public IEnumerable<BankAccount> GetBankAccounts(long bankId, long companyId)
         {
             var query = from a in this.Context.BankAccounts
                         join b in this.Context.Banks on a.BankId equals b.Id
                         join c in this.Context.SetOfBooks on b.SOBId equals c.Id
                         join d in this.Context.Companies on c.CompanyId equals d.Id
-                        where a.BankId == Convert.ToInt64(bankId)
+                        where a.BankId == bankId
                         select a;
 
             return query;
@@ -51,7 +51,7 @@ namespace _360Accounting.Data.Repositories
 
         public string Update(BankAccount entity)
         {
-            var originalEntity = this.Context.Accounts.Find(entity.Id);
+            var originalEntity = this.Context.BankAccounts.Find(entity.Id);
             this.Context.Entry(originalEntity).CurrentValues.SetValues(entity);
             this.Context.Entry(originalEntity).State = EntityState.Modified;
             this.Commit();

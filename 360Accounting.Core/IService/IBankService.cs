@@ -10,6 +10,6 @@ namespace _360Accounting.Core
 {
     public interface IBankService : IService<Bank>
     {
-
+        IEnumerable<Bank> GetBySOBId(long sobId);
     }
 }
