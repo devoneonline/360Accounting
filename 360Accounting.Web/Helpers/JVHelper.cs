@@ -75,22 +75,10 @@ namespace _360Accounting.Web
 
             return yearDigit + monthDigit + docNo;
         }
+
         public static void Update(GLHeaderModel jv)
         {
             GLHeader entity = GetEntityByModel(jv);
-
-            GLHeaderModel header = SessionHelper.JV;
-            if (header == null)
-            {
-                throw new Exception("No voucher information available!");
-            }
-            header.JournalName = journalName;
-            header.GLDate = Convert.ToDateTime(glDate);
-            header.ConversionRate = Convert.ToDecimal(cRate);
-            header.Description = descr;
-            header.DocumentNo = JVHelper.GetDocNo(AuthenticationHelper.User.CompanyId, header.PeriodId, header.SOBId, header.CurrencyId);
-
-            GLHeader entity = Mappers.GetEntityByModel(header);
 
             string result = string.Empty;
             if (entity.IsValid())
