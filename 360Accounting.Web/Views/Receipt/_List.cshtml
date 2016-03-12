@@ -7,11 +7,11 @@ Html.EnableUnobtrusiveJavaScript();
 
 var grid = Html.DevExpress().GridView(settings =>
 {
-    settings.Name = "BankAccount";
+    settings.Name = "Receipt";
     settings.Theme = "Office2010Black";
     settings.KeyFieldName = "Id";
 
-    settings.CallbackRouteValues = new { Controller = "BankAccount", Action = "BankAccountListPartial" };
+    settings.CallbackRouteValues = new { Controller = "Receipt", Action = "ReceiptListPartial" };
 
     //settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
     settings.SettingsBehavior.ConfirmDelete = true;
@@ -27,9 +27,9 @@ var grid = Html.DevExpress().GridView(settings =>
             column.SetDataItemTemplateContent(c =>
             {
                 ViewContext.Writer.Write(
-                    Html.Raw("<a title='Edit' href='" + Url.Content("~/BankAccount/Edit/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
+                    Html.Raw("<a title='Edit' href='" + Url.Content("~/Receipt/Edit/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
                     + "&nbsp;&nbsp;" +
-                    Html.Raw("<a title='Delete' class='deleteQuestion' href='" + Url.Content("~/BankAccount/Delete?Id=") + DataBinder.Eval(c.DataItem, "Id") + "&bankId=" + DataBinder.Eval(c.DataItem, "BankId") + "'><i class='fa fa-trash-o'></i></a>")
+                    Html.Raw("<a title='Delete' class='deleteQuestion' href='" + Url.Content("~/Receipt/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
                 );
             });
             column.Settings.AllowDragDrop = DefaultBoolean.False;
@@ -37,13 +37,14 @@ var grid = Html.DevExpress().GridView(settings =>
             column.Width = 70;
         });
 
-    settings.Columns.Add("AccountName", "Account Name");
-    settings.Columns.Add("AdditionalInformation", "Information");
-    settings.Columns.Add("StartDate", "Start Date").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;
-    settings.Columns.Add("EndDate", "End Date").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;
-    settings.Columns.Add("Cash_CCID", "Cash Combinition");
-    settings.Columns.Add("RemitCash_CCID", "Remittance Combinition");
-    settings.Columns.Add("Confirm_CCID", "Confirm Combinition");
+    settings.Columns.Add("ReceiptNumber", "Receipt No.");
+    settings.Columns.Add("ReceiptDate", "Receipt Date").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;
+    settings.Columns.Add("ReceiptAmount", "Receipt Amount");
+    settings.Columns.Add("Status", "Status");
+    settings.Columns.Add("Remarks");
+    settings.Columns.Add("CustomerSiteName", "Customer Site");
+    settings.Columns.Add("BankName", "Bank Name");
+    settings.Columns.Add("BankAccountName", "Bank Account Name");
 });
 if (ViewData["EditError"] != null)
 {

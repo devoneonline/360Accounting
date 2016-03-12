@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\ReceiptView.cs" />
     <Compile Include="Entities\Receipt.cs" />
     <Compile Include="Entities\Bank.cs" />
     <Compile Include="Entities\BankAccount.cs" />

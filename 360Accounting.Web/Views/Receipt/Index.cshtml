@@ -1,0 +1,85 @@
+﻿@Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
+
+@model _360Accounting.Web.Models.ReceiptListModel
+
+@{
+    ViewBag.Title = "Receipts";
+}
+
+<div class="container">
+    <div class="clearfix">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
+        </div>
+    </div>
+
+    @Html.HiddenFor(m=>m.PeriodId)
+    @Html.HiddenFor(m => m.SOBId)
+
+    <div class="col-lg-3">
+        <div class="form-group">
+            @Html.LabelFor(m => m.SetOfBooks)
+            @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control criteria" })
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Periods)
+            @Html.DropDownListFor(m => m.PeriodId, Model.Periods, new { @class = "form-control criteria" })
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Customers)
+            @Html.DropDownListFor(m => m.CustomerId, Model.Customers, new { @class = "form-control criteria" })
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Currency)
+            @Html.DropDownListFor(m => m.CurrencyId, Model.Currency, new { @class = "form-control criteria" })
+        </div>
+    </div>
+
+    <div class="clearfix">
+        <div class="form-group col-lg-12 ">
+            <input type="button" value="Create New" class="btn btn-default tstyCus-btn" id="btnNew" />
+        </div>
+        <div id="dvList" class="col-lg-12 cusGridWrapper">
+            @Html.Action("ReceiptListPartial", new { periodId = Model.PeriodId, sobId = Model.SOBId, customerId=Model.CustomerId, currencyId=Model.CurrencyId })
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnNew').click(function () {
+            var url = '@Url.Content("~/Receipt/Create?periodId=")' + $('#PeriodId').val() + '&sobId=' + $('#SOBId').val() + '&customerId=' + $('#CustomerId').val() + '&currencyId=' + $('#CurrencyId').val();
+            window.location.href = url;
+        });
+
+        $('#SOBId').change(function () {
+            $('#dvList').html("Please wait..");
+            $.ajax({
+                url: '@Url.Content("~/Receipt/ReceiptListPartial")',
+                data: {
+                    periodId: $('#PeriodId').val(),
+                    sobId: $('#BankId').val(),
+                    customerId: $('#CustomerId').val(),
+                    currencyId: $('#CurrencyId').val()
+                },
+                datatype: 'html',
+                type: 'post',
+                error: function (data) { alert(data); },
+                success: function (data) {
+                    $('#dvList').empty();
+                    $('#dvList').html(data);
+                }
+            });
+        });
+    });
+</script>

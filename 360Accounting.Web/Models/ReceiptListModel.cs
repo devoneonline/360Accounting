@@ -41,7 +41,18 @@ namespace _360Accounting.Web.Models
         [Display(Name = "Periods")]
         public List<SelectListItem> Periods { get; set; }
 
-        public IEnumerable<BankModel> Banks { get; set; }
+        public long CustomerId { get; set; }
+
+        [Display(Name = "Customers")]
+        public List<SelectListItem> Customers { get; set; }
+
+        public long CurrencyId { get; set; }
+
+        [Display(Name = "Currency")]
+        public List<SelectListItem> Currency { get; set; }
+
+        public IEnumerable<ReceiptViewModel> Receipts { get; set; }
+
         #endregion
     }
 }

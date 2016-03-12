@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace _360Accounting.Core.Entities
 {
-    public class Receipt : EntityBase
+    public class ReceiptView : EntityBase
     {
         [Key]
         public long Id { get; set; }
@@ -32,9 +32,15 @@ namespace _360Accounting.Core.Entities
 
         public long CustomerSiteId { get; set; }
 
+        public string CustomerSiteName { get; set; }
+
         public long BankId { get; set; }
 
+        public string BankName { get; set; }
+
         public long BankAccountId { get; set; }
+
+        public string BankAccountName { get; set; }
 
         public long SOBId { get; set; }
 
