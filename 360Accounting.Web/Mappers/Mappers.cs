@@ -52,7 +52,7 @@ namespace _360Accounting.Web
 
             return new InvoiceSource
             {
-                //CodeCombinationId = model.CodeCombinationId,
+                CodeCombinationId = model.CodeCombinationId,
                 CompanyId = AuthenticationHelper.User.CompanyId,
                 CreateDate = DateTime.Now,
                 StartDate = model.StartDate,
