@@ -33,14 +33,14 @@
 <div class="col-lg-5">
     <div class="form-group">
         @Html.LabelFor(m => m.StartDate)
-        @Html.TextBoxFor(m => m.StartDate, Model.StartDate != null ? Model.StartDate.Value.ToShortDateString() : _360Accounting.Common.Utility.FromDate().ToShortDateString(), new { @readonly = "readonly", @class = "form-control" })
+        @Html.TextBoxFor(m => m.StartDate, Model.StartDate != null ? Model.StartDate.Value.ToShortDateString() : _360Accounting.Common.Const.StartDate.ToShortDateString(), new { @readonly = "readonly", @class = "form-control" })
     </div>
 </div>
 
 <div class="col-lg-5">
     <div class="form-group">
         @Html.LabelFor(m => m.EndDate)
-        @Html.TextBoxFor(m => m.EndDate, Model.EndDate != null ? Model.EndDate.Value.ToShortDateString() : _360Accounting.Common.Utility.ToDate().ToShortDateString(), new { @readonly = "readonly", @class = "form-control" })
+        @Html.TextBoxFor(m => m.EndDate, Model.EndDate != null ? Model.EndDate.Value.ToShortDateString() : _360Accounting.Common.Const.EndDate.ToShortDateString(), new { @readonly = "readonly", @class = "form-control" })
     </div>
 </div>
 

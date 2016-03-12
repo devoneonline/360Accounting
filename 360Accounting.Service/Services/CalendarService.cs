@@ -18,7 +18,7 @@ namespace _360Accounting.Service
             this.repository = repo;
         }
 
-        public Calendar getLastCalendarByYear(long comapnyId, long sobId, int periodYear)
+        public Calendar GetLastCalendarByYear(long comapnyId, long sobId, int periodYear)
         {
             return this.repository.getLastCalendarByYear(comapnyId, sobId, periodYear);
         }
@@ -28,7 +28,7 @@ namespace _360Accounting.Service
             return this.repository.GetAll(companyId, sobId);
         }
 
-        public Calendar getCalendarByPeriod(long companyId, long sobId, DateTime? startDate, DateTime? endDate)
+        public Calendar GetCalendarByPeriod(long companyId, long sobId, DateTime? startDate, DateTime? endDate)
         {
             return this.repository.getCalendarByPeriod(companyId, sobId, startDate, endDate);
         }

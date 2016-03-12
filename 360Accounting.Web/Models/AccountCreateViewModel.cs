@@ -63,24 +63,31 @@ namespace _360Accounting.Web.Models
         public string SegmentName1 { get; set; }
 
         [Display(Name = "2")]
+        [StringLength(30, ErrorMessage = "Segment2 should not exceed length of 30 characters")]
         public string SegmentName2 { get; set; }
 
         [Display(Name = "3")]
+        [StringLength(30, ErrorMessage = "Segment3 should not exceed length of 30 characters")]
         public string SegmentName3 { get; set; }
 
         [Display(Name = "4")]
+        [StringLength(30, ErrorMessage = "Segment4 should not exceed length of 30 characters")]
         public string SegmentName4 { get; set; }
 
         [Display(Name = "5")]
+        [StringLength(30, ErrorMessage = "Segment5 should not exceed length of 30 characters")]
         public string SegmentName5 { get; set; }
 
         [Display(Name = "6")]
+        [StringLength(30, ErrorMessage = "Segment6 should not exceed length of 30 characters")]
         public string SegmentName6 { get; set; }
 
         [Display(Name = "7")]
+        [StringLength(30, ErrorMessage = "Segment7 should not exceed length of 30 characters")]
         public string SegmentName7 { get; set; }
 
         [Display(Name = "8")]
+        [StringLength(30, ErrorMessage = "Segment8 should not exceed length of 30 characters")]
         public string SegmentName8 { get; set; }
 
         [Display(Name = "Segments")]

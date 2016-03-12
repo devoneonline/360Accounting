@@ -17,40 +17,29 @@ namespace _360Accounting.Web.Controllers
     [Authorize]
     public class AccountValueController : Controller
     {
-        private IAccountService accountService;
-        private IAccountValueService service;
-        private ISetOfBookService sobService;
-
-        public AccountValueController()
-        {
-            service = IoC.Resolve<IAccountValueService>("AccountValueService");
-            sobService = IoC.Resolve<ISetOfBookService>("SetOfBookService");
-            accountService = IoC.Resolve<IAccountService>("AccountService");
-        }
-
         public ActionResult Index(long id, AccountValueListModel model)
         {
             Session["sobid"] = id;   //TODO:: temporary
             model.SOBId = id;
-            model.Segments = getSegmentList(model.SOBId.ToString());
+            model.Segments = AccountHelper.GetSegmentList(model.SOBId.ToString());
             model.Segment = model.Segments[0].Value;
         
             return View(model);
         }
 
-        public ActionResult Create(long sobId, string segment)
+        public ActionResult Create(string sobId, string segment)
         {
             AccountValueViewModel model = new AccountValueViewModel();
-            Account account = accountService.GetAccountBySOBId(sobId.ToString(), AuthenticationHelper.User.CompanyId);
+            Account account = AccountHelper.GetAccountBySOBId(sobId);
             if (account != null)
             {
                 model.ChartId = account.Id;
-                model.SetOfBook = sobService.GetSingle(sobId.ToString(),AuthenticationHelper.User.CompanyId).Name;
+                model.SetOfBook = SetOfBookHelper.GetSetOfBook(sobId.ToString()).Name;
                 model.Segment = segment;
                 model.StartDate = Const.CurrentDate;
                 model.EndDate = Const.EndDate;
-                model.ValueChar = getSegmentCharacters(segment, account);
-                SessionHelper.SOBId = sobId;   //TODO:: temporary
+                model.ValueChar = AccountHelper.GetSegmentCharacters(segment, account);
+                SessionHelper.SOBId = Convert.ToInt32(sobId);   //TODO:: temporary
                 return View("Edit", model);
             }
 
@@ -59,14 +48,15 @@ namespace _360Accounting.Web.Controllers
 
         public JsonResult SegmentList(string sobId)
         {
-            return Json(getSegmentList(sobId), JsonRequestBehavior.AllowGet);
+            return Json(AccountHelper.GetSegmentList(sobId), JsonRequestBehavior.AllowGet);
         }
         
-        public ActionResult Edit(long id)
+        public ActionResult Edit(string id)
         {
-            AccountValueViewModel model = new 
-                AccountValueViewModel(service.GetSingle(id.ToString(),AuthenticationHelper.User.CompanyId));
-            model.SetOfBook = sobService.GetSingle(accountService.GetSingle(model.ChartId.ToString(), AuthenticationHelper.User.CompanyId).SOBId.ToString(), AuthenticationHelper.User.CompanyId).Name;
+            AccountValueViewModel model = AccountValueHelper.GetAccountValue(id);
+            model.SetOfBook = SetOfBookHelper.GetSetOfBook
+                (AccountHelper.GetAccount
+                (model.ChartId.ToString()).SOBId.ToString()).Name;
             return View(model);
         }
 
@@ -75,15 +65,14 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (model.Id > 0)
+                try
                 {
-                    string result = service.Update(mapModel(model));
+                    string result = AccountValueHelper.SaveChartOfAccountValue(model);
                     return RedirectToAction("Index", new { id = Session["sobid"] });
                 }
-                else
+                catch (Exception ex)
                 {
-                    string result = service.Insert(mapModel(model));
-                    return RedirectToAction("Index", new { id = Session["sobid"] });
+                    ModelState.AddModelError("Error", ex.Message);
                 }
             }
 
@@ -92,152 +81,13 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            AccountValueHelper.Delete(id);
             return RedirectToAction("Index", new { id = Session["sobid"] });
         }
 
-        #region Private Methods
-        public int? getSegmentCharacters(string segment, Account account)
+        public ActionResult AccountValuesPartial(string sobId, string segment)
         {
-            if (segment == account.SegmentName1)
-            {
-                return account.SegmentChar1;
-            }
-            else if (segment == account.SegmentName2)
-            {
-                return account.SegmentChar2;
-            }
-            else if (segment == account.SegmentName3)
-            {
-                return account.SegmentChar3;
-            }
-            else if (segment == account.SegmentName4)
-            {
-                return account.SegmentChar4;
-            }
-            else if (segment == account.SegmentName5)
-            {
-                return account.SegmentChar5;
-            }
-            else if (segment == account.SegmentName6)
-            {
-                return account.SegmentChar6;
-            }
-            else if (segment == account.SegmentName7)
-            {
-                return account.SegmentChar7;
-            }
-            else if (segment == account.SegmentName8)
-            {
-                return account.SegmentChar8;
-            }
-            else
-            {
-                return 0;
-            }
-        }
-
-        private List<SelectListItem> getSegmentList(string sobId)
-        {
-            Account account = accountService.GetAccountBySOBId(sobId, AuthenticationHelper.User.CompanyId);
-            var lst = new List<SelectListItem>();
-            if (account != null)
-            {
-                lst.Add(new SelectListItem
-                {
-                    Text = account.SegmentName1,
-                    Value = account.SegmentName1,
-                    Selected = true
-                });
-                if (account.SegmentName2 != null)
-                {
-                    lst.Add(new SelectListItem
-                    {
-                        Text = account.SegmentName2,
-                        Value = account.SegmentName2
-                    });
-                }
-
-                if (account.SegmentName3 != null)
-                {
-                    lst.Add(new SelectListItem
-                    {
-                        Text = account.SegmentName3,
-                        Value = account.SegmentName3
-                    });
-                }
-
-                if (account.SegmentName4 != null)
-                {
-                    lst.Add(new SelectListItem
-                    {
-                        Text = account.SegmentName4,
-                        Value = account.SegmentName4
-                    });
-                }
-
-                if (account.SegmentName5 != null)
-                {
-                    lst.Add(new SelectListItem
-                    {
-                        Text = account.SegmentName5,
-                        Value = account.SegmentName5
-                    });
-                }
-
-                if (account.SegmentName6 != null)
-                {
-                    lst.Add(new SelectListItem
-                    {
-                        Text = account.SegmentName6,
-                        Value = account.SegmentName6
-                    });
-                }
-
-                if (account.SegmentName7 != null)
-                {
-                    lst.Add(new SelectListItem
-                    {
-                        Text = account.SegmentName7,
-                        Value = account.SegmentName7
-                    });
-                }
-
-                if (account.SegmentName8 != null)
-                {
-                    lst.Add(new SelectListItem
-                    {
-                        Text = account.SegmentName8,
-                        Value = account.SegmentName8
-                    });
-                }
-            }
-
-            return lst;   
-        }
-
-        private AccountValue mapModel(AccountValueViewModel model)            ////TODO: this should be done in service will discuss later - FK
-        {
-            return new AccountValue
-            {
-                AccountType = model.AccountType,
-                ChartId = model.ChartId,
-                CreateDate = DateTime.Now,
-                EndDate = model.EndDate,
-                Id = model.Id,
-                Levl = model.Levl,
-                Segment = model.Segment,
-                StartDate = model.StartDate,
-                UpdateDate = DateTime.Now,
-                Value = model.Value,
-                ValueName = model.ValueName
-            };
-        }
-        #endregion
-
-        public ActionResult AccountValuesPartial(long sobId, string segment)
-        {
-            List<AccountValueViewModel> accountValuesList = service.GetAll(AuthenticationHelper.User.CompanyId, segment).Select(x => new AccountValueViewModel(x)).ToList();
+            List<AccountValueViewModel> accountValuesList = AccountValueHelper.GetAccountValues(AccountHelper.GetAccountBySOBId(sobId).Id, segment);
             return PartialView("_List", accountValuesList);
         }
     }

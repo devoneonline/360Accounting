@@ -12,31 +12,6 @@ namespace _360Accounting.Web.Controllers
     [Authorize]
     public class CustomerController : Controller
     {
-        private ICustomerService service;
-
-        #region Private Methods
-        private Customer mapModel(CustomerModel model)
-        {
-            return new Customer
-            {
-                Address = model.Address,
-                CompanyId = AuthenticationHelper.User.CompanyId,
-                ContactNo = model.ContactNo,
-                CreateDate = DateTime.Now,
-                CustomerName = model.CustomerName,
-                EndDate = model.EndDate,
-                Id = model.Id,
-                StartDate = model.StartDate,
-                UpdateDate = DateTime.Now
-            };
-        }
-        #endregion
-
-        public CustomerController()
-        {
-            service = IoC.Resolve<ICustomerService>("CustomerService");
-        }
-
         [HttpPost]
         public ActionResult Edit(CustomerModel model)
         {
@@ -45,7 +20,7 @@ namespace _360Accounting.Web.Controllers
                 //Customer duplicateRecord = service.GetSingle(model.Id.ToString(), AuthenticationHelper.User.CompanyId);
                 //if (duplicateRecord == null)
                 //{
-                string result = service.Update(mapModel(model));
+                string result = CustomerHelper.SaveCustomer(model);
                 return RedirectToAction("Index");
                 //}
                 //else
@@ -58,22 +33,18 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Edit(string id)
         {
-            CustomerModel model = new CustomerModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
-            return View(model);
+            return View(CustomerHelper.GetCustomer(id));
         }
 
         public ActionResult Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            CustomerHelper.DeleteCustomer(id);
             return RedirectToAction("Index");
         }
 
         public ActionResult CustomerListPartial()
         {
-            IEnumerable<CustomerModel> list = service
-                .GetAll(AuthenticationHelper.User.CompanyId)
-                .Select(a => new CustomerModel(a)).ToList();
-            return PartialView("_List", list);
+            return PartialView("_List", CustomerHelper.GetCustomers());
         }
 
         [HttpPost]
@@ -84,7 +55,7 @@ namespace _360Accounting.Web.Controllers
                 //Customer duplicateRecord = service.GetSingle(model.Id.ToString(), AuthenticationHelper.User.CompanyId);
                 //if (duplicateRecord == null)
                 //{
-                    string result = service.Insert(mapModel(model));
+                    string result = CustomerHelper.SaveCustomer(model);
                     return RedirectToAction("Index");
                 //}
                 //else
@@ -104,8 +75,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Index()
         {
             CustomerListModel model = new CustomerListModel();
-            IEnumerable<Customer> list = service.GetAll(AuthenticationHelper.User.CompanyId);
-            model.Customers = list.Select(a => new CustomerModel(a)).ToList();
+            model.Customers = CustomerHelper.GetCustomers();
             return View(model);
         }
     }

@@ -11,7 +11,7 @@ namespace _360Accounting.Data.Repositories
 {
     public class AccountValueRepository : Repository, IAccountValueRepository
     {
-        public AccountValue GetAccountValueBySegment(string segment, long chartId)
+        public AccountValue GetAccountValueBySegment(long chartId, string segment)
         {
             AccountValue value = this.Context
                 .AccountValues.FirstOrDefault(x => x.ChartId == chartId &&
@@ -19,7 +19,7 @@ namespace _360Accounting.Data.Repositories
             return value;
         }
 
-        public List<AccountValue> GetAccountValuesBySegment(string segment, long chartId)
+        public List<AccountValue> GetAccountValuesBySegment(long chartId, string segment)
         {
             List<AccountValue> valueList = this.Context.AccountValues.Where(x => x.Segment == segment && x.ChartId == chartId).ToList();
             return valueList;
@@ -38,11 +38,11 @@ namespace _360Accounting.Data.Repositories
             return valueList;
         }
 
-        public IEnumerable<AccountValue> GetAll(long companyId, string segment)
-        {
-            IEnumerable<AccountValue> valueList = this.Context.AccountValues.Where(rec => rec.Segment == segment);
-            return valueList;
-        }
+        //public IEnumerable<AccountValue> GetAll(long companyId, string segment)
+        //{
+        //    IEnumerable<AccountValue> valueList = this.Context.AccountValues.Where(rec => rec.Segment == segment);
+        //    return valueList;
+        //}
 
         public string Insert(AccountValue entity)
         {

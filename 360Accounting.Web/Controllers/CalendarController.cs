@@ -16,21 +16,10 @@ namespace _360Accounting.Web.Controllers
     [Authorize]
     public class CalendarController : Controller
     {
-        private ICalendarService service;
-        private ISetOfBookService sobService;
-
-        public CalendarController()
-        {
-            service = IoC.Resolve<ICalendarService>("CalendarService");
-            sobService = IoC.Resolve<ISetOfBookService>("SetOfBookService");
-        }
-
         public JsonResult GetPreviousCalendar(long sobId, int periodYear)
         {
-            Calendar calendar = service.getLastCalendarByYear(AuthenticationHelper.User.CompanyId, sobId, periodYear);
-            if (calendar != null)
+            if (CalendarHelper.GetPreviousCalendar(sobId, periodYear) != null)
             {
-                SessionHelper.Calendar = new CalendarViewModel(calendar);
                 return Json(SessionHelper.Calendar.SeqNumber, JsonRequestBehavior.AllowGet);
             }
             return Json(0, JsonRequestBehavior.AllowGet);
@@ -41,10 +30,17 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                Calendar entity = service.GetSingle(model.Id.ToString(), AuthenticationHelper.User.CompanyId);
-                entity.ClosingStatus = model.ClosingStatus;
-                string result = service.Update(entity);
-                return RedirectToAction("Index");
+                try
+                {
+                    CalendarViewModel calendar = CalendarHelper.GetCalendar(model.Id.ToString());
+                    calendar.ClosingStatus = model.ClosingStatus;
+                    string result = CalendarHelper.SaveCalendar(calendar);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Error", ex.Message);
+                }
             }
 
             return View(model);
@@ -52,13 +48,13 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult ChangeStatus(string id)
         {
-            CalendarViewModel model = new CalendarViewModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            CalendarViewModel model = CalendarHelper.GetCalendar(id);
             return View(model);
         }
 
         public ActionResult Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            CalendarHelper.Delete(id);
             return RedirectToAction("Index");
         }
 
@@ -67,7 +63,7 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                string result = service.Update(mapModel(model));
+                string result = CalendarHelper.SaveCalendar(model);
                 return RedirectToAction("Index");
             }
 
@@ -76,7 +72,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Edit(string id)
         {
-            CalendarViewModel model = new CalendarViewModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            CalendarViewModel model = CalendarHelper.GetCalendar(id);
             return View(model);
         }
 
@@ -103,7 +99,7 @@ namespace _360Accounting.Web.Controllers
                     ////if (duplicateRecord == null)
                     ////{
                     model.ClosingStatus = "Open";
-                    string result = service.Insert(mapModel(model));    ////TODO: mapper should be in service
+                    string result = CalendarHelper.SaveCalendar(model);    ////TODO: mapper should be in service
                     return RedirectToAction("Index");
                     ////}
                     ////else
@@ -128,7 +124,7 @@ namespace _360Accounting.Web.Controllers
         {
             CalendarListModel model = new CalendarListModel();
             model.SOBId = sobId;
-            model.Calendars = getCalendarList(model);
+            model.Calendars = CalendarHelper.GetCalendars(sobId);
             return PartialView("_List", model);
         }
 
@@ -136,8 +132,7 @@ namespace _360Accounting.Web.Controllers
         {
             if (model.SetOfBooks == null)
             {
-                model.SetOfBooks = sobService
-                    .GetByCompanyId(AuthenticationHelper.User.CompanyId)
+                model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()
                     .Select(x => new SelectListItem
                     {
                         Text = x.Name,
@@ -148,43 +143,11 @@ namespace _360Accounting.Web.Controllers
 
             return View(model);
         }
-
-        #region Private Methods
-
-        private List<CalendarViewModel> getCalendarList(CalendarListModel model)
-        {
-            return service.GetAll(AuthenticationHelper.User.CompanyId, model.SOBId != 0 ? model.SOBId : Convert.ToInt64(model.SetOfBooks.First().Value), model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
-                .Select(x => new CalendarViewModel(x)).ToList();
-        }
-
-        private Calendar mapModel(CalendarViewModel model)
-        {
-            return new Calendar
-            {
-                Adjusting = model.Adjusting,
-                ClosingStatus = model.ClosingStatus,
-                CompanyId = AuthenticationHelper.User.CompanyId,
-                CreateDate = DateTime.Now,
-                EndDate = model.EndDate,
-                Id = model.Id,
-                PeriodName = model.PeriodName,
-                PeriodQuarter = model.PeriodQuarter,
-                PeriodYear = model.PeriodYear,
-                SeqNumber = model.SeqNumber,
-                SOBId = model.SOBId,
-                StartDate = model.StartDate,
-                UpdateDate = DateTime.Now
-            };
-        }
-        #endregion
-
+        
         [ValidateInput(false)]
         public ActionResult CalendarListPartial(long sobId)
         {
-            List<CalendarViewModel> model = service.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", true, null, "", "")
-                .Select(x => new CalendarViewModel(x)).ToList();
-
-            return PartialView("_List", model);
+            return PartialView("_List", CalendarHelper.GetCalendars(sobId));
         }
     }
 }

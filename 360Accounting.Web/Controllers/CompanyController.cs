@@ -14,42 +14,21 @@ namespace _360Accounting.Web.Controllers
     [Authorize]
     public class CompanyController : Controller
     {
-        private ICompanyService service;
-
-        public CompanyController()
-        {
-            service = IoC.Resolve<ICompanyService>("CompanyService");
-        }
-
         public ActionResult Index()
         {
             CompanyListModel model = new CompanyListModel();
-            var list = service.GetAll(AuthenticationHelper.User.CompanyId);
-            model.Companies = list.Select(a => new CompanyModel(a)).ToList();
+            model.Companies = CompanyHelper.GetCompanies();
             return View(model);
         }
 
         public ActionResult Create()
         {
-            return View(new CompanyModel());
-        }
-
-        [HttpPost]
-        public ActionResult Create(CompanyModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                string result = service.Insert(MapModel(model));
-                return RedirectToAction("Index");
-            }
-
-            return View(model);
+            return View("Edit", new CompanyModel());
         }
 
         public ActionResult Edit(string id)
         {
-            CompanyModel model = new CompanyModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
-            return View(model);
+            return View(CompanyHelper.GetCompany(id));
         }
 
         [HttpPost]
@@ -57,8 +36,15 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                string result = service.Update(MapModel(model));
-                return RedirectToAction("Index");
+                try
+                {
+                    string result = CompanyHelper.SaveCompany(model);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Error", ex.Message);
+                }                
             }
 
             return View(model);
@@ -66,24 +52,13 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            CompanyHelper.DeleteCompany(id);
             return RedirectToAction("Index");
-        }
-
-        private Company MapModel(CompanyModel model)            ////TODO: this should be done in service will discuss later - FK
-        {
-            return new Company
-            {
-                Id = model.Id,
-                Name = model.Name
-            };
         }
 
         public ActionResult CompanyListPartial()
         {
-            var list = service.GetAll(AuthenticationHelper.User.CompanyId);
-            IEnumerable<CompanyModel> companyList = list.Select(a => new CompanyModel(a));
-            return PartialView("_List", companyList);
+            return PartialView("_List", CompanyHelper.GetCompanies());
         }
     }
 }

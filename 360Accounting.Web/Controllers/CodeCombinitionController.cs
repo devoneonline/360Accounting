@@ -15,57 +15,28 @@ namespace _360Accounting.Web.Controllers
     [Authorize]
     public class CodeCombinitionController : Controller
     {
-        private ICodeCombinitionService service;
-        private ISetOfBookService sobService;
-        private IAccountService accountService;
-        private IAccountValueService accountValueService;
-
-        public CodeCombinitionController()
-        {
-            service = IoC.Resolve<ICodeCombinitionService>("CodeCombinitionService");
-            sobService = IoC.Resolve<ISetOfBookService>("SetOfBookService");
-            accountService = IoC.Resolve<IAccountService>("AccountService");
-            accountValueService = IoC.Resolve<IAccountValueService>("AccountValueService");
-        }
-
         public ActionResult Index(long id, CodeCombinitionListModel model)
         {
-            //if (model.SetOfBooks == null)
-            //{
-            //    model.SetOfBooks = sobService
-            //        .GetByCompanyId(AuthenticationHelper.User.CompanyId)
-            //        .Select(x => new SelectListItem
-            //        {
-            //            Text = x.Name,
-            //            Value = x.Id.ToString(),
-            //            Selected = x.Id == model.SOBId ? true : false
-            //        }).ToList();
-            //}
-
-            //model.CodeCombinitions = service.GetAll(AuthenticationHelper.User.CompanyId, model.SOBId != 0 ? model.SOBId : Convert.ToInt64(model.SetOfBooks.First().Value), model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
-            //    .Select(x => new CodeCombinitionViewModel(x)).ToList();
-
             model.SOBId = id;
-            model.CodeCombinitions = service.GetAll(AuthenticationHelper.User.CompanyId, id, model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
-                .Select(x => new CodeCombinitionViewModel(x)).ToList();
+            model.CodeCombinitions = CodeCombinationHelper.GetCodeCombinations(model);
             return View(model);
         }
 
-        public ActionResult Create(long sobId)
+        public ActionResult Create(string sobId)
         {
             CodeCombinitionCreateViewModel model =  new CodeCombinitionCreateViewModel();
-            model.SegmentList = getSegmentList(sobId);
-            model.SOBId = sobId;
+            model.SegmentList = AccountHelper.GetSegmentListForCodeCombination(sobId);
+            model.SOBId = Convert.ToInt32(sobId);
             model.StartDate = Const.CurrentDate;
             model.EndDate = Const.EndDate;
             return PartialView("_Create", model);
         }
-        
-        public ActionResult Edit(long id, long sobId)
+
+        public ActionResult Edit(string id, string sobId)
         {
-            CodeCombinitionCreateViewModel model = new CodeCombinitionCreateViewModel(service.GetSingle(id.ToString(),AuthenticationHelper.User.CompanyId));
-            model.SegmentList = getSegmentList(sobId);
-            model.SOBId = sobId;
+            CodeCombinitionCreateViewModel model = CodeCombinationHelper.GetCodeCombination(id);
+            model.SegmentList = AccountHelper.GetSegmentListForCodeCombination(sobId);
+            model.SOBId = Convert.ToInt32(sobId);
             return PartialView("_Edit", model);
         }
 
@@ -116,192 +87,22 @@ namespace _360Accounting.Web.Controllers
             model.Id = id;
             model.SOBId = sobId;
 
-            if (model.Id > 0)
-            {
-                string result = service.Update(mapModel(model));
-            }
-            else
-            {
-                string result = service.Insert(mapModel(model));
-            }
+            string result = CodeCombinationHelper.SaveCodeCombination(model);
             return Json("Success");
         }
 
-
         public ActionResult Delete(string id, long sobId)
         {
-            service.Delete(id,AuthenticationHelper.User.CompanyId);
+            CodeCombinationHelper.Delete(id);
             return RedirectToAction("Index", new { id = sobId });
         }
 
         public ActionResult GetCodeCombinitionList(long sobId)
         {
             CodeCombinitionListModel model = new CodeCombinitionListModel();
-            model.CodeCombinitions = service.GetAll(AuthenticationHelper.User.CompanyId, sobId, model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
-                .Select(x => new CodeCombinitionViewModel(x)).ToList();
+            model.CodeCombinitions = CodeCombinationHelper.GetCodeCombinations(model);
             return PartialView("_List", model);
         }
 
-        #region Private Methods
-        private CodeCombinition mapModel(CodeCombinitionCreateViewModel model)
-        {
-            return new CodeCombinition
-            {
-                AllowedPosting = model.AllowedPosting,
-                CompanyId = model.CompanyId,
-                CreateDate = DateTime.Now,
-                EndDate = model.EndDate,
-                Id = model.Id,
-                Segment1 = model.Segment1,
-                Segment2 = model.Segment2,
-                Segment3 = model.Segment3,
-                Segment4 = model.Segment4,
-                Segment5 = model.Segment5,
-                Segment6 = model.Segment6,
-                Segment7 = model.Segment7,
-                Segment8 = model.Segment8,
-                SOBId = model.SOBId,
-                StartDate = model.StartDate,
-                UpdateDate = DateTime.Now
-            };
-        }
-
-        private List<Segment> getSegmentList(long sobId)
-        {
-            List<Segment> segmentList = new List<Segment>();
-            Account account = accountService.GetAccountBySOBId(sobId.ToString(), AuthenticationHelper.User.CompanyId);
-            if (account != null)
-            {
-                if (account.SegmentEnabled1 == true)
-                {
-                    segmentList.Add(new Segment
-                    {
-                        SegmentCount = 1,
-                        SegmentName = account.SegmentName1,
-                        SegmentValueList = accountValueService.GetAccountValuesBySegment(account.SegmentName1, account.Id)
-                        .Select(x => new SelectListItem
-                        {
-                            Value = x.Value,
-                            Text = x.Value
-                        }).ToList()
-                    });
-                }
-
-                if (account.SegmentEnabled2 == true)
-                {
-                    segmentList.Add(new Segment
-                    {
-                        SegmentCount = 2,
-                        SegmentName = account.SegmentName2,
-                        SegmentValueList = accountValueService
-                        .GetAccountValuesBySegment(account.SegmentName2, account.Id)
-                        .Select(x => new SelectListItem
-                        {
-                            Value = x.Value,
-                            Text = x.Value
-                        }).ToList()
-                    });
-                }
-
-                if (account.SegmentEnabled3 == true)
-                {
-                    segmentList.Add(new Segment
-                    {
-                        SegmentCount = 3,
-                        SegmentName = account.SegmentName3,
-                        SegmentValueList = accountValueService
-                        .GetAccountValuesBySegment(account.SegmentName3, account.Id)
-                        .Select(x => new SelectListItem
-                        {
-                            Value = x.Value,
-                            Text = x.Value
-                        }).ToList()
-                    });
-                }
-
-                if (account.SegmentEnabled4 == true)
-                {
-                    segmentList.Add(new Segment
-                    {
-                        SegmentCount = 4,
-                        SegmentName = account.SegmentName4,
-                        SegmentValueList = accountValueService
-                        .GetAccountValuesBySegment(account.SegmentName4, account.Id)
-                        .Select(x => new SelectListItem
-                        {
-                            Value = x.Value,
-                            Text = x.Value
-                        }).ToList()
-                    });
-                }
-
-                if (account.SegmentEnabled5 == true)
-                {
-                    segmentList.Add(new Segment
-                    {
-                        SegmentCount = 5,
-                        SegmentName = account.SegmentName5,
-                        SegmentValueList = accountValueService
-                        .GetAccountValuesBySegment(account.SegmentName5, account.Id)
-                        .Select(x => new SelectListItem
-                        {
-                            Value = x.Value,
-                            Text = x.Value
-                        }).ToList()
-                    });
-                }
-
-                if (account.SegmentEnabled6 == true)
-                {
-                    segmentList.Add(new Segment
-                    {
-                        SegmentCount = 6,
-                        SegmentName = account.SegmentName6,
-                        SegmentValueList = accountValueService
-                        .GetAccountValuesBySegment(account.SegmentName6, account.Id)
-                        .Select(x => new SelectListItem
-                        {
-                            Value = x.Value,
-                            Text = x.Value
-                        }).ToList()
-                    });
-                }
-
-                if (account.SegmentEnabled7 == true)
-                {
-                    segmentList.Add(new Segment
-                    {
-                        SegmentCount = 7,
-                        SegmentName = account.SegmentName7,
-                        SegmentValueList = accountValueService
-                        .GetAccountValuesBySegment(account.SegmentName7, account.Id)
-                        .Select(x => new SelectListItem
-                        {
-                            Value = x.Value,
-                            Text = x.Value
-                        }).ToList()
-                    });
-                }
-
-                if (account.SegmentEnabled8 == true)
-                {
-                    segmentList.Add(new Segment
-                    {
-                        SegmentCount = 8,
-                        SegmentName = account.SegmentName8,
-                        SegmentValueList = accountValueService
-                        .GetAccountValuesBySegment(account.SegmentName8, account.Id)
-                        .Select(x => new SelectListItem
-                        {
-                            Value = x.Value,
-                            Text = x.Value
-                        }).ToList()
-                    });
-                }
-            }
-
-            return segmentList;
-        }
-        #endregion
     }
 }

@@ -1,5 +1,6 @@
 ﻿using _360Accounting.Core;
 using _360Accounting.Core.Entities;
+using _360Accounting.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +18,36 @@ namespace _360Accounting.Web
             service = IoC.Resolve<ISetOfBookService>("SetOfBookService");
         }
 
-        public static List<SelectListItem> GetSetOfBook()
+        public static List<SetOfBookModel> GetSetOfBooks()
         {
             return service.GetByCompanyId(AuthenticationHelper.User.CompanyId)
-                .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
+                .Select(x => new SetOfBookModel(x)).ToList();                
         }
 
+        public static SetOfBookModel GetSetOfBook(string id)
+        {
+            SetOfBookModel model = new SetOfBookModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            return model;                
+        }
 
+        public static SetOfBook GetSetOfBookByName(string sobName)
+        {
+            return service.GetSetOfBook(AuthenticationHelper.User.CompanyId, sobName);                
+        }
+
+        public static string Insert(SetOfBookModel model)
+        {
+            return service.Insert(Mappers.GetEntityByModel(model));
+        }
+
+        public static string Update(SetOfBookModel model)
+        {
+            return service.Update(Mappers.GetEntityByModel(model));
+        }
+
+        public static void Delete(string id)
+        {
+            service.Delete(id, AuthenticationHelper.User.CompanyId);
+        }
     }
 }

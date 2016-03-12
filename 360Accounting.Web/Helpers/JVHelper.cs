@@ -67,9 +67,7 @@ namespace _360Accounting.Web
 
             return yearDigit + monthDigit + docNo;
         }
-
         
-
         public static void Update(string journalName, string glDate, string cRate, string descr)
         {
             bool isNewRecord = true;
@@ -85,7 +83,7 @@ namespace _360Accounting.Web
             header.Description = descr;
             header.DocumentNo = JVHelper.GetDocNo(AuthenticationHelper.User.CompanyId, header.PeriodId, header.SOBId, header.CurrencyId);
 
-            GLHeader entity = GetEntityByModel(header);
+            GLHeader entity = Mappers.GetEntityByModel(header);
 
             string result = string.Empty;
             if (header.Id > 0)    //update
@@ -153,54 +151,6 @@ namespace _360Accounting.Web
                 
             }
             return modelList;
-        }
-
-        private static GLHeader GetEntityByModel(GLHeaderModel model)
-        {
-            if (model == null) return null;
-
-            GLHeader entity = new GLHeader();
-            entity.Id = model.Id;
-            entity.JournalName = model.JournalName;
-            entity.CompanyId = model.CompanyId;
-            entity.ConversionRate = model.ConversionRate;
-            entity.CurrencyId = model.CurrencyId;
-            entity.Description = model.Description;
-            entity.DocumentNo = model.DocumentNo;
-            entity.GLDate = model.GLDate;
-            entity.PeriodId = model.PeriodId;
-            entity.SOBId = model.SOBId;
-            if (model.Id == 0)
-            {
-                entity.CreateDate = DateTime.Now;
-            }
-            entity.UpdateBy = entity.CreateBy;
-            entity.UpdateDate = DateTime.Now;
-            return entity;
-        }
-
-        private static GLLines GetEntityByModel(GLLinesModel model, decimal conversionRate)
-        {
-            if (model == null) return null;
-
-            GLLines entity = new GLLines();
-            entity.Id = model.Id;
-            entity.HeaderId = model.HeaderId;
-            entity.CodeCombinationId = model.CodeCombinationId;
-            entity.Description = model.Description;
-            entity.EnteredCr = model.EnteredCr;
-            entity.EnteredDr = model.EnteredDr;
-            entity.AccountedCr = model.EnteredCr * conversionRate;
-            entity.AccountedDr = model.EnteredDr * conversionRate;
-            entity.Qty = model.Quantity;
-            entity.TaxRateCode = model.TaxRateCode;
-            if (model.Id == 0)
-            {
-                entity.CreateDate = DateTime.Now;
-            }
-            entity.UpdateBy = entity.CreateBy;
-            entity.UpdateDate = DateTime.Now;
-            return entity;
         }
         #endregion
     }

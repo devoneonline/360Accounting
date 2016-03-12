@@ -10,10 +10,10 @@ namespace _360Accounting.Core
 {
     public interface IAccountValueService : IService<AccountValue>
     {
-        AccountValue GetAccountValueBySegment(string segment, long chartId);
+        AccountValue GetAccountValueBySegment(long chartId, string segment);
 
-        List<AccountValue> GetAccountValuesBySegment(string segment, long chartId);
+        List<AccountValue> GetAccountValuesBySegment(long chartId, string segment);
 
-        List<AccountValue> GetAll(long companyId, string segment);
+        //List<AccountValue> GetAll(long companyId, string segment);
     }
 }

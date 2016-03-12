@@ -14,18 +14,15 @@ namespace _360Accounting.Web.Controllers
     [Authorize]
     public class SetOfBookController : Controller
     {
-        private ISetOfBookService service;
-
-        public SetOfBookController()
+        public ActionResult SetOfBookPartial()
         {
-            service = IoC.Resolve<ISetOfBookService>("SetOfBookService");
+            return PartialView("_List", SetOfBookHelper.GetSetOfBooks());
         }
 
         public ActionResult Index()
         {
             SetOfBookListModel model = new SetOfBookListModel();
-            var list = service.GetByCompanyId(AuthenticationHelper.User.CompanyId);
-            model.SetOfBooks = list.Select(a => new SetOfBookModel(a)).ToList();
+            model.SetOfBooks = SetOfBookHelper.GetSetOfBooks();
             return View(model);
         }
 
@@ -33,33 +30,12 @@ namespace _360Accounting.Web.Controllers
         {
             var model = new SetOfBookModel();
             model.CompanyId = AuthenticationHelper.User.CompanyId;
-            return View(model);
-        }
-
-        [HttpPost]
-        public ActionResult Create(SetOfBookModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                SetOfBook duplicateRecord = service.GetSetOfBook(AuthenticationHelper.User.CompanyId, model.Name);
-                if (duplicateRecord == null)
-                {
-                    string result = service.Insert(MapModel(model));
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    ModelState.AddModelError("Error", "Set of Book Already exists.");
-                }
-            }
-
-            return View(model);
+            return View("Edit", model);
         }
 
         public ActionResult Edit(string id)
         {
-            SetOfBookModel model = new SetOfBookModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
-            return View(model);
+            return View(SetOfBookHelper.GetSetOfBook(id));
         }
 
         [HttpPost]
@@ -67,8 +43,23 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                string result = service.Update(MapModel(model));
-                return RedirectToAction("Index");
+                if (model.Id > 0)
+                {
+                    string result = SetOfBookHelper.Update(model);
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    if (SetOfBookHelper.GetSetOfBookByName(model.Name) == null)
+                    {
+                        string result = SetOfBookHelper.Insert(model);
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Error", "Set of Book Already exists.");
+                    }
+                }
             }
 
             return View(model);
@@ -76,25 +67,8 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            SetOfBookHelper.Delete(id);
             return RedirectToAction("Index");
-        }
-
-        private SetOfBook MapModel(SetOfBookModel model)            ////TODO: this should be done in service will discuss later - FK
-        {
-            return new SetOfBook
-            {
-                Id = model.Id,
-                CompanyId = model.CompanyId,
-                Name = model.Name
-            };
-        }
-
-        public ActionResult SetOfBookPartial()
-        {
-            var list = service.GetByCompanyId(AuthenticationHelper.User.CompanyId);
-            IEnumerable<SetOfBookModel> setofBookList = list.Select(a => new SetOfBookModel(a));
-            return PartialView("_List", setofBookList);
         }
     }
 }

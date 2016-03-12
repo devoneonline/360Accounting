@@ -25,6 +25,7 @@ namespace _360Accounting.Web.Models
         public long CompanyId { get; set; }
 
         [Required]
+        [StringLength(255, MinimumLength=1)]
         public string Name { get; set; }
     }
 }

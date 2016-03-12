@@ -9,10 +9,10 @@ namespace _360Accounting.Core.Interfaces
 {
     public interface IAccountValueRepository : IRepository<AccountValue>
     {
-        AccountValue GetAccountValueBySegment(string segment, long chartId);
+        AccountValue GetAccountValueBySegment(long chartId, string segment);
 
-        List<AccountValue> GetAccountValuesBySegment(string segment, long chartId);
+        List<AccountValue> GetAccountValuesBySegment(long chartId, string segment);
 
-        IEnumerable<AccountValue> GetAll(long companyId, string segment);
+        //IEnumerable<AccountValue> GetAll(long companyId, string segment);
     }
 }

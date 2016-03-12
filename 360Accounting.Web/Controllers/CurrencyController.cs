@@ -14,22 +14,12 @@ namespace _360Accounting.Web.Controllers
     [Authorize]
     public class CurrencyController : Controller
     {
-        private ICurrencyService service;
-        private ISetOfBookService sobService;
-
-        public CurrencyController()
-        {
-            service = IoC.Resolve<ICurrencyService>("CurrencyService");
-            sobService = IoC.Resolve<ISetOfBookService>("SetOfBookService");
-        }
-
         public ActionResult Index()
         {
             var model = new CurrencyListModel();
             if (model.SetOfBooks == null)
             {
-                model.SetOfBooks = sobService
-                    .GetByCompanyId(AuthenticationHelper.User.CompanyId)
+                model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()
                     .Select(x => new SelectListItem
                     {
                         Text = x.Name,
@@ -53,8 +43,7 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                model.CompanyId = AuthenticationHelper.User.CompanyId;
-                string result = service.Insert(mapModel(model));    ////TODO: mapper should be in service
+                string result = CurrencyHelper.SaveCurrency(model);
                 return RedirectToAction("Index");
             }
 
@@ -63,9 +52,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Edit(string id)
         {
-            CurrencyViewModel model =
-                new CurrencyViewModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
-            return View(model);
+            return View(CurrencyHelper.GetCurrency(id));
         }
 
         [HttpPost]
@@ -73,8 +60,7 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                model.CompanyId = AuthenticationHelper.User.CompanyId;
-                string result = service.Update(mapModel(model));
+                string result = CurrencyHelper.SaveCurrency(model);
                 return RedirectToAction("Index");
             }
 
@@ -83,7 +69,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            CurrencyHelper.DeleteCurrency(id);
             return RedirectToAction("Index");
         }
 
@@ -91,38 +77,13 @@ namespace _360Accounting.Web.Controllers
         {
             CurrencyListModel model = new CurrencyListModel();
             model.SOBId = sobId;
-            model.Currencies = getCurrencyList(model);
+            model.Currencies = CurrencyHelper.GetCurrencyList(sobId);
             return PartialView("_List", model);
         }
 
-        #region Private Methods
-        private List<CurrencyViewModel> getCurrencyList(CurrencyListModel model)
-        {
-            return service.GetAll(AuthenticationHelper.User.CompanyId, model.SOBId != 0 ? model.SOBId : Convert.ToInt64(model.SetOfBooks.First().Value), model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
-                .Select(x => new CurrencyViewModel(x)).ToList();
-        }
-
-        private Currency mapModel(CurrencyViewModel model)            ////TODO: this should be done in service will discuss later - FK
-        {
-            return new Currency
-            {
-                Id = model.Id,
-                CompanyId = model.CompanyId,
-                CreateDate = DateTime.Now,
-                CurrencyCode = model.CurrencyCode,
-                Name = model.Name,
-                Precision = model.Precision,
-                SOBId = model.SOBId,
-                UpdateDate = DateTime.Now
-            };
-        }
-        #endregion
-
         public ActionResult CurrencyListPartial(long sobId)
         {
-            IEnumerable<CurrencyViewModel> currencyList = service.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", true, null, "", "")
-                .Select(x => new CurrencyViewModel(x)).ToList();
-            return PartialView("_List", currencyList);
+            return PartialView("_List", CurrencyHelper.GetCurrencyList(sobId));
         }
     }
 }
