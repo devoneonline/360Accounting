@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
-    public class AccountCreateViewModel
+    public class AccountCreateViewModel : ModelBase
     {
         #region Constructors
         public AccountCreateViewModel()
@@ -44,6 +44,8 @@ namespace _360Accounting.Web.Models
             this.SegmentName6 = bo.SegmentName6;
             this.SegmentName7 = bo.SegmentName7;
             this.SegmentName8 = bo.SegmentName8;
+            this.CreateBy = bo.CreateBy;
+            this.CreateDate = bo.CreateDate;
         }
         #endregion
 

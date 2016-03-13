@@ -17,7 +17,6 @@ namespace _360Accounting.Web.Models
         {
             this.AllowedPosting = entity.AllowedPosting;
             this.CodeCombinitionCode = entity.CodeCombinitionCode;
-            ////this.CodeCombinitionName = entity.CodeCombinitionName;
             this.CompanyId = entity.CompanyId;
             this.EndDate = entity.EndDate;
             this.Id = entity.Id;

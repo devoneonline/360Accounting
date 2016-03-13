@@ -27,8 +27,6 @@ namespace _360Accounting.Web.Controllers
             CodeCombinitionCreateViewModel model =  new CodeCombinitionCreateViewModel();
             model.SegmentList = AccountHelper.GetSegmentListForCodeCombination(sobId);
             model.SOBId = Convert.ToInt32(sobId);
-            model.StartDate = Const.CurrentDate;
-            model.EndDate = Const.EndDate;
             return PartialView("_Create", model);
         }
 

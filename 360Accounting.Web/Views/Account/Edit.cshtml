@@ -18,6 +18,9 @@
         @Html.ValidationSummary()
         @Html.HiddenFor(m => m.CompanyId)
         @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.CreateBy)
+        @Html.HiddenFor(m => m.CreateDate)
+
 
         <div class="form-group">
             @Html.LabelFor(m => m.SetOfBooks)

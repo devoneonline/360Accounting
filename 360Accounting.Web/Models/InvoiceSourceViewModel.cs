@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
-    public class InvoiceSourceViewModel
+    public class InvoiceSourceViewModel:ModelBase
     {
         public InvoiceSourceViewModel()
         {
@@ -25,6 +25,9 @@ namespace _360Accounting.Web.Models
             this.Description = entity.Description;
             this.Id = entity.Id;
             this.SOBId = entity.SOBId;
+            this.CompanyId = entity.CompanyId;
+            this.CreateBy = entity.CreateBy;
+            this.CreateDate = entity.CreateDate;
         }
 
         public long Id { get; set; }
@@ -35,7 +38,8 @@ namespace _360Accounting.Web.Models
 
         public IList<SelectListItem> CodeCombinations { get; set; }
         //public List<SelectListItem> SetOfBooks { get; set; }
-        //public long CompanyId { get; set; }
+        
+        public long CompanyId { get; set; }
 
         [Display(Name = "Source Name")]
         [StringLength(50, MinimumLength = 1)]

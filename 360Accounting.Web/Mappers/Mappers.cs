@@ -14,8 +14,6 @@ namespace _360Accounting.Web
             if (model == null) return null;
             
             Account entity = new Account();
-            entity.CompanyId = AuthenticationHelper.User.CompanyId;
-            entity.CreateDate = DateTime.Now;            
             entity.Id = model.Id;
             entity.SegmentChar1 = model.SegmentChar1;
             entity.SegmentChar2 = model.SegmentChar2;
@@ -42,6 +40,18 @@ namespace _360Accounting.Web
             entity.SegmentName7 = model.SegmentName7;
             entity.SegmentName8 = model.SegmentName8;
             entity.SOBId = model.SOBId;
+            if (model.Id == 0)
+            {
+                entity.CompanyId = AuthenticationHelper.User.CompanyId;
+                entity.CreateBy=AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+            else
+            {
+                entity.CompanyId = model.CompanyId;
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+            }
             entity.UpdateDate = DateTime.Now;
             return entity;
         }
@@ -49,19 +59,30 @@ namespace _360Accounting.Web
         public static InvoiceSource GetEntityByModel(InvoiceSourceViewModel model)
         {
             if (model == null) return null;
+            InvoiceSource entity = new InvoiceSource();
 
-            return new InvoiceSource
+            entity.CodeCombinationId = model.CodeCombinationId;
+            entity.StartDate = model.StartDate;
+            entity.EndDate = model.EndDate;
+            entity.Description = model.Description;
+            entity.Id = model.Id;
+            entity.SOBId = model.SOBId;
+            if (model.Id == 0)
             {
-                CodeCombinationId = model.CodeCombinationId,
-                CompanyId = AuthenticationHelper.User.CompanyId,
-                CreateDate = DateTime.Now,
-                StartDate = model.StartDate,
-                EndDate = model.EndDate,
-                Description = model.Description,
-                Id = model.Id,
-                SOBId = model.SOBId,
-                UpdateDate = DateTime.Now
-            };
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+            else
+            {
+                entity.CompanyId = model.CompanyId;
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+            }
+            entity.UpdateDate = DateTime.Now;
+
+
+            return entity;
         }
 
         public static SetOfBook GetEntityByModel(SetOfBookModel model)
@@ -79,46 +100,69 @@ namespace _360Accounting.Web
         public static AccountValue GetEntityByModel(AccountValueViewModel model)
         {
             if (model == null) return null;
+            AccountValue entity=new AccountValue();
 
-            return new AccountValue
+            entity.AccountType = model.AccountType;
+            entity.ChartId = model.ChartId;
+            entity.EndDate = model.EndDate;
+            entity.Id = model.Id;
+            entity.Levl = model.Levl;
+            entity.Segment = model.Segment;
+            entity.StartDate = model.StartDate;
+            if (model.Id ==0)
             {
-                AccountType = model.AccountType,
-                ChartId = model.ChartId,
-                CreateDate = DateTime.Now,
-                EndDate = model.EndDate,
-                Id = model.Id,
-                Levl = model.Levl,
-                Segment = model.Segment,
-                StartDate = model.StartDate,
-                UpdateDate = DateTime.Now,
-                Value = model.Value,
-                ValueName = model.ValueName
-            };
+                entity.CreateDate = DateTime.Now;
+                entity.CreateBy = AuthenticationHelper.UserId;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+            }
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+            entity.Value = model.Value;
+            entity.ValueName = model.ValueName;
+
+            return entity;
         }
 
         public static CodeCombinition GetEntityByModel(CodeCombinitionCreateViewModel model)
         {
             if (model == null) return null;
 
-            return new CodeCombinition
+            var entity =new CodeCombinition();
+
+            entity.AllowedPosting = model.AllowedPosting;
+            entity.EndDate = model.EndDate;
+            entity.Id = model.Id;
+            entity.Segment1 = model.Segment1;
+            entity.Segment2 = model.Segment2;
+            entity.Segment3 = model.Segment3;
+            entity.Segment4 = model.Segment4;
+            entity.Segment5 = model.Segment5;
+            entity.Segment6 = model.Segment6;
+            entity.Segment7 = model.Segment7;
+            entity.Segment8 = model.Segment8;
+            entity.SOBId = model.SOBId;
+            entity.StartDate = model.StartDate;
+
+            if (model.Id == 0)
             {
-                AllowedPosting = model.AllowedPosting,
-                CompanyId = AuthenticationHelper.User.CompanyId,
-                CreateDate = DateTime.Now,
-                EndDate = model.EndDate,
-                Id = model.Id,
-                Segment1 = model.Segment1,
-                Segment2 = model.Segment2,
-                Segment3 = model.Segment3,
-                Segment4 = model.Segment4,
-                Segment5 = model.Segment5,
-                Segment6 = model.Segment6,
-                Segment7 = model.Segment7,
-                Segment8 = model.Segment8,
-                SOBId = model.SOBId,
-                StartDate = model.StartDate,
-                UpdateDate = DateTime.Now
-            };
+                entity.CompanyId = AuthenticationHelper.User.CompanyId;
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+            else
+            {
+                entity.CompanyId = model.CompanyId;
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+            }
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+
+            return entity;
         }
 
         public static Calendar GetEntityByModel(CalendarViewModel model)

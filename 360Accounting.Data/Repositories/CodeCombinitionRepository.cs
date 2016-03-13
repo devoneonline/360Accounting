@@ -69,11 +69,9 @@ namespace _360Accounting.Data.Repositories
 
         public string Update(CodeCombinition entity)
         {
-            //this.Context.CodeCombinitions.Attach(entity);
-            //this.Context.Entry(entity).State = EntityState.Modified;
-            //this.Commit();
-            //return entity.Id.ToString();
             var originalEntity = this.Context.CodeCombinitions.Find(entity.Id);
+            entity.CreateBy = originalEntity.CreateBy;
+            entity.CreateDate = originalEntity.CreateDate;
             this.Context.Entry(originalEntity).CurrentValues.SetValues(entity);
             this.Context.Entry(originalEntity).State = EntityState.Modified;
             this.Commit();
