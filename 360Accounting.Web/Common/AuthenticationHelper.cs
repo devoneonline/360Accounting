@@ -1,4 +1,6 @@
-﻿using _360Accounting.Web.Models;
+﻿using _360Accounting.Common;
+using _360Accounting.Web.Helpers;
+using _360Accounting.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +14,12 @@ namespace _360Accounting.Web
     {
         private const string SESSION_USER = "USER_PROFILE";
         private const string SESSION_MENU_ITEMS = "MENU_ITEMS";
-        
+        private const string SESSION_COMPANY_ID = "USER_COMPANY_ID";
+        private const string SESSION_COMPANY_NAME = "USER_COMPANY_NAME";
+
+        private static string userName = System.Security.Principal.WindowsPrincipal.Current.Identity.Name;
+
+
         public static UserProfile User
         {
             get
@@ -31,7 +38,29 @@ namespace _360Accounting.Web
             get
             {
                 return
-                Roles.GetRolesForUser(User.UserName)[0] ?? string.Empty;
+                Roles.GetRolesForUser(userName)[0] ?? string.Empty;
+            }
+        }
+
+        public static long? CompanyId
+        {
+            get
+            {
+                return
+                    ((UserProfile)HttpContext.Current.Session[SESSION_USER]).CompanyId;
+            }
+        }
+
+        public static string CompanyName
+        {
+            get
+            {
+                if (HttpContext.Current.Session[SESSION_COMPANY_NAME] == null)
+                {
+                    //companyService.GetSingle(AuthenticationHelper.User.CompanyId.ToString(), AuthenticationHelper.User.CompanyId).Name;
+                    HttpContext.Current.Session[SESSION_COMPANY_NAME] = "My Company";
+                }
+                return HttpContext.Current.Session[SESSION_COMPANY_NAME].ToString();
             }
         }
 
@@ -39,9 +68,19 @@ namespace _360Accounting.Web
         {
             get
             {
-                return HttpContext.Current.Session[SESSION_MENU_ITEMS] == null 
-                    ? null 
-                    : (IEnumerable<FeatureViewModel>)HttpContext.Current.Session[SESSION_MENU_ITEMS];
+                if ( HttpContext.Current.Session[SESSION_MENU_ITEMS] == null )
+                {
+                    if (System.Security.Principal.WindowsPrincipal.Current.IsInRole(UserRoles.SuperAdmin.ToString()))
+                    {
+                        UserHelper.GetSuperAdminMenu();
+                    }
+                    else
+                    {
+                        UserHelper.UpdateMenuItems(userName);
+                    }
+
+                }
+                return (IEnumerable<FeatureViewModel>)HttpContext.Current.Session[SESSION_MENU_ITEMS];
             }
 
             set

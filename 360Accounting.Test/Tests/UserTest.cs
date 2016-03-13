@@ -3,6 +3,7 @@ using _360Accounting.Core.Entities;
 using _360Accounting.Data.Repositories;
 using _360Accounting.Service;
 using _360Accounting.Web.Controllers;
+using _360Accounting.Web.Helpers;
 using _360Accounting.Web.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -17,10 +18,9 @@ namespace _360Accounting.Test
         [TestMethod]
         public void CreateRolesTest()
         {
-            UserController uc = new UserController();
-            Assert.IsFalse(uc.CreateRole("SuperAdmin"));
-            Assert.IsFalse(uc.CreateRole("User"));
-            Assert.IsTrue(uc.CreateRole("CompanyAdmin"));
+            Assert.IsFalse(UserHelper.CreateRole("SuperAdmin"));
+            Assert.IsFalse(UserHelper.CreateRole("User"));
+            Assert.IsTrue(UserHelper.CreateRole("CompanyAdmin"));
         }
 
         [TestMethod]
@@ -35,7 +35,7 @@ namespace _360Accounting.Test
             model.PhoneNumber = "03332111353";
             model.Email = "faisal.khanani.75@gmail.com";
             model.RoleName = "SuperAdmin";
-            var result = uc.CreateUser(model);
+            var result = UserHelper.CreateUser(model);
             Assert.IsTrue(result);
         }
 

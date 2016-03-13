@@ -22,8 +22,6 @@ namespace _360Accounting.Web.Models
 
         public CustomerModel()
         {
-            this.StartDate = Const.CurrentDate;
-            this.EndDate = Const.EndDate;
         }
 
         public long Id { get; set; }
@@ -42,16 +40,14 @@ namespace _360Accounting.Web.Models
         [Display(Name = "Contact")]
         public string ContactNo { get; set; }
 
-        [Required]
         [Display(Name = "Start Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
-        [Required]
         [Display(Name = "End Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
     }
 }
