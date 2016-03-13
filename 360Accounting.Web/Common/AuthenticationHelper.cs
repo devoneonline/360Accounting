@@ -18,7 +18,6 @@ namespace _360Accounting.Web
         private const string SESSION_COMPANY_NAME = "USER_COMPANY_NAME";
         private const string SESSION_USER_ID = "USER_ID";
 
-        private static string userName = System.Security.Principal.WindowsPrincipal.Current.Identity.Name;
 
         public static Guid UserId
         {
@@ -26,7 +25,7 @@ namespace _360Accounting.Web
             {
                 if (HttpContext.Current.Session[SESSION_USER_ID] == null)
                 {
-                    var providerKey = Membership.GetUser(userName).ProviderUserKey;
+                    var providerKey = Membership.GetUser(System.Security.Principal.WindowsPrincipal.Current.Identity.Name).ProviderUserKey;
                     if (providerKey != null)
                         HttpContext.Current.Session[SESSION_USER_ID] = Guid.Parse(providerKey.ToString());
                 }
@@ -42,7 +41,11 @@ namespace _360Accounting.Web
         {
             get
             {
-                return HttpContext.Current.Session[SESSION_USER] == null ? null : (UserProfile)HttpContext.Current.Session[SESSION_USER];
+                if (HttpContext.Current.Session[SESSION_USER] == null)
+                {
+                    HttpContext.Current.Session[SESSION_USER] = UserProfile.GetProfile(System.Security.Principal.WindowsPrincipal.Current.Identity.Name);
+                }
+                return  (UserProfile)HttpContext.Current.Session[SESSION_USER];
             }
 
             set
@@ -56,7 +59,7 @@ namespace _360Accounting.Web
             get
             {
                 return
-                Roles.GetRolesForUser(userName)[0] ?? string.Empty;
+                Roles.GetRolesForUser(System.Security.Principal.WindowsPrincipal.Current.Identity.Name)[0] ?? string.Empty;
             }
         }
 
@@ -65,7 +68,7 @@ namespace _360Accounting.Web
             get
             {
                 return
-                    ((UserProfile)HttpContext.Current.Session[SESSION_USER]).CompanyId;
+                    User.CompanyId;
             }
         }
 
@@ -75,8 +78,7 @@ namespace _360Accounting.Web
             {
                 if (HttpContext.Current.Session[SESSION_COMPANY_NAME] == null)
                 {
-                    //companyService.GetSingle(AuthenticationHelper.User.CompanyId.ToString(), AuthenticationHelper.User.CompanyId).Name;
-                    HttpContext.Current.Session[SESSION_COMPANY_NAME] = "My Company";
+                    HttpContext.Current.Session[SESSION_COMPANY_NAME] = CompanyHelper.GetCompany(CompanyId.Value.ToString()).Name;
                 }
                 return HttpContext.Current.Session[SESSION_COMPANY_NAME].ToString();
             }
@@ -94,7 +96,7 @@ namespace _360Accounting.Web
                     }
                     else
                     {
-                        UserHelper.UpdateMenuItems(userName);
+                        UserHelper.UpdateMenuItems(System.Security.Principal.WindowsPrincipal.Current.Identity.Name);
                     }
 
                 }

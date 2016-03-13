@@ -93,6 +93,13 @@ h1, h2, h3, h4, h5, h6 {
   #page-wrapper {
     padding: 10px; } 
 }
+.customNav {
+  width: 100%; 
+}
+.customClientLogo {
+  font-family: 'Lobster', cursive; 
+}
+
 /* Top Navigation */
 .top-nav {
   padding: 0 15px; }
