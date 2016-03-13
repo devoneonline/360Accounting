@@ -11,16 +11,16 @@ namespace _360Accounting.Core.Entities
     {
         public Guid CreateBy
         {
-            get { return Guid.Parse("715C35AE-DD65-4B5D-ACB9-4572164A476C"); } ////TODO: Need to change when actual user will be available.
-            set { }
+            get;
+            set;
         }
 
         public DateTime CreateDate { get; set; }
 
         public Guid? UpdateBy
         {
-            get { return Guid.Parse("715C35AE-DD65-4B5D-ACB9-4572164A476C"); } ////TODO: Need to change when actual user will be available.
-            set { }
+            get;
+            set;
         }
 
         public DateTime? UpdateDate { get; set; }
@@ -32,12 +32,7 @@ namespace _360Accounting.Core.Entities
                 ExceptionHelper.AddError("CreateBy", "Should not have null value!");
             }
 
-            if (this.CreateDate == null)
-            {
-                this.CreateDate = DateTime.Now;
-            }
-
-            if (this.CreateDate == DateTime.MinValue)
+            if (this.CreateDate == null || this.CreateDate == DateTime.MinValue)
             {
                 this.CreateDate = DateTime.Now;
             }

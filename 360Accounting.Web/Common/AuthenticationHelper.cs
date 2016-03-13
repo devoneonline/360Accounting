@@ -16,9 +16,27 @@ namespace _360Accounting.Web
         private const string SESSION_MENU_ITEMS = "MENU_ITEMS";
         private const string SESSION_COMPANY_ID = "USER_COMPANY_ID";
         private const string SESSION_COMPANY_NAME = "USER_COMPANY_NAME";
+        private const string SESSION_USER_ID = "USER_ID";
 
         private static string userName = System.Security.Principal.WindowsPrincipal.Current.Identity.Name;
 
+        public static Guid UserId
+        {
+            get
+            {
+                if (HttpContext.Current.Session[SESSION_USER_ID] == null)
+                {
+                    var providerKey = Membership.GetUser(userName).ProviderUserKey;
+                    if (providerKey != null)
+                        HttpContext.Current.Session[SESSION_USER_ID] = Guid.Parse(providerKey.ToString());
+                }
+                return (Guid)HttpContext.Current.Session[SESSION_USER_ID];
+            }
+            set
+            {
+                HttpContext.Current.Session[SESSION_USER_ID] = value;
+            }
+        }
 
         public static UserProfile User
         {

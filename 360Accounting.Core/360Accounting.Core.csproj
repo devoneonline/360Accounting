@@ -80,6 +80,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Entities\Vendor.cs" />
+    <Compile Include="Entities\VendorSite.cs" />
     <Compile Include="Interfaces\ICore360.cs" />
     <Compile Include="IoC.cs" />
     <Compile Include="IRepository\IReceiptRepository.cs" />
@@ -105,6 +107,7 @@
     <Compile Include="IRepository\IRepository.cs" />
     <Compile Include="Interfaces\IService.cs" />
     <Compile Include="IRepository\ISetOfBookRepository.cs" />
+    <Compile Include="IRepository\IVendorRepository.cs" />
     <Compile Include="IService\IBankService.cs" />
     <Compile Include="IService\IBankAccountService.cs" />
     <Compile Include="IService\IReceiptService.cs" />
@@ -126,6 +129,7 @@
     <Compile Include="IService\IJournalVoucherService.cs" />
     <Compile Include="IService\IGLHeaderService.cs" />
     <Compile Include="IService\ISetOfBookService.cs" />
+    <Compile Include="IService\IVendorService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility.cs" />
   </ItemGroup>

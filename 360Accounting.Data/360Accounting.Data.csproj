@@ -81,6 +81,7 @@
     <Compile Include="Repositories\JournalVoucherRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />
     <Compile Include="Repositories\SetOfBookRepository.cs" />
+    <Compile Include="Repositories\VendorRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

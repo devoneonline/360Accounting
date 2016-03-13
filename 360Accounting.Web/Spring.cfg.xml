@@ -27,6 +27,9 @@
   <object name="GLLineRepository" type="_360Accounting.Data.Repositories.GLLineRepository, 360Accounting.Data"> </object>
   <object name="InvoiceSourceRepository" type="_360Accounting.Data.Repositories.InvoiceSourceRepository, 360Accounting.Data"> </object>
 
+  <object name="VendorRepository" type="_360Accounting.Data.Repositories.VendorRepository, 360Accounting.Data"> </object>
+  
+  
 
   <object name="InvoiceSourceService" type="_360Accounting.Service.InvoiceSourceService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="InvoiceSourceRepository" />
@@ -39,6 +42,9 @@
   </object>    
   <object name="CustomerService" type="_360Accounting.Service.CustomerService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="CustomerRepository" />
+  </object>  
+  <object name="VendorService" type="_360Accounting.Service.VendorService, 360Accounting.Service" >
+    <constructor-arg name="repo" ref="VendorRepository" />
   </object>  
     <object name="BankService" type="_360Accounting.Service.BankService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="BankRepository" />
