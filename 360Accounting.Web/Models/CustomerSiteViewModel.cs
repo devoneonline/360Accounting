@@ -1,4 +1,5 @@
 ﻿using _360Accounting.Common;
+using _360Accounting.Core;
 using _360Accounting.Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -24,15 +25,13 @@ namespace _360Accounting.Web.Models
                 this.EndDate = entity.EndDate;
                 this.Id = entity.Id;
                 this.StartDate = entity.StartDate;
-                this.CodeCombinationName = entity.CodeCombinationName;
+                this.CodeCombinationName = Utility.CodeCombination(entity.CodeCombination, ".");
                 this.TaxCodeName = entity.TaxCodeName;
             }
         }
 
         public CustomerSiteViewModel()
         {
-            this.StartDate = Const.CurrentDate;
-            this.EndDate = Const.EndDate;
         }
 
         public long Id { get; set; }
@@ -52,7 +51,7 @@ namespace _360Accounting.Web.Models
         public string SiteContact { get; set; }
 
         [Display(Name = "Tax Code")]
-        public long TaxCodeId { get; set; }
+        public long? TaxCodeId { get; set; }
 
         public string TaxCodeName { get; set; }
 

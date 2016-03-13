@@ -4,10 +4,6 @@
     ViewBag.Title = "Customer Site";
 }
 
-<script src="~/Scripts/jquery-ui-1.10.3.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-
 <div class="container">
     <div class="clearfix">
         <div class="col-lg-12">
@@ -17,12 +13,14 @@
         </div>
     </div>
 
-    @using (Html.BeginForm("Edit", "CustomerSite", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-    {
-        @Html.ValidationSummary()
-        @*@Html.HiddenFor(m => m.Id)*@
-        <input type="hidden" name="Id" value="@Model.Id"/>
-        @Html.HiddenFor(m => m.CustomerId)
+    <div class="clearfix">
+        @using (Html.BeginForm("Edit", "CustomerSite", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.ValidationSummary()
+            <input type="hidden" name="Id" value="@Model.Id" />
+            @Html.HiddenFor(m => m.CustomerId)
+
+    <div class="clearfix">
 
         <div class="col-md-6">
             <div class="form-group">
@@ -33,53 +31,60 @@
 
         <div class="col-md-6">
             <div class="form-group">
+                @Html.LabelFor(m => m.CodeCombinationId)
+                @Html.DropDownListFor(m => m.CodeCombinationId, Model.CodeCombination, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix">
+        <div class="col-md-6">
+            <div class="form-group">
                 @Html.LabelFor(model => model.SiteContact)
                 @Html.TextBoxFor(model => model.SiteContact, new { @class = "form-control" })
             </div>
         </div>
 
-        <div class="col-md-12">
-            <div class="form-group">
-                @Html.LabelFor(model => model.SiteAddress)
-                @Html.TextAreaFor(model => model.SiteAddress, new { @class = "form-control" })
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(m => m.CodeCombinationId)
-                @Html.DropDownListFor(m => m.CodeCombinationId, Model.CodeCombination, new { @class = "form-control" })
-            </div>
-        </div>
-        
         <div class="col-md-6">
             <div class="form-group">
                 @Html.LabelFor(m => m.TaxCodeId)
                 @Html.DropDownListFor(m => m.TaxCodeId, Model.TaxCode, new { @class = "form-control" })
             </div>
         </div>
+    </div>
+    <div class="clearfix">
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.SiteAddress)
+                @Html.TextAreaFor(model => model.SiteAddress, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
 
+    <div class="clearfix">
         <div class="col-md-6">
             <div class="form-group">
                 @Html.LabelFor(model => model.StartDate)
                 @Html.EditorFor(model => model.StartDate, new { @class = "form-control" })
             </div>
         </div>
-
+    </div>
+    <div class="clearfix">
         <div class="col-md-6">
             <div class="form-group">
                 @Html.LabelFor(model => model.EndDate)
                 @Html.EditorFor(model => model.EndDate, new { @class = "form-control" })
             </div>
         </div>
-
-        <div class="col-md-12">
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default tstyCus-btn" />
-                <input type="button" value="Cancel" class="btn btn-default tstyCus-btn" onclick="javascript: window.location.href='@Url.Content("~/CustomerSite/Index/" + Model.CustomerId)'" />
+    </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-default tstyCus-btn" />
+                    <input type="button" value="Cancel" class="btn btn-default tstyCus-btn" onclick="javascript: window.location.href='@Url.Content("~/CustomerSite/Index/" + Model.CustomerId)'" />
+                </div>
             </div>
-        </div>
-    }
+        }
+    </div>
 </div>
 
 <script type="text/javascript">

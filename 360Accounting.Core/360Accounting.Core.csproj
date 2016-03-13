@@ -127,6 +127,7 @@
     <Compile Include="IService\IGLHeaderService.cs" />
     <Compile Include="IService\ISetOfBookService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

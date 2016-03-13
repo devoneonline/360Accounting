@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using _360Accounting.Common;
+using _360Accounting.Core;
 
 namespace _360Accounting.Data.Repositories
 {
@@ -99,11 +100,10 @@ namespace _360Accounting.Data.Repositories
                 decimal balance = getOpeningBalance(fromDate, codeCombination.Id);
                 report.Add(new TrialBalance
                 {
-                    CodeCombination = Utility.Stringize(".", codeCombination.Segment1,
-                    codeCombination.Segment2, codeCombination.Segment3, codeCombination.Segment4,
-                    codeCombination.Segment5, codeCombination.Segment6, codeCombination.Segment7,
-                    codeCombination.Segment8),
-                    CodeCombinationName = Utility.Stringize(".", getCodeCombinationValueName(account.Single().ChartId, codeCombination.Segment1, account.Single().Segment1),
+                    CodeCombination = Utility.CodeCombination(codeCombination,"."),                    
+                    CodeCombinationName = 
+                    
+                    Utility.Stringize(".", getCodeCombinationValueName(account.Single().ChartId, codeCombination.Segment1, account.Single().Segment1),
                     getCodeCombinationValueName(account.Single().ChartId, codeCombination.Segment2, account.Single().Segment2),
                     getCodeCombinationValueName(account.Single().ChartId, codeCombination.Segment3, account.Single().Segment3),
                     getCodeCombinationValueName(account.Single().ChartId, codeCombination.Segment4, account.Single().Segment4),

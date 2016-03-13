@@ -32,6 +32,12 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_Create", model);
         }
 
+        public ActionResult LookupAccountCode(string sobId)
+        {
+            var model = new object();
+            return PartialView("_LookupAccountCode", model);
+        }
+
         public ActionResult Edit(string id, string sobId)
         {
             CodeCombinitionCreateViewModel model = CodeCombinationHelper.GetCodeCombination(id);

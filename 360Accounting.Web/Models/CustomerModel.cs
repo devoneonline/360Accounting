@@ -31,11 +31,14 @@ namespace _360Accounting.Web.Models
         public long CompanyId { get; set; }
 
         [Required]
+        [MaxLength(30,ErrorMessage = "Customer name should not exceed 30 characters.")]
         [Display(Name="Customer Name")]
         public string CustomerName { get; set; }
 
+        [MaxLength(255)]
         public string Address { get; set; }
 
+        [MaxLength(15)]
         [Display(Name = "Contact")]
         public string ContactNo { get; set; }
 

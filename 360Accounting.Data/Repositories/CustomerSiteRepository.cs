@@ -22,13 +22,14 @@ namespace _360Accounting.Data.Repositories
         public IEnumerable<CustomerSiteView> GetAllbyCustomerId(long customerId)
         {
             var query = from a in this.Context.CustomerSites
-                        join b in this.Context.Taxes on a.TaxCodeId equals b.Id
                         join c in this.Context.CodeCombinitions on a.CodeCombinationId equals c.Id
+                        join b in this.Context.Taxes on a.TaxCodeId equals b.Id into cs
+                        from d in cs.DefaultIfEmpty()
                         where a.CustomerId == customerId
                         select new CustomerSiteView
                         {
                             CodeCombinationId = a.CodeCombinationId,
-                            CodeCombinationName = c.SOBId.ToString(), //TODO: Get the actual thing..
+                            CodeCombination = c,
                             CreateBy = a.CreateBy,
                             CreateDate = a.CreateDate,
                             CustomerId = a.CustomerId,
@@ -39,7 +40,7 @@ namespace _360Accounting.Data.Repositories
                             SiteName = a.SiteName,
                             StartDate = a.StartDate,
                             TaxCodeId = a.TaxCodeId,
-                            TaxCodeName = b.TaxName,
+                            TaxCodeName = d.TaxName,
                             UpdateBy = a.UpdateBy,
                             UpdateDate = a.UpdateDate
                         };
@@ -48,8 +49,10 @@ namespace _360Accounting.Data.Repositories
 
         public IEnumerable<CustomerSite> GetAll(long companyId)
         {
-            //TODO: do we need to get all by company id here?
-            IEnumerable<CustomerSite> customerSites = this.Context.CustomerSites;
+            IEnumerable<CustomerSite> customerSites = from a in this.Context.CustomerSites
+                                                      join b in this.Context.Customers on a.CustomerId equals b.Id
+                                                      where b.CompanyId == companyId
+                                                      select a;
             return customerSites;
         }
 
