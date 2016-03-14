@@ -14,6 +14,7 @@ using System.Web.Security;
 
 namespace _360Accounting.Web.Controllers
 {
+    [Authorize]
     public class JVController : Controller
     {
         //private IGLHeaderService service;

@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace _360Accounting.Core.Interfaces
 {
-    public interface ITaxRepository : IRepository<Tax>
+    public interface ITaxDetailRepository : IRepository<TaxDetail>
     {
-        IEnumerable<Tax> GetAll(long companyId, long sobId);
+        IList<TaxDetail> GetAll(long companyId, long taxId);
     }
 }

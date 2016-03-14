@@ -11,18 +11,24 @@ namespace _360Accounting.Data.Repositories
 {
     public class TaxRepository : Repository, ITaxRepository
     {
+        public IEnumerable<Tax> GetAll(long companyId, long sobId)
+        {
+            IEnumerable<Tax> list = this.Context.Taxes
+                .Where(x => x.SOBId == sobId).ToList();
+            return list;
+        }
+
         public Tax GetSingle(string id, long companyId)
         {
-            Tax CustomerSite = this.GetAll(companyId)
+            Tax tax = this.GetAll(companyId)
                 .FirstOrDefault(x => x.Id == Convert.ToInt32(id));
-            return CustomerSite;
+            return tax;
         }
 
         public IEnumerable<Tax> GetAll(long companyId)
         {
-            //TODO: do we need to get all by company id here?
-            IEnumerable<Tax> CustomerSiteList = this.Context.Taxes;
-            return CustomerSiteList;
+            IEnumerable<Tax> taxList = this.Context.Taxes;
+            return taxList;
         }
 
         public string Insert(Tax entity)

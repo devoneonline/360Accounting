@@ -37,7 +37,7 @@ var grid = Html.DevExpress().GridView(settings =>
     });
     settings.Columns.Add("JournalName", "Journal Name");
     settings.Columns.Add("DocumentNo", "Document #");
-    settings.Columns.Add("GLDate", "Effective Date");
+    settings.Columns.Add("GLDate", "Effective Date").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;
     settings.Columns.Add("Description");
 });
 if (ViewData["EditError"] != null)

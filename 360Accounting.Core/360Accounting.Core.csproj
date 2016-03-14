@@ -94,6 +94,7 @@
     <Compile Include="IRepository\ICompanyRepository.cs" />
     <Compile Include="IRepository\ICurrencyRepository.cs" />
     <Compile Include="IRepository\IInvoiceSourceRepository.cs" />
+    <Compile Include="IRepository\ITaxDetailRepository.cs" />
     <Compile Include="IRepository\ITaxRepository.cs" />
     <Compile Include="IRepository\ICustomerSiteRepository.cs" />
     <Compile Include="IRepository\ICustomerRepository.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="IService\ICompanyService.cs" />
     <Compile Include="IService\ICurrencyService.cs" />
     <Compile Include="IService\IInvoiceSourceService.cs" />
+    <Compile Include="IService\ITaxDetailService.cs" />
     <Compile Include="IService\ITaxService.cs" />
     <Compile Include="IService\ICustomerSiteService.cs" />
     <Compile Include="IService\ICustomerService.cs" />

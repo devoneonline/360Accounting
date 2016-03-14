@@ -20,6 +20,10 @@ namespace _360Accounting.Data
 
         #region DbSets
 
+        public DbSet<TaxDetail> TaxDetails { get; set; }
+
+        public DbSet<Tax> Taxes { get; set; }
+
         public DbSet<InvoiceSource> InvoiceSources { get; set; }
 
         public DbSet<Customer> Customers { get; set; }
@@ -62,7 +66,7 @@ namespace _360Accounting.Data
 
         public DbSet<GLLines> GLLines { get; set; }
 
-        public DbSet<Tax> Taxes { get; set; }
+        //public DbSet<TaxDum> Taxes { get; set; }
 
         public DbSet<Bank> Banks { get; set; }
 
@@ -78,6 +82,12 @@ namespace _360Accounting.Data
         {
             ////base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Tax>().ToTable("tbTax");
+            modelBuilder.Entity<Tax>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<TaxDetail>().ToTable("tbTaxDetail");
+            modelBuilder.Entity<TaxDetail>().HasKey(t => t.Id);
+            
             modelBuilder.Entity<InvoiceSource>().ToTable("tbInvoiceSource");
             modelBuilder.Entity<InvoiceSource>().HasKey(t => t.Id);
 
@@ -93,8 +103,8 @@ namespace _360Accounting.Data
             modelBuilder.Entity<VendorSite>().ToTable("tbVendorSite");
             modelBuilder.Entity<VendorSite>().HasKey(t => t.Id);
 
-            modelBuilder.Entity<Tax>().ToTable("tbTax");
-            modelBuilder.Entity<Tax>().HasKey(t => t.Id);
+            //modelBuilder.Entity<TaxDum>().ToTable("tbTaxDum");
+            //modelBuilder.Entity<TaxDum>().HasKey(t => t.Id);
 
             modelBuilder.Entity<aspnet_User>().ToTable("aspnet_Users");
             modelBuilder.Entity<aspnet_User>().HasKey(t => t.UserId);

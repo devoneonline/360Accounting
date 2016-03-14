@@ -9,34 +9,20 @@ namespace _360Accounting.Web
     public class SessionHelper
     {
         private const string SESSION_JV = "SESSION_JV";
+        private const string SESSION_TAX = "SESSION_Tax";
 
-        ////used in jv
-        //public static long CurrencyId
-        //{
-        //    get
-        //    {
-        //        return Convert.ToInt64(HttpContext.Current.Session["CurrencyId"].ToString());
-        //    }
-        //    set
-        //    {
-        //        HttpContext.Current.Session["CurrencyId"] = value;
-        //    }
-        //}
-
-        ////used in jv
-        //public static long PeriodId
-        //{
-        //    get
-        //    {
-        //        return Convert.ToInt64(HttpContext.Current.Session["PeriodId"].ToString());
-        //    }
-        //    set
-        //    {
-        //        HttpContext.Current.Session["PeriodId"] = value;
-        //    }
-        //}
-
-        //used in customer sites
+        public static TaxModel Tax
+        {
+            get
+            {
+                return HttpContext.Current.Session[SESSION_TAX] == null ? null :
+                    (TaxModel)HttpContext.Current.Session[SESSION_TAX];
+            }
+            set
+            {
+                HttpContext.Current.Session[SESSION_TAX] = value;
+            }
+        }
 
         public static GLHeaderModel JV
         {
@@ -75,19 +61,6 @@ namespace _360Accounting.Web
                 HttpContext.Current.Session["PrecissionLimit"] = value;
             }
         }
-
-        //public static JournalVoucherViewModel JournalVoucher
-        //{
-        //    get
-        //    {
-        //        return HttpContext.Current.Session["JournalVoucher"] == null ? new JournalVoucherViewModel()
-        //            : (JournalVoucherViewModel)HttpContext.Current.Session["JournalVoucher"];
-        //    }
-        //    set
-        //    {
-        //        HttpContext.Current.Session["JournalVoucher"] = value;
-        //    }
-        //}
 
         //TODO: I am using it in JV to check the GL Date in GLHeader and Account in GL Lines..?
         public static CalendarViewModel Calendar

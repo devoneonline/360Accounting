@@ -18,25 +18,26 @@
   <!--<object name="JournalVoucherRepository" type="_360Accounting.Data.Repositories.JournalVoucherRepository, 360Accounting.Data"> </object>-->
   <object name="CustomerRepository" type="_360Accounting.Data.Repositories.CustomerRepository, 360Accounting.Data"> </object>
   <object name="CustomerSiteRepository" type="_360Accounting.Data.Repositories.CustomerSiteRepository, 360Accounting.Data"> </object>
-  <object name="TaxRepository" type="_360Accounting.Data.Repositories.TaxRepository, 360Accounting.Data"> </object>
   <object name="BankRepository" type="_360Accounting.Data.Repositories.BankRepository, 360Accounting.Data"> </object>
   <object name="BankAccountRepository" type="_360Accounting.Data.Repositories.BankAccountRepository, 360Accounting.Data"> </object>
   <object name="ReceiptRepository" type="_360Accounting.Data.Repositories.ReceiptRepository, 360Accounting.Data"> </object>
-
   <object name="GLHeaderRepository" type="_360Accounting.Data.Repositories.GLHeaderRepository, 360Accounting.Data"> </object>
   <object name="GLLineRepository" type="_360Accounting.Data.Repositories.GLLineRepository, 360Accounting.Data"> </object>
   <object name="InvoiceSourceRepository" type="_360Accounting.Data.Repositories.InvoiceSourceRepository, 360Accounting.Data"> </object>
-
   <object name="VendorRepository" type="_360Accounting.Data.Repositories.VendorRepository, 360Accounting.Data"> </object>
-  
+  <object name="TaxRepository" type="_360Accounting.Data.Repositories.TaxRepository, 360Accounting.Data"> </object>
+  <object name="TaxDetailRepository" type="_360Accounting.Data.Repositories.TaxDetailRepository, 360Accounting.Data"> </object>
   
 
   <object name="InvoiceSourceService" type="_360Accounting.Service.InvoiceSourceService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="InvoiceSourceRepository" />
   </object>
   <object name="TaxService" type="_360Accounting.Service.TaxService, 360Accounting.Service" >
-    <constructor-arg name="repo" ref="TaxRepository" />
-  </object>        
+    <constructor-arg name="taxRepository" ref="TaxRepository" />
+  </object>
+  <object name="TaxDetailService" type="_360Accounting.Service.TaxDetailService, 360Accounting.Service" >
+    <constructor-arg name="taxDetailRepository" ref="TaxDetailRepository" />
+  </object>
   <object name="CustomerSiteService" type="_360Accounting.Service.CustomerSiteService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="CustomerSiteRepository" />
   </object>    

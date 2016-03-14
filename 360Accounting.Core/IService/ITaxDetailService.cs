@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace _360Accounting.Core
 {
-    public interface ITaxService : IService<Tax>
+    public interface ITaxDetailService : IService<TaxDetail>
     {
-        IEnumerable<Tax> GetAll(long companyId, long sobId);
+        IList<TaxDetail> GetAll(long companyId, long taxId);
     }
 }

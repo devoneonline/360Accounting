@@ -11,6 +11,36 @@ namespace _360Accounting.Core.Entities
     {
         [Key]
         public long Id { get; set; }
+        
+        public long SOBId { get; set; }
+        
+        public string TaxName { get; set; }
+        
+        public DateTime StartDate { get; set; }
+        
+        public DateTime EndDate { get; set; }
+    }
+
+    public class TaxDetail : EntityBase
+    {
+        [Key]
+        public long Id { get; set; }
+
+        public long TaxId { get; set; }
+        
+        public long CodeCombinationId { get; set; }
+        
+        public decimal Rate { get; set; }
+        
+        public DateTime StartDate { get; set; }
+        
+        public DateTime EndDate { get; set; }
+    }
+
+    public class TaxDum : EntityBase
+    {
+        [Key]
+        public long Id { get; set; }
 
         public string TaxName { get; set; }
 

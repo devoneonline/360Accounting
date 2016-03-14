@@ -64,6 +64,7 @@
     <Compile Include="Services\CompanyService.cs" />
     <Compile Include="Services\CurrencyService.cs" />
     <Compile Include="Services\InvoiceSourceService.cs" />
+    <Compile Include="Services\TaxDetailService.cs" />
     <Compile Include="Services\TaxService.cs" />
     <Compile Include="Services\CustomerSiteService.cs" />
     <Compile Include="Services\CustomerService.cs" />

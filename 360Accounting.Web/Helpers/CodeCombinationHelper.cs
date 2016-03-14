@@ -20,25 +20,35 @@ namespace _360Accounting.Web
 
         public static IList<SelectListItem> GetAccounts(long sobId, DateTime startDate, DateTime endDate)
         {
-            if (SessionHelper.Calendar != null)
-            {
-                return service.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", false, null, "", "")
-                    .Where(rec => rec.StartDate >= startDate && rec.EndDate <= endDate)
-                        .Select(x => new SelectListItem
-                        {
-                            Text = x.CodeCombinitionCode,
-                            Value = x.Id.ToString()
-                        }).ToList();
-            }
-            else
-            {
-                return service.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", false, null, "", "")
-                        .Select(x => new SelectListItem
-                        {
-                            Text = x.CodeCombinitionCode,
-                            Value = x.Id.ToString()
-                        }).ToList();
-            }
+            //logic editted by uzair, previous one was incorrect.
+            //plz check this one also.
+            return service.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", false, null, "", "")
+                .Where(a => a.StartDate <= startDate && a.EndDate >= endDate)
+                .Select(x => new SelectListItem
+                {
+                    Text = x.CodeCombinitionCode,
+                    Value = x.Id.ToString()
+                }).ToList();
+
+            //if (SessionHelper.Calendar != null)
+            //{
+            //    return service.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", false, null, "", "")
+            //        .Where(rec => rec.StartDate >= startDate && rec.EndDate <= endDate)
+            //            .Select(x => new SelectListItem
+            //            {
+            //                Text = x.CodeCombinitionCode,
+            //                Value = x.Id.ToString()
+            //            }).ToList();
+            //}
+            //else
+            //{
+            //    return service.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", false, null, "", "")
+            //            .Select(x => new SelectListItem
+            //            {
+            //                Text = x.CodeCombinitionCode,
+            //                Value = x.Id.ToString()
+            //            }).ToList();
+            //}
         }
 
         public static string SaveCodeCombination(CodeCombinitionCreateViewModel model)

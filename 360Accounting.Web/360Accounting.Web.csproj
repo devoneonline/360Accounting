@@ -189,6 +189,7 @@
     <Compile Include="Controllers\BankAccountController.cs" />
     <Compile Include="Controllers\BankController.cs" />
     <Compile Include="Controllers\InvoiceSourceController.cs" />
+    <Compile Include="Controllers\TaxController.cs" />
     <Compile Include="Controllers\VendorController.cs" />
     <Compile Include="Helpers\AccountHelper.cs" />
     <Compile Include="Helpers\AccountValueHelper.cs" />
@@ -218,6 +219,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\SetOfBookHelper.cs" />
+    <Compile Include="Helpers\TaxHelper.cs" />
     <Compile Include="Helpers\UserHelper.cs" />
     <Compile Include="Helpers\VendorHelper.cs" />
     <Compile Include="Mappers\Mappers.cs" />
@@ -265,6 +267,7 @@
     <Compile Include="Models\SelectUser.cs" />
     <Compile Include="Models\SetOfBookListModel.cs" />
     <Compile Include="Models\SetOfBookModel.cs" />
+    <Compile Include="Models\TaxModel.cs" />
     <Compile Include="Models\UserCreateModel.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Models\VendorModel.cs" />
@@ -520,6 +523,10 @@
     <Content Include="Views\Vendor\_ListPartial.cshtml" />
     <Content Include="Views\Vendor\CreateSite.cshtml" />
     <Content Include="Views\Vendor\EditSite.cshtml" />
+    <Content Include="Views\Tax\Index.cshtml" />
+    <Content Include="Views\Tax\Edit.cshtml" />
+    <Content Include="Views\Tax\_TaxDetailPartial.cshtml" />
+    <Content Include="Views\Tax\_List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

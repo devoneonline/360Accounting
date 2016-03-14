@@ -9,36 +9,36 @@ using System.Threading.Tasks;
 
 namespace _360Accounting.Service
 {
-    public class TaxService : ITaxService
+    public class TaxDetailService : ITaxDetailService
     {
-        private ITaxRepository repository;
+        private ITaxDetailRepository repository;
 
-        public TaxService(ITaxRepository taxRepository)
+        public TaxDetailService(ITaxDetailRepository taxDetailRepository)
         {
-            this.repository = taxRepository;
+            this.repository = taxDetailRepository;
         }
 
-        public IEnumerable<Tax> GetAll(long companyId, long sobId)
+        public IList<TaxDetail> GetAll(long companyId, long taxId)
         {
-            return this.repository.GetAll(companyId, sobId);
+            return this.repository.GetAll(companyId, taxId);
         }
 
-        public Tax GetSingle(string id, long companyId)
+        public TaxDetail GetSingle(string id, long companyId)
         {
             return this.repository.GetSingle(id, companyId);
         }
 
-        public IEnumerable<Tax> GetAll(long companyId)
+        public IEnumerable<TaxDetail> GetAll(long companyId)
         {
             return this.repository.GetAll(companyId);
         }
 
-        public string Insert(Tax entity)
+        public string Insert(TaxDetail entity)
         {
             return this.repository.Insert(entity);
         }
 
-        public string Update(Tax entity)
+        public string Update(TaxDetail entity)
         {
             return this.repository.Update(entity);
         }

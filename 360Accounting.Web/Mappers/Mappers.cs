@@ -9,6 +9,45 @@ namespace _360Accounting.Web
 {
     public static class Mappers
     {
+        public static TaxDetail GetEntityByModel(TaxDetailModel model)
+        {
+            if (model == null) return null;
+            TaxDetail entity = new TaxDetail();
+
+            entity.CodeCombinationId = model.CodeCombinationId;
+            entity.EndDate = model.EndDate;
+            entity.Id = model.Id;
+            entity.Rate = model.Rate;
+            entity.StartDate = model.StartDate;
+            entity.TaxId = model.TaxId;
+            entity.UpdateBy = entity.CreateBy;
+            entity.CreateDate = DateTime.Now;
+            entity.UpdateDate = DateTime.Now;
+
+            return entity;
+        }
+
+        public static Tax GetEntityByModel(TaxModel model)
+        {
+            if (model == null) return null;
+            Tax entity = new Tax();
+
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+            entity.EndDate = model.EndDate;
+            entity.Id = model.Id;
+            entity.SOBId = model.SOBId;
+            entity.StartDate = model.StartDate;
+            entity.TaxName = model.TaxName;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+            
+            return entity;
+        }
+
         public static Account GetEntityByModel(AccountCreateViewModel model)
         {
             if (model == null) return null;
