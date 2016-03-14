@@ -13,9 +13,7 @@ namespace _360Accounting.Data.Repositories
     {
         public AccountValue GetAccountValueBySegment(long chartId, string segment)
         {
-            AccountValue value = this.Context
-                .AccountValues.FirstOrDefault(x => x.ChartId == chartId &&
-                    x.Segment == segment);
+            AccountValue value = this.Context.AccountValues.FirstOrDefault(x => x.ChartId == chartId && x.Segment == segment);
             return value;
         }
 
@@ -27,22 +25,25 @@ namespace _360Accounting.Data.Repositories
 
         public AccountValue GetSingle(string id, long companyId)
         {
-            AccountValue accountValue = this.GetAll(companyId)
-                .FirstOrDefault(x => x.Id == Convert.ToInt32(id));
-            return accountValue;
+            long longId=Convert.ToInt64(id);
+            AccountValue entity =
+                (from a in this.Context.AccountValues
+                 join b in this.Context.Accounts on a.ChartId equals b.Id
+                 where a.Id == longId && b.CompanyId == companyId
+                 select a).FirstOrDefault();                
+            return entity;
         }
 
         public IEnumerable<AccountValue> GetAll(long companyId)
         {
-            IEnumerable<AccountValue> valueList = this.Context.AccountValues;
+            IEnumerable<AccountValue> valueList = from a in this.Context.AccountValues
+                                                  join b in this.Context.Accounts on a.ChartId equals b.Id
+                                                  where b.CompanyId == companyId
+                                                  select a;
+
             return valueList;
         }
 
-        //public IEnumerable<AccountValue> GetAll(long companyId, string segment)
-        //{
-        //    IEnumerable<AccountValue> valueList = this.Context.AccountValues.Where(rec => rec.Segment == segment);
-        //    return valueList;
-        //}
 
         public string Insert(AccountValue entity)
         {

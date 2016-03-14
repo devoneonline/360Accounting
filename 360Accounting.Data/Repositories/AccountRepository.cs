@@ -1,4 +1,5 @@
 ﻿using _360Accounting.Common;
+using _360Accounting.Core;
 using _360Accounting.Core.Entities;
 using _360Accounting.Core.Interfaces;
 using System;
@@ -14,15 +15,15 @@ namespace _360Accounting.Data.Repositories
     {
         public Account GetAccountBySOBId(string sobId, long companyId)
         {
-            Account account = this.GetAll(companyId)
-                .FirstOrDefault(x => x.SOBId == Convert.ToInt32(sobId));
+            long longId = Convert.ToInt32(sobId);
+            Account account = this.Context.Accounts.FirstOrDefault(x => x.SOBId == longId && x.CompanyId == companyId);
             return account;
         }
 
         public Account GetSingle(string id, long companyId)
         {
-            Account account = this.GetAll(companyId)
-                .FirstOrDefault(x => x.Id == Convert.ToInt32(id));
+            long longId = Convert.ToInt32(id);
+            Account account = this.Context.Accounts.FirstOrDefault(x => x.CompanyId == companyId && x.Id == longId);
             return account;
         }
 
@@ -87,10 +88,7 @@ namespace _360Accounting.Data.Repositories
 
         private AccountView GetAccountViewByAccountEntity(Account entity)
         {
-            if (entity == null)
-            {
-                return null;
-            }
+            if (entity == null) return null;
 
             AccountView mappingObject = new AccountView();
             mappingObject.Id = entity.Id;

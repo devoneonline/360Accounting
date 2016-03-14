@@ -75,6 +75,7 @@
     <Compile Include="Services\GLLineService.cs" />
     <Compile Include="Services\JournalVoucherService.cs" />
     <Compile Include="Services\SetOfBookService.cs" />
+    <Compile Include="Services\VendorService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

@@ -4,10 +4,6 @@
     ViewBag.Title = "Edit Customer";
 }
 
-<script src="~/Scripts/jquery-ui-1.10.3.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-
 <div class="container">
     <div class="clearfix">
         <div class="col-lg-12">
@@ -23,47 +19,54 @@
         @Html.HiddenFor(m => m.Id)
         @Html.HiddenFor(m => m.CompanyId)
 
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(model => model.CustomerName)
-                @Html.TextBoxFor(model => model.CustomerName, new { @class = "form-control" })
-            </div>
-        </div>
 
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(model => model.ContactNo)
-                @Html.TextBoxFor(model => model.ContactNo, new { @class = "form-control" })
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CustomerName)
+                        @Html.TextBoxFor(model => model.CustomerName, new { @class = "form-control" })
+                    </div>
+                </div>
             </div>
-        </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ContactNo)
+                        @Html.TextBoxFor(model => model.ContactNo, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.StartDate)
+                        @Html.EditorFor(model => model.StartDate, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EndDate)
+                        @Html.EditorFor(model => model.EndDate, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
 
-        <div class="col-md-12">
-            <div class="form-group">
-                @Html.LabelFor(model => model.Address)
-                @Html.TextAreaFor(model => model.Address, new { @class = "form-control" })
-            </div>
-        </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Address)
+                        @Html.TextAreaFor(model => model.Address, new { @class = "form-control" })
+                    </div>
+                </div>
 
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(model => model.StartDate)
-                @Html.EditorFor(model => model.StartDate, new { @class = "form-control" })
             </div>
-        </div>
 
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(model => model.EndDate)
-                @Html.EditorFor(model => model.EndDate, new { @class = "form-control" })
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-default tstyCus-btn" />
+                        <input type="button" value="Cancel" class="btn btn-default tstyCus-btn" onclick="javascript: window.location.href='@Url.Content("~/Customer/Index")'" />
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <div class="col-md-12">
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default tstyCus-btn" />
-                <input type="button" value="Cancel" class="btn btn-default tstyCus-btn" onclick="javascript: window.location.href='@Url.Content("~/Customer/Index")'" />
-            </div>
-        </div>
     }
 </div>
 

@@ -21,7 +21,7 @@ namespace _360Accounting.Web.Models
         public string SegmentValueName { get; set; }
     }
 
-    public class CodeCombinitionCreateViewModel
+    public class CodeCombinitionCreateViewModel : ModelBase
     {
         #region Constructors
         public CodeCombinitionCreateViewModel()
@@ -43,6 +43,10 @@ namespace _360Accounting.Web.Models
             this.Segment6 = entity.Segment6;
             this.Segment7 = entity.Segment7;
             this.Segment8 = entity.Segment8;
+            this.CreateBy = entity.CreateBy;
+            this.CreateDate = entity.CreateDate;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
         }
         #endregion
 
@@ -70,7 +74,7 @@ namespace _360Accounting.Web.Models
         public string Segment8 { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString ="{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Start Date")]
         public DateTime? StartDate { get; set; }
 

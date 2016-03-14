@@ -18,9 +18,9 @@ namespace _360Accounting.Service
             this.repository = repo;
         }
 
-        public IEnumerable<Receipt> GetReceipts(string sobId, string periodId, long companyId)
+        public IEnumerable<ReceiptView> GetReceipts(long sobId, long periodId, long customerId, long currencyId, long companyId)
         {
-            return this.repository.GetReceipts(sobId, periodId, companyId);
+            return this.repository.GetReceipts(sobId, periodId, customerId, currencyId, companyId);
         }
 
         public Receipt GetSingle(string id, long companyId)
@@ -28,19 +28,25 @@ namespace _360Accounting.Service
             return this.repository.GetSingle(id,companyId);
         }
 
-        public IEnumerable<Receipt> GetAll( long companyId)
+        public IEnumerable<Receipt> GetAll(long companyId)
         {
             return this.repository.GetAll(companyId);
         }
 
         public string Insert(Receipt entity)
         {
-            return this.repository.Insert(entity);
+            if (entity.IsValid())
+                return this.repository.Insert(entity);
+            else
+                return "Entity is not in valid state";
         }
 
         public string Update(Receipt entity)
         {
-            return this.repository.Update(entity);
+            if (entity.IsValid())
+                return this.repository.Update(entity);
+            else
+                return "Entity is not in valid state";
         }
 
         public void Delete(string id, long companyId)

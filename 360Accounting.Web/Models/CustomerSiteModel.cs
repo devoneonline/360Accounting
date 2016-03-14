@@ -29,8 +29,6 @@ namespace _360Accounting.Web.Models
 
         public CustomerSiteModel()
         {
-            this.StartDate = Const.CurrentDate;
-            this.EndDate = Const.EndDate;
         }
 
         public long Id { get; set; }
@@ -51,7 +49,7 @@ namespace _360Accounting.Web.Models
         public string SiteContact { get; set; }
 
         [Display(Name = "Tax Code")]
-        public long TaxCodeId { get; set; }
+        public long? TaxCodeId { get; set; }
 
         [Display(Name = "Code Combination")]
         public long CodeCombinationId { get; set; }

@@ -154,7 +154,7 @@ namespace _360Accounting.Web
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,
-                            Text = x.Value
+                            Text = x.ValueName
                         }).ToList()
                     });
                 }
@@ -169,7 +169,7 @@ namespace _360Accounting.Web
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,
-                            Text = x.Value
+                            Text = x.ValueName
                         }).ToList()
                     });
                 }
@@ -184,7 +184,7 @@ namespace _360Accounting.Web
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,
-                            Text = x.Value
+                            Text = x.ValueName
                         }).ToList()
                     });
                 }
@@ -199,7 +199,7 @@ namespace _360Accounting.Web
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,
-                            Text = x.Value
+                            Text = x.ValueName
                         }).ToList()
                     });
                 }
@@ -214,7 +214,7 @@ namespace _360Accounting.Web
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,
-                            Text = x.Value
+                            Text = x.ValueName
                         }).ToList()
                     });
                 }
@@ -229,7 +229,7 @@ namespace _360Accounting.Web
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,
-                            Text = x.Value
+                            Text = x.ValueName
                         }).ToList()
                     });
                 }
@@ -244,7 +244,7 @@ namespace _360Accounting.Web
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,
-                            Text = x.Value
+                            Text = x.ValueName
                         }).ToList()
                     });
                 }
@@ -259,7 +259,7 @@ namespace _360Accounting.Web
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,
-                            Text = x.Value
+                            Text = x.ValueName
                         }).ToList()
                     });
                 }

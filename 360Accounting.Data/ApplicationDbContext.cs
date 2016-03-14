@@ -26,6 +26,10 @@ namespace _360Accounting.Data
 
         public DbSet<CustomerSite> CustomerSites { get; set; }
 
+        public DbSet<Vendor> Vendors { get; set; }
+
+        public DbSet<VendorSite> VendorSites { get; set; }
+
         public DbSet<SetOfBook> SetOfBooks { get; set; }
 
         public DbSet<Feature> Features { get; set; }
@@ -82,6 +86,12 @@ namespace _360Accounting.Data
 
             modelBuilder.Entity<CustomerSite>().ToTable("tbCustomerSite");
             modelBuilder.Entity<CustomerSite>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<Vendor>().ToTable("tbVendor");
+            modelBuilder.Entity<Vendor>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<VendorSite>().ToTable("tbVendorSite");
+            modelBuilder.Entity<VendorSite>().HasKey(t => t.Id);
 
             modelBuilder.Entity<Tax>().ToTable("tbTax");
             modelBuilder.Entity<Tax>().HasKey(t => t.Id);

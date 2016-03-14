@@ -21,7 +21,7 @@ namespace _360Accounting.Web.Models
             this.BankId = entity.BankId;
             this.ConversionRate = entity.ConversionRate;
             this.Id = entity.Id;
-            this.CurrencyCode = entity.CurrencyCode;
+            this.CurrencyId = entity.CurrencyId;
             this.CustomerId = entity.CustomerId;
             this.CustomerSiteId = entity.CustomerSiteId;
             this.PeriodId = entity.PeriodId;
@@ -30,6 +30,7 @@ namespace _360Accounting.Web.Models
             this.Remarks = entity.Remarks;
             this.SOBId = entity.SOBId;
             this.Status = entity.Status;
+            this.ReceiptAmount = entity.ReceiptAmount;
         }
         #endregion
 
@@ -43,7 +44,9 @@ namespace _360Accounting.Web.Models
         
         public string ReceiptNumber { get; set; }
 
-        public string CurrencyCode { get; set; }
+        public decimal ReceiptAmount { get; set; }
+
+        public long CurrencyId { get; set; }
 
         public decimal ConversionRate { get; set; }
 

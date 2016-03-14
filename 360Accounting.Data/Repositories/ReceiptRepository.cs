@@ -12,13 +12,38 @@ namespace _360Accounting.Data.Repositories
 {
     public class ReceiptRepository : Repository, IReceiptRepository
     {
-        public IEnumerable<Receipt> GetReceipts(string sobId, string periodId, long companyId)
+        public IEnumerable<ReceiptView> GetReceipts(long sobId, long periodId, long customerId, long currencyId, long companyId)
         {
             var query = from a in this.Context.Receipts
                         join b in this.Context.SetOfBooks on a.SOBId equals b.Id
-                        join c in this.Context.Companies on b.CompanyId equals c.Id
-                        where a.SOBId == Convert.ToInt64(sobId) && a.PeriodId == Convert.ToInt64(periodId)
-                        select a;
+                        join d in this.Context.Customers on a.CustomerId equals d.Id
+                        join e in this.Context.Currencies on a.CurrencyId equals e.Id
+                        join f in this.Context.Banks on a.BankId equals f.Id
+                        join g in this.Context.BankAccounts on a.BankAccountId equals g.Id
+                        join h in this.Context.CustomerSites on a.CustomerSiteId equals h.Id
+                        where a.SOBId == sobId && a.PeriodId == periodId && a.CustomerId == customerId && 
+                        a.CurrencyId == currencyId && b.CompanyId == companyId && d.Id == customerId &&
+                        e.Id == currencyId
+                        select new ReceiptView
+                        {
+                            BankAccountId = a.BankAccountId,
+                            Status = a.Status,
+                            SOBId = a.SOBId,
+                            BankAccountName = g.AccountName,
+                            Remarks = a.Remarks,
+                            ReceiptNumber = a.ReceiptNumber,
+                            ReceiptAmount = a.ReceiptAmount,
+                            ReceiptDate = a.ReceiptDate,
+                            Id = a.Id,
+                            BankId = a.BankId,
+                            BankName = f.BankName,
+                            ConversionRate = a.ConversionRate,
+                            CurrencyId = a.CurrencyId,
+                            CustomerId = a.CustomerId,
+                            CustomerSiteId = a.CustomerSiteId,
+                            CustomerSiteName = h.SiteName,
+                            PeriodId = a.PeriodId
+                        };
             return query;
         }
 
@@ -34,8 +59,8 @@ namespace _360Accounting.Data.Repositories
             var query = from a in this.Context.Receipts
                         join b in this.Context.SetOfBooks on a.SOBId equals b.Id
                         join c in this.Context.Companies on b.CompanyId equals c.Id
+                        where c.Id == companyId
                         select a;
-
             return query;
         }
 
@@ -48,7 +73,7 @@ namespace _360Accounting.Data.Repositories
 
         public string Update(Receipt entity)
         {
-            var originalEntity = this.Context.Accounts.Find(entity.Id);
+            var originalEntity = this.Context.Receipts.Find(entity.Id);
             this.Context.Entry(originalEntity).CurrentValues.SetValues(entity);
             this.Context.Entry(originalEntity).State = EntityState.Modified;
             this.Commit();

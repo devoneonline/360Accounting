@@ -34,6 +34,7 @@
         $.noConflict();
         $('#dvInput').dialog({
             modal: true,
+            title: "Code Combinition",
             autoOpen: false,
             height: 400,
             width: 500,
@@ -41,7 +42,6 @@
     });
 
     function SaveValue() {
-        debugger;
         var segmentValues = '';
         $('.autoCombo').each(function (i, item) {
             segmentValues += i + "|" + item.value + "±";
@@ -61,28 +61,6 @@
 
     $(document).ready(function () {
         $('#dvInput').css({ overflow: "hidden" });
-
-        @*$('#btnTestUpdate').click(function () {
-            $.ajax({
-                url: '@Url.Content("~/CodeCombinition/Test")',
-                data: { task: 'Update' },
-                datatype: 'html',
-                type: 'post',
-                error: function (error) { alert("Update Unsuccessful") },
-                success: function (data) { alert("Update Successful") }
-            });
-        });
-
-        $('#btnTestInsert').click(function () {
-            $.ajax({
-                url: '@Url.Content("~/CodeCombinition/Test")',
-                data: { task: 'Insert' },
-                datatype: 'html',
-                type: 'post',
-                error: function (error) { alert("Insert Unsuccessful") },
-                success: function (data) { alert("Insert Successful") }
-            });
-        });*@
 
         $('#SOBId').change(function () {
             $.ajax({

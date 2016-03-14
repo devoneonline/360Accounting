@@ -18,7 +18,9 @@ namespace _360Accounting.Core.Entities
 
         public string ReceiptNumber { get; set; }
 
-        public string CurrencyCode { get; set; }
+        public decimal ReceiptAmount { get; set; }
+
+        public long CurrencyId { get; set; }
 
         public decimal ConversionRate { get; set; }
 

@@ -72,7 +72,7 @@ namespace _360Accounting.Web.Controllers
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("Error", ex.Message);
+                    ModelState.AddModelError("Error", ex.InnerException.InnerException.Message);
                 }
             }
 

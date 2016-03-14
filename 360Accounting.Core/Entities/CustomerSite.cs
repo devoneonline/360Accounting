@@ -20,7 +20,7 @@ namespace _360Accounting.Core.Entities
 
         public string SiteContact { get; set; }
 
-        public long TaxCodeId { get; set; }
+        public long? TaxCodeId { get; set; }
 
         public long CodeCombinationId { get; set; }
 
@@ -41,13 +41,13 @@ namespace _360Accounting.Core.Entities
 
         public string SiteContact { get; set; }
 
-        public long TaxCodeId { get; set; }
+        public long? TaxCodeId { get; set; }
 
         public string TaxCodeName { get; set; }
 
         public long CodeCombinationId { get; set; }
 
-        public string CodeCombinationName { get; set; }
+        public CodeCombinition CodeCombination { get; set; }
 
         public DateTime? StartDate { get; set; }
 

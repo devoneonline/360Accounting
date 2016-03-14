@@ -53,6 +53,7 @@ namespace _360Accounting.Web.Models
         public string OldPassword { get; set; }
 
         [Required]
+        [MinLength(7,ErrorMessage = "New Password should not less than 7 characters.")]
         [Display(Name = "New Password")]
         public string NewPassword { get; set; }
 

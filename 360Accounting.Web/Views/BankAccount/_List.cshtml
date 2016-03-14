@@ -41,9 +41,9 @@ var grid = Html.DevExpress().GridView(settings =>
     settings.Columns.Add("AdditionalInformation", "Information");
     settings.Columns.Add("StartDate", "Start Date").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;
     settings.Columns.Add("EndDate", "End Date").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;
-    settings.Columns.Add("Cash_CCID");
-    settings.Columns.Add("RemitCash_CCID");
-    settings.Columns.Add("Confirm_CCID");
+    settings.Columns.Add("Cash_CCID", "Cash Combinition");
+    settings.Columns.Add("RemitCash_CCID", "Remittance Combinition");
+    settings.Columns.Add("Confirm_CCID", "Confirm Combinition");
 });
 if (ViewData["EditError"] != null)
 {

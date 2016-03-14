@@ -9,6 +9,6 @@ namespace _360Accounting.Core.Interfaces
 {
     public interface IReceiptRepository : IRepository<Receipt>
     {
-        IEnumerable<Receipt> GetReceipts(string sobId, string periodId, long companyId);
+        IEnumerable<ReceiptView> GetReceipts(long sobId, long periodId, long customerId, long currencyId, long companyId);
     }
 }

@@ -10,6 +10,6 @@ namespace _360Accounting.Core
 {
     public interface IReceiptService : IService<Receipt>
     {
-        IEnumerable<Receipt> GetReceipts(string sobId, string periodId, long companyId);
+        IEnumerable<ReceiptView> GetReceipts(long sobId, long periodId, long customerId, long currencyId, long companyId);
     }
 }

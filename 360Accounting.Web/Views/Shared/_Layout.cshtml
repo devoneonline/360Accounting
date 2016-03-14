@@ -23,10 +23,11 @@
                     <span class="navbar-brand"><img class="img-responsive" src='@Url.Content("~/Content/images/logo.png")' alt="" /></span>
                 </div>
                 <div class="navbar-collapse collapse">
-
-                    @Html.Partial("_Menu")
-
+                    <ul class="nav navbar-brand center-block"  >
+                        <li class="customClientLogo">@AuthenticationHelper.CompanyName</li>
+                    </ul>
                     @Html.Partial("_LoginPartial")
+                    @Html.Partial("_Menu")
                 </div>
             </nav>
         </div>

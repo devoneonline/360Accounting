@@ -20,8 +20,8 @@ namespace _360Accounting.Core.Entities
 
         public string ContactNo { get; set; }
 
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
     }
 }

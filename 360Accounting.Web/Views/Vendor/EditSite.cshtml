@@ -1,0 +1,94 @@
+﻿@model _360Accounting.Web.Models.VendorSiteModel
+
+@{
+    ViewBag.Title = "Editing Vendor Site";
+}
+
+<div class="container">
+    <div class="clearfix">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
+        </div>
+    </div>
+
+    <div class="clearfix">
+        @using (Html.BeginForm("CreateSite", "Vendor", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.ValidationSummary()
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.VendorId)
+            @Html.HiddenFor(m => m.CreateBy)
+            @Html.HiddenFor(m => m.CreateDate)
+
+            <div class="clearfix">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name)
+                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.CodeCombinationId)
+                        @Html.DropDownListFor(m => m.CodeCombinationId, Model.CodeCombination, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Contact)
+                        @Html.TextBoxFor(model => model.Contact, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.TaxCodeId)
+                        @Html.DropDownListFor(m => m.TaxCodeId, Model.TaxCode, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Address)
+                        @Html.TextAreaFor(model => model.Address, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.StartDate)
+                        @Html.EditorFor(model => model.StartDate, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EndDate)
+                        @Html.EditorFor(model => model.EndDate, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-default tstyCus-btn" />
+                    <input type="button" value="Cancel" class="btn btn-default tstyCus-btn" onclick="javascript: window.location.href='@Url.Content("~/Vendor/ListSites/" + Model.VendorId)'" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('[type=date]').attr('class', 'form-control');
+    });
+</script>

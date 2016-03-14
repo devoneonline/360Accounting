@@ -31,9 +31,9 @@ var grid = Html.DevExpress().GridView(settings =>
                     + "&nbsp;&nbsp;" +
                     Html.Raw("<a title='Delete' class='deleteQuestion' href='" + Url.Content("~/Account/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
                     + "&nbsp;&nbsp;" +
-                    Html.Raw("<a title='Code Combination' href='" + Url.Content("~/CodeCombinition/Index/") + DataBinder.Eval(c.DataItem, "SOBId") + "'><i class='fa fa-codepen'></i></a>")
-                    + "&nbsp;&nbsp;" +
                     Html.Raw("<a title='Account Values' href='" + Url.Content("~/AccountValue/Index/") + DataBinder.Eval(c.DataItem, "SOBId") + "'><i class='fa fa-book'></i></a>")
+                    + "&nbsp;&nbsp;" +
+                    Html.Raw("<a title='Code Combination' href='" + Url.Content("~/CodeCombinition/Index/") + DataBinder.Eval(c.DataItem, "SOBId") + "'><i class='fa fa-codepen'></i></a>")
                 );
             });
             column.Settings.AllowDragDrop = DefaultBoolean.False;

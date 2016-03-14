@@ -1,0 +1,62 @@
+﻿@{Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
+
+Html.EnableClientValidation();
+Html.EnableUnobtrusiveJavaScript();
+
+var grid = Html.DevExpress().GridView(settings =>
+{
+    settings.Name = "Receipt";
+    settings.Theme = "Office2010Black";
+    settings.KeyFieldName = "Id";
+
+    settings.CallbackRouteValues = new { Controller = "Receipt", Action = "ReceiptListPartial" };
+
+    //settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+    settings.SettingsBehavior.ConfirmDelete = true;
+
+    settings.SettingsPager.Visible = true;
+    settings.Settings.ShowGroupPanel = false;
+    settings.Settings.ShowFilterRow = false;
+    settings.SettingsBehavior.AllowSort = false;
+    settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+    settings.Columns.Add(column =>
+        {
+            column.SetDataItemTemplateContent(c =>
+            {
+                ViewContext.Writer.Write(
+                    Html.Raw("<a title='Edit' href='" + Url.Content("~/Receipt/Edit/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
+                    + "&nbsp;&nbsp;" +
+                    Html.Raw("<a title='Delete' class='deleteQuestion' href='" + Url.Content("~/Receipt/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
+                );
+            });
+            column.Settings.AllowDragDrop = DefaultBoolean.False;
+            column.Settings.AllowSort = DefaultBoolean.False;
+            column.Width = 70;
+        });
+
+    settings.Columns.Add("ReceiptNumber", "Receipt No.");
+    settings.Columns.Add("ReceiptDate", "Receipt Date").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;
+    settings.Columns.Add("ReceiptAmount", "Receipt Amount");
+    settings.Columns.Add("Status", "Status");
+    settings.Columns.Add("Remarks");
+    settings.Columns.Add("CustomerSiteName", "Customer Site");
+    settings.Columns.Add("BankName", "Bank Name");
+    settings.Columns.Add("BankAccountName", "Bank Account Name");
+});
+if (ViewData["EditError"] != null)
+{
+    grid.SetEditErrorText((string)ViewData["EditError"]);
+}
+}
+@grid.Bind(Model).GetHtml()
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.deleteQuestion').click(function () {
+            return confirm("Sure! you wanted to delete ?");
+        });
+    });
+</script>
