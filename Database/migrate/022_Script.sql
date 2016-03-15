@@ -1,12 +1,29 @@
 BEGIN_SETUP:
 
-CREATE TABLE [dbo].[tbVendor]
+declare @constr nvarchar(500)
+
+While 1=1
+begin
+	SELECT top 1 @constr=
+		N'ALTER TABLE ' +  OBJECT_SCHEMA_NAME(parent_object_id) +
+		'.[' + OBJECT_NAME(parent_object_id) + 
+		'] DROP CONSTRAINT ' + name
+	FROM sys.foreign_keys
+	WHERE referenced_object_id = object_id('tbTax')
+
+	if @constr is null
+		break;
+	exec sp_executesql @constr
+	set @constr=null
+end
+GO
+DROP TABLE [dbo].[tbTax]
+GO
+CREATE TABLE [dbo].[tbTax]
 (
 [Id] [bigint] NOT NULL IDENTITY(1,1),
-[Name] [varchar] (30) NOT NULL,
-[CompanyId] [bigint] NOT NULL,
-[Address] [varchar] (255) NULL,
-[ContactNo] [varchar] (15) NULL,
+[SOBId] [bigint] NOT NULL,
+[TaxName] [varchar] (30) NOT NULL,
 [StartDate] [datetime] NULL,
 [EndDate] [datetime] NULL,
 [CreateBy] [uniqueidentifier] NOT NULL,
@@ -19,20 +36,18 @@ GO
 
 -- Constraints and Indexes
 
-ALTER TABLE [dbo].[tbVendor] ADD CONSTRAINT [PK_tbVendor] PRIMARY KEY CLUSTERED ([Id])
-ALTER TABLE [dbo].[tbVendor] ADD CONSTRAINT [FK_tbVendor_tbCompany] FOREIGN KEY ([CompanyId]) REFERENCES [dbo].[tbCompany] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
+ALTER TABLE [dbo].[tbTax] ADD CONSTRAINT [PK_tbTax] PRIMARY KEY CLUSTERED ([Id])
+ALTER TABLE [dbo].[tbTax] ADD CONSTRAINT [FK_tbTax_tbSetOfBook] FOREIGN KEY ([SOBId]) REFERENCES [dbo].[tbSetOfBook] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
+--Need to put constraint for customer site & vendors
 
 GO
 
-CREATE TABLE [dbo].[tbVendorSite]
+CREATE TABLE [dbo].[tbTaxDetail]
 (
 [Id] [bigint] NOT NULL IDENTITY(1, 1),
-[VendorId] [bigint] NOT NULL,
-[Name] [varchar] (30) NOT NULL,
-[Address] [varchar] (255) NULL,
-[Contact] [varchar] (15) NULL,
-[TaxCodeId] [bigint] NULL,
+[TaxId] [bigint] NOT NULL,
 [CodeCombinationId] [bigint] NOT NULL,
+[Rate] [money] NOT NULL,
 [StartDate] [datetime] NULL,
 [EndDate] [datetime] NULL,
 [CreateBy] [uniqueidentifier] NOT NULL,
@@ -43,14 +58,14 @@ CREATE TABLE [dbo].[tbVendorSite]
 GO
 -- Constraints and Indexes
 
-ALTER TABLE [dbo].[tbVendorSite] ADD CONSTRAINT [PK_tbVendorSite] PRIMARY KEY CLUSTERED  ([Id])
+ALTER TABLE [dbo].[tbTaxDetail] ADD CONSTRAINT [PK_tbTaxDetail] PRIMARY KEY CLUSTERED  ([Id])
 GO
 -- Foreign Keys
 
-ALTER TABLE [dbo].[tbVendorSite] ADD CONSTRAINT [FK_tbVendorSite_tbVendor] FOREIGN KEY ([VendorId]) REFERENCES [dbo].[tbVendor] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
+ALTER TABLE [dbo].[tbTaxDetail] ADD CONSTRAINT [FK_tbTaxDetail_tbTax] FOREIGN KEY ([TaxId]) REFERENCES [dbo].[tbTax] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
 GO
 
-ALTER TABLE [dbo].[tbVendorSite] ADD CONSTRAINT [FK_tbVendorSite_tbCodeCombinition] FOREIGN KEY ([CodeCombinationId]) REFERENCES [dbo].[tbCodeCombinition] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
+ALTER TABLE [dbo].[tbTaxDetail] ADD CONSTRAINT [FK_tbTaxDetail_tbCodeCombinition] FOREIGN KEY ([CodeCombinationId]) REFERENCES [dbo].[tbCodeCombinition] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
 GO
 
 END_SETUP:

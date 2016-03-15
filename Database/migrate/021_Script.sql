@@ -1,12 +1,12 @@
 BEGIN_SETUP:
 
-DROP TABLE tbTaxDum --Drop previous tax dummy table that was made to do vendors and customers input.
-
-CREATE TABLE [dbo].[tbTax]
+CREATE TABLE [dbo].[tbVendor]
 (
 [Id] [bigint] NOT NULL IDENTITY(1,1),
-[SOBId] [bigint] NOT NULL,
-[TaxName] [varchar] (30) NOT NULL,
+[Name] [varchar] (30) NOT NULL,
+[CompanyId] [bigint] NOT NULL,
+[Address] [varchar] (255) NULL,
+[ContactNo] [varchar] (15) NULL,
 [StartDate] [datetime] NULL,
 [EndDate] [datetime] NULL,
 [CreateBy] [uniqueidentifier] NOT NULL,
@@ -19,18 +19,20 @@ GO
 
 -- Constraints and Indexes
 
-ALTER TABLE [dbo].[tbTax] ADD CONSTRAINT [PK_tbTax] PRIMARY KEY CLUSTERED ([Id])
-ALTER TABLE [dbo].[tbTax] ADD CONSTRAINT [FK_tbTax_tbSetOfBook] FOREIGN KEY ([SOBId]) REFERENCES [dbo].[tbSetOfBook] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
---Need to put constraint for customer site & vendors
+ALTER TABLE [dbo].[tbVendor] ADD CONSTRAINT [PK_tbVendor] PRIMARY KEY CLUSTERED ([Id])
+ALTER TABLE [dbo].[tbVendor] ADD CONSTRAINT [FK_tbVendor_tbCompany] FOREIGN KEY ([CompanyId]) REFERENCES [dbo].[tbCompany] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
 
 GO
 
-CREATE TABLE [dbo].[tbTaxDetail]
+CREATE TABLE [dbo].[tbVendorSite]
 (
 [Id] [bigint] NOT NULL IDENTITY(1, 1),
-[TaxId] [bigint] NOT NULL,
+[VendorId] [bigint] NOT NULL,
+[Name] [varchar] (30) NOT NULL,
+[Address] [varchar] (255) NULL,
+[Contact] [varchar] (15) NULL,
+[TaxCodeId] [bigint] NULL,
 [CodeCombinationId] [bigint] NOT NULL,
-[Rate] [money] NOT NULL,
 [StartDate] [datetime] NULL,
 [EndDate] [datetime] NULL,
 [CreateBy] [uniqueidentifier] NOT NULL,
@@ -41,14 +43,14 @@ CREATE TABLE [dbo].[tbTaxDetail]
 GO
 -- Constraints and Indexes
 
-ALTER TABLE [dbo].[tbTaxDetail] ADD CONSTRAINT [PK_tbTaxDetail] PRIMARY KEY CLUSTERED  ([Id])
+ALTER TABLE [dbo].[tbVendorSite] ADD CONSTRAINT [PK_tbVendorSite] PRIMARY KEY CLUSTERED  ([Id])
 GO
 -- Foreign Keys
 
-ALTER TABLE [dbo].[tbTaxDetail] ADD CONSTRAINT [FK_tbTaxDetail_tbTax] FOREIGN KEY ([TaxId]) REFERENCES [dbo].[tbTax] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
+ALTER TABLE [dbo].[tbVendorSite] ADD CONSTRAINT [FK_tbVendorSite_tbVendor] FOREIGN KEY ([VendorId]) REFERENCES [dbo].[tbVendor] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
 GO
 
-ALTER TABLE [dbo].[tbTaxDetail] ADD CONSTRAINT [FK_tbTaxDetail_tbCodeCombinition] FOREIGN KEY ([CodeCombinationId]) REFERENCES [dbo].[tbCodeCombinition] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
+ALTER TABLE [dbo].[tbVendorSite] ADD CONSTRAINT [FK_tbVendorSite_tbCodeCombinition] FOREIGN KEY ([CodeCombinationId]) REFERENCES [dbo].[tbCodeCombinition] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
 GO
 
 END_SETUP:
