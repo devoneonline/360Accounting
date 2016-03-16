@@ -38,19 +38,20 @@ namespace _360Accounting.Web
 
         public static IList<GLHeaderModel> GetGLHeaders(long sobId, long periodId, long currencyId)
         {
-            IList<GLHeader> entityList = service.GetAll(AuthenticationHelper.User.CompanyId, sobId, periodId, currencyId).ToList();
-            IList<GLHeaderModel> modelList = entityList.Select(x => new GLHeaderModel(x)).ToList();
+            IList<GLHeaderModel> modelList = service
+                .GetAll(AuthenticationHelper.User.CompanyId, sobId, periodId, currencyId).ToList()
+                .Select(x => new GLHeaderModel(x)).ToList();
             return modelList;
         }
 
         public static IList<GLLinesModel> GetGLLines(string headerId)
         {
-            return getGLLinesData(headerId);
+            return getGLLinesByHeaderId(headerId);
         }
 
         public static IList<GLLinesModel> GetGLLines()
         {
-            return getGLLinesData();
+            return getGLLinesByHeaderId();
         }
 
         public static string GetDocNo(long companyId, long periodId, long sobId, long currencyId)
@@ -153,7 +154,7 @@ namespace _360Accounting.Web
         }
 
         #region Private Methods
-        private static IList<GLLinesModel> getGLLinesData([Optional]string headerId)
+        private static IList<GLLinesModel> getGLLinesByHeaderId([Optional]string headerId)
         {
             GLHeaderModel header = SessionHelper.JV;
             IList<GLLinesModel> modelList;
@@ -164,15 +165,6 @@ namespace _360Accounting.Web
 
             return modelList;
         }
-
-        private static IList<GLLinesModel> getGLLinesByHeaderId(string headerId)
-        {
-            return lineService.GetAll
-                (AuthenticationHelper.User.CompanyId, 
-                Convert.ToInt32(headerId))
-                .Select(x => new GLLinesModel(x)).ToList();
-        }
-
         #endregion
     }
 }

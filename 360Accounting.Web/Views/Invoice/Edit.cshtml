@@ -1,0 +1,147 @@
+﻿@Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView })
+@Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
+
+@model _360Accounting.Web.Models.InvoiceModel
+
+<br />
+<br />
+<br />
+
+@{
+    ViewBag.Title = "Customer Invoice";
+}
+
+<div class="container">
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.SOBId)
+        @Html.HiddenFor(model => model.PeriodId)
+        @Html.HiddenFor(model => model.CompanyId)
+        @Html.HiddenFor(model => model.CurrencyId)
+        
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="navbar-right">
+                    <input type="button" value="Save" id="btnSave" class="btn btn-default tstyCus-btn" />
+                    <input type="button" value="Cancel" id="btnCancel" class="btn btn-default tstyCus-btn" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.InvoiceNo)
+                    @Html.TextBoxFor(model => model.InvoiceNo, new { @readonly = "readonly", @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.InvoiceType)
+                    @Html.DropDownListFor(model => model.InvoiceType, Model.InvoiceTypes, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.InvoiceDate)
+                    @Html.EditorFor(model => model.InvoiceDate)
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ConversionRate)
+                    @Html.TextBoxFor(model => model.ConversionRate, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Remarks)
+                    @Html.TextBoxFor(model => model.Remarks, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CustomerId)
+                    @Html.DropDownListFor(model => model.CustomerId, Model.Customers, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CustomerSiteId)
+                    @Html.DropDownListFor(model => model.CustomerSiteId, Model.CustomerSites, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                @Html.Partial("_Detail", Model.InvoiceDetail)
+            </div>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnSave').attr('disabled', true)
+        $('#InvoiceDate').attr('class', 'form-control');
+
+        $('#InvoiceDate').blur(function () {
+            $.ajax({
+                url: '@Url.Content("~/Invoice/CheckDate")',
+                data: { invoiceDate: $(this).val(), periodId: $('#PeriodId').val() },
+                type: 'post',
+                datatype: 'json',
+                success: function (data) {
+                    if (!data) {
+                        alert('Date must lie in the range of current period.');
+                        $('#InvoiceDate').focus();
+                        $('#btnSave').attr('disabled', true)
+                    }
+                    else
+                        $('#btnSave').attr('disabled', false)
+                },
+                error: function () { }
+            })
+        })
+
+        $('#btnCancel').click(function () {
+            if (confirm('Do you want to leave this page?')) {
+                window.location.href = '@Url.Content("~/Invoice")';
+            }
+        });
+
+        $('#btnSave').click(function () {
+
+            var invoiceType = $('#DocumentType').val();
+            var invoiceDate = $('#InvoiceDate').val();
+            var conversionRate = $('#ConversionRate').val();
+            var Remarks = $('#Remarks').val();
+            var customerId = $('#CustomerId').val();
+            var customerSiteId = $('#CustomerSiteId').val();
+            ////var OrderId = $('#OrderId').val();
+
+            var url = '@Url.Content("~/Invoice/SaveInvoice")';
+            $.post(url, {
+                invoiceType: invoiceType, invoiceDate: invoiceDate,
+                conversionRate: conversionRate, Remarks: Remarks,
+                customerId: customerId, customerSiteId: customerSiteId
+            },
+                function (result) {
+                    if (result.success)
+                    {
+                        alert(result.message);
+                        window.location.href = '@Url.Content("~/Invoice")';
+                    }
+                    else
+                        alert(result.message);
+                });
+        });
+    });
+</script>

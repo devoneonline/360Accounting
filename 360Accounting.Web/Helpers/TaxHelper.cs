@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Web;
+using System.Web.Mvc;
 
 namespace _360Accounting.Web
 {
@@ -21,15 +22,7 @@ namespace _360Accounting.Web
         }
 
         #region Private Methods
-        private static IList<TaxDetailModel> getTaxDetailByTaxId(string taxId)
-        {
-            return detailService.GetAll
-                (AuthenticationHelper.User.CompanyId, 
-                Convert.ToInt32(taxId))
-                .Select(x => new TaxDetailModel(x)).ToList();
-        }
-
-        private static IList<TaxDetailModel> getTaxDetailData([Optional]string taxId)
+        private static IList<TaxDetailModel> getTaxDetailByTaxId([Optional]string taxId)
         {
             TaxModel tax = SessionHelper.Tax;
             IList<TaxDetailModel> modelList;
@@ -45,6 +38,17 @@ namespace _360Accounting.Web
         }
         #endregion
 
+        public static List<SelectListItem> GetTaxes(long sobId, DateTime startDate, DateTime endDate)
+        {
+            return service.GetAll(AuthenticationHelper.User.CompanyId, sobId)
+                .Where(a => a.StartDate <= startDate && a.EndDate >= endDate)
+                .Select(x => new SelectListItem
+                {
+                    Text = x.TaxName,
+                    Value = x.Id.ToString()
+                }).ToList();
+        }
+        
         public static void Delete(string id)
         {
             service.Delete(id, AuthenticationHelper.User.CompanyId);
@@ -98,7 +102,7 @@ namespace _360Accounting.Web
                         }
 
                         //delete karne k bd db se detail utha li.
-                        taxDetail = getTaxDetailData(result);
+                        taxDetail = getTaxDetailByTaxId(result);
                     }
 
                     //tax detail ki loop chalai
@@ -158,7 +162,7 @@ namespace _360Accounting.Web
 
         public static IList<TaxDetailModel> GetTaxDetail([Optional]string taxId)
         {
-            return getTaxDetailData(taxId);
+            return getTaxDetailByTaxId(taxId);
         }
     }
 }

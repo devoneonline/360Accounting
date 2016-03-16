@@ -11,14 +11,19 @@ namespace _360Accounting.Data.Repositories
 {
     public class InvoiceRepository : Repository, IInvoiceRepository
     {
-        public IEnumerable<Invoice> GetAll(long companyId, long sobId, long periodId, long currencyId, long customerId, long customerSiteId)
+        public Invoice GetSingle(long companyId, long sobId, long periodId, long currencyId)
+        {
+            Invoice entity = this.GetAll(companyId, sobId, periodId, currencyId)
+                .OrderByDescending(rec => rec.Id).First();
+            return entity;
+        }
+
+        public IEnumerable<Invoice> GetAll(long companyId, long sobId, long periodId, long currencyId)
         {
             IEnumerable<Invoice> list = this.Context.Invoices
                 .Where(x => x.SOBId == sobId && 
                     x.PeriodId == periodId &&
-                    x.CurrencyId == currencyId &&
-                    x.CustomerId == customerId &&
-                    x.CustomerSiteId == customerSiteId).ToList();
+                    x.CurrencyId == currencyId).ToList();
             return list;
         }
 

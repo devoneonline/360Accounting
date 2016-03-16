@@ -35,7 +35,17 @@ namespace _360Accounting.Web.Models
         public List<SelectListItem> CustomerSites { get; set; }
 
         [Display(Name = "Site")]
-        public List<SelectListItem> InvoiceTypes { get; set; }
+        public List<SelectListItem> InvoiceTypes
+        {
+            get
+            {
+                List<SelectListItem> list = new List<SelectListItem>();
+                list.Add(new SelectListItem { Text = "Invoice", Value = "Invoice" });
+                list.Add(new SelectListItem { Text = "Debit Memo", Value = "Debit Memo" });
+                list.Add(new SelectListItem { Text = "Credit Memo", Value = "Credit Memo" });
+                return list;
+            }
+        }
 
         public long Id { get; set; }
         public long SOBId { get; set; }
@@ -48,12 +58,21 @@ namespace _360Accounting.Web.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}",
             ApplyFormatInEditMode = true)]
-        [Display(Name = "Invoice Date")]
+        [Display(Name = "Document Date")]
         public DateTime InvoiceDate { get; set; }
+
+        [Display(Name = "Document Type")]
         public string InvoiceType { get; set; }
+
+        [Display(Name = "Document No")]
         public string InvoiceNo { get; set; }
+
+        [Display(Name = "Conversion Rate")]
         public decimal? ConversionRate { get; set; }
         public string Remarks { get; set; }
+
+        ////Experimating with singular detail property...
+        public IList<InvoiceDetailModel> InvoiceDetail { get; set; }
         #endregion
 
         #region Constructors
@@ -105,6 +124,7 @@ namespace _360Accounting.Web.Models
         public long TaxId { get; set; }
         public decimal Quantity { get; set; }
         public decimal Rate { get; set; }
+        public decimal Amount { get; set; }
         #endregion
     }
 }

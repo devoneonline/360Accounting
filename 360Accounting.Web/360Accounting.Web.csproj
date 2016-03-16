@@ -179,7 +179,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Invoice\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -201,6 +200,7 @@
     <Compile Include="Helpers\CurrencyHelper.cs" />
     <Compile Include="Helpers\CustomerHelper.cs" />
     <Compile Include="Helpers\CustomerSiteHelper.cs" />
+    <Compile Include="Helpers\InvoiceHelper.cs" />
     <Compile Include="Helpers\InvoiceSourceHelper.cs" />
     <Compile Include="Helpers\JVHelper.cs" />
     <Compile Include="Common\SessionHelper.cs" />
@@ -530,6 +530,10 @@
     <Content Include="Views\Tax\Edit.cshtml" />
     <Content Include="Views\Tax\_TaxDetailPartial.cshtml" />
     <Content Include="Views\Tax\_List.cshtml" />
+    <Content Include="Views\Invoice\Index.cshtml" />
+    <Content Include="Views\Invoice\_List.cshtml" />
+    <Content Include="Views\Invoice\Edit.cshtml" />
+    <Content Include="Views\Invoice\_Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

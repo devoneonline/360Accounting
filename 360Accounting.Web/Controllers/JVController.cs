@@ -48,20 +48,13 @@ namespace _360Accounting.Web.Controllers
             return list;
         }
 
-        private List<SelectListItem> getPeriodList(string sobId)
-        {
-            List<SelectListItem> list = calendarService.GetAll(AuthenticationHelper.User.CompanyId, Convert.ToInt32(sobId))
-                    .Select(x => new SelectListItem { Text = x.PeriodName, Value = x.Id.ToString() }).ToList();
-            return list;
-        }
+        //private List<SelectListItem> getCurrencyList(string sobId)
+        //{
+        //    List<SelectListItem> list = currencyService.GetAll(AuthenticationHelper.User.CompanyId, Convert.ToInt32(sobId))
+        //            .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
+        //    return list;
 
-        private List<SelectListItem> getCurrencyList(string sobId)
-        {
-            List<SelectListItem> list = currencyService.GetAll(AuthenticationHelper.User.CompanyId, Convert.ToInt32(sobId))
-                    .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
-            return list;
-
-        }
+        //}
         #endregion
 
         #region Reports
@@ -279,7 +272,15 @@ namespace _360Accounting.Web.Controllers
                     Value = x.Id.ToString()
                 }).ToList();
             model.CodeCombinations = getCodeCombinationList(Convert.ToInt32(model.SetOfBooks.First().Value));
-            model.Periods = getPeriodList(model.SetOfBooks.First().Value);
+            //model.Periods = getPeriodList(model.SetOfBooks.First().Value);
+
+            model.Periods = CalendarHelper.GetCalendars(Convert.ToInt32(model.SetOfBooks.First().Value))
+                    .Select(x => new SelectListItem
+                    {
+                        Text = x.PeriodName,
+                        Value = x.Id.ToString()
+                    }).ToList();
+
             return View(model);
         }
 
@@ -378,18 +379,27 @@ namespace _360Accounting.Web.Controllers
                     }).ToList();
                 model.SOBId = model.SetOfBooks.Any() ?
                     Convert.ToInt32(model.SetOfBooks.First().Value) : 0;
-                
             }
 
             if (model.Periods == null && model.SetOfBooks.Any())
             {
-                model.Periods = getPeriodList(model.SetOfBooks.First().Value);
-                model.PeriodId = model.Periods.Any() ? Convert.ToInt32(model.Periods.First().Value) : 0;                
+                model.Periods = CalendarHelper.GetCalendars(Convert.ToInt32(model.SetOfBooks.First().Value))
+                    .Select(x => new SelectListItem
+                    {
+                        Text = x.PeriodName,
+                        Value = x.Id.ToString()
+                    }).ToList();
+                model.PeriodId = model.Periods.Any() ? Convert.ToInt32(model.Periods.First().Value) : 0;
             }
 
             if (model.Currencies == null && model.SetOfBooks.Any())
             {
-                model.Currencies = getCurrencyList(model.SetOfBooks.First().Value);
+                model.Currencies = CurrencyHelper.GetCurrencyList(Convert.ToInt32(model.SetOfBooks.First().Value))
+                    .Select(x => new SelectListItem
+                    {
+                        Text = x.Name,
+                        Value = x.Id.ToString()
+                    }).ToList();
                 model.CurrencyId = model.Currencies.Any() ? Convert.ToInt32(model.Currencies.First().Value) : 0;
                 
             }
@@ -414,8 +424,8 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Create(long sobId, long periodId, long currencyId)
         {
             SessionHelper.SOBId = sobId;
-            SessionHelper.Calendar = new CalendarViewModel(calendarService.GetSingle(periodId.ToString(), AuthenticationHelper.User.CompanyId));
-            SessionHelper.PrecisionLimit = currencyService.GetSingle(currencyId.ToString(), AuthenticationHelper.User.CompanyId).Precision;
+            SessionHelper.Calendar = CalendarHelper.GetCalendar(periodId.ToString());
+            SessionHelper.PrecisionLimit = CurrencyHelper.GetCurrency(currencyId.ToString()).Precision;
 
             GLHeaderModel model = SessionHelper.JV;
             if (model == null)
@@ -568,14 +578,26 @@ namespace _360Accounting.Web.Controllers
             }
         }
 
-        public JsonResult CurrencyList(string sobId)
+        public JsonResult CurrencyList(long sobId)
         {
-            return Json(getCurrencyList(sobId), JsonRequestBehavior.AllowGet);
+            List<SelectListItem> list = CurrencyHelper.GetCurrencyList(sobId)
+                    .Select(x => new SelectListItem
+                    {
+                        Text = x.Name,
+                        Value = x.Id.ToString()
+                    }).ToList();
+            return Json(list, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult PeriodList(string sobId)
+        public JsonResult PeriodList(long sobId)
         {
-            return Json(getPeriodList(sobId), JsonRequestBehavior.AllowGet);
+            List<SelectListItem> periodList = CalendarHelper.GetCalendars(sobId)
+                    .Select(x => new SelectListItem
+                    {
+                        Text = x.PeriodName,
+                        Value = x.Id.ToString()
+                    }).ToList();
+            return Json(periodList, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace _360Accounting.Web
 {
@@ -47,6 +48,18 @@ namespace _360Accounting.Web
             InvoiceSourceViewModel invoiceSource = new InvoiceSourceViewModel
                 (service.GetSingle(id, AuthenticationHelper.User.CompanyId));
             return invoiceSource;
+        }
+
+        public static List<SelectListItem> GetInvoiceSources(long sobId, DateTime startDate, DateTime endDate)
+        {
+            ///TODO: Plz audit the code.
+            return service.GetAll(AuthenticationHelper.User.CompanyId, sobId)
+                .Where(a => a.StartDate <= startDate && a.EndDate >= endDate)
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Description,
+                    Value = x.Id.ToString()
+                }).ToList();
         }
     }
 }

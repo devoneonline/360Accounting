@@ -10,6 +10,20 @@ namespace _360Accounting.Web
     {
         private const string SESSION_JV = "SESSION_JV";
         private const string SESSION_TAX = "SESSION_Tax";
+        private const string SESSION_INVOICE = "SESSION_Invoice";
+
+        public static InvoiceModel Invoice
+        {
+            get
+            {
+                return HttpContext.Current.Session[SESSION_INVOICE] == null ? null :
+                    (InvoiceModel)HttpContext.Current.Session[SESSION_INVOICE];
+            }
+            set
+            {
+                HttpContext.Current.Session[SESSION_INVOICE] = value;
+            }
+        }
 
         public static TaxModel Tax
         {

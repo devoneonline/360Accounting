@@ -10,6 +10,8 @@ namespace _360Accounting.Core.Interfaces
     public interface IInvoiceRepository : IRepository<Invoice>
     {
         IEnumerable<Invoice> GetAll(long companyId, long sobId,
-            long periodId, long currencyId, long customerId, long customerSiteId);
+            long periodId, long currencyId);
+
+        Invoice GetSingle(long companyId, long sobId, long periodId, long currencyId);
     }
 }

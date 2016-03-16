@@ -10,10 +10,12 @@ namespace _360Accounting.Web
     public static class CustomerHelper
     {
         private static ICustomerService service;
+        private static ICustomerSiteService siteService;
 
         static CustomerHelper()
         {
             service = IoC.Resolve<ICustomerService>("CustomerService");
+            siteService = IoC.Resolve<ICustomerSiteService>("CustomerSiteService");
         }
 
         public static string SaveCustomer(CustomerModel model)
@@ -42,6 +44,12 @@ namespace _360Accounting.Web
         {
             return service.GetAll(AuthenticationHelper.User.CompanyId)
                 .Select(a => new CustomerModel(a)).ToList();
+        }
+
+        public static List<CustomerSiteViewModel> GetCustomerSites(long customerId)
+        {
+            return siteService.GetAllbyCustomerId(customerId)
+                .Select(a => new CustomerSiteViewModel(a)).ToList();
         }
     }
 }

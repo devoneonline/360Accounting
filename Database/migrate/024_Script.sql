@@ -72,6 +72,6 @@ ALTER TABLE [dbo].[tbInvoiceDetail] ADD CONSTRAINT [FK_tbInvoiceDetail_tbTax] FO
 
 GO
 
-update tbFeature set Href = '~/Invoices' where id = 27
+update tbFeature set Href = '~/Invoice' where id = 27
 
 END_SETUP:
