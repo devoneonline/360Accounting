@@ -9,6 +9,52 @@ namespace _360Accounting.Web
 {
     public static class Mappers
     {
+        public static InvoiceDetail GetEntityByModel(InvoiceDetailModel model)
+        {
+            if (model == null) return null;
+            InvoiceDetail entity = new InvoiceDetail();
+
+            entity.CreateDate = DateTime.Now;
+            entity.Id = model.Id;
+            entity.InvoiceId = model.InvoiceId;
+            entity.InvoiceSourceId = model.InvoiceSourceId;
+            entity.Quantity = model.Quantity;
+            entity.Rate = model.Rate;
+            entity.TaxId = model.TaxId;
+            entity.UpdateBy = entity.CreateBy;
+            entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
+
+        public static Invoice GetEntityByModel(InvoiceModel model)
+        {
+            if (model == null) return null;
+            Invoice entity = new Invoice();
+
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+
+            entity.CompanyId = model.CompanyId;
+            entity.ConversionRate = model.ConversionRate;
+            entity.CurrencyId = model.CurrencyId;
+            entity.CustomerId = model.CustomerId;
+            entity.CustomerSiteId = model.CustomerSiteId;
+            entity.Id = model.Id;
+            entity.InvoiceDate = model.InvoiceDate;
+            entity.InvoiceNo = model.InvoiceNo;
+            entity.InvoiceType = model.InvoiceType;
+            entity.PeriodId = model.PeriodId;
+            entity.Remarks = model.Remarks;
+            entity.SOBId = model.SOBId;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+
+            return entity;
+        }
+
         public static TaxDetail GetEntityByModel(TaxDetailModel model)
         {
             if (model == null) return null;

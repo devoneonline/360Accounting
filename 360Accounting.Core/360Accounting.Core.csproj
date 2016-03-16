@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Invoice.cs" />
     <Compile Include="Entities\ReceiptView.cs" />
     <Compile Include="Entities\Receipt.cs" />
     <Compile Include="Entities\Bank.cs" />
@@ -84,6 +85,8 @@
     <Compile Include="Entities\VendorSite.cs" />
     <Compile Include="Interfaces\ICore360.cs" />
     <Compile Include="IoC.cs" />
+    <Compile Include="IRepository\IInvoiceRepository.cs" />
+    <Compile Include="IRepository\IInvoiceDetailRepository.cs" />
     <Compile Include="IRepository\IReceiptRepository.cs" />
     <Compile Include="IRepository\IBankAccountRepository.cs" />
     <Compile Include="IRepository\IBankRepository.cs" />
@@ -111,6 +114,8 @@
     <Compile Include="IRepository\IVendorRepository.cs" />
     <Compile Include="IService\IBankService.cs" />
     <Compile Include="IService\IBankAccountService.cs" />
+    <Compile Include="IService\IInvoiceDetailService.cs" />
+    <Compile Include="IService\IInvoiceService.cs" />
     <Compile Include="IService\IReceiptService.cs" />
     <Compile Include="IService\IAccountService.cs" />
     <Compile Include="IService\IAccountValueService.cs" />

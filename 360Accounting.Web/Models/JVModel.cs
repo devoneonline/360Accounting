@@ -39,7 +39,7 @@ namespace _360Accounting.Web.Models
             this.GLDate = Const.CurrentDate;
         }
 
-        public GLHeaderModel(GLHeader entity )
+        public GLHeaderModel(GLHeader entity)
         {
             this.Id = entity.Id;
             this.SOBId = entity.SOBId;

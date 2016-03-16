@@ -370,9 +370,14 @@ namespace _360Accounting.Web.Controllers
             SessionHelper.JV = null;
             if (model.SetOfBooks == null)
             {
-                model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
-                    .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
-                model.SOBId = model.SetOfBooks.Any() ? Convert.ToInt32(model.SetOfBooks.First().Value) : 0;
+                model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()
+                    .Select(x => new SelectListItem 
+                    { 
+                        Text = x.Name,
+                        Value = x.Id.ToString()
+                    }).ToList();
+                model.SOBId = model.SetOfBooks.Any() ?
+                    Convert.ToInt32(model.SetOfBooks.First().Value) : 0;
                 
             }
 

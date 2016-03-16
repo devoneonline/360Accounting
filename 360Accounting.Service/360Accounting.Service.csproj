@@ -56,6 +56,8 @@
     <Compile Include="Services\BankService.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\InvoiceDetailService.cs" />
+    <Compile Include="Services\InvoiceService.cs" />
     <Compile Include="Services\ReceiptService.cs" />
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\AccountValueService.cs" />

@@ -179,12 +179,14 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Invoice\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Common\AuthenticationHelper.cs" />
+    <Compile Include="Controllers\InvoiceController.cs" />
     <Compile Include="Controllers\ReceiptController.cs" />
     <Compile Include="Controllers\BankAccountController.cs" />
     <Compile Include="Controllers\BankController.cs" />
@@ -233,6 +235,7 @@
     <Compile Include="Models\BankAccountViewModel.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\InvoiceModel.cs" />
     <Compile Include="Models\ModelBase.cs" />
     <Compile Include="Models\ReceiptListModel.cs" />
     <Compile Include="Models\BankModel.cs" />

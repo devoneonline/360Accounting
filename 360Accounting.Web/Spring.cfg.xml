@@ -27,8 +27,16 @@
   <object name="VendorRepository" type="_360Accounting.Data.Repositories.VendorRepository, 360Accounting.Data"> </object>
   <object name="TaxRepository" type="_360Accounting.Data.Repositories.TaxRepository, 360Accounting.Data"> </object>
   <object name="TaxDetailRepository" type="_360Accounting.Data.Repositories.TaxDetailRepository, 360Accounting.Data"> </object>
+  <object name="InvoiceRepository" type="_360Accounting.Data.Repositories.InvoiceRepository, 360Accounting.Data"> </object>
+  <object name="InvoiceDetailRepository" type="_360Accounting.Data.Repositories.InvoiceDetailRepository, 360Accounting.Data"> </object>
   
-
+  
+  <object name="InvoiceService" type="_360Accounting.Service.InvoiceService, 360Accounting.Service" >
+    <constructor-arg name="invoiceRepository" ref="InvoiceRepository" />
+  </object>
+  <object name="InvoiceDetailService" type="_360Accounting.Service.InvoiceDetailService, 360Accounting.Service" >
+    <constructor-arg name="invoiceDetailRepository" ref="InvoiceDetailRepository" />
+  </object>
   <object name="InvoiceSourceService" type="_360Accounting.Service.InvoiceSourceService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="InvoiceSourceRepository" />
   </object>

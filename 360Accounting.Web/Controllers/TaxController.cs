@@ -162,6 +162,7 @@ namespace _360Accounting.Web.Controllers
         
         public ActionResult Index(TaxListModel model)
         {
+            SessionHelper.Tax = null;
             if (model.SetOfBooks == null)
             {
                 model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()

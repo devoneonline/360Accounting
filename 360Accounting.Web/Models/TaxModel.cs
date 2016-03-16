@@ -22,6 +22,8 @@ namespace _360Accounting.Web.Models
         #region Properties
         public long Id { get; set; }
         public long SOBId { get; set; }
+
+        [Display(Name = "Tax Name")]
         public string TaxName { get; set; }
 
         [DataType(DataType.Date)]

@@ -33,13 +33,13 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-3">
                 <div class="form-group">
                     @Html.LabelFor(model => model.StartDate)
                     @Html.EditorFor(model => model.StartDate)
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-3">
                 <div class="form-group">
                     @Html.LabelFor(model => model.EndDate)
                     @Html.EditorFor(model => model.EndDate)
@@ -57,8 +57,9 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('[type=date]').attr('class', 'form-control');
-
+        $('[type=date]').attr('class', 'form-control ');
+        $('#StartDate, #EndDate').attr('class', 'form-control');
+        
         $('#btnCancel').click(function () {
             if (confirm('Do you want to leave this page?')) {
                 window.location.href = '@Url.Content("~/Tax")';
@@ -81,6 +82,21 @@
                     else
                         alert(result.message);
                 });
+        });
+
+        $('#StartDate, #EndDate').blur(function ()
+        {
+            var startDate = Date($('#StartDate').val());
+            var endDate = Date($('#EndDate').val());
+
+            if (Date(startDate) > Date(endDate))
+            {
+                endDate = startDate;
+                $('#EndDate').val(startDate);
+            }
+
+            @SessionHelper.Tax.StartDate.Date = Date(startDate);
+            @SessionHelper.Tax.EndDate.Date  = Date(endDate);
         });
     });
 </script>

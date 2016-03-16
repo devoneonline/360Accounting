@@ -42,36 +42,7 @@
                 comboBoxProperties.ValueField = "Value";
                 comboBoxProperties.ValueType = typeof(int);
             });
-            settings.Columns.Add(column =>
-            {
-                column.FieldName = "StartDate";
-                column.Caption = "Date From";
-                column.ColumnType = MVCxGridViewColumnType.DateEdit;
-                var dateEditProperties = column.PropertiesEdit as DateEditProperties;
-                dateEditProperties.EditFormat = EditFormat.Custom;
-                dateEditProperties.EditFormatString = "MM/dd/yyyy";
-                dateEditProperties.NullText = "MM/dd/yyyy";
-                dateEditProperties.TimeSectionProperties.Visible = false;
-                dateEditProperties.MinDate = SessionHelper.Tax.StartDate;
-                dateEditProperties.MaxDate = SessionHelper.Tax.EndDate;
-                //spinEditProperties.ClientSideEvents.ValueChanged = String.Format("function(s, e) {{ CheckVal(s, e); }}");
-            });
             
-            settings.Columns.Add(column =>
-            {
-                column.FieldName = "EndDate";
-                column.Caption = "Date To";
-                column.ColumnType = MVCxGridViewColumnType.DateEdit;
-                var dateEditProperties = column.PropertiesEdit as DateEditProperties;
-                dateEditProperties.EditFormat = EditFormat.Custom;
-                dateEditProperties.EditFormatString = "MM/dd/yyyy";
-                dateEditProperties.NullText = "MM/dd/yyyy";
-                dateEditProperties.TimeSectionProperties.Visible = false;
-                dateEditProperties.MinDate = SessionHelper.Tax.StartDate;
-                dateEditProperties.MaxDate = SessionHelper.Tax.EndDate;
-                //spinEditProperties.ClientSideEvents.ValueChanged = String.Format("function(s, e) {{ CheckVal(s, e); }}");
-            });
-
             settings.Columns.Add(column =>
             {
                 column.FieldName = "Rate";
@@ -87,6 +58,36 @@
                 spinEditProperties.MinValue = 0;
                 spinEditProperties.MaxValue = 100;
                 spinEditProperties.SpinButtons.ShowLargeIncrementButtons = true;
+            });
+            
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "StartDate";
+                column.Caption = "Date From";
+                column.ColumnType = MVCxGridViewColumnType.DateEdit;
+                var dateEditProperties = column.PropertiesEdit as DateEditProperties;
+                dateEditProperties.EditFormat = EditFormat.Custom;
+                dateEditProperties.EditFormatString = "MM/dd/yyyy";
+                dateEditProperties.NullText = "MM/dd/yyyy";
+                dateEditProperties.TimeSectionProperties.Visible = false;
+                dateEditProperties.MinDate = SessionHelper.Tax.StartDate;
+                dateEditProperties.MaxDate = SessionHelper.Tax.EndDate;
+                //spinEditProperties.ClientSideEvents.ValueChanged = String.Format("function(s, e) {{ CheckVal(s, e); }}");
+            });
+
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "EndDate";
+                column.Caption = "Date To";
+                column.ColumnType = MVCxGridViewColumnType.DateEdit;
+                var dateEditProperties = column.PropertiesEdit as DateEditProperties;
+                dateEditProperties.EditFormat = EditFormat.Custom;
+                dateEditProperties.EditFormatString = "MM/dd/yyyy";
+                dateEditProperties.NullText = "MM/dd/yyyy";
+                dateEditProperties.TimeSectionProperties.Visible = false;
+                dateEditProperties.MinDate = SessionHelper.Tax.StartDate;
+                dateEditProperties.MaxDate = SessionHelper.Tax.EndDate;
+                //spinEditProperties.ClientSideEvents.ValueChanged = String.Format("function(s, e) {{ CheckVal(s, e); }}");
             });
         });
 
