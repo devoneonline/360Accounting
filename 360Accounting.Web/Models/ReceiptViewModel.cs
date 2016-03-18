@@ -19,6 +19,7 @@ namespace _360Accounting.Web.Models
 
         public ReceiptViewModel(ReceiptView entity)
         {
+            this.CustomerName = entity.CustomerName;
             this.BankAccountId = entity.BankAccountId;
             this.BankId = entity.BankId;
             this.ConversionRate = entity.ConversionRate;
@@ -65,6 +66,8 @@ namespace _360Accounting.Web.Models
         public long CustomerSiteId { get; set; }
 
         public string CustomerSiteName { get; set; }
+
+        public string CustomerName { get; set; }
 
         public List<SelectListItem> CustomerSites { get; set; }
 

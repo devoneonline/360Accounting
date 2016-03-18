@@ -18,6 +18,21 @@ namespace _360Accounting.Service
             this.repository = remittanceRepository;
         }
 
+        public Remittance GetByRemitNo(string remitNo)
+        {
+            return this.repository.GetByRemitNo(remitNo);
+        }
+
+        public IEnumerable<Remittance> GetByRemitNo(long companyId, string remitNo)
+        {
+            return this.repository.GetByRemitNo(companyId, remitNo);
+        }
+        
+        public IEnumerable<Remittance> GetAll(long companyId, long sobId, long bankId, long bankAccountId)
+        {
+            return this.repository.GetAll(companyId, sobId, bankId, bankAccountId);
+        }
+
         public Remittance GetSingle(string id, long companyId)
         {
             return this.repository.GetSingle(id, companyId);

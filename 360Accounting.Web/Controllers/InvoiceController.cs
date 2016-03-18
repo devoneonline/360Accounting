@@ -21,20 +21,6 @@ namespace _360Accounting.Web.Controllers
             return Json(customerList, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult CheckDate(DateTime invoiceDate, long periodId)
-        {
-            bool result = false;
-            if (periodId > 0)
-            {
-                if (SessionHelper.Calendar != null)
-                {
-                    if (invoiceDate >= SessionHelper.Calendar.StartDate || invoiceDate <= SessionHelper.Calendar.EndDate)
-                        result = true;
-                }
-            }
-            return Json(result);
-        }
-
         public ActionResult Delete(string id)
         {
             InvoiceHelper.Delete(id);
@@ -178,6 +164,20 @@ namespace _360Accounting.Web.Controllers
         public ActionResult DetailPartial()
         {
             return PartialView("_Detail", InvoiceHelper.GetInvoiceDetail());
+        }
+
+        public JsonResult CheckDate(DateTime invoiceDate, long periodId)
+        {
+            bool result = false;
+            if (periodId > 0)
+            {
+                if (SessionHelper.Calendar != null)
+                {
+                    if (invoiceDate >= SessionHelper.Calendar.StartDate || invoiceDate <= SessionHelper.Calendar.EndDate)
+                        result = true;
+                }
+            }
+            return Json(result);
         }
 
         public ActionResult Create(long sobId, long periodId, long currencyId)

@@ -8,20 +8,80 @@ namespace _360Accounting.Web
 {
     public class SessionHelper
     {
-        private const string SESSION_JV = "SESSION_JV";
-        private const string SESSION_TAX = "SESSION_Tax";
-        private const string SESSION_INVOICE = "SESSION_Invoice";
+        private const string Session_DocumentDate = "DocumentDate";
+        private const string Session_Calendar = "Calendar";
+        private const string Session_Receipt = "Receipt";
+        private const string Session_Bank = "Bank";
+        private const string Session_PrecisionLimit = "PrecisionLimit";
+        private const string Session_SOBId = "SOBId";
+        private const string Session_BankAccount = "BankAccount";
+        private const string Session_JV = "JV";
+        private const string Session_Tax = "Tax";
+        private const string Session_Invoice = "Invoice";
+        private const string Session_Remittance = "Remittance";
 
+        public static ReceiptModel Receipt
+        {
+            get
+            {
+                return HttpContext.Current.Session[Session_Receipt] == null ? null :
+                    (ReceiptModel)HttpContext.Current.Session[Session_Receipt];
+            }
+            set
+            {
+                HttpContext.Current.Session[Session_BankAccount] = value;
+            }
+        }
+
+        public static BankAccountModel BankAccount
+        {
+            get
+            {
+                return HttpContext.Current.Session[Session_BankAccount] == null ? null :
+                    (BankAccountModel)HttpContext.Current.Session[Session_BankAccount];
+            }
+            set
+            {
+                HttpContext.Current.Session[Session_BankAccount] = value;
+            }
+        }
+
+        public static BankModel Bank
+        {
+            get
+            {
+                return HttpContext.Current.Session[Session_Bank] == null ? null :
+                    (BankModel)HttpContext.Current.Session[Session_Bank];
+            }
+            set
+            {
+                HttpContext.Current.Session[Session_Bank] = value;
+            }
+        }
+
+        public static RemittanceModel Remittance
+        {
+            get
+            {
+                return HttpContext.Current.Session[Session_Remittance] == null ? null :
+                    (RemittanceModel)HttpContext.Current.Session[Session_Remittance];
+            }
+            set
+            {
+                HttpContext.Current.Session[Session_Remittance] = value;
+            }
+        }
+        
         public static InvoiceModel Invoice
         {
             get
             {
-                return HttpContext.Current.Session[SESSION_INVOICE] == null ? null :
-                    (InvoiceModel)HttpContext.Current.Session[SESSION_INVOICE];
+                return HttpContext.Current.Session[Session_Invoice] == null ? null :
+                    (InvoiceModel)HttpContext.Current.Session[Session_Invoice];
             }
             set
             {
-                HttpContext.Current.Session[SESSION_INVOICE] = value;
+                HttpContext.Current.Session[Session_Invoice] = value;
             }
         }
 
@@ -29,12 +89,12 @@ namespace _360Accounting.Web
         {
             get
             {
-                return HttpContext.Current.Session[SESSION_TAX] == null ? null :
-                    (TaxModel)HttpContext.Current.Session[SESSION_TAX];
+                return HttpContext.Current.Session[Session_Tax] == null ? null :
+                    (TaxModel)HttpContext.Current.Session[Session_Tax];
             }
             set
             {
-                HttpContext.Current.Session[SESSION_TAX] = value;
+                HttpContext.Current.Session[Session_Tax] = value;
             }
         }
 
@@ -42,12 +102,24 @@ namespace _360Accounting.Web
         {
             get
             {
-                return HttpContext.Current.Session[SESSION_JV] == null ? null :
-                    (GLHeaderModel)HttpContext.Current.Session[SESSION_JV];
+                return HttpContext.Current.Session[Session_JV] == null ? null :
+                    (GLHeaderModel)HttpContext.Current.Session[Session_JV];
             }
             set
             {
-                HttpContext.Current.Session[SESSION_JV] = value;
+                HttpContext.Current.Session[Session_JV] = value;
+            }
+        }
+
+        public static DateTime DocumentDate
+        {
+            get
+            {
+                return Convert.ToDateTime(HttpContext.Current.Session[Session_DocumentDate].ToString());
+            }
+            set
+            {
+                HttpContext.Current.Session[Session_DocumentDate] = value;
             }
         }
 
@@ -55,11 +127,11 @@ namespace _360Accounting.Web
         {
             get
             {
-                return Convert.ToInt64(HttpContext.Current.Session["SOBId"].ToString());
+                return Convert.ToInt64(HttpContext.Current.Session[Session_SOBId].ToString());
             }
             set
             {
-                HttpContext.Current.Session["SOBId"] = value;
+                HttpContext.Current.Session[Session_SOBId] = value;
             }
         }
 
@@ -68,11 +140,11 @@ namespace _360Accounting.Web
         {
             get
             {
-                return Convert.ToInt32(HttpContext.Current.Session["PrecissionLimit"].ToString());
+                return Convert.ToInt32(HttpContext.Current.Session[Session_PrecisionLimit].ToString());
             }
             set
             {
-                HttpContext.Current.Session["PrecissionLimit"] = value;
+                HttpContext.Current.Session[Session_PrecisionLimit] = value;
             }
         }
 
@@ -81,13 +153,15 @@ namespace _360Accounting.Web
         {
             get
             {
-                return HttpContext.Current.Session["Calendar"] == null ? new CalendarViewModel()
-                    : (CalendarViewModel)HttpContext.Current.Session["Calendar"];
+                return HttpContext.Current.Session[Session_Calendar] == null ? new CalendarViewModel()
+                    : (CalendarViewModel)HttpContext.Current.Session[Session_Calendar];
             }
             set
             {
-                HttpContext.Current.Session["Calendar"] = value;
+                HttpContext.Current.Session[Session_Calendar] = value;
             }
         }
+
+        
     }
 }

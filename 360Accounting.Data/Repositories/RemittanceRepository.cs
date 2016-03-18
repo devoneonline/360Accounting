@@ -11,6 +11,28 @@ namespace _360Accounting.Data.Repositories
 {
     public class RemittanceRepository : Repository, IRemittanceRepository
     {
+        public Remittance GetByRemitNo(string remitNo)
+        {
+            Remittance remittance = this.Context.Remittances.FirstOrDefault(x => x.RemitNo == remitNo);
+            return remittance;
+        }
+        
+        public IEnumerable<Remittance> GetByRemitNo(long companyId, string remitNo)
+        {
+            IEnumerable<Remittance> list = this.GetAll(companyId)
+                .Where(x => x.RemitNo == remitNo).ToList();
+            return list;
+        }
+
+        public IEnumerable<Remittance> GetAll(long companyId, long sobId, long bankId, long bankAccountId)
+        {
+            IEnumerable<Remittance> list = this.Context.Remittances
+                .Where(x => x.SOBId == sobId &&
+                    x.BankId == bankId &&
+                    x.BankAccountId == bankAccountId).ToList();
+            return list;
+        }
+        
         public Remittance GetSingle(string id, long companyId)
         {
             Remittance remittance = this.GetAll(companyId)
@@ -42,7 +64,7 @@ namespace _360Accounting.Data.Repositories
 
         public void Delete(string id, long companyId)
         {
-            this.Context.Remittances.Remove(this.GetSingle(id, companyId));
+            this.Context.Remittances.Remove(this.GetByRemitNo(id));
             this.Commit();
         }
 
