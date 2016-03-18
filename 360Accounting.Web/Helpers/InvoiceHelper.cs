@@ -23,19 +23,17 @@ namespace _360Accounting.Web
         #region Private Methods
         private static IList<InvoiceDetailModel> getInvoiceDetailByInvoiceId([Optional]string InvoiceId)
         {
-            InvoiceModel invoice = SessionHelper.Invoice;
-            IList<InvoiceDetailModel> modelList;
-            if (invoice == null)
-                modelList = detailService
-                    .GetAll(AuthenticationHelper.User.CompanyId, 
-                    Convert.ToInt32(InvoiceId))
-                    .Select(x => new InvoiceDetailModel(x)).ToList();
-            else
-                modelList = invoice.InvoiceDetail;
-
+            
+            IList<InvoiceDetailModel> modelList = detailService
+                .GetAll(AuthenticationHelper.User.CompanyId, Convert.ToInt32(InvoiceId))
+                .Select(x => new InvoiceDetailModel(x)).ToList();
             return modelList;
         }
 
+        private static IList<InvoiceDetailModel> getInvoiceDetail()
+        {
+            return SessionHelper.Invoice.InvoiceDetail;
+        }
         #endregion
 
         public static IList<InvoiceModel> GetInvoices(long sobId, long periodId, long currencyId)
@@ -48,7 +46,10 @@ namespace _360Accounting.Web
 
         public static IList<InvoiceDetailModel> GetInvoiceDetail([Optional]string invoiceId)
         {
-            return getInvoiceDetailByInvoiceId(invoiceId);
+            if (invoiceId == null)
+                return getInvoiceDetail();
+            else
+                return getInvoiceDetailByInvoiceId(invoiceId);
         }
 
         public static void Insert(InvoiceDetailModel model)

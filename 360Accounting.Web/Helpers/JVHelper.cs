@@ -44,14 +44,12 @@ namespace _360Accounting.Web
             return modelList;
         }
 
-        public static IList<GLLinesModel> GetGLLines(string headerId)
+        public static IList<GLLinesModel> GetGLLines([Optional]string headerId)
         {
-            return getGLLinesByHeaderId(headerId);
-        }
-
-        public static IList<GLLinesModel> GetGLLines()
-        {
-            return getGLLinesByHeaderId();
+            if (headerId == null)
+                return getGLLines();
+            else
+                return getGLLinesByHeaderId(headerId);
         }
 
         public static string GetDocNo(long companyId, long periodId, long sobId, long currencyId)
@@ -154,15 +152,16 @@ namespace _360Accounting.Web
         }
 
         #region Private Methods
-        private static IList<GLLinesModel> getGLLinesByHeaderId([Optional]string headerId)
+        private static IList<GLLinesModel> getGLLines()
         {
-            GLHeaderModel header = SessionHelper.JV;
-            IList<GLLinesModel> modelList;
-            if (header == null)
-                modelList = lineService.GetAll(AuthenticationHelper.User.CompanyId, Convert.ToInt32(headerId)).Select(x => new GLLinesModel(x)).ToList();
-            else
-                modelList = header.GlLines;
+            return SessionHelper.JV.GlLines;
+        }
 
+        private static IList<GLLinesModel> getGLLinesByHeaderId(string headerId)
+        {
+            IList<GLLinesModel> modelList = lineService.GetAll
+                (AuthenticationHelper.User.CompanyId, Convert.ToInt32(headerId)).
+                Select(x => new GLLinesModel(x)).ToList();
             return modelList;
         }
         #endregion

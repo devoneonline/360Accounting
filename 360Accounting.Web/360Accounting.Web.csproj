@@ -179,6 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Remittance\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -190,10 +191,12 @@
     <Compile Include="Controllers\BankAccountController.cs" />
     <Compile Include="Controllers\BankController.cs" />
     <Compile Include="Controllers\InvoiceSourceController.cs" />
+    <Compile Include="Controllers\RemittanceController.cs" />
     <Compile Include="Controllers\TaxController.cs" />
     <Compile Include="Controllers\VendorController.cs" />
     <Compile Include="Helpers\AccountHelper.cs" />
     <Compile Include="Helpers\AccountValueHelper.cs" />
+    <Compile Include="Helpers\BankHelper.cs" />
     <Compile Include="Helpers\CalendarHelper.cs" />
     <Compile Include="Helpers\CodeCombinationHelper.cs" />
     <Compile Include="Helpers\CompanyHelper.cs" />
@@ -220,6 +223,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ReceiptHelper.cs" />
     <Compile Include="Helpers\SetOfBookHelper.cs" />
     <Compile Include="Helpers\TaxHelper.cs" />
     <Compile Include="Helpers\UserHelper.cs" />
@@ -267,6 +271,7 @@
     <Compile Include="Models\JVModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\ManageUserViewModel.cs" />
+    <Compile Include="Models\RemittanceModel.cs" />
     <Compile Include="Models\SelectUser.cs" />
     <Compile Include="Models\SetOfBookListModel.cs" />
     <Compile Include="Models\SetOfBookModel.cs" />

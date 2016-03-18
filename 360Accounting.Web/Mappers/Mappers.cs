@@ -9,6 +9,31 @@ namespace _360Accounting.Web
 {
     public static class Mappers
     {
+        public static Remittance GetEntityByModel(RemittanceModel model)
+        {
+            if (model == null)
+                return null;
+
+            Remittance entity = new Remittance();
+
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+
+            entity.BankAccountId = model.BankAccountId;
+            entity.BankId = model.BankId;
+            entity.Id = model.Id;
+            entity.ReceiptId = model.ReceiptId;
+            entity.RemitDate = model.RemitDate;
+            entity.RemitNo = model.RemitNo;
+            entity.SOBId = model.SOBId;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
+        
         public static InvoiceDetail GetEntityByModel(InvoiceDetailModel model)
         {
             if (model == null) return null;

@@ -23,7 +23,9 @@ namespace _360Accounting.Data.Repositories
         public GLHeader GetSingle(long CompanyId, long PeriodId, long SOBId, long CurrencyId)
         {
             GLHeader entity = this.GetAll(CompanyId)
-                .Where(x => x.PeriodId == PeriodId && x.SOBId == SOBId && x.CurrencyId == CurrencyId).OrderByDescending(rec => rec.Id).First();
+                .Where(x => x.PeriodId == PeriodId && x.SOBId == SOBId && 
+                    x.CurrencyId == CurrencyId).
+                    OrderByDescending(rec => rec.Id).First();
             return entity;
         }
         public IEnumerable<GLHeader> GetAll(long companyId, long sobId, long periodId, long currencyId)

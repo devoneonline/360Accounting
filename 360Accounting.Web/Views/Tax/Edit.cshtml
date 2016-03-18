@@ -57,9 +57,10 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        //jQuery.ajaxSetup({ async: false });
         $('[type=date]').attr('class', 'form-control ');
         $('#StartDate, #EndDate').attr('class', 'form-control');
-        
+
         $('#btnCancel').click(function () {
             if (confirm('Do you want to leave this page?')) {
                 window.location.href = '@Url.Content("~/Tax")';
@@ -84,19 +85,27 @@
                 });
         });
 
-        $('#StartDate, #EndDate').blur(function ()
+        $('#StartDate, #EndDate').change(function ()
         {
-            var startDate = Date($('#StartDate').val());
-            var endDate = Date($('#EndDate').val());
+            debugger;
+            var startDate = $('#StartDate').val();
+            var endDate = $('#EndDate').val();
+            var url = '@Url.Content("~/Tax/ValidateDate")';
 
-            if (Date(startDate) > Date(endDate))
+            if (startDate > endDate)
             {
-                endDate = startDate;
                 $('#EndDate').val(startDate);
             }
+            else
+            {
+                $.post(url,
+                {
+                    startDate: startDate, endDate: endDate
+                })
+            }
 
-            @SessionHelper.Tax.StartDate.Date = Date(startDate);
-            @SessionHelper.Tax.EndDate.Date  = Date(endDate);
+            @*@SessionHelper.Tax.StartDate.Date = Date(startDate);
+            @SessionHelper.Tax.EndDate.Date  = Date(endDate);*@
         });
     });
 </script>

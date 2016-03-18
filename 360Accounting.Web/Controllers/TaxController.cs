@@ -10,6 +10,14 @@ namespace _360Accounting.Web.Controllers
     [Authorize]
     public class TaxController : Controller
     {
+        public JsonResult ValidateDate(DateTime startDate, DateTime endDate)
+        {
+            SessionHelper.Tax.StartDate = startDate;
+            SessionHelper.Tax.EndDate = endDate;
+
+            return new JsonResult();
+        }
+
         public ActionResult Delete(string id)
         {
             TaxHelper.Delete(id);

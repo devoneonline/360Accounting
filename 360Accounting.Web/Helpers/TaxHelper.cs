@@ -22,18 +22,17 @@ namespace _360Accounting.Web
         }
 
         #region Private Methods
-        private static IList<TaxDetailModel> getTaxDetailByTaxId([Optional]string taxId)
+        private static IList<TaxDetailModel> getTaxDetail()
         {
-            TaxModel tax = SessionHelper.Tax;
-            IList<TaxDetailModel> modelList;
-            if (tax == null)
-                modelList = detailService.GetAll
+            return SessionHelper.Tax.TaxDetails;
+        }
+
+        private static IList<TaxDetailModel> getTaxDetailByTaxId(string taxId)
+        {
+            IList<TaxDetailModel> modelList = detailService.GetAll
                     (AuthenticationHelper.User.CompanyId, 
                     Convert.ToInt32(taxId))
                     .Select(x => new TaxDetailModel(x)).ToList();
-            else
-                modelList = tax.TaxDetails;
-
             return modelList;
         }
         #endregion
@@ -162,7 +161,10 @@ namespace _360Accounting.Web
 
         public static IList<TaxDetailModel> GetTaxDetail([Optional]string taxId)
         {
-            return getTaxDetailByTaxId(taxId);
+            if (taxId != null)
+                return getTaxDetailByTaxId(taxId);
+            else
+                return getTaxDetail();
         }
     }
 }

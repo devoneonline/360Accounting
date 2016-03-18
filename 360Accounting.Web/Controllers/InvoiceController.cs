@@ -10,24 +10,69 @@ namespace _360Accounting.Web.Controllers
 {
     public class InvoiceController : Controller
     {
+        public JsonResult CustomerSiteList(long customerId)
+        {
+            List<SelectListItem> customerList = CustomerHelper.GetCustomerSites(customerId)
+                    .Select(x => new SelectListItem
+                    {
+                        Text = x.SiteName,
+                        Value = x.Id.ToString()
+                    }).ToList();
+            return Json(customerList, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult CheckDate(DateTime invoiceDate, long periodId)
+        {
+            bool result = false;
+            if (periodId > 0)
+            {
+                if (SessionHelper.Calendar != null)
+                {
+                    if (invoiceDate >= SessionHelper.Calendar.StartDate || invoiceDate <= SessionHelper.Calendar.EndDate)
+                        result = true;
+                }
+            }
+            return Json(result);
+        }
+
         public ActionResult Delete(string id)
         {
             InvoiceHelper.Delete(id);
             return RedirectToAction("Index");
         }
 
-        public ActionResult Edit(string id)
+        public ActionResult Edit(string id, long currencyId, long sobId, long periodId)
         {
             InvoiceModel model = InvoiceHelper.GetInvoice(id);
             SessionHelper.SOBId = model.SOBId;
+            SessionHelper.Calendar = CalendarHelper.GetCalendar(periodId.ToString());
+            SessionHelper.PrecisionLimit = CurrencyHelper.GetCurrency(currencyId.ToString()).Precision;
+
             model.InvoiceDetail = InvoiceHelper.GetInvoiceDetail(id);
+            model.CurrencyId = currencyId;
+            model.SOBId = sobId;
+            model.PeriodId = periodId;
+
+            ///TODO: Plz do the code audit.
+            model.Customers = new List<SelectListItem>();
+            model.Customers.Add(new SelectListItem 
+            {
+                Value = CustomerHelper.GetCustomer(model.CustomerId.ToString()).Id.ToString(),
+                Text = CustomerHelper.GetCustomer(model.CustomerId.ToString()).CustomerName
+            });
+            model.CustomerSites = new List<SelectListItem>();
+            model.CustomerSites.Add(new SelectListItem
+            {
+                Value = CustomerHelper.GetCustomerSite(model.CustomerSiteId.ToString()).Id.ToString(),
+                Text = CustomerHelper.GetCustomerSite(model.CustomerSiteId.ToString()).SiteName
+            });
+
             SessionHelper.Invoice = model;
             return View(model);
         }
 
-        public ActionResult SaveVoucher(string invoiceType,
-            string invoiceDate, string conversionRate, string remarks,
-            long customerId, long customerSiteId)
+        public ActionResult SaveInvoice(string invoiceType, string invoiceDate, 
+            string conversionRate, string remarks, long customerId, long customerSiteId)
         {
             string message = "";
             try
@@ -44,8 +89,9 @@ namespace _360Accounting.Web.Controllers
                     SessionHelper.Invoice.InvoiceNo = InvoiceHelper.GetInvoiceNo(AuthenticationHelper.User.CompanyId, SessionHelper.Invoice.SOBId, SessionHelper.Invoice.PeriodId, SessionHelper.Invoice.CurrencyId);
 
                     InvoiceHelper.Update(SessionHelper.Invoice);
-                    SessionHelper.Tax = null;
+                    SessionHelper.Invoice = null;
                     saved = true;
+                    message = "Saved successfully";
                 }
                 else
                     message = "No voucher information available!";
@@ -97,7 +143,7 @@ namespace _360Accounting.Web.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("-Detail", InvoiceHelper.GetInvoiceDetail());
+            return PartialView("_Detail", InvoiceHelper.GetInvoiceDetail());
         }
 
         [HttpPost, ValidateInput(false)]
@@ -255,7 +301,6 @@ namespace _360Accounting.Web.Controllers
                     }).ToList();
                 model.CurrencyId = model.Currencies.Any() ?
                     Convert.ToInt32(model.Currencies.First().Value) : 0;
-
             }
             return View(model);
         }

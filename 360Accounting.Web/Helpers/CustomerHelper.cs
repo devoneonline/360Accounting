@@ -51,5 +51,11 @@ namespace _360Accounting.Web
             return siteService.GetAllbyCustomerId(customerId)
                 .Select(a => new CustomerSiteViewModel(a)).ToList();
         }
+
+        public static CustomerSiteModel GetCustomerSite(string customerSiteId)
+        {
+            CustomerSiteModel customerSite = new CustomerSiteModel(siteService.GetSingle(customerSiteId, AuthenticationHelper.User.CompanyId));
+            return customerSite;
+        }
     }
 }

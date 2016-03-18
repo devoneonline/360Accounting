@@ -3,6 +3,7 @@
 <objects xmlns="http://www.springframework.net">
   <description>360Accounting Configuration</description>
   
+  <object name="RemittanceRepository" type="_360Accounting.Data.Repositories.RemittanceRepository, 360Accounting.Data"> </object>
   <object name="FeatureRepository" type="_360Accounting.Data.Repositories.FeatureRepository, 360Accounting.Data"> </object>
   <object name="FeatureSetRepository" type="_360Accounting.Data.Repositories.FeatureSetRepository, 360Accounting.Data"> </object>
   <object name="FeatureSetListRepository" type="_360Accounting.Data.Repositories.FeatureSetListRepository, 360Accounting.Data"> </object>
@@ -31,6 +32,9 @@
   <object name="InvoiceDetailRepository" type="_360Accounting.Data.Repositories.InvoiceDetailRepository, 360Accounting.Data"> </object>
   
   
+  <object name="RemittanceService" type="_360Accounting.Service.RemittanceService, 360Accounting.Service" >
+    <constructor-arg name="remittanceRepository" ref="RemittanceRepository" />
+  </object>
   <object name="InvoiceService" type="_360Accounting.Service.InvoiceService, 360Accounting.Service" >
     <constructor-arg name="invoiceRepository" ref="InvoiceRepository" />
   </object>

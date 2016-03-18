@@ -89,27 +89,41 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#btnSave').attr('disabled', true)
+        ////jQuery.ajaxSetup({ async: false });
         $('#InvoiceDate').attr('class', 'form-control');
-
-        $('#InvoiceDate').blur(function () {
+        debugger;
+        $('#InvoiceDate').change(function () {
             $.ajax({
                 url: '@Url.Content("~/Invoice/CheckDate")',
                 data: { invoiceDate: $(this).val(), periodId: $('#PeriodId').val() },
                 type: 'post',
                 datatype: 'json',
-                success: function (data) {
-                    if (!data) {
+                success: function (data)
+                {
+                    if (data)
+                        $('#btnSave').attr('disabled', false)
+                    else
+                    {
                         alert('Date must lie in the range of current period.');
                         $('#InvoiceDate').focus();
                         $('#btnSave').attr('disabled', true)
                     }
-                    else
-                        $('#btnSave').attr('disabled', false)
                 },
                 error: function () { }
             })
         })
+
+        $('#CustomerId').change(function () {
+            var url = '@Url.Content("~/Invoice/CustomerSiteList")';
+            $.get(url, { customerId: $(this).val() },
+                function (data) {
+                    var customerSiteDropdown = $('#CustomerSiteId');
+                    customerSiteDropdown.empty();
+                    for (var i = 0; i < data.length; i++) {
+                        customerSiteDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
+                    }
+                });
+        });
 
         $('#btnCancel').click(function () {
             if (confirm('Do you want to leave this page?')) {
@@ -119,7 +133,7 @@
 
         $('#btnSave').click(function () {
 
-            var invoiceType = $('#DocumentType').val();
+            var invoiceType = $('#InvoiceType').val();
             var invoiceDate = $('#InvoiceDate').val();
             var conversionRate = $('#ConversionRate').val();
             var Remarks = $('#Remarks').val();
@@ -134,8 +148,7 @@
                 customerId: customerId, customerSiteId: customerSiteId
             },
                 function (result) {
-                    if (result.success)
-                    {
+                    if (result.success) {
                         alert(result.message);
                         window.location.href = '@Url.Content("~/Invoice")';
                     }

@@ -1,0 +1,61 @@
+﻿using _360Accounting.Core.Entities;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace _360Accounting.Web.Models
+{
+    public class RemittanceListModel
+    {
+        [Display(Name = "Set Of Book")]
+        public List<SelectListItem> SetOfBooks { get; set; }
+
+        [Display(Name = "Bank")]
+        public List<SelectListItem> Banks { get; set; }
+
+        [Display(Name = "Bank Account")]
+        public List<SelectListItem> BankAccounts { get; set; }
+
+        public long SOBId { get; set; }
+        public long BankId { get; set; }
+        public long BankAccountId { get; set; }
+    }
+
+    public class RemittanceModel
+    {
+        #region Properties
+        public long Id { get; set; }
+        public long SOBId { get; set; }
+        public long BankId { get; set; }
+        public long BankAccountId { get; set; }
+        public long ReceiptId { get; set; }
+        public string RemitNo { get; set; }
+        public DateTime RemitDate { get; set; }
+        public string CustomerName { get; set; }
+        public decimal Amount { get; set; }
+        #endregion
+
+        #region Constructors
+        public RemittanceModel()
+        {
+            this.RemitDate = DateTime.Now;
+        }
+
+        public RemittanceModel(Remittance entity)
+        {
+            //this.Amount = ReceiptHelper.
+            this.BankAccountId = entity.BankAccountId;
+            this.BankId = entity.BankId;
+            //this.CustomerName = ReceiptHelper.
+            this.Id = entity.Id;
+            this.ReceiptId = entity.ReceiptId;
+            this.RemitDate = entity.RemitDate;
+            this.RemitNo = entity.RemitNo;
+            this.SOBId = entity.SOBId;
+        }
+        #endregion
+    }
+}

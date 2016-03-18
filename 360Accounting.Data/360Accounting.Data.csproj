@@ -71,6 +71,7 @@
     <Compile Include="Repositories\CompanyRepository.cs" />
     <Compile Include="Repositories\CurrencyRepository.cs" />
     <Compile Include="Repositories\InvoiceSourceRepository.cs" />
+    <Compile Include="Repositories\RemittanceRepository.cs" />
     <Compile Include="Repositories\TaxDetailRepository.cs" />
     <Compile Include="Repositories\TaxRepository.cs" />
     <Compile Include="Repositories\CustomerSiteRepository.cs" />

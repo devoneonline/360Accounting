@@ -76,6 +76,7 @@
     <Compile Include="Entities\JournalVoucher.cs" />
     <Compile Include="Entities\JournalVoucherDetail.cs" />
     <Compile Include="Entities\JV.cs" />
+    <Compile Include="Entities\Remittance.cs" />
     <Compile Include="Entities\SetOfBook.cs" />
     <Compile Include="Entities\Tax.cs">
       <SubType>Code</SubType>
@@ -87,6 +88,7 @@
     <Compile Include="IoC.cs" />
     <Compile Include="IRepository\IInvoiceRepository.cs" />
     <Compile Include="IRepository\IInvoiceDetailRepository.cs" />
+    <Compile Include="IRepository\IRemittanceRepository.cs" />
     <Compile Include="IRepository\IReceiptRepository.cs" />
     <Compile Include="IRepository\IBankAccountRepository.cs" />
     <Compile Include="IRepository\IBankRepository.cs" />
@@ -124,6 +126,7 @@
     <Compile Include="IService\ICompanyService.cs" />
     <Compile Include="IService\ICurrencyService.cs" />
     <Compile Include="IService\IInvoiceSourceService.cs" />
+    <Compile Include="IService\IRemittanceService.cs" />
     <Compile Include="IService\ITaxDetailService.cs" />
     <Compile Include="IService\ITaxService.cs" />
     <Compile Include="IService\ICustomerSiteService.cs" />
