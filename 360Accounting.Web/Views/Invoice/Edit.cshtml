@@ -101,12 +101,12 @@
                 success: function (data)
                 {
                     if (data)
-                        $('#btnSave').attr('disabled', false)
+                        $('#btnSave').attr('disabled', false);
                     else
                     {
                         alert('Date must lie in the range of current period.');
                         $('#InvoiceDate').focus();
-                        $('#btnSave').attr('disabled', true)
+                        $('#btnSave').attr('disabled', true);
                     }
                 },
                 error: function () { }

@@ -21,7 +21,7 @@ namespace _360Accounting.Web
         }
 
         #region Private Methods
-        private static IList<InvoiceDetailModel> getInvoiceDetailByInvoiceId([Optional]string InvoiceId)
+        private static IList<InvoiceDetailModel> getInvoiceDetailByInvoiceId(string InvoiceId)
         {
             
             IList<InvoiceDetailModel> modelList = detailService

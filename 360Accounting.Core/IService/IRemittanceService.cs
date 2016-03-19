@@ -10,5 +10,11 @@ namespace _360Accounting.Core
 {
     public interface IRemittanceService : IService<Remittance>
     {
+        IEnumerable<Remittance> GetAll(long companyId, long sobId, long bankId, long bankAccountId);
+        //Invoice GetSingle(long companyId, long sobId, long periodId, long currencyId);
+
+        IEnumerable<Remittance> GetByRemitNo(long companyId, string remitNo);
+
+        Remittance GetByRemitNo(string remitNo);
     }
 }

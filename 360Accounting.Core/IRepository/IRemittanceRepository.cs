@@ -9,5 +9,10 @@ namespace _360Accounting.Core.Interfaces
 {
     public interface IRemittanceRepository : IRepository<Remittance>
     {
+        IEnumerable<Remittance> GetAll(long companyId, long sobId, long bankId, long bankAccountId);
+
+        IEnumerable<Remittance> GetByRemitNo(long companyId, string remitNo);
+
+        Remittance GetByRemitNo(string remitNo);
     }
 }

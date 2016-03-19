@@ -11,6 +11,11 @@ namespace _360Accounting.Core.Entities
 {
     public class ReceiptView : EntityBase
     {
+        /// <summary>
+        /// added by uzair to use in remittance
+        /// </summary>
+        public string CustomerName { get; set; }
+
         [Key]
         public long Id { get; set; }
 

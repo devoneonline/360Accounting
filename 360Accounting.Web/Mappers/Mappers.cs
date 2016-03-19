@@ -9,7 +9,7 @@ namespace _360Accounting.Web
 {
     public static class Mappers
     {
-        public static Remittance GetEntityByModel(RemittanceModel model)
+        public static Remittance GetEntityByModel(RemittanceDetailModel model)
         {
             if (model == null)
                 return null;

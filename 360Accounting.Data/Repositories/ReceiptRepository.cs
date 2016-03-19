@@ -12,6 +12,42 @@ namespace _360Accounting.Data.Repositories
 {
     public class ReceiptRepository : Repository, IReceiptRepository
     {
+        public IEnumerable<ReceiptView> GetReceipts(long sobId, long bankId, long bankAccountId)
+        {
+            var query = from a in this.Context.Receipts
+                        join b in this.Context.SetOfBooks on a.SOBId equals b.Id
+                        join d in this.Context.Customers on a.CustomerId equals d.Id
+                        join e in this.Context.Currencies on a.CurrencyId equals e.Id
+                        join f in this.Context.Banks on a.BankId equals f.Id
+                        join g in this.Context.BankAccounts on a.BankAccountId equals g.Id
+                        join h in this.Context.CustomerSites on a.CustomerSiteId equals h.Id
+                        where a.SOBId == sobId
+                        && a.BankId == bankId 
+                        && a.BankAccountId == bankAccountId                         
+                        select new ReceiptView
+                        {
+                            CustomerName = d.CustomerName,
+                            BankAccountId = a.BankAccountId,
+                            Status = a.Status,
+                            SOBId = a.SOBId,
+                            BankAccountName = g.AccountName,
+                            Remarks = a.Remarks,
+                            ReceiptNumber = a.ReceiptNumber,
+                            ReceiptAmount = a.ReceiptAmount,
+                            ReceiptDate = a.ReceiptDate,
+                            Id = a.Id,
+                            BankId = a.BankId,
+                            BankName = f.BankName,
+                            ConversionRate = a.ConversionRate,
+                            CurrencyId = a.CurrencyId,
+                            CustomerId = a.CustomerId,
+                            CustomerSiteId = a.CustomerSiteId,
+                            CustomerSiteName = h.SiteName,
+                            PeriodId = a.PeriodId
+                        };
+            return query;
+        }
+
         public IEnumerable<ReceiptView> GetReceipts(long sobId, long periodId, long customerId, long currencyId, long companyId)
         {
             var query = from a in this.Context.Receipts

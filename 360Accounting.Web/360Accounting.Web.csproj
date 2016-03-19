@@ -179,7 +179,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Remittance\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -231,6 +230,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ReceiptHelper.cs" />
+    <Compile Include="Helpers\RemittanceHelper.cs" />
     <Compile Include="Helpers\SetOfBookHelper.cs" />
     <Compile Include="Helpers\TaxHelper.cs" />
     <Compile Include="Helpers\UserHelper.cs" />
@@ -561,6 +561,10 @@
     <Content Include="Views\Withholding\Index.cshtml" />
     <Content Include="Views\InvoiceType\_List.cshtml" />
     <Content Include="Views\InvoiceType\Index.cshtml" />
+    <Content Include="Views\Remittance\Index.cshtml" />
+    <Content Include="Views\Remittance\_List.cshtml" />
+    <Content Include="Views\Remittance\Edit.cshtml" />
+    <Content Include="Views\Remittance\_Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

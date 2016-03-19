@@ -1,4 +1,5 @@
 ﻿using _360Accounting.Core;
+using _360Accounting.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,14 +19,53 @@ namespace _360Accounting.Web
             bankAccountservice = IoC.Resolve<IBankAccountService>("BankAccountService");
         }
 
-        public static List<SelectListItem> GetBanks(long sobId)
+        public static List<BankModel> GetBanks(long sobId)
         {
-            throw new NotImplementedException();
+            return service.GetBySOBId(sobId)
+                .Select(x => new BankModel(x)).ToList();
         }
 
-        internal static List<SelectListItem> GetBankAccounts(long sobId, long bankId)
+        public static List<BankAccountModel> GetBankAccounts(long bankId)
         {
-            throw new NotImplementedException();
+            return bankAccountservice.GetBankAccounts(bankId, AuthenticationHelper.User.CompanyId)
+                .Select(x => new BankAccountModel(x)).ToList();
+        }
+
+        public static List<SelectListItem> GetBankList(long sobId)
+        {
+            List<SelectListItem> bankList = GetBanks(sobId)
+                .Select(x => new SelectListItem
+                {
+                    Text = x.BankName,
+                    Value = x.Id.ToString()
+                }).ToList();
+            return bankList;
+
+        }
+
+        public static List<SelectListItem> GetBankAccountList(long bankId)
+        {
+            List<SelectListItem> bankAccountList = GetBankAccounts(bankId)
+                .Select(x => new SelectListItem
+                {
+                    Text = x.AccountName,
+                    Value = x.Id.ToString()
+                }).ToList();
+            return bankAccountList;
+        }
+
+        public static BankAccountModel GetBankAccount(string bankAccountId)
+        {
+            BankAccountModel bankAccount = new BankAccountModel(bankAccountservice
+                .GetSingle(bankAccountId, AuthenticationHelper.User.CompanyId));
+            return bankAccount;
+        }
+
+        internal static BankModel GetBank(string bankId)
+        {
+            BankModel bank = new BankModel(service
+                .GetSingle(bankId, AuthenticationHelper.User.CompanyId));
+            return bank;
         }
     }
 }
