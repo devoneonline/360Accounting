@@ -1,0 +1,83 @@
+﻿@{
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+
+    var grid = Html.DevExpress().GridView(
+        settings =>
+        {
+            settings.Name = "Withholdings";
+            settings.KeyFieldName = "Id";
+            settings.CallbackRouteValues = new { Controller = "Withholding", Action = "CreatePartial" };
+            settings.CustomActionRouteValues = new { Controller = "Editing", Action = "ChangeEditModePartial" };
+            settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Withholding", Action = "AddNewInline" };
+            settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Withholding", Action = "UpdateInline" };
+            settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Withholding", Action = "DeleteInline" };
+            settings.SettingsEditing.Mode = GridViewEditingMode.EditForm;
+            settings.SettingsBehavior.ConfirmDelete = true;
+            settings.SettingsPopup.EditForm.Width = 600;
+            settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+            settings.CommandColumn.Visible = true;
+            settings.CommandColumn.ShowNewButton = true;
+            settings.CommandColumn.ShowDeleteButton = true;
+            settings.CommandColumn.ShowEditButton = true;
+
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "WithholdingCode";
+                column.Caption = "Withholding code";
+            });
+            settings.Columns.Add("Description");
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "VendorSiteId";
+                column.Caption = "Vendor Site";
+
+                column.ColumnType = MVCxGridViewColumnType.ComboBox;
+                var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+                comboBoxProperties.DataSource = VendorHelper.GetAllSites(SessionHelper.VendorId);
+                comboBoxProperties.TextField = "Id";
+                comboBoxProperties.ValueField = "Id";
+                comboBoxProperties.ValueType = typeof(int);
+            });
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "Rate";
+                column.Caption = "Rate";
+
+                column.ColumnType = MVCxGridViewColumnType.SpinEdit;
+                var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
+                spinEditProperties.NumberType = SpinEditNumberType.Float;
+                spinEditProperties.DecimalPlaces = 2;
+                spinEditProperties.DisplayFormatString = "c";
+                spinEditProperties.DisplayFormatInEditMode = true;
+                spinEditProperties.MinValue = 0;
+                spinEditProperties.MaxValue = 100000000;
+                spinEditProperties.SpinButtons.ShowLargeIncrementButtons = true;
+            });
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "DateFrom";
+                column.Caption = "Date From";
+
+                column.ColumnType = MVCxGridViewColumnType.DateEdit;
+                var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
+                //spinEditProperties.DisplayFormatString = "yyyy-MM-dd";
+            });
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "DateTo";
+                column.Caption = "Date To";
+
+                column.ColumnType = MVCxGridViewColumnType.DateEdit;
+                var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
+                //spinEditProperties.DisplayFormatString = "yyyy-MM-dd";
+            });
+        });
+
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

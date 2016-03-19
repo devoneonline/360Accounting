@@ -1,0 +1,58 @@
+﻿@{
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+
+    var grid = Html.DevExpress().GridView(
+        settings =>
+        {
+            settings.Name = "InvoiceTypes";
+            settings.KeyFieldName = "Id";
+            settings.CallbackRouteValues = new { Controller = "InvoiceType", Action = "CreatePartial" };
+            settings.CustomActionRouteValues = new { Controller = "Editing", Action = "ChangeEditModePartial" };
+            settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "InvoiceType", Action = "AddNewInline" };
+            settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "InvoiceType", Action = "UpdateInline" };
+            settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "InvoiceType", Action = "DeleteInline" };
+            settings.SettingsEditing.Mode = GridViewEditingMode.EditForm;
+            settings.SettingsBehavior.ConfirmDelete = true;
+            settings.SettingsPopup.EditForm.Width = 600;
+            settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+            settings.CommandColumn.Visible = true;
+            settings.CommandColumn.ShowNewButton = true;
+            settings.CommandColumn.ShowDeleteButton = true;
+            settings.CommandColumn.ShowEditButton = true;
+
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "InvoiceType";
+                column.Caption = "Invoice Type";
+            });
+            settings.Columns.Add("Meaning");
+            settings.Columns.Add("Description");
+            
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "DateFrom";
+                column.Caption = "Date Start From";
+
+                column.ColumnType = MVCxGridViewColumnType.DateEdit;
+                var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
+                //spinEditProperties.DisplayFormatString = "yyyy-MM-dd";
+            });
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "DateTo";
+                column.Caption = "Date End To";
+
+                column.ColumnType = MVCxGridViewColumnType.DateEdit;
+                var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
+                //spinEditProperties.DisplayFormatString = "yyyy-MM-dd";
+            });
+        });
+
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

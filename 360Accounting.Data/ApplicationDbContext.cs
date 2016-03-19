@@ -80,6 +80,16 @@ namespace _360Accounting.Data
 
         public DbSet<Receipt> Receipts { get; set; }
 
+        public DbSet<PayablePeriod> PayablePeriods { get; set; }
+
+        public DbSet<Withholding> Withholdings { get; set; }
+
+        public DbSet<InvoiceType> InvoiceTypes { get; set; }
+
+        public DbSet<PaymentHeader> PaymentHeaders { get; set; }
+
+        public DbSet<PaymentInvoiceLines> PaymentInvoiceLines { get; set; }
+
         #endregion
 
         #region Binders
@@ -178,6 +188,21 @@ namespace _360Accounting.Data
 
             modelBuilder.Entity<Receipt>().ToTable("dbo.tbReceipt");
             modelBuilder.Entity<Receipt>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<PayablePeriod>().ToTable("tbPayablePeriod");
+            modelBuilder.Entity<PayablePeriod>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<Withholding>().ToTable("tbWithholding");
+            modelBuilder.Entity<Withholding>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<InvoiceType>().ToTable("tbInvoiceType");
+            modelBuilder.Entity<InvoiceType>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<PaymentHeader>().ToTable("tbPaymentHeader");
+            modelBuilder.Entity<PaymentHeader>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<PaymentInvoiceLines>().ToTable("tbPaymentInvoiceLines");
+            modelBuilder.Entity<PaymentInvoiceLines>().HasKey(t => t.Id);
         }
 
         #endregion

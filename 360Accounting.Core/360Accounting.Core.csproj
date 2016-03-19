@@ -50,6 +50,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\PaymentView.cs" />
+    <Compile Include="Entities\Payment.cs" />
+    <Compile Include="Entities\PayablePeriod.cs" />
+    <Compile Include="Entities\Withholding.cs" />
+    <Compile Include="Entities\InvoiceType.cs" />
     <Compile Include="Entities\Invoice.cs" />
     <Compile Include="Entities\ReceiptView.cs" />
     <Compile Include="Entities\Receipt.cs" />
@@ -86,8 +91,13 @@
     <Compile Include="Entities\VendorSite.cs" />
     <Compile Include="Interfaces\ICore360.cs" />
     <Compile Include="IoC.cs" />
+    <Compile Include="IRepository\IPaymentHeaderRepository.cs" />
+    <Compile Include="IRepository\IPaymentInvoiceLineRepository.cs" />
     <Compile Include="IRepository\IInvoiceRepository.cs" />
     <Compile Include="IRepository\IInvoiceDetailRepository.cs" />
+    <Compile Include="IRepository\IPayablePeriodRepository.cs" />
+    <Compile Include="IRepository\IWithholdingRepository.cs" />
+    <Compile Include="IRepository\IInvoiceTypeRepository.cs" />
     <Compile Include="IRepository\IRemittanceRepository.cs" />
     <Compile Include="IRepository\IReceiptRepository.cs" />
     <Compile Include="IRepository\IBankAccountRepository.cs" />
@@ -116,8 +126,13 @@
     <Compile Include="IRepository\IVendorRepository.cs" />
     <Compile Include="IService\IBankService.cs" />
     <Compile Include="IService\IBankAccountService.cs" />
+    <Compile Include="IService\IPaymentHeaderService.cs" />
+    <Compile Include="IService\IPaymentInvoiceLineService.cs" />
     <Compile Include="IService\IInvoiceDetailService.cs" />
     <Compile Include="IService\IInvoiceService.cs" />
+    <Compile Include="IService\IPayablePeriodService.cs" />
+    <Compile Include="IService\IWithholdingService.cs" />
+    <Compile Include="IService\IInvoiceTypeService.cs" />
     <Compile Include="IService\IReceiptService.cs" />
     <Compile Include="IService\IAccountService.cs" />
     <Compile Include="IService\IAccountValueService.cs" />

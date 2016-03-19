@@ -72,6 +72,12 @@ namespace _360Accounting.Web
                 .Select(x => new CodeCombinitionViewModel(x)).ToList();
         }
 
+        //For Select List Combos..
+        public static List<CodeCombinition> GetCodeCombinations(long sobId, long companyId)
+        {
+            return service.GetAll(companyId, sobId).ToList();
+        }
+
         public static CodeCombinitionCreateViewModel GetCodeCombination(string id)
         {
             return new CodeCombinitionCreateViewModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));

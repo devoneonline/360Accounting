@@ -390,5 +390,125 @@ namespace _360Accounting.Web
             entity.UpdateDate = DateTime.Now;
             return entity;
         }
+
+        public static PayablePeriod GetEntityByModel(PayablePeriodModel model)
+        {
+            if (model == null) return null;
+
+            PayablePeriod entity = new PayablePeriod
+            {
+                CalendarId = model.CalendarId,
+                Status = model.Status,
+                Id = model.Id,
+                SOBId = model.SOBId
+            };
+                if (model.Id == 0)
+                {
+                    entity.CreateDate = DateTime.Now;
+                }
+                entity.UpdateBy = entity.CreateBy;
+                entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
+
+        public static Withholding GetEntityByModel(WithholdingModel model)
+        {
+            if (model == null) return null;
+
+            Withholding entity = new Withholding
+            {
+                Code = model.WithholdingCode,
+                VendorSiteId = model.VendorSiteId,
+                VendorId = model.VendorId,
+                SOBId = model.SOBId,
+                Rate = model.Rate,
+                Description = model.Description,
+                DateTo = model.DateTo,
+                DateFrom = model.DateFrom,
+                CodeCombinitionId = model.CodeCombinitionId,
+                Id = model.Id
+            };
+
+                if (model.Id == 0)
+                {
+                    entity.CreateDate = DateTime.Now;
+                }
+                entity.UpdateBy = entity.CreateBy;
+                entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
+
+        public static InvoiceType GetEntityByModel(InvoiceTypeModel model)
+        {
+            if (model == null) return null;
+
+            InvoiceType entity = new InvoiceType
+            {
+                Meaning = model.Meaning,
+                SOBId = model.SOBId,
+                Invoicetype = model.InvoiceType,
+                Id = model.Id,
+                Description = model.Description,
+                DateTo = model.DateTo,
+                DateFrom = model.DateFrom
+            };
+
+                if (model.Id == 0)
+                {
+                    entity.CreateDate = DateTime.Now;
+                }
+                entity.UpdateBy = entity.CreateBy;
+                entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
+
+        public static PaymentHeader GetEntityByModel(PaymentHeaderModel model)
+        {
+            if (model == null) return null;
+
+            PaymentHeader entity = new PaymentHeader
+            {
+                Amount = model.Amount,
+                BankId = model.BankId,
+                Id = model.Id,
+                PaymentDate = model.PaymentDate,
+                PaymentNo = model.PaymentNo,
+                PeriodId = model.PeriodId,
+                Status = model.Status,
+                SOBId = model.SOBId,
+                BankAccountId = model.BankAccountId,
+                VendorId = model.VendorId,
+                VendorSite = model.VendorSite
+            };
+
+                if (model.Id == 0)
+                {
+                    entity.CreateDate = DateTime.Now;
+                }
+                entity.UpdateBy = entity.CreateBy;
+                entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
+
+        public static PaymentInvoiceLines GetEntityByModel(PaymentInvoiceLinesModel model)
+        {
+            if (model == null) return null;
+
+            PaymentInvoiceLines entity = new PaymentInvoiceLines
+            {
+                Amount = model.Amount,
+                PaymentId = model.PaymentId,
+                InvoiceId = model.InvoiceId,
+                Id = model.Id
+            };
+
+                if (model.Id == 0)
+                {
+                    entity.CreateDate = DateTime.Now;
+                }
+                entity.UpdateBy = entity.CreateBy;
+                entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
     }
 }

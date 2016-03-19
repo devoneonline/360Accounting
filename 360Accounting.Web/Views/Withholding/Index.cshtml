@@ -1,0 +1,67 @@
+﻿@Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView })
+@Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
+
+@model _360Accounting.Web.Models.WithholdingListModel
+
+@{
+    ViewBag.Title = "Withholdings";
+}
+
+<div class="container">
+    <div class="clearfix">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="form-group">
+            @Html.LabelFor(m => m.SetOfBooks)
+            @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="form-group">
+            @Html.LabelFor(m => m.CodeCombinition)
+            @Html.DropDownListFor(m => m.CodeCombinitionId, Model.CodeCombinition, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Vendor)
+            @Html.DropDownListFor(m => m.VendorId, Model.Vendor, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="clearfix">
+        <div id="dvList" class="col-lg-12 cusGridWrapper">
+            @Html.Action("CreatePartial")
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#SOBId, #CodeCombinitionId, #VendorId').change(function () {
+            $('#dvList').html("Please wait..");
+            $.ajax({
+                url: '@Url.Content("~/Withholding/GetWithholdings")',
+                data: {
+                    sobId: $('#SOBId').val(),
+                    codeCombinitionId: $('#CodeCombinitionId').val(),
+                    vendorId: $('#VendorId').val()
+                },
+                datatype: 'html',
+                type: 'post',
+                error: function (data) { alert(data); },
+                success: function (data) {
+                    $('#dvList').empty();
+                    $('#dvList').html(data);
+                }
+            });
+        });
+    });
+</script>

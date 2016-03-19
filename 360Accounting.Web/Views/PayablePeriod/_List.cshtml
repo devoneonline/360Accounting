@@ -1,0 +1,59 @@
+﻿@{
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+
+    var grid = Html.DevExpress().GridView(
+        settings =>
+        {
+            settings.Name = "PayablePeriods";
+            settings.KeyFieldName = "Id";
+            settings.CallbackRouteValues = new { Controller = "PayablePeriod", Action = "CreatePartial" };
+            settings.CustomActionRouteValues = new { Controller = "Editing", Action = "ChangeEditModePartial" };
+            settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "PayablePeriod", Action = "AddNewInline" };
+            settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "PayablePeriod", Action = "UpdateInline" };
+            settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "PayablePeriod", Action = "DeleteInline" };
+            settings.SettingsEditing.Mode = GridViewEditingMode.EditForm;
+            settings.SettingsBehavior.ConfirmDelete = true;
+            settings.SettingsPopup.EditForm.Width = 600;
+            settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+            settings.CommandColumn.Visible = true;
+            settings.CommandColumn.ShowNewButton = true;
+            settings.CommandColumn.ShowDeleteButton = true;
+            settings.CommandColumn.ShowEditButton = true;
+            
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "CalendarId";
+                column.Caption = "Calendar";
+
+                column.ColumnType = MVCxGridViewColumnType.ComboBox;
+                var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+                comboBoxProperties.DataSource = CalendarHelper.GetCalendars(_360Accounting.Web.SessionHelper.SOBId);
+                comboBoxProperties.TextField = "PeriodName";
+                comboBoxProperties.ValueField = "Id";
+                comboBoxProperties.ValueType = typeof(int);
+            });
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "Status";
+                column.Caption = "Status";
+
+                column.ColumnType = MVCxGridViewColumnType.ComboBox;
+                var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+                List<SelectListItem> items = new List<SelectListItem>();
+                items.Add(new SelectListItem { Value = "Open", Text = "Open" });
+                items.Add(new SelectListItem { Value = "Close", Text = "Close" });
+                comboBoxProperties.DataSource = items;
+                comboBoxProperties.TextField = "Text";
+                comboBoxProperties.ValueField = "Value";
+                comboBoxProperties.ValueType = typeof(string);
+            });
+        });
+
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

@@ -11,6 +11,7 @@ namespace _360Accounting.Web
         private const string SESSION_JV = "SESSION_JV";
         private const string SESSION_TAX = "SESSION_Tax";
         private const string SESSION_INVOICE = "SESSION_Invoice";
+        private const string SESSION_PAYMENT = "SESSION_Payment";
 
         public static InvoiceModel Invoice
         {
@@ -51,6 +52,19 @@ namespace _360Accounting.Web
             }
         }
 
+        public static PaymentHeaderModel Payment
+        {
+            get
+            {
+                return HttpContext.Current.Session[SESSION_PAYMENT] == null ? null :
+                    (PaymentHeaderModel)HttpContext.Current.Session[SESSION_PAYMENT];
+            }
+            set
+            {
+                HttpContext.Current.Session[SESSION_PAYMENT] = value;
+            }
+        }
+
         public static long SOBId
         {
             get
@@ -60,6 +74,30 @@ namespace _360Accounting.Web
             set
             {
                 HttpContext.Current.Session["SOBId"] = value;
+            }
+        }
+
+        public static long CodeCombinitionId
+        {
+            get
+            {
+                return Convert.ToInt64(HttpContext.Current.Session["CodeCombinitionId"].ToString());
+            }
+            set
+            {
+                HttpContext.Current.Session["CodeCombinitionId"] = value;
+            }
+        }
+
+        public static long VendorId
+        {
+            get
+            {
+                return Convert.ToInt64(HttpContext.Current.Session["VendorId"].ToString());
+            }
+            set
+            {
+                HttpContext.Current.Session["VendorId"] = value;
             }
         }
 

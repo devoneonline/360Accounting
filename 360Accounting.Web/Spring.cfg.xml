@@ -2,7 +2,7 @@
 
 <objects xmlns="http://www.springframework.net">
   <description>360Accounting Configuration</description>
-  
+
   <object name="RemittanceRepository" type="_360Accounting.Data.Repositories.RemittanceRepository, 360Accounting.Data"> </object>
   <object name="FeatureRepository" type="_360Accounting.Data.Repositories.FeatureRepository, 360Accounting.Data"> </object>
   <object name="FeatureSetRepository" type="_360Accounting.Data.Repositories.FeatureSetRepository, 360Accounting.Data"> </object>
@@ -30,8 +30,13 @@
   <object name="TaxDetailRepository" type="_360Accounting.Data.Repositories.TaxDetailRepository, 360Accounting.Data"> </object>
   <object name="InvoiceRepository" type="_360Accounting.Data.Repositories.InvoiceRepository, 360Accounting.Data"> </object>
   <object name="InvoiceDetailRepository" type="_360Accounting.Data.Repositories.InvoiceDetailRepository, 360Accounting.Data"> </object>
-  
-  
+  <object name="PayablePeriodRepository" type="_360Accounting.Data.Repositories.PayablePeriodRepository, 360Accounting.Data"> </object>
+  <object name="WithholdingRepository" type="_360Accounting.Data.Repositories.WithholdingRepository, 360Accounting.Data"> </object>
+  <object name="InvoiceTypeRepository" type="_360Accounting.Data.Repositories.InvoiceTypeRepository, 360Accounting.Data"> </object>
+  <object name="PaymentHeaderRepository" type="_360Accounting.Data.Repositories.PaymentHeaderRepository, 360Accounting.Data"> </object>
+  <object name="PaymentInvoiceLineRepository" type="_360Accounting.Data.Repositories.PaymentInvoiceLineRepository, 360Accounting.Data"> </object>
+
+
   <object name="RemittanceService" type="_360Accounting.Service.RemittanceService, 360Accounting.Service" >
     <constructor-arg name="remittanceRepository" ref="RemittanceRepository" />
   </object>
@@ -52,26 +57,26 @@
   </object>
   <object name="CustomerSiteService" type="_360Accounting.Service.CustomerSiteService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="CustomerSiteRepository" />
-  </object>    
+  </object>
   <object name="CustomerService" type="_360Accounting.Service.CustomerService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="CustomerRepository" />
-  </object>  
+  </object>
   <object name="VendorService" type="_360Accounting.Service.VendorService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="VendorRepository" />
-  </object>  
-    <object name="BankService" type="_360Accounting.Service.BankService, 360Accounting.Service" >
+  </object>
+  <object name="BankService" type="_360Accounting.Service.BankService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="BankRepository" />
-  </object>  
-        <object name="BankAccountService" type="_360Accounting.Service.BankAccountService, 360Accounting.Service" >
+  </object>
+  <object name="BankAccountService" type="_360Accounting.Service.BankAccountService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="BankAccountRepository" />
-  </object>  
-    <object name="ReceiptService" type="_360Accounting.Service.ReceiptService, 360Accounting.Service" >
+  </object>
+  <object name="ReceiptService" type="_360Accounting.Service.ReceiptService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="ReceiptRepository" />
-  </object>  
+  </object>
   <object name="FeatureService" type="_360Accounting.Service.FeatureService, 360Accounting.Service" >
     <constructor-arg name="featureRepository" ref="FeatureRepository" />
-    <constructor-arg name="fsRepo" ref="FeatureSetRepository" />  
-    <constructor-arg name="fslRepo" ref="FeatureSetListRepository" />  
+    <constructor-arg name="fsRepo" ref="FeatureSetRepository" />
+    <constructor-arg name="fslRepo" ref="FeatureSetListRepository" />
     <constructor-arg name="fsaRepo" ref="FeatureSetAccessRepository" />
   </object>
   <object name="FeatureSetService" type="_360Accounting.Service.FeatureSetService, 360Accounting.Service" >
@@ -83,7 +88,7 @@
   <object name="FeatureSetListService" type="_360Accounting.Service.FeatureSetListService, 360Accounting.Service" >
     <constructor-arg name="featureSetListRepository" ref="FeatureSetListRepository" />
   </object>
-  
+
   <object name="CompanyService" type="_360Accounting.Service.CompanyService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="CompanyRepository" />
   </object>
@@ -114,6 +119,21 @@
   </object>
   <object name="GLLineService" type="_360Accounting.Service.GLLineService, 360Accounting.Service">
     <constructor-arg name="repo" ref="GLLineRepository" />
+  </object>
+    <object name="PayablePeriodService" type="_360Accounting.Service.PayablePeriodService, 360Accounting.Service">
+    <constructor-arg name="repo" ref="PayablePeriodRepository" />
+  </object>
+  <object name="WithholdingService" type="_360Accounting.Service.WithholdingService, 360Accounting.Service">
+    <constructor-arg name="repo" ref="WithholdingRepository" />
+  </object>
+  <object name="InvoiceTypeService" type="_360Accounting.Service.InvoiceTypeService, 360Accounting.Service">
+    <constructor-arg name="repo" ref="InvoiceTypeRepository" />
+  </object>
+  <object name="PaymentHeaderService" type="_360Accounting.Service.PaymentHeaderService, 360Accounting.Service">
+    <constructor-arg name="repo" ref="PaymentHeaderRepository" />
+  </object>
+  <object name="PaymentInvoiceLineService" type="_360Accounting.Service.PaymentInvoiceLineService, 360Accounting.Service">
+    <constructor-arg name="repo" ref="PaymentInvoiceLineRepository" />
   </object>
 
 
