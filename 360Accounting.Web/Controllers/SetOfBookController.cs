@@ -30,11 +30,13 @@ namespace _360Accounting.Web.Controllers
         {
             var model = new SetOfBookModel();
             model.CompanyId = AuthenticationHelper.User.CompanyId;
+            ViewBag.Title = "Create Book";
             return View("Edit", model);
         }
 
         public ActionResult Edit(string id)
         {
+            ViewBag.Title = "Edit Book";
             return View(SetOfBookHelper.GetSetOfBook(id));
         }
 

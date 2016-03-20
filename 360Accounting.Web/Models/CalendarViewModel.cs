@@ -39,7 +39,7 @@ namespace _360Accounting.Web.Models
         public long SOBId { get; set; }
 
         [Required]
-        [Display(Name="Period")]
+        [Display(Name = "Period")]
         public string PeriodName { get; set; }
 
         [Required]
@@ -71,6 +71,10 @@ namespace _360Accounting.Web.Models
 
         [Display(Name = "Status")]
         public string ClosingStatus { get; set; }
+
+        public string StartDateFormatted { get { return this.StartDate.ToString(Const.DATE_FORMAT_2); } }
+
+        public string EndDateFormatted { get { return this.EndDate.ToString(Const.DATE_FORMAT_2); } }
 
         public List<SelectListItem> ClosingStatusList
         {

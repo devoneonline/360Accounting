@@ -9,6 +9,8 @@ namespace _360Accounting.Common
     public static class Const
     {
         public const string DATE_FORMAT = "MM/dd/yyyy";
+
+        public const string DATE_FORMAT_2 = "MMM-dd-yyyy";
         
         public static DateTime CurrentDate = DateTime.Now;
 

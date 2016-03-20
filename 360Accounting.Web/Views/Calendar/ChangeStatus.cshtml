@@ -13,69 +13,67 @@
         </div>
     </div>
 
-    @using (Html.BeginForm("ChangeStatus", "Calendar",
-FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    @using (Html.BeginForm("ChangeStatus", "Calendar", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     {
         @Html.ValidationSummary()
         @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.SeqNumber)
 
-        <div class="col-md-4">
-            <div class="form-group">
-                @Html.LabelFor(m => m.ClosingStatus)
-                @Html.DropDownListFor(m => m.ClosingStatus, Model.ClosingStatusList, new { @class = "form-control" })
+        <div class="clearfix">
+            <div class="col-md-3">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.PeriodName)
+                    @Html.TextBoxFor(m => m.PeriodName, new { @readonly = "readonly", @class = "form-control" })
+                </div>
             </div>
         </div>
-
-        <div class="col-md-4">
-            <div class="form-group">
-                @Html.LabelFor(m => m.PeriodName)
-                @Html.TextBoxFor(m => m.PeriodName, new { @readonly = "readonly", @class = "form-control" })
+        <div class="clearfix">
+            <div class="col-md-3">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.PeriodYear)
+                    @Html.TextBoxFor(m => m.PeriodYear, new { @readonly = "readonly", @class = "form-control" })
+                </div>
             </div>
         </div>
-
-        <div class="col-md-4">
-            <div class="form-group">
-                @Html.LabelFor(m => m.PeriodYear)
-                @Html.TextBoxFor(m => m.PeriodYear, new { @readonly = "readonly", @class = "form-control" })
+        <div class="clearfix">
+            <div class="col-md-3">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.StartDate)
+                    @Html.TextBoxFor(m => m.StartDateFormatted, new { @readonly = "readonly", @class = "form-control" })
+                </div>
             </div>
         </div>
-
-        <div class="col-md-4">
-            <div class="form-group">
-                @Html.LabelFor(m => m.SeqNumber)
-                @Html.TextBoxFor(m => m.SeqNumber, new { @readonly = "readonly", @class = "form-control" })
+        <div class="clearfix">
+            <div class="col-md-3">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.EndDate)
+                    @Html.TextBoxFor(m => m.EndDateFormatted, new { @readonly = "readonly", @class = "form-control" })
+                </div>
             </div>
         </div>
-
-        <div class="col-md-4">
-            <div class="form-group">
-                @Html.LabelFor(m => m.StartDate)
-                @Html.TextBoxFor(m => m.StartDate, new { @readonly = "readonly", @class = "form-control" })
+        <div class="clearfix">
+            <div class="col-md-3">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ClosingStatus)
+                    @Html.DropDownListFor(m => m.ClosingStatus, Model.ClosingStatusList, new { @class = "form-control" })
+                </div>
             </div>
         </div>
-
-        <div class="col-md-4">
-            <div class="form-group">
-                @Html.LabelFor(m => m.EndDate)
-                @Html.TextBoxFor(m => m.EndDate, new { @readonly = "readonly", @class = "form-control" })
+        <div class="clearfix">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-default tstyCus-btn" />
+                    <input type="button" value="Cancel" class="btn btn-default tstyCus-btn" id="btnCancel" />
+                </div>
             </div>
         </div>
-
-        <div class="col-lg-12">
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default tstyCus-btn" />
-                <input type="button" value="Cancel" class="btn btn-default tstyCus-btn" id="btnCancel" />
-            </div>
-        </div>
-
-        @*@section Scripts {
-                @Scripts.Render("~/bundles/jqueryval")
-            }*@
     }
 </div>
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $('[type=date]').attr('class', 'form-control');
+
         $('#btnCancel').click(function () {
             window.location.href = '@Url.Content("~/Calendar/Index")';
         });
