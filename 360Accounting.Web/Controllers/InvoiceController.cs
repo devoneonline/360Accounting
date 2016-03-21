@@ -10,6 +10,7 @@ namespace _360Accounting.Web.Controllers
 {
     public class InvoiceController : Controller
     {
+        #region Receivable Invoice Controller
         public JsonResult CustomerSiteList(long customerId)
         {
             List<SelectListItem> customerList = CustomerHelper.GetCustomerSites(customerId)
@@ -304,5 +305,10 @@ namespace _360Accounting.Web.Controllers
             }
             return View(model);
         }
+        #endregion
+
+        #region Payable Invoice Controller
+        
+        #endregion
     }
 }

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace _360Accounting.Core
 {
-    public interface IInvoiceDetailService : IService<InvoiceDetail>
+    public interface IPayableInvoiceDetailService : IService<PayableInvoiceDetail>
     {
-        IList<InvoiceDetail> GetAll(long companyId, long invoiceId);
+        IList<PayableInvoiceDetail> GetAll(long companyId, long invoiceId);
     }
 }

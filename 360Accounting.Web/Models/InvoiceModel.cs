@@ -34,7 +34,7 @@ namespace _360Accounting.Web.Models
         [Display(Name = "Site")]
         public List<SelectListItem> CustomerSites { get; set; }
 
-        [Display(Name = "Site")]
+        [Display(Name = "Invoice Type")]
         public List<SelectListItem> InvoiceTypes
         {
             get
@@ -56,7 +56,7 @@ namespace _360Accounting.Web.Models
         public long CustomerSiteId { get; set; }
         
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}",
+        [DisplayFormat(DataFormatString = "{0:yyyy-mm-dd}",
             ApplyFormatInEditMode = true)]
         [Display(Name = "Document Date")]
         public DateTime InvoiceDate { get; set; }

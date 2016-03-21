@@ -43,7 +43,7 @@
 
     <div id="dvList" class="col-lg-12 cusGridWrapper">
         @*@Html.Partial("_List", Model.Remittances)*@
-        @Html.Action("ListByModelPartial", Model)                                                                                           ////Make AR
+        @Html.Action("ListByModelPartial", Model)                                                                                           @*Make AR*@
     </div>
 </div>
 
@@ -80,38 +80,44 @@
                 });
         }
 
-        $('#BankAccountId').change(function () {
+        $('#BankAccountId').change(function ()
+        {
             RefreshGrid();
-        });
+        })
 
         $('#BankId').change(function ()
         {
-            var url = '@Url.Content("~/Remittance/BankAccountList")';                                                                        ////Make AR
-
-            $.get(url, { bankId: $(this).val() },
-                function (data)
-                {
+            $.get('@Url.Content("~/Remittance/BankAccountList")', $(this).val(),                                                            ////Make AR
+                function (data) {
                     var bankAccountDropdown = $('#BankAccountId');
-                    currencyDropdown.empty();
-                    for (var i = 0; i < data.length; i++)
-                    {
+                    bankAccountDropdown.empty();
+                    for (var i = 0; i < data.length; i++) {
                         bankAccountDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
                     }
                 });
 
             RefreshGrid();
-        });
+        })
 
         $('#SOBId').change(function () {
-            var url1 = '@Url.Content("~/Remittance/BankList")';                                                                             ////Make AR
-
-            $.get(url2, { sobId: $(this).val() },
+            $.get('@Url.Content("~/Remittance/BankList")', $(this).val(),                                                                   ////Make AR
                 function (data) {
-                    var currencyDropdown = $('#CurrencyId');
-                    currencyDropdown.empty();
+                    var bankDropdown = $('#BankId');
+                    bankDropdown.empty();
                     for (var i = 0; i < data.length; i++) {
-                        currencyDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
+                        bankDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
                     }
+
+                    $.get('@Url.Content("~/Remittance/BankAccountList")', data[0].Value,
+                        function (data) {
+                            var bankAccountDropdown = $('#BankAccountId');
+                            bankAccountDropdown.empty();
+                            for (var i = 0; i < data.length; i++) {
+                                bankAccountDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
+                            }
+                        });
+
+
                 });
 
             RefreshGrid();

@@ -3,6 +3,8 @@
 <objects xmlns="http://www.springframework.net">
   <description>360Accounting Configuration</description>
 
+  <object name="PayableInvoiceDetailRepository" type="_360Accounting.Data.Repositories.PayableInvoiceDetailRepository, 360Accounting.Data"> </object>
+  <object name="PayableInvoiceRepository" type="_360Accounting.Data.Repositories.PayableInvoiceRepository, 360Accounting.Data"> </object>
   <object name="RemittanceRepository" type="_360Accounting.Data.Repositories.RemittanceRepository, 360Accounting.Data"> </object>
   <object name="FeatureRepository" type="_360Accounting.Data.Repositories.FeatureRepository, 360Accounting.Data"> </object>
   <object name="FeatureSetRepository" type="_360Accounting.Data.Repositories.FeatureSetRepository, 360Accounting.Data"> </object>
@@ -37,6 +39,12 @@
   <object name="PaymentInvoiceLineRepository" type="_360Accounting.Data.Repositories.PaymentInvoiceLineRepository, 360Accounting.Data"> </object>
 
 
+  <object name="PayableInvoiceDetailService" type="_360Accounting.Service.PayableInvoiceDetailService, 360Accounting.Service" >
+    <constructor-arg name="payableInvoiceDetailRepository" ref="PayableInvoiceDetailRepository" />
+  </object>
+  <object name="PayableInvoiceService" type="_360Accounting.Service.PayableInvoiceService, 360Accounting.Service" >
+    <constructor-arg name="payableInvoiceRepository" ref="PayableInvoiceRepository" />
+  </object>
   <object name="RemittanceService" type="_360Accounting.Service.RemittanceService, 360Accounting.Service" >
     <constructor-arg name="remittanceRepository" ref="RemittanceRepository" />
   </object>

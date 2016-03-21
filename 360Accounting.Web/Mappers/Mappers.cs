@@ -9,6 +9,55 @@ namespace _360Accounting.Web
 {
     public static class Mappers
     {
+        public static PayableInvoiceDetail GetEntityByModel(PayableInvoiceDetailModel model)
+        {
+            if (model == null)
+                return null;
+
+            PayableInvoiceDetail entity = new PayableInvoiceDetail();
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+
+            entity.Amount = model.Amount;
+            entity.CodeCombinationId = model.CodeCombinationId;
+            entity.Description = model.Description;
+            entity.Id = model.Id;
+            entity.InvoiceId = model.InvoiceId;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+
+            return entity;
+        }
+
+        public static PayableInvoice GetEntityByModel(PayableInvoiceModel model)
+        {
+            if (model == null)
+                return null;
+
+            PayableInvoice entity = new PayableInvoice();
+            if(model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+
+            entity.Amount = model.Amount;
+            entity.Id = model.Id;
+            entity.InvoiceDate = model.InvoiceDate;
+            entity.InvoiceNo = model.InvoiceNo;
+            entity.InvoiceTypeId = model.InvoiceTypeId;
+            entity.PeriodId = model.PeriodId;
+            entity.Remarks = model.Remarks;
+            entity.SOBId = model.SOBId;
+            entity.Status = model.Status;
+            entity.UpdateBy = model.UpdateBy;
+            entity.UpdateDate = model.UpdateDate;
+            return entity;
+        }
+
         public static Remittance GetEntityByModel(RemittanceDetailModel model)
         {
             if (model == null)

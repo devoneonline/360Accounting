@@ -19,7 +19,21 @@ namespace _360Accounting.Web
         private const string Session_Tax = "Tax";
         private const string Session_Invoice = "Invoice";
         private const string Session_Remittance = "Remittance";
-        private const string SESSION_PAYMENT = "SESSION_Payment";
+        private const string Sesson_Payment = "Payment";
+        private const string Sesson_PayableInvoice = "PayableInvoice";
+
+        public static PayableInvoiceModel PayableInvoice
+        {
+            get
+            {
+                return HttpContext.Current.Session[Sesson_PayableInvoice] == null ? null :
+                    (PayableInvoiceModel)HttpContext.Current.Session[Sesson_PayableInvoice];
+            }
+            set
+            {
+                HttpContext.Current.Session[Sesson_PayableInvoice] = value;
+            }
+        }
 
         public static ReceiptModel Receipt
         {
@@ -30,7 +44,7 @@ namespace _360Accounting.Web
             }
             set
             {
-                HttpContext.Current.Session[Session_BankAccount] = value;
+                HttpContext.Current.Session[Session_Receipt] = value;
             }
         }
 
@@ -116,12 +130,12 @@ namespace _360Accounting.Web
         {
             get
             {
-                return HttpContext.Current.Session[SESSION_PAYMENT] == null ? null :
-                    (PaymentHeaderModel)HttpContext.Current.Session[SESSION_PAYMENT];
+                return HttpContext.Current.Session[Sesson_Payment] == null ? null :
+                    (PaymentHeaderModel)HttpContext.Current.Session[Sesson_Payment];
             }
             set
             {
-                HttpContext.Current.Session[SESSION_PAYMENT] = value;
+                HttpContext.Current.Session[Sesson_Payment] = value;
             }
         }
 
