@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
-    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,400italic,700' rel='stylesheet' type='text/css'>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -23,9 +23,7 @@
                     <span class="navbar-brand"><img class="img-responsive" src='@Url.Content("~/Content/images/logo.png")' alt="" /></span>
                 </div>
                 <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-brand center-block"  >
-                        <li class="customClientLogo">@AuthenticationHelper.CompanyName</li>
-                    </ul>
+                    <div class="customClientLogo">@AuthenticationHelper.CompanyName</div>
                     @Html.Partial("_LoginPartial")
                     @Html.Partial("_Menu")
                 </div>
