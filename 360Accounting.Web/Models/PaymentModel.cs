@@ -8,9 +8,11 @@ using System.Web;
 
 namespace _360Accounting.Web.Models
 {
-    public class PaymentHeaderModel
+    public class PaymentHeaderModel : ModelBase
     {
         public long Id { get; set; }
+
+        public long CompanyId { get; set; }
 
         public string PaymentNo { get; set; }
 
@@ -56,11 +58,16 @@ namespace _360Accounting.Web.Models
             this.Status = entity.Status;
             this.VendorId = entity.VendorId;
             this.VendorSite = entity.VendorSite;
+            this.CompanyId = entity.CompanyId;
+            this.CreateBy = entity.CreateBy;
+            this.CreateDate = entity.CreateDate;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
         }
     }
 
 
-    public class PaymentInvoiceLinesModel
+    public class PaymentInvoiceLinesModel : ModelBase
     {
         public long Id { get; set; }
 

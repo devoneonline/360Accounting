@@ -23,13 +23,16 @@ namespace _360Accounting.Web.Models
     public class PayableInvoiceModel : ModelBase
     {
         #region Properties
-
+        public long CompanyId { get; set; }
         public long Id { get; set; }
         public long SOBId { get; set; }
         public long VendorId { get; set; }
         public long VendorSiteId { get; set; }
         public long PeriodId { get; set; }
         public long InvoiceTypeId { get; set; }
+
+        [Display(Name = "With Holding Tax")]
+        public List<SelectListItem> WHTaxes { get; set; }
 
         [Display(Name = "Vendor")]
         public List<SelectListItem> Vendors { get; set; }
@@ -71,6 +74,7 @@ namespace _360Accounting.Web.Models
         public PayableInvoiceModel(PayableInvoice entity)
         {
             this.Amount = entity.Amount;
+            this.CompanyId = entity.CompanyId;
             this.CreateBy = entity.CreateBy;
             this.CreateDate = entity.CreateDate;
             this.Id = entity.Id;

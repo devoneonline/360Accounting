@@ -358,6 +358,10 @@ namespace _360Accounting.Web.Controllers
             SessionHelper.Calendar = new CalendarViewModel(calendarService.GetSingle(periodId.ToString(), AuthenticationHelper.User.CompanyId));
             SessionHelper.PrecisionLimit = currencyService.GetSingle(currencyId.ToString(), AuthenticationHelper.User.CompanyId).Precision;
 
+            ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(sobId.ToString()).Name;
+            ViewBag.PeriodName = SessionHelper.Calendar.PeriodName;
+            ViewBag.CurrencyName = CurrencyHelper.GetCurrency(currencyId.ToString()).Name;
+
             model.GlLines = JVHelper.GetGLLines(id);
             model.CurrencyId = currencyId;
             model.SOBId = sobId;
@@ -426,6 +430,10 @@ namespace _360Accounting.Web.Controllers
             SessionHelper.SOBId = sobId;
             SessionHelper.Calendar = CalendarHelper.GetCalendar(periodId.ToString());
             SessionHelper.PrecisionLimit = CurrencyHelper.GetCurrency(currencyId.ToString()).Precision;
+
+            ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(sobId.ToString()).Name;
+            ViewBag.PeriodName = SessionHelper.Calendar.PeriodName;
+            ViewBag.CurrencyName = CurrencyHelper.GetCurrency(currencyId.ToString()).Name;
 
             GLHeaderModel model = SessionHelper.JV;
             if (model == null)

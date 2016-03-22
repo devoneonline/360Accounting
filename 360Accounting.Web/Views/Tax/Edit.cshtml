@@ -12,9 +12,14 @@
 <div class="container">
     @using (Html.BeginForm())
     {
-        @Html.HiddenFor(model => model.Id)
-        @Html.HiddenFor(model => model.SOBId)
-        
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.SOBId)
+        @Html.HiddenFor(m => m.CompanyId)
+        @Html.HiddenFor(m => m.CreateBy)
+        @Html.HiddenFor(m => m.CreateDate)
+        @Html.HiddenFor(m => m.UpdateBy)
+        @Html.HiddenFor(m => m.UpdateDate)
+
         <div class="row">
             <div class="col-lg-12">
                 <div class="navbar-right">

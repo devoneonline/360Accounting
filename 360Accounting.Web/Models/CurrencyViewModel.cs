@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
-    public class CurrencyViewModel
+    public class CurrencyViewModel : ModelBase
     {
         #region Constructors
         public CurrencyViewModel()
@@ -24,7 +24,10 @@ namespace _360Accounting.Web.Models
             this.Precision = entity.Precision;
             this.SOBId = entity.SOBId;
             this.PrecisionName = PrecisionList.Where(rec => rec.Value == entity.Precision.ToString()).FirstOrDefault().Text;
-            ////this.SOBName = entity.SOBName;
+            this.CreateBy = entity.CreateBy;
+            this.CreateDate = entity.CreateDate;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
         }
         #endregion
 

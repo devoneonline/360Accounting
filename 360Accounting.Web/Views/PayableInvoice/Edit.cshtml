@@ -1,14 +1,14 @@
 ﻿@Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView })
 @Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
 
-@model _360Accounting.Web.Models.InvoiceModel
+@model _360Accounting.Web.Models.PayableInvoiceModel
 
 <br />
 <br />
 <br />
 
 @{
-    ViewBag.Title = "Customer Invoice";
+    ViewBag.Title = "Payable Invoice";
 }
 
 <div class="container">
@@ -18,11 +18,10 @@
         @Html.HiddenFor(model => model.SOBId)
         @Html.HiddenFor(model => model.PeriodId)
         @Html.HiddenFor(model => model.CompanyId)
-        @Html.HiddenFor(model => model.CurrencyId)
-        @Html.HiddenFor(m => m.CreateBy)
-        @Html.HiddenFor(m => m.CreateDate)
-        @Html.HiddenFor(m => m.UpdateBy)
-        @Html.HiddenFor(m => m.UpdateDate)
+        @Html.HiddenFor(model => model.CreateBy)
+        @Html.HiddenFor(model => model.CreateDate)
+        @Html.HiddenFor(model => model.UpdateBy)
+        @Html.HiddenFor(model => model.UpdateDate)
 
         <div class="row">
             <div class="col-lg-12">
@@ -36,62 +35,60 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-2">
+            <div class="col-lg-4">
                 <div class="form-group">
                     @Html.LabelFor(model => model.InvoiceNo)
                     @Html.TextBoxFor(model => model.InvoiceNo, new { @readonly = "readonly", @class = "form-control" })
                 </div>
             </div>
-            <div class="col-lg-2">
+            <div class="col-lg-4">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.InvoiceType)
-                    @Html.DropDownListFor(model => model.InvoiceType, Model.InvoiceTypes, new { @class = "form-control" })
+                    @Html.LabelFor(model => model.InvoiceTypeId)
+                    @Html.DropDownListFor(model => model.InvoiceTypeId, Model.InvoiceTypes, new { @class = "form-control" })
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-2">
+            <div class="col-lg-4">
                 <div class="form-group">
                     @Html.LabelFor(model => model.InvoiceDate)
                     @Html.EditorFor(model => model.InvoiceDate)
                 </div>
             </div>
-            <div class="col-lg-2">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ConversionRate)
-                    @Html.TextBoxFor(model => model.ConversionRate, new { @class = "form-control" })
-                </div>
+        </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="form-group">
+                @Html.LabelFor(model => model.VendorId)
+                @Html.DropDownListFor(model => model.VendorId, Model.Vendors, new { @class = "form-control" })
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Remarks)
-                    @Html.TextBoxFor(model => model.Remarks, new { @class = "form-control" })
-                </div>
+        <div class="col-lg-4">
+            <div class="form-group">
+                @Html.LabelFor(model => model.VendorSiteId)
+                @Html.DropDownListFor(model => model.VendorSiteId, Model.VendorSites, new { @class = "form-control" })
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.CustomerId)
-                    @Html.DropDownListFor(model => model.CustomerId, Model.Customers, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.CustomerSiteId)
-                    @Html.DropDownListFor(model => model.CustomerSiteId, Model.CustomerSites, new { @class = "form-control" })
-                </div>
+        <div class="col-lg-4">
+            <div class="form-group">
+                @Html.LabelFor(model => model.WHTaxId)
+                @Html.DropDownListFor(model => model.WHTaxId, Model.WHTaxes, new { @class = "form-control" })
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-lg-12">
-                @Html.Partial("_Detail", Model.InvoiceDetail)
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Remarks)
+                @Html.TextBoxFor(model => model.Remarks, new { @class = "form-control" })
             </div>
         </div>
-    }
+    </div>
+        
+    <div class="row">
+        <div class="col-lg-12">
+            @Html.Partial("_Detail", Model.InvoiceDetail)
+        </div>
+    </div>
+}
 </div>
 
 <script type="text/javascript">
@@ -101,7 +98,7 @@
         debugger;
         $('#InvoiceDate').change(function () {
             $.ajax({
-                url: '@Url.Content("~/Invoice/CheckDate")',
+                url: '@Url.Content("~/PayableInvoice/CheckDate")',
                 data: { invoiceDate: $(this).val(), periodId: $('#PeriodId').val() },
                 type: 'post',
                 datatype: 'json',
@@ -120,7 +117,7 @@
             })
         })
 
-        $('#CustomerId').change(function () {
+        $('#VendorId').change(function () {
             var url = '@Url.Content("~/Invoice/CustomerSiteList")';
             $.get(url, { customerId: $(this).val() },
                 function (data) {
@@ -165,3 +162,4 @@
         });
     });
 </script>
+

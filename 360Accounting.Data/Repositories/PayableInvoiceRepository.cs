@@ -29,12 +29,8 @@ namespace _360Accounting.Data.Repositories
 
         public IEnumerable<PayableInvoice> GetAll(long companyId, long sobId, long periodId)
         {
-            throw new NotImplementedException();
-            //IEnumerable<Invoice> list = this.Context.Invoices
-            //    .Where(x => x.SOBId == sobId &&
-            //        x.PeriodId == periodId &&
-            //        x.CurrencyId == currencyId).ToList();
-            //return list;
+            IEnumerable<PayableInvoice> list = this.Context.PayableInvoices.Where(x => x.SOBId == sobId && x.PeriodId == periodId).ToList();
+            return list;
         }
         public PayableInvoice GetSingle(string id, long companyId)
         {

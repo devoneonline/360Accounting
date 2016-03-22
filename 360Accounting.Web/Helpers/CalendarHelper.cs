@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace _360Accounting.Web
 {
@@ -60,6 +61,16 @@ namespace _360Accounting.Web
         {
             return service.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", true, null, "", "")
                 .Select(x => new CalendarViewModel(x)).ToList();
+        }
+
+        public static List<SelectListItem> GetCalendarsList(long sobId)
+        {
+            List<SelectListItem> list = GetCalendars(sobId).Select(x => new SelectListItem
+                {
+                    Text = x.PeriodName,
+                    Value = x.Id.ToString()
+                }).ToList();
+            return list;
         }
     }
 }

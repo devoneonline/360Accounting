@@ -12,7 +12,6 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Edit(string id)
         {
             InvoiceSourceViewModel model = InvoiceSourceHelper.GetInvoiceSource(id);
-            ///TODO: yahan pe code combination lena hai... uzair
             return View(model);
         }
 

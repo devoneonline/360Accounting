@@ -10,7 +10,6 @@ namespace _360Accounting.Web.Controllers
 {
     public class InvoiceController : Controller
     {
-        #region Receivable Invoice Controller
         public JsonResult CustomerSiteList(long customerId)
         {
             List<SelectListItem> customerList = CustomerHelper.GetCustomerSites(customerId)
@@ -34,6 +33,10 @@ namespace _360Accounting.Web.Controllers
             SessionHelper.SOBId = model.SOBId;
             SessionHelper.Calendar = CalendarHelper.GetCalendar(periodId.ToString());
             SessionHelper.PrecisionLimit = CurrencyHelper.GetCurrency(currencyId.ToString()).Precision;
+
+            ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(sobId.ToString()).Name;
+            ViewBag.PeriodName = SessionHelper.Calendar.PeriodName;
+            ViewBag.CurrencyName = CurrencyHelper.GetCurrency(currencyId.ToString()).Name;
 
             model.InvoiceDetail = InvoiceHelper.GetInvoiceDetail(id);
             model.CurrencyId = currencyId;
@@ -188,6 +191,10 @@ namespace _360Accounting.Web.Controllers
             SessionHelper.Calendar = CalendarHelper.GetCalendar(periodId.ToString());
             SessionHelper.PrecisionLimit = CurrencyHelper.GetCurrency(currencyId.ToString()).Precision;
 
+            ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(sobId.ToString()).Name;
+            ViewBag.PeriodName = SessionHelper.Calendar.PeriodName;
+            ViewBag.CurrencyName = CurrencyHelper.GetCurrency(currencyId.ToString()).Name;
+
             InvoiceModel model = SessionHelper.Invoice;
             if (model == null)
             {
@@ -241,12 +248,7 @@ namespace _360Accounting.Web.Controllers
 
         public JsonResult PeriodList(long sobId)
         {
-            List<SelectListItem> periodList = CalendarHelper.GetCalendars(sobId)
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.PeriodName,
-                        Value = x.Id.ToString()
-                    }).ToList();
+            List<SelectListItem> periodList = CalendarHelper.GetCalendarsList(sobId);
             return Json(periodList, JsonRequestBehavior.AllowGet);
         }
 
@@ -257,7 +259,7 @@ namespace _360Accounting.Web.Controllers
                 .GetInvoices(sobId, periodId, currencyId));
         }
 
-        public ActionResult InvoicePartialWithModel(InvoiceListModel model)
+        public ActionResult ListByModelPartial(InvoiceListModel model)
         {
             SessionHelper.SOBId = model.SOBId;
             return PartialView("_List", InvoiceHelper
@@ -270,12 +272,7 @@ namespace _360Accounting.Web.Controllers
             SessionHelper.Invoice = null;
             if (model.SetOfBooks == null)
             {
-                model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.Name,
-                        Value = x.Id.ToString()
-                    }).ToList();
+                model.SetOfBooks = SetOfBookHelper.GetSetOfBookList();
                 model.SOBId = model.SetOfBooks.Any() ?
                     Convert.ToInt32(model.SetOfBooks.First().Value) : 0;
             }
@@ -305,10 +302,6 @@ namespace _360Accounting.Web.Controllers
             }
             return View(model);
         }
-        #endregion
-
-        #region Payable Invoice Controller
-        
-        #endregion
+ 
     }
 }

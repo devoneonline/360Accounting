@@ -14,6 +14,8 @@ namespace _360Accounting.Core.Entities
         [Key]
         public long Id { get; set; }
 
+        public long CompanyId { get; set; }
+
         public string Code { get; set; }
 
         public string Description { get; set; }

@@ -20,6 +20,11 @@ namespace _360Accounting.Web
                 entity.CreateBy = AuthenticationHelper.UserId;
                 entity.CreateDate = DateTime.Now;
             }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+            }
 
             entity.Amount = model.Amount;
             entity.CodeCombinationId = model.CodeCombinationId;
@@ -38,10 +43,17 @@ namespace _360Accounting.Web
                 return null;
 
             PayableInvoice entity = new PayableInvoice();
-            if(model.Id == 0)
+            if (model.Id == 0)
             {
                 entity.CreateBy = AuthenticationHelper.UserId;
                 entity.CreateDate = DateTime.Now;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+                entity.CompanyId = model.CompanyId;
             }
 
             entity.Amount = model.Amount;
@@ -69,6 +81,13 @@ namespace _360Accounting.Web
             {
                 entity.CreateBy = AuthenticationHelper.UserId;
                 entity.CreateDate = DateTime.Now;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+                entity.CompanyId = model.CompanyId;
             }
 
             entity.BankAccountId = model.BankAccountId;
@@ -88,14 +107,24 @@ namespace _360Accounting.Web
             if (model == null) return null;
             InvoiceDetail entity = new InvoiceDetail();
 
-            entity.CreateDate = DateTime.Now;
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+            }
+
             entity.Id = model.Id;
             entity.InvoiceId = model.InvoiceId;
             entity.InvoiceSourceId = model.InvoiceSourceId;
             entity.Quantity = model.Quantity;
             entity.Rate = model.Rate;
             entity.TaxId = model.TaxId;
-            entity.UpdateBy = entity.CreateBy;
+            entity.UpdateBy = AuthenticationHelper.UserId;
             entity.UpdateDate = DateTime.Now;
             return entity;
         }
@@ -109,9 +138,14 @@ namespace _360Accounting.Web
             {
                 entity.CreateBy = AuthenticationHelper.UserId;
                 entity.CreateDate = DateTime.Now;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
             }
-
-            entity.CompanyId = model.CompanyId;
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+                entity.CompanyId = model.CompanyId;
+            }
             entity.ConversionRate = model.ConversionRate;
             entity.CurrencyId = model.CurrencyId;
             entity.CustomerId = model.CustomerId;
@@ -134,14 +168,23 @@ namespace _360Accounting.Web
             if (model == null) return null;
             TaxDetail entity = new TaxDetail();
 
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+            }
             entity.CodeCombinationId = model.CodeCombinationId;
             entity.EndDate = model.EndDate;
             entity.Id = model.Id;
             entity.Rate = model.Rate;
             entity.StartDate = model.StartDate;
             entity.TaxId = model.TaxId;
-            entity.UpdateBy = entity.CreateBy;
-            entity.CreateDate = DateTime.Now;
+            entity.UpdateBy = AuthenticationHelper.UserId;
             entity.UpdateDate = DateTime.Now;
 
             return entity;
@@ -156,7 +199,15 @@ namespace _360Accounting.Web
             {
                 entity.CreateBy = AuthenticationHelper.UserId;
                 entity.CreateDate = DateTime.Now;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
             }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+                entity.CompanyId = model.CompanyId;
+            }
+
             entity.EndDate = model.EndDate;
             entity.Id = model.Id;
             entity.SOBId = model.SOBId;
@@ -239,7 +290,7 @@ namespace _360Accounting.Web
                 entity.CreateDate = model.CreateDate;
             }
             entity.UpdateDate = DateTime.Now;
-
+            entity.UpdateBy = AuthenticationHelper.UserId;
 
             return entity;
         }
@@ -272,11 +323,13 @@ namespace _360Accounting.Web
             {
                 entity.CreateDate = DateTime.Now;
                 entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
             }
             else
             {
                 entity.CreateBy = model.CreateBy;
                 entity.CreateDate = model.CreateDate;
+                entity.CompanyId = model.CompanyId;
             }
             entity.UpdateBy = AuthenticationHelper.UserId;
             entity.UpdateDate = DateTime.Now;
@@ -328,22 +381,34 @@ namespace _360Accounting.Web
         {
             if (model == null) return null;
 
-            return new Calendar
+            Calendar entity = new Calendar();
+
+            if (model.Id == 0)
             {
-                Adjusting = model.Adjusting,
-                ClosingStatus = model.ClosingStatus,
-                CompanyId = AuthenticationHelper.User.CompanyId,
-                CreateDate = DateTime.Now,
-                EndDate = model.EndDate,
-                Id = model.Id,
-                PeriodName = model.PeriodName,
-                PeriodQuarter = model.PeriodQuarter,
-                PeriodYear = model.PeriodYear,
-                SeqNumber = model.SeqNumber,
-                SOBId = model.SOBId,
-                StartDate = model.StartDate,
-                UpdateDate = DateTime.Now
-            };
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+                entity.CompanyId = model.CompanyId;
+            }
+
+            entity.Adjusting = model.Adjusting;
+            entity.ClosingStatus = model.ClosingStatus;
+            entity.EndDate = model.EndDate;
+            entity.Id = model.Id;
+            entity.PeriodName = model.PeriodName;
+            entity.PeriodQuarter = model.PeriodQuarter;
+            entity.PeriodYear = model.PeriodYear;
+            entity.SeqNumber = model.SeqNumber;
+            entity.SOBId = model.SOBId;
+            entity.StartDate = model.StartDate;
+            entity.UpdateDate = DateTime.Now;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            return entity;
         }
 
         public static Company GetEntityByModel(CompanyModel model)
@@ -361,35 +426,60 @@ namespace _360Accounting.Web
         {
             if (model == null) return null;
 
-            return new Currency
+            Currency entity = new Currency();
+
+            if (model.Id == 0)
             {
-                CompanyId = AuthenticationHelper.User.CompanyId,
-                CreateDate = DateTime.Now,
-                CurrencyCode = model.CurrencyCode,
-                Id = model.Id,
-                Name = model.Name,
-                Precision = model.Precision,
-                SOBId = model.SOBId,
-                UpdateDate = DateTime.Now
-            };
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+                entity.CompanyId = model.CompanyId;
+            }
+
+            entity.CurrencyCode = model.CurrencyCode;
+            entity.Id = model.Id;
+            entity.Name = model.Name;
+            entity.Precision = model.Precision;
+            entity.SOBId = model.SOBId;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+            return entity;
         }
 
         public static Customer GetEntityByModel(CustomerModel model)
         {
             if (model == null) return null;
 
-            return new Customer
+            Customer entity = new Customer();
+            if (model.Id == 0)
             {
-                Address = model.Address,
-                CompanyId = AuthenticationHelper.User.CompanyId,
-                ContactNo = model.ContactNo,
-                CreateDate = DateTime.Now,
-                CustomerName = model.CustomerName,
-                EndDate = model.EndDate,
-                Id = model.Id,
-                StartDate = model.StartDate,
-                UpdateDate = DateTime.Now
-            };
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+                entity.CompanyId = model.CompanyId;
+            }
+
+            entity.Address = model.Address;
+            entity.ContactNo = model.ContactNo;
+            entity.CustomerName = model.CustomerName;
+            entity.EndDate = model.EndDate;
+            entity.Id = model.Id;
+            entity.StartDate = model.StartDate;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+
+            return entity;
+            
         }
 
         public static GLHeader GetEntityByModel(GLHeaderModel model)
@@ -399,7 +489,6 @@ namespace _360Accounting.Web
             GLHeader entity = new GLHeader();
             entity.Id = model.Id;
             entity.JournalName = model.JournalName;
-            entity.CompanyId = model.CompanyId;
             entity.ConversionRate = model.ConversionRate;
             entity.CurrencyId = model.CurrencyId;
             entity.Description = model.Description;
@@ -409,9 +498,17 @@ namespace _360Accounting.Web
             entity.SOBId = model.SOBId;
             if (model.Id == 0)
             {
+                entity.CreateBy = AuthenticationHelper.UserId;
                 entity.CreateDate = DateTime.Now;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
             }
-            entity.UpdateBy = entity.CreateBy;
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+                entity.CompanyId = model.CompanyId;
+            }
+            entity.UpdateBy = AuthenticationHelper.UserId;
             entity.UpdateDate = DateTime.Now;
             return entity;
         }
@@ -433,9 +530,15 @@ namespace _360Accounting.Web
             entity.TaxRateCode = model.TaxRateCode;
             if (model.Id == 0)
             {
+                entity.CreateBy = AuthenticationHelper.UserId;
                 entity.CreateDate = DateTime.Now;
             }
-            entity.UpdateBy = entity.CreateBy;
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+            }
+            entity.UpdateBy = AuthenticationHelper.UserId;
             entity.UpdateDate = DateTime.Now;
             return entity;
         }
@@ -444,19 +547,27 @@ namespace _360Accounting.Web
         {
             if (model == null) return null;
 
-            PayablePeriod entity = new PayablePeriod
+            PayablePeriod entity = new PayablePeriod();
+
+            if (model.Id == 0)
             {
-                CalendarId = model.CalendarId,
-                Status = model.Status,
-                Id = model.Id,
-                SOBId = model.SOBId
-            };
-                if (model.Id == 0)
-                {
-                    entity.CreateDate = DateTime.Now;
-                }
-                entity.UpdateBy = entity.CreateBy;
-                entity.UpdateDate = DateTime.Now;
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+                entity.CompanyId = model.CompanyId;
+            }
+
+            entity.CalendarId = model.CalendarId;
+            entity.Id = model.Id;
+            entity.SOBId  = model.SOBId;
+            entity.Status = model.Status;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
             return entity;
         }
 
@@ -464,26 +575,33 @@ namespace _360Accounting.Web
         {
             if (model == null) return null;
 
-            Withholding entity = new Withholding
-            {
-                Code = model.WithholdingCode,
-                VendorSiteId = model.VendorSiteId,
-                VendorId = model.VendorId,
-                SOBId = model.SOBId,
-                Rate = model.Rate,
-                Description = model.Description,
-                DateTo = model.DateTo,
-                DateFrom = model.DateFrom,
-                CodeCombinitionId = model.CodeCombinitionId,
-                Id = model.Id
-            };
+            Withholding entity = new Withholding();
 
-                if (model.Id == 0)
-                {
-                    entity.CreateDate = DateTime.Now;
-                }
-                entity.UpdateBy = entity.CreateBy;
-                entity.UpdateDate = DateTime.Now;
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+                entity.CompanyId = model.CompanyId;
+            }
+
+            entity.Code = model.WithholdingCode;
+            entity.VendorSiteId = model.VendorSiteId;
+            entity.VendorId = model.VendorId;
+            entity.SOBId = model.SOBId;
+            entity.Rate = model.Rate;
+            entity.Description = model.Description;
+            entity.DateTo = model.DateTo;
+            entity.DateFrom = model.DateFrom;
+            entity.CodeCombinitionId = model.CodeCombinitionId;
+            entity.Id = model.Id;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
             return entity;
         }
 
@@ -491,23 +609,29 @@ namespace _360Accounting.Web
         {
             if (model == null) return null;
 
-            InvoiceType entity = new InvoiceType
+            InvoiceType entity = new InvoiceType();
+            if (model.Id == 0)
             {
-                Meaning = model.Meaning,
-                SOBId = model.SOBId,
-                Invoicetype = model.InvoiceType,
-                Id = model.Id,
-                Description = model.Description,
-                DateTo = model.DateTo,
-                DateFrom = model.DateFrom
-            };
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+                entity.CompanyId = model.CompanyId;
+            }
 
-                if (model.Id == 0)
-                {
-                    entity.CreateDate = DateTime.Now;
-                }
-                entity.UpdateBy = entity.CreateBy;
-                entity.UpdateDate = DateTime.Now;
+            entity.Meaning = model.Meaning;
+            entity.SOBId = model.SOBId;
+            entity.Invoicetype = model.InvoiceType;
+            entity.Id = model.Id;
+            entity.Description = model.Description;
+            entity.DateTo = model.DateTo;
+            entity.DateFrom = model.DateFrom;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
             return entity;
         }
 
@@ -515,27 +639,34 @@ namespace _360Accounting.Web
         {
             if (model == null) return null;
 
-            PaymentHeader entity = new PaymentHeader
-            {
-                Amount = model.Amount,
-                BankId = model.BankId,
-                Id = model.Id,
-                PaymentDate = model.PaymentDate,
-                PaymentNo = model.PaymentNo,
-                PeriodId = model.PeriodId,
-                Status = model.Status,
-                SOBId = model.SOBId,
-                BankAccountId = model.BankAccountId,
-                VendorId = model.VendorId,
-                VendorSite = model.VendorSite
-            };
+            PaymentHeader entity = new PaymentHeader();
 
-                if (model.Id == 0)
-                {
-                    entity.CreateDate = DateTime.Now;
-                }
-                entity.UpdateBy = entity.CreateBy;
-                entity.UpdateDate = DateTime.Now;
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+                entity.CompanyId = model.CompanyId;
+            }
+
+            entity.Amount = model.Amount;
+            entity.BankId = model.BankId;
+            entity.Id = model.Id;
+            entity.PaymentDate = model.PaymentDate;
+            entity.PaymentNo = model.PaymentNo;
+            entity.Id = model.PeriodId;
+            entity.Status = model.Status;
+            entity.SOBId = model.SOBId;
+            entity.BankAccountId = model.BankAccountId;
+            entity.VendorId = model.VendorId;
+            entity.VendorSite = model.VendorSite;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
             return entity;
         }
 
@@ -550,13 +681,18 @@ namespace _360Accounting.Web
                 InvoiceId = model.InvoiceId,
                 Id = model.Id
             };
-
-                if (model.Id == 0)
-                {
-                    entity.CreateDate = DateTime.Now;
-                }
-                entity.UpdateBy = entity.CreateBy;
-                entity.UpdateDate = DateTime.Now;
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+            }
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
             return entity;
         }
     }

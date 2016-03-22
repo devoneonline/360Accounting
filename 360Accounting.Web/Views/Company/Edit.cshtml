@@ -4,9 +4,9 @@
     ViewBag.Title = "Company";
 }
 
-<script src="~/Scripts/jquery-ui-1.10.3.min.js"></script>
+@*<script src="~/Scripts/jquery-ui-1.10.3.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>*@
 
 <div class="container">
     <div class="clearfix">
@@ -20,7 +20,7 @@
         @using (Html.BeginForm("Edit", "Company", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             @Html.ValidationSummary()
-
+            
             <div class="form-group">
                 @Html.LabelFor(model => model.Name)
                 @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })

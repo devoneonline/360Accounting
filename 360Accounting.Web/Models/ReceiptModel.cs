@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
-    public class ReceiptModel
+    public class ReceiptModel : ModelBase
     {
         #region Constructors
         public ReceiptModel()
@@ -31,11 +31,18 @@ namespace _360Accounting.Web.Models
             this.SOBId = entity.SOBId;
             this.Status = entity.Status;
             this.ReceiptAmount = entity.ReceiptAmount;
+            this.CompanyId = entity.CompanyId;
+            this.CreateBy = entity.CreateBy;
+            this.CreateDate = entity.CreateDate;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
         }
         #endregion
 
         #region Properties
         public long Id { get; set; }
+
+        public long CompanyId { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]

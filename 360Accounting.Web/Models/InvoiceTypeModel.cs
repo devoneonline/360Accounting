@@ -8,9 +8,11 @@ using System.Web;
 
 namespace _360Accounting.Web.Models
 {
-    public class InvoiceTypeModel
+    public class InvoiceTypeModel : ModelBase
     {
         public long Id { get; set; }
+
+        public long CompanyId { get; set; }
 
         public string InvoiceType { get; set; }
 
@@ -45,6 +47,10 @@ namespace _360Accounting.Web.Models
             this.Description = entity.Description;
             this.InvoiceType = entity.Invoicetype;
             this.Meaning = entity.Meaning;
+            this.CreateBy = entity.CreateBy;
+            this.CreateDate = entity.CreateDate;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
         }
     }
 }

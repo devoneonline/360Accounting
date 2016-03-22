@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
-    public class CalendarViewModel
+    public class CalendarViewModel : ModelBase
     {
         #region Constructors
         public CalendarViewModel()
@@ -30,12 +30,17 @@ namespace _360Accounting.Web.Models
             this.SeqNumber = entity.SeqNumber;
             this.SOBId = entity.SOBId;
             this.StartDate = entity.StartDate;
+            this.CompanyId = entity.CompanyId;
+            this.CreateBy = entity.CreateBy;
+            this.CreateDate = entity.CreateDate;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
         }
         #endregion
 
         #region Properties
         public long Id { get; set; }
-
+        public long CompanyId { get; set; }
         public long SOBId { get; set; }
 
         [Required]

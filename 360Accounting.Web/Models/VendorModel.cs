@@ -82,6 +82,8 @@ namespace _360Accounting.Web.Models
                 this.StartDate = entity.StartDate;
                 this.CreateBy = entity.CreateBy;
                 this.CreateDate = entity.CreateDate;
+                this.UpdateBy = entity.UpdateBy;
+                this.UpdateDate = entity.UpdateDate;
             }
         }
 

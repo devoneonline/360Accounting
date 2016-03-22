@@ -9,9 +9,11 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
-    public class WithholdingModel
+    public class WithholdingModel : ModelBase
     {
         public long Id { get; set; }
+
+        public long CompanyId { get; set; }
 
         public string WithholdingCode { get; set; }
 
@@ -55,6 +57,11 @@ namespace _360Accounting.Web.Models
             this.VendorId = entity.VendorId;
             this.VendorSiteId = entity.VendorSiteId;
             this.WithholdingCode = entity.Code;
+            this.CompanyId = entity.CompanyId;
+            this.CreateBy = entity.CreateBy;
+            this.CreateDate = entity.CreateDate;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
         }
     }
 }

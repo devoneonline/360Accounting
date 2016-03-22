@@ -11,7 +11,9 @@ namespace _360Accounting.Core.Entities
     {
         [Key]
         public long Id { get; set; }
-        
+
+        public long CompanyId { get; set; }
+
         public long SOBId { get; set; }
         
         public string TaxName { get; set; }

@@ -25,7 +25,7 @@ namespace _360Accounting.Web.Models
         public long CurrencyId { get; set; }
     }
 
-    public class InvoiceModel
+    public class InvoiceModel : ModelBase
     {
         #region Properties
         [Display(Name = "Customer")]
@@ -95,11 +95,15 @@ namespace _360Accounting.Web.Models
             this.PeriodId = entity.PeriodId;
             this.Remarks = entity.Remarks;
             this.SOBId = entity.SOBId;
+            this.CreateBy = entity.CreateBy;
+            this.CreateDate = entity.CreateDate;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
         }
         #endregion
     }
 
-    public class InvoiceDetailModel
+    public class InvoiceDetailModel : ModelBase
     {
         #region Constructors
         public InvoiceDetailModel()

@@ -18,9 +18,9 @@ namespace _360Accounting.Service
             this.repository = repo;
         }
 
-        public IEnumerable<ReceiptView> GetReceipts(long sobId, long bankId, long bankAccountId, DateTime date = default(DateTime))
+        public IEnumerable<ReceiptView> GetReceipts(long sobId, long bankId, long bankAccountId, DateTime? date = null)
         {
-            return this.repository.GetReceipts(sobId, bankId, bankAccountId);
+            return this.repository.GetReceipts(sobId, bankId, bankAccountId, date);
         }
         
         public IEnumerable<ReceiptView> GetReceipts(long sobId, long periodId, long customerId, long currencyId, long companyId)
