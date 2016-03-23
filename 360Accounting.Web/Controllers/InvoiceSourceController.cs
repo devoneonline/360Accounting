@@ -12,6 +12,15 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Edit(string id)
         {
             InvoiceSourceViewModel model = InvoiceSourceHelper.GetInvoiceSource(id);
+
+            CodeCombinitionViewModel codeCombination = CodeCombinationHelper.GetSingle(model.CodeCombinationId);
+            model.CodeCombinations = new List<SelectListItem>();
+            model.CodeCombinations.Add(new SelectListItem
+                {
+                    Text = codeCombination.CodeCombinitionCode,
+                    Value = codeCombination.Id.ToString()
+                });
+
             return View(model);
         }
 

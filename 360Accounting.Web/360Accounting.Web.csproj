@@ -210,7 +210,6 @@
     <Compile Include="Helpers\PaymentHelper.cs" />
     <Compile Include="Helpers\WithholdingHelper.cs" />
     <Compile Include="Helpers\CustomerHelper.cs" />
-    <Compile Include="Helpers\CustomerSiteHelper.cs" />
     <Compile Include="Helpers\InvoiceHelper.cs" />
     <Compile Include="Helpers\InvoiceSourceHelper.cs" />
     <Compile Include="Helpers\JVHelper.cs" />

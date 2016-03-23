@@ -43,18 +43,22 @@ namespace _360Accounting.Web.Controllers
             model.SOBId = sobId;
             model.PeriodId = periodId;
 
+            CustomerModel customer = CustomerHelper.GetCustomer(model.CustomerId.ToString());
+            CustomerSiteModel customerSite = CustomerHelper.GetCustomerSite(model.CustomerSiteId.ToString());
+
             ///TODO: Plz do the code audit.
             model.Customers = new List<SelectListItem>();
             model.Customers.Add(new SelectListItem 
             {
-                Value = CustomerHelper.GetCustomer(model.CustomerId.ToString()).Id.ToString(),
-                Text = CustomerHelper.GetCustomer(model.CustomerId.ToString()).CustomerName
+                Value = customer.Id.ToString(),
+                Text = customer.CustomerName
             });
+
             model.CustomerSites = new List<SelectListItem>();
             model.CustomerSites.Add(new SelectListItem
             {
-                Value = CustomerHelper.GetCustomerSite(model.CustomerSiteId.ToString()).Id.ToString(),
-                Text = CustomerHelper.GetCustomerSite(model.CustomerSiteId.ToString()).SiteName
+                Value = customerSite.Id.ToString(),
+                Text = customerSite.SiteName
             });
 
             SessionHelper.Invoice = model;
