@@ -13,6 +13,12 @@ namespace _360Accounting.Data.Repositories
 {
     public class CodeCombinitionRepository : Repository, ICodeCombinitionRepository
     {
+        public CodeCombinitionView GetSingle(long id, long companyId)
+        {
+            CodeCombinitionView codeCombinationView = GetCodeCombViewByCodeCombEntity(this.GetAll(companyId).FirstOrDefault(x => x.Id == id));
+            return codeCombinationView;
+        }
+        
         public List<CodeCombinition> GetAll(long companyId, long sobId)
         {
             List<CodeCombinition> list = this.Context.CodeCombinitions.Where(x => x.CompanyId == companyId && x.SOBId == sobId).OrderBy(x => x.Id).ToList();

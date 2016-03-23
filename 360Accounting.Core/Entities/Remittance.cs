@@ -17,7 +17,6 @@ namespace _360Accounting.Core.Entities
         public long ReceiptId { get; set; }
         public string RemitNo { get; set; }
         public DateTime RemitDate { get; set; }
-
         public long CompanyId { get; set; }
     }
 }

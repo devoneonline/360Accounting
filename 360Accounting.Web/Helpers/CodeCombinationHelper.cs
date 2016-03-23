@@ -18,6 +18,11 @@ namespace _360Accounting.Web
             service = IoC.Resolve<ICodeCombinitionService>("CodeCombinitionService");
         }
 
+        public static CodeCombinitionViewModel GetSingle(long id)
+        {
+            return new CodeCombinitionViewModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
+        }
+
         public static IList<SelectListItem> GetAccounts(long sobId, DateTime startDate, DateTime endDate)
         {
             //logic editted by uzair, previous one was incorrect.
