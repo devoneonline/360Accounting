@@ -53,6 +53,12 @@ h1, h2, h3, h4, h5, h6 {
     width: 100%;
 }
 
+.AccountLookup
+{
+    cursor: pointer;
+    border-color:#fff6e9
+}
+
 .form-control {
     border-radius: 0;
     border-color: #666;

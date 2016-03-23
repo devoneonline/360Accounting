@@ -11,17 +11,30 @@
 @Html.HiddenFor(m => m.Id)
 @Html.HiddenFor(m => m.CreateBy)
 @Html.HiddenFor(m => m.CreateDate)
+@Html.HiddenFor(m => m.UpdateBy)
+@Html.HiddenFor(m => m.UpdateDate)
 
 @{ int count = 0; }
 <div class="col-lg-6">
     @foreach (var item in Model.SegmentList)
     {
         count++;
+        <div class="clearfix">
+            <div class="col-lg-12 customDropDownWrapper form-group">
+                @{string comboName = "Combo_" + count.ToString();}
+                @Html.Label(item.SegmentName)
+                @Html.DropDownList(comboName, item.SegmentValueList, new { @class = "form-control" })
+            </div>
+        </div>
+
+        
+        
+        @*count++;
         string comboName = "Combo_" + count.ToString();
         <div class="form-group">
             @item.SegmentName
             @Html.DropDownList(comboName, item.SegmentValueList, new { @class = "form-control" })
-        </div>
+        </div>*@
     }
 </div>
 

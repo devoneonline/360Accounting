@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\PayableInvoice.cs" />
     <Compile Include="Entities\PaymentView.cs" />
     <Compile Include="Entities\Payment.cs" />
     <Compile Include="Entities\PayablePeriod.cs" />
@@ -91,6 +92,8 @@
     <Compile Include="Entities\VendorSite.cs" />
     <Compile Include="Interfaces\ICore360.cs" />
     <Compile Include="IoC.cs" />
+    <Compile Include="IRepository\IPayableInvoiceDetailRepository.cs" />
+    <Compile Include="IRepository\IPayableInvoiceRepository.cs" />
     <Compile Include="IRepository\IPaymentHeaderRepository.cs" />
     <Compile Include="IRepository\IPaymentInvoiceLineRepository.cs" />
     <Compile Include="IRepository\IInvoiceRepository.cs" />
@@ -126,6 +129,8 @@
     <Compile Include="IRepository\IVendorRepository.cs" />
     <Compile Include="IService\IBankService.cs" />
     <Compile Include="IService\IBankAccountService.cs" />
+    <Compile Include="IService\IPayableInvoiceDetailService.cs" />
+    <Compile Include="IService\IPayableInvoiceService.cs" />
     <Compile Include="IService\IPaymentHeaderService.cs" />
     <Compile Include="IService\IPaymentInvoiceLineService.cs" />
     <Compile Include="IService\IInvoiceDetailService.cs" />

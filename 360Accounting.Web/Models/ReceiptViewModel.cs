@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
-    public class ReceiptViewModel
+    public class ReceiptViewModel : ModelBase
     {
         #region Constructors
         public ReceiptViewModel()
@@ -36,11 +36,19 @@ namespace _360Accounting.Web.Models
             this.BankAccountName = entity.BankAccountName;
             this.BankName = entity.BankName;
             this.CustomerSiteName = entity.CustomerSiteName;
+            this.CurrencyId = entity.CurrencyId;
+            this.CompanyId = entity.CompanyId;
+            this.CreateBy = entity.CreateBy;
+            this.CreateDate = entity.CreateDate;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
         }
         #endregion
 
         #region Properties
         public long Id { get; set; }
+
+        public long CompanyId { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]

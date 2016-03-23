@@ -9,9 +9,11 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
-    public class PaymentHeaderViewModel
+    public class PaymentHeaderViewModel : ModelBase
     {
         public long Id { get; set; }
+
+        public long CompanyId { get; set; }
 
         public string PaymentNo { get; set; }
 
@@ -67,6 +69,11 @@ namespace _360Accounting.Web.Models
             this.VendorSiteId = entity.VendorSite;
             this.VendorSiteName = entity.VendorSiteName;
             this.BankAccountName = entity.BankAccountName;
+            this.CompanyId = entity.CompanyId;
+            this.CreateBy = entity.CreateBy;
+            this.CreateDate = entity.CreateDate;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
         }
     }
 

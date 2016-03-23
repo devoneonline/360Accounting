@@ -18,6 +18,11 @@ FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     {
         @Html.ValidationSummary()
         @Html.HiddenFor(m => m.SOBId)
+        @Html.HiddenFor(m => m.CompanyId)
+        @Html.HiddenFor(m => m.CreateBy)
+        @Html.HiddenFor(m => m.CreateDate)
+        @Html.HiddenFor(m => m.UpdateBy)
+        @Html.HiddenFor(m => m.UpdateDate)
 
         <div class="col-md-6">
             <div class="form-group">

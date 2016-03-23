@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
-    public class InvoiceSourceViewModel:ModelBase
+    public class InvoiceSourceViewModel : ModelBase
     {
         public InvoiceSourceViewModel()
         {
@@ -28,6 +28,8 @@ namespace _360Accounting.Web.Models
             this.CompanyId = entity.CompanyId;
             this.CreateBy = entity.CreateBy;
             this.CreateDate = entity.CreateDate;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
         }
 
         public long Id { get; set; }

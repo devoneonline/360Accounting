@@ -47,28 +47,28 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_List", CustomerHelper.GetCustomers());
         }
 
-        [HttpPost]
-        public ActionResult Create(CustomerModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                //Customer duplicateRecord = service.GetSingle(model.Id.ToString(), AuthenticationHelper.User.CompanyId);
-                //if (duplicateRecord == null)
-                //{
-                    string result = CustomerHelper.SaveCustomer(model);
-                    return RedirectToAction("Index");
-                //}
-                //else
-                //{
-                //    ModelState.AddModelError("Error", "Customer Already exists.");
-                //}
-            }
-            return View(model);
-        }
+        //[HttpPost]
+        //public ActionResult Create(CustomerModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        //Customer duplicateRecord = service.GetSingle(model.Id.ToString(), AuthenticationHelper.User.CompanyId);
+        //        //if (duplicateRecord == null)
+        //        //{
+        //            string result = CustomerHelper.SaveCustomer(model);
+        //            return RedirectToAction("Index");
+        //        //}
+        //        //else
+        //        //{
+        //        //    ModelState.AddModelError("Error", "Customer Already exists.");
+        //        //}
+        //    }
+        //    return View(model);
+        //}
 
         public ActionResult Create()
         {
-            return View(new CustomerModel());
+            return View("Edit", new CustomerModel());
         }
 
         // GET: Customer

@@ -21,11 +21,10 @@ namespace _360Accounting.Web
         }
 
         #region Private Methods
-        private static IList<InvoiceDetailModel> getInvoiceDetailByInvoiceId(string InvoiceId)
+        private static IList<InvoiceDetailModel> getInvoiceDetailByInvoiceId(string invoiceId)
         {
-            
             IList<InvoiceDetailModel> modelList = detailService
-                .GetAll(AuthenticationHelper.User.CompanyId, Convert.ToInt32(InvoiceId))
+                .GetAll(AuthenticationHelper.User.CompanyId, Convert.ToInt32(invoiceId))
                 .Select(x => new InvoiceDetailModel(x)).ToList();
             return modelList;
         }
@@ -39,7 +38,7 @@ namespace _360Accounting.Web
         public static IList<InvoiceModel> GetInvoices(long sobId, long periodId, long currencyId)
         {
             IList<InvoiceModel> modelList = service
-                .GetAll(AuthenticationHelper.User.CompanyId, sobId, periodId, currencyId).ToList()
+                .GetAll(AuthenticationHelper.User.CompanyId, sobId, periodId, currencyId)
                 .Select(x => new InvoiceModel(x)).ToList();
             return modelList;
         }

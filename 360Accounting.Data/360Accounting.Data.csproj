@@ -61,6 +61,8 @@
     <Compile Include="Repositories\BankRepository.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Repositories\PayableInvoiceDetailRepository.cs" />
+    <Compile Include="Repositories\PayableInvoiceRepository.cs" />
     <Compile Include="Repositories\PaymentHeaderRepository.cs" />
     <Compile Include="Repositories\PaymentInvoiceLineRepository.cs" />
     <Compile Include="Repositories\InvoiceDetailRepository.cs" />

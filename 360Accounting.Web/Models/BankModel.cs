@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
-    public class BankModel
+    public class BankModel : ModelBase
     {
         #region Constructors
         public BankModel()
@@ -26,11 +26,18 @@ namespace _360Accounting.Web.Models
             this.Remarks = entity.Remarks;
             this.SOBId = entity.SOBId;
             this.StartDate = entity.StartDate;
+            this.CreateBy = entity.CreateBy;
+            this.CreateDate = entity.CreateDate;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
+            this.CompanyId = entity.CompanyId;
         }
         #endregion
 
         #region Properties
         public long Id { get; set; }
+
+        public long CompanyId { get; set; }
 
         [Display(Name = "Bank Name")]
         public string BankName { get; set; }

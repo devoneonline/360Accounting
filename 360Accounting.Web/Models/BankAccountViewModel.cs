@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
-    public class BankAccountViewModel
+    public class BankAccountViewModel : ModelBase
     {
         #region Constructors
         public BankAccountViewModel()
@@ -29,11 +29,18 @@ namespace _360Accounting.Web.Models
             this.StartDate = entity.StartDate;
             this.Id = entity.Id;
             this.RemitCash_CCID = entity.RemitCash_CCID;
+            this.CreateBy = entity.CreateBy;
+            this.CreateDate = entity.CreateDate;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
+            this.CompanyId = entity.CompanyId;
         }
         #endregion
 
         #region Properties
         public long Id { get; set; }
+
+        public long CompanyId { get; set; }
 
         public long BankId { get; set; }
 

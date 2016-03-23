@@ -57,7 +57,7 @@ namespace _360Accounting.Web
             {
                 return 0;
             }
-        }        
+        }
 
         public static List<SelectListItem> GetSegmentList(string sobId)
         {
@@ -138,10 +138,13 @@ namespace _360Accounting.Web
             return lst;
         }
 
-        public static List<Segment> GetSegmentListForCodeCombination(string sobId)
+        public static List<Segment> GetSegmentListForCodeCombination(string sobId, bool fetchSaved = false)
         {
             List<Segment> segmentList = new List<Segment>();
             Account account = AccountHelper.GetAccountBySOBId(sobId);
+
+            #region Filling Segments
+
             if (account != null)
             {
                 if (account.SegmentEnabled1 == true)
@@ -150,7 +153,7 @@ namespace _360Accounting.Web
                     {
                         SegmentCount = 1,
                         SegmentName = account.SegmentName1,
-                        SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SegmentName1)
+                        SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName1, 1, fetchSaved)
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,
@@ -165,7 +168,7 @@ namespace _360Accounting.Web
                     {
                         SegmentCount = 2,
                         SegmentName = account.SegmentName2,
-                        SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SegmentName2)
+                        SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName2, 2, fetchSaved)
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,
@@ -180,7 +183,7 @@ namespace _360Accounting.Web
                     {
                         SegmentCount = 3,
                         SegmentName = account.SegmentName3,
-                        SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SegmentName3)
+                        SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName3, 3, fetchSaved)
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,
@@ -195,7 +198,7 @@ namespace _360Accounting.Web
                     {
                         SegmentCount = 4,
                         SegmentName = account.SegmentName4,
-                        SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SegmentName4)
+                        SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName4, 4, fetchSaved)
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,
@@ -210,7 +213,7 @@ namespace _360Accounting.Web
                     {
                         SegmentCount = 5,
                         SegmentName = account.SegmentName5,
-                        SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SegmentName5)
+                        SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName5, 5, fetchSaved)
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,
@@ -225,7 +228,7 @@ namespace _360Accounting.Web
                     {
                         SegmentCount = 6,
                         SegmentName = account.SegmentName6,
-                        SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SegmentName6)
+                        SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName6, 6, fetchSaved)
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,
@@ -240,7 +243,7 @@ namespace _360Accounting.Web
                     {
                         SegmentCount = 7,
                         SegmentName = account.SegmentName7,
-                        SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SegmentName7)
+                        SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName7, 7, fetchSaved)
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,
@@ -255,7 +258,7 @@ namespace _360Accounting.Web
                     {
                         SegmentCount = 8,
                         SegmentName = account.SegmentName8,
-                        SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SegmentName8)
+                        SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName8, 8, fetchSaved)
                         .Select(x => new SelectListItem
                         {
                             Value = x.Value,
@@ -264,6 +267,8 @@ namespace _360Accounting.Web
                     });
                 }
             }
+
+            #endregion
 
             return segmentList;
         }
@@ -304,6 +309,11 @@ namespace _360Accounting.Web
         public static void Delete(string id)
         {
             service.Delete(id, AuthenticationHelper.User.CompanyId);
+        }
+
+        public static long GetAccountIdBySegments(string segments)
+        {
+            return service.GetAccountIdBySegments(segments, AuthenticationHelper.CompanyId.Value);
         }
     }
 }

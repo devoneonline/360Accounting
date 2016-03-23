@@ -1,7 +1,7 @@
 ﻿@model _360Accounting.Web.Models.CustomerModel
 
 @{
-    ViewBag.Title = "Edit Customer";
+    ViewBag.Title = "Customer";
 }
 
 <div class="container">
@@ -18,7 +18,10 @@
         @Html.ValidationSummary()
         @Html.HiddenFor(m => m.Id)
         @Html.HiddenFor(m => m.CompanyId)
-
+        @Html.HiddenFor(m => m.CreateBy)
+        @Html.HiddenFor(m => m.CreateDate)
+        @Html.HiddenFor(m => m.UpdateBy)
+        @Html.HiddenFor(m => m.UpdateDate)
 
             <div class="row">
                 <div class="col-md-6">

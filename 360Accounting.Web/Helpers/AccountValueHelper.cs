@@ -17,9 +17,9 @@ namespace _360Accounting.Web
             service = IoC.Resolve<IAccountValueService>("AccountValueService");
         }
 
-        public static List<AccountValueViewModel> GetAccountValues(long chartId, string segment)
+        public static List<AccountValueViewModel> GetAccountValues(long chartId, long sobId, string segment, int segmentNo, bool fetchSaved)
         {
-            return service.GetAccountValuesBySegment(chartId, segment).Select(x => new AccountValueViewModel(x)).ToList();
+            return service.GetAccountValuesBySegment(chartId,sobId, segment, segmentNo, fetchSaved).Select(x => new AccountValueViewModel(x)).ToList();
         }
 
         public static AccountValueViewModel GetAccountValue(string id)

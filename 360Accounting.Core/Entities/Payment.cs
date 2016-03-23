@@ -29,6 +29,8 @@ namespace _360Accounting.Core.Entities
         public decimal Amount { get; set; }
 
         public string Status { get; set; }
+
+        public long CompanyId { get; set; }
     }
 
 

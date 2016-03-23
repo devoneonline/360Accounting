@@ -98,5 +98,57 @@ namespace _360Accounting.Data.Repositories
             mappingObject.SegmentsLength = Utility.Stringize("-", entity.SegmentChar1, entity.SegmentChar2, entity.SegmentChar3, entity.SegmentChar4, entity.SegmentChar5, entity.SegmentChar6, entity.SegmentChar7, entity.SegmentChar8);
             return mappingObject;
         }
+
+        public long GetAccountIdBySegments(string segments, long companyId)
+        {
+            var segmentList = segments.Split(new char[] {'.'}, StringSplitOptions.None);
+            var query = this.Context.CodeCombinitions.Where(x => x.CompanyId == companyId);
+
+            for(int i=0;i<segmentList.Count();i++)
+            {
+                switch (i)
+                {
+                    case 0:
+                        string segment1=segmentList[i];
+                        query = query.Where(x => x.Segment1 ==segment1);
+                        break;
+                    case 1:
+                        string segment2=segmentList[i];
+                        query = query.Where(x => x.Segment2 == segment2);
+                        break;
+                    case 2:
+                        string segment3=segmentList[i];
+                        query = query.Where(x => x.Segment3 == segment3);
+                        break;
+                    case 3:
+                        string segment4=segmentList[i];
+                        query = query.Where(x => x.Segment4 == segment4);
+                        break;
+                    case 4:
+                        string segment5=segmentList[i];
+                        query = query.Where(x => x.Segment5 == segment5);
+                        break;
+                    case 5:
+                        string segment6=segmentList[i];
+                        query = query.Where(x => x.Segment6 == segment6);
+                        break;
+                    case 6:
+                        string segment7=segmentList[i];
+                        query = query.Where(x => x.Segment7 == segment7);
+                        break;
+                    case 7:
+                        string segment8=segmentList[i];
+                        query = query.Where(x => x.Segment8 == segment8);
+                        break;
+                }
+            }
+            CodeCombinition entity = query.FirstOrDefault();
+            if (entity != null)
+            {
+                return entity.Id;
+            }
+            else
+                return 0;
+        }
     }
 }

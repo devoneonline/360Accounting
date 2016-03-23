@@ -19,9 +19,16 @@
         @Html.HiddenFor(model => model.PeriodId)
         @Html.HiddenFor(model => model.CompanyId)
         @Html.HiddenFor(model => model.CurrencyId)
-        
+        @Html.HiddenFor(m => m.CreateBy)
+        @Html.HiddenFor(m => m.CreateDate)
+        @Html.HiddenFor(m => m.UpdateBy)
+        @Html.HiddenFor(m => m.UpdateDate)
+
         <div class="row">
             <div class="col-lg-12">
+                <div class="navbar-left">
+                    SOB: @ViewBag.SOBName / Period: @ViewBag.PeriodName / Currency : @ViewBag.CurrencyName
+                </div>
                 <div class="navbar-right">
                     <input type="button" value="Save" id="btnSave" class="btn btn-default tstyCus-btn" />
                     <input type="button" value="Cancel" id="btnCancel" class="btn btn-default tstyCus-btn" />
@@ -29,13 +36,13 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.InvoiceNo)
                     @Html.TextBoxFor(model => model.InvoiceNo, new { @readonly = "readonly", @class = "form-control" })
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.InvoiceType)
                     @Html.DropDownListFor(model => model.InvoiceType, Model.InvoiceTypes, new { @class = "form-control" })
@@ -43,13 +50,13 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.InvoiceDate)
                     @Html.EditorFor(model => model.InvoiceDate)
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.ConversionRate)
                     @Html.TextBoxFor(model => model.ConversionRate, new { @class = "form-control" })

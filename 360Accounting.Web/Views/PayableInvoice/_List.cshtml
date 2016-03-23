@@ -1,19 +1,20 @@
-﻿@*@{Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
+﻿@{Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
             new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
             new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
 
-  Html.EnableClientValidation();
-  Html.EnableUnobtrusiveJavaScript();
-            
 var grid = Html.DevExpress().GridView(settings =>
 {
-    settings.Name = "JournalVoucher";
+    settings.Name = "PayableInvoice";
     settings.Theme = "Office2010Black";
     settings.KeyFieldName = "Id";
 
-    settings.CallbackRouteValues = new { Controller = "JournalVoucher", Action = "JournalVoucherPartial" };
+    settings.CallbackRouteValues = new
+    {
+        Controller = "PayableInvoice",
+        Action = "ListByModelPartial"
+    };
 
-    settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+    //settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
     settings.SettingsBehavior.ConfirmDelete = true;
 
     settings.SettingsPager.Visible = true;
@@ -24,13 +25,12 @@ var grid = Html.DevExpress().GridView(settings =>
 
     settings.Columns.Add(column =>
     {
-        column.Caption = "#";
         column.SetDataItemTemplateContent(c =>
         {
             ViewContext.Writer.Write(
-                Html.Raw("<a href='" + Url.Content("~/JournalVoucher/GetEdit/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
+                Html.Raw("<a href='" + Url.Content("~/PayableInvoice/Edit?Id=") + DataBinder.Eval(c.DataItem, "Id") + "&sobId=" + DataBinder.Eval(c.DataItem, "SOBId") + "&periodId=" + DataBinder.Eval(c.DataItem, "PeriodId") + "'><i class='fa fa-edit'></i></a>")
                     + "&nbsp;" +
-                Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/JournalVoucher/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
+                Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/PayableInvoice/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
             );
         });
 
@@ -38,10 +38,9 @@ var grid = Html.DevExpress().GridView(settings =>
         column.Settings.AllowSort = DefaultBoolean.False;
         column.Width = 70;
     });
-    settings.Columns.Add("JournalName", "Journal Name");
-    settings.Columns.Add("DocumentNo", "Document #");
-    settings.Columns.Add("GLDate", "Effective Date");
-    settings.Columns.Add("Description");
+    settings.Columns.Add("InvoiceNo", "Document #");
+    settings.Columns.Add("InvoiceDate", "Document Date").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;
+    settings.Columns.Add("Remarks", "Description");
 });
 if (ViewData["EditError"] != null)
 {
@@ -57,7 +56,8 @@ if (ViewData["EditError"] != null)
         });
     });
 
+    //what is this, I don't know.. Uzair Ashraf Usman Kunda
     function CallBack(context) {
-        $("#dvJournalVoucherList")[0].innerHTML = context;
+        $("#dvList")[0].innerHTML = context;
     }
-</script>*@
+</script>

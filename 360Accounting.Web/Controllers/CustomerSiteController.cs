@@ -16,26 +16,6 @@ namespace _360Accounting.Web.Controllers
         private ICodeCombinitionService codeCombinationService;
         private ITaxService taxService;
 
-        #region Private Methods
-        private CustomerSite mapModel(CustomerSiteModel model)
-        {
-            return new CustomerSite
-            {
-                CustomerId = model.CustomerId,
-                CodeCombinationId = model.CodeCombinationId,
-                EndDate = model.EndDate,
-                Id = model.Id,
-                SiteAddress = model.SiteAddress,
-                SiteContact = model.SiteContact,
-                SiteName = model.SiteName,
-                StartDate = model.StartDate,
-                TaxCodeId = model.TaxCodeId,
-                UpdateDate = DateTime.Now,
-                CreateDate = DateTime.Now //TODO: these should be generic..//TODO: this should be generic..
-            };
-        }
-        #endregion
-
         public CustomerSiteController()
         {
             service = IoC.Resolve<ICustomerSiteService>("CustomerSiteService");
@@ -110,9 +90,36 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_List", list);
         }
 
-        //public ActionResult Create()
-        //{
-        //    return View(new CustomerSiteModel());
-        //}
+        #region Private Methods
+        private CustomerSite mapModel(CustomerSiteModel model)
+        {
+            if (model == null) return null;
+            CustomerSite entity = new CustomerSite();
+            entity.CustomerId = model.CustomerId;
+            entity.CodeCombinationId = model.CodeCombinationId;
+            entity.EndDate = model.EndDate;
+            entity.Id = model.Id;
+            entity.SiteAddress = model.SiteAddress;
+            entity.SiteContact = model.SiteContact;
+            entity.SiteName = model.SiteName;
+            entity.StartDate = model.StartDate;
+            entity.TaxCodeId = model.TaxCodeId;
+
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+            }
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
+        #endregion
+
     }
 }

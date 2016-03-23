@@ -12,6 +12,6 @@ namespace _360Accounting.Core
     public interface IReceiptService : IService<Receipt>
     {
         IEnumerable<ReceiptView> GetReceipts(long sobId, long periodId, long customerId, long currencyId, long companyId);
-        IEnumerable<ReceiptView> GetReceipts(long sobId, long bankId, long bankAccountId, [Optional]DateTime date);
+        IEnumerable<ReceiptView> GetReceipts(long sobId, long bankId, long bankAccountId, DateTime? date = null);
     }
 }
