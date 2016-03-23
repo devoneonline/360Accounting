@@ -45,7 +45,7 @@ namespace _360Accounting.Web
                 .Select(a => new WithholdingModel(a)).ToList();
         }
 
-        public static List<SelectListItem> GetWithHoldingList()
+        public static List<SelectListItem> GetWithHoldingList(long vendorId, long vendorSiteId, DateTime startDate, DateTime endDate)
         {
             throw new NotImplementedException();
         }

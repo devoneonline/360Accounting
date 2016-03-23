@@ -56,7 +56,7 @@
             })
 
             if (continueCreate) {
-                var url = '@Url.Content("~/Invoice/Create?sobId=")' +                                                                   //Make AR
+                var url = '@Url.Content("~/PayableInvoice/Create?sobId=")' +                                                                   //Make AR
                     $('#SOBId').val() +
                     "&periodId=" + $('#PeriodId').val()
                 window.location.href = url;
@@ -68,7 +68,7 @@
         jQuery.ajaxSetup({ async: false });
 
         function RefreshGrid() {
-            var url = '@Url.Content("~/PayableInvoice/InvoicePartial")';
+            var url = '@Url.Content("~/PayableInvoice/ListPartial")';
 
             $.get(url, { sobId: $('#SOBId').val(), periodId: $('#PeriodId').val() },
                 function (data) {

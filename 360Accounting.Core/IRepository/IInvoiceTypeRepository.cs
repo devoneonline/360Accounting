@@ -10,5 +10,7 @@ namespace _360Accounting.Core.Interfaces
     public interface IInvoiceTypeRepository : IRepository<InvoiceType>
     {
         IEnumerable<InvoiceType> GetInvoiceTypes(long sobId, long companyId);
+
+        IEnumerable<InvoiceType> GetAll(long companyId, long sobId, DateTime startDate, DateTime endDate);
     }
 }

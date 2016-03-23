@@ -15,5 +15,7 @@ namespace _360Accounting.Core.IRepository
         long Update(VendorSite entity);
         void DeleteSite(long id, long companyId);
         IEnumerable<VendorSiteView> GetAllSites(long vendorId, long companyId);
+
+        IEnumerable<Vendor> GetAll(long companyId, DateTime startDate, DateTime endDate);
     }
 }

@@ -58,5 +58,11 @@ namespace _360Accounting.Service
         {
             return this.repository.Count(companyId);
         }
+
+
+        public IEnumerable<InvoiceType> GetAll(long companyId, long sobId, DateTime startDate, DateTime endDate)
+        {
+            return this.repository.GetAll(companyId, sobId, startDate, endDate);
+        }
     }
 }

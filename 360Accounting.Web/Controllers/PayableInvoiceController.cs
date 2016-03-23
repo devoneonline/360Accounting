@@ -9,6 +9,32 @@ namespace _360Accounting.Web.Controllers
 {
     public class PayableInvoiceController : Controller
     {
+        public JsonResult WHTaxList(long vendorId, long vendorSiteId)
+        {
+            List<SelectListItem> whTaxList = WithholdingHelper.GetWithHoldingList(vendorId, vendorSiteId, SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
+            return Json(whTaxList, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult VendorSiteList(long vendorId)
+        {
+            List<SelectListItem> vendorList = VendorHelper.GetVendorSiteList(vendorId);
+            return Json(vendorList, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult CheckDate(DateTime invoiceDate, long periodId)
+        {
+            bool result = false;
+            if (periodId > 0)
+            {
+                if (SessionHelper.Calendar != null)
+                {
+                    if (invoiceDate >= SessionHelper.Calendar.StartDate || invoiceDate <= SessionHelper.Calendar.EndDate)
+                        result = true;
+                }
+            }
+            return Json(result);
+        }
+
         public ActionResult Create(long sobId, long periodId)
         {
             SessionHelper.SOBId = sobId;
@@ -21,11 +47,11 @@ namespace _360Accounting.Web.Controllers
             PayableInvoiceModel model = SessionHelper.PayableInvoice;
             if (model == null)
             {
-                List<SelectListItem> vendors = VendorHelper.GetVendorList();
-
-                List<SelectListItem> vendorSites = VendorHelper.GetVendorSiteList(vendors.Any() ? Convert.ToInt32(vendors.First().Value) : 0);
-
-                List<SelectListItem> whTaxes = WithholdingHelper.GetWithHoldingList();
+                List<SelectListItem> vendors = VendorHelper.GetVendorList(SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
+                List<SelectListItem> vendorSites = VendorHelper.GetVendorSiteList(vendors.Any() ? Convert.ToInt64(vendors.First().Value) : 0);
+                List<SelectListItem> whTaxes = WithholdingHelper.GetWithHoldingList(vendors.Any() ? Convert.ToInt64(vendors.First().Value) : 0,
+                    vendorSites.Any() ? Convert.ToInt64(vendorSites.First().Value) : 0, SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
+                List<SelectListItem> invoiceTypes = InvoiceTypeHelper.GetInvoiceTypes(model.SOBId, SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
 
                 model = new PayableInvoiceModel
                 {
@@ -39,6 +65,9 @@ namespace _360Accounting.Web.Controllers
                     InvoiceDate = SessionHelper.Calendar.StartDate,
                     InvoiceDetail = new List<PayableInvoiceDetailModel>(),
                     InvoiceNo = "New",
+                    InvoiceTypes = invoiceTypes,
+                    InvoiceTypeId = invoiceTypes.Any() ?
+                    Convert.ToInt64(invoiceTypes.First().Value) : 0,
                     PeriodId = periodId,
                     SOBId = sobId,
                 };
@@ -72,39 +101,44 @@ namespace _360Accounting.Web.Controllers
             model.SOBId = sobId;
             model.PeriodId = periodId;
 
+            VendorModel vendors = VendorHelper.GetSingle(model.VendorId.ToString());
+            VendorModel vendorSites = VendorHelper.GetSingle(model.VendorSiteId.ToString());
+            WithholdingModel withHoldingTaxes = WithholdingHelper.GetWithholding(model.WHTaxId.ToString());
+            InvoiceTypeModel invoiceTypes = InvoiceTypeHelper.GetInvoiceType(model.InvoiceTypeId.ToString());
+
             ///TODO: Plz do the code audit.
             model.Vendors = new List<SelectListItem>();
             model.Vendors.Add(new SelectListItem
             {
-                Value = VendorHelper.GetSingle(model.VendorId).Id.ToString(),
-                Text = VendorHelper.GetSingle(model.VendorId).Name
+                Value = vendors.Id.ToString(),
+                Text = vendors.Name
             });
             model.VendorSites = new List<SelectListItem>();
             model.VendorSites.Add(new SelectListItem
             {
-                Value = VendorHelper.GetSingle(model.VendorSiteId).Id.ToString(),
-                Text = VendorHelper.GetSingle(model.VendorSiteId).Name
+                Value = vendorSites.Id.ToString(),
+                Text = vendorSites.Name
             });
 
             model.WHTaxes = new List<SelectListItem>();
             model.WHTaxes.Add(new SelectListItem
             {
-                Value = WithholdingHelper.GetWithholding(model.WHTaxId.ToString()).Id.ToString(),
-                Text = WithholdingHelper.GetWithholding(model.WHTaxId.ToString()).Description
+                Value = withHoldingTaxes.Id.ToString(),
+                Text = withHoldingTaxes.Description
             });
 
             model.InvoiceTypes = new List<SelectListItem>();
             model.InvoiceTypes.Add(new SelectListItem
             {
-                Value = InvoiceTypeHelper.GetInvoiceType(model.InvoiceTypeId.ToString()).Id.ToString(),
-                Text = InvoiceTypeHelper.GetInvoiceType(model.InvoiceTypeId.ToString()).Description
+                Value = invoiceTypes.Id.ToString(),
+                Text = invoiceTypes.Description
             });
 
             SessionHelper.PayableInvoice = model;
             return View(model);
         }
 
-        public ActionResult InvoicePartial(long sobId, long periodId)
+        public ActionResult ListPartial(long sobId, long periodId)
         {
             SessionHelper.SOBId = sobId;
             return PartialView("_List", PayableInvoiceHelper
