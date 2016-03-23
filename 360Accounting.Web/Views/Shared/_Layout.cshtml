@@ -39,6 +39,21 @@
             @RenderBody()
         </div>
     </div>
+    <div id="dvAccountLookup">
 
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(function () {
+                $('#dvAccountLookup').dialog({
+                    modal: true,
+                    title: "Account Lookup",
+                    autoOpen: false,
+                    height: 400,
+                    width: 500,
+                });
+            });
+        });
+    </script>
 </body>
 </html>

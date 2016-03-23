@@ -54,6 +54,9 @@ namespace _360Accounting.Web.Models
         [Display(Name = "Code Combination")]
         public long CodeCombinationId { get; set; }
 
+        [Display(Name = "Code Combination")]
+        public string CodeCombinationString { get; set; }
+
         public List<SelectListItem> TaxCode { get; set; }
 
         public List<SelectListItem> CodeCombination { get; set; }

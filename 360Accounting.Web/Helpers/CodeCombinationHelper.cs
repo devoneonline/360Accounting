@@ -63,12 +63,10 @@ namespace _360Accounting.Web
             }
         }
 
-        public static List<CodeCombinitionViewModel> 
-            GetCodeCombinations(CodeCombinitionListModel model)
+        public static List<CodeCombinitionViewModel> GetCodeCombinations(CodeCombinitionListModel model)
         {
-            return service.GetAll(AuthenticationHelper.User.CompanyId, 
-                model.SOBId, model.SearchText, true, model.Page, 
-                model.SortColumn, model.SortDirection)
+            return
+                service.GetAll(AuthenticationHelper.User.CompanyId, model.SOBId, model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
                 .Select(x => new CodeCombinitionViewModel(x)).ToList();
         }
 

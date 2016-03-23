@@ -29,10 +29,13 @@
             </div>
         </div>
 
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(m => m.CodeCombinationId)
-                @Html.DropDownListFor(m => m.CodeCombinationId, Model.CodeCombination, new { @class = "form-control" })
+        <div class="col-md-5">
+            @Html.LabelFor(m => m.CodeCombinationId)
+            <div class="form-group input-group">
+                @Html.TextBoxFor(m => m.CodeCombinationString, new { @class = "form-control" })
+                <span class="input-group-addon"><a href="#" class="AccountLookup" ><i class="fa fa-search"></i></a></span>
+
+                @*@Html.DropDownListFor(m => m.CodeCombinationId, Model.CodeCombination, new { @class = "form-control" })*@
             </div>
         </div>
     </div>
@@ -46,10 +49,10 @@
         </div>
 
         <div class="col-md-6">
-            <div class="form-group">
+            <div class="form-group customDropDownWrapper">
                 @Html.LabelFor(m => m.TaxCodeId)
                 @Html.DropDownListFor(m => m.TaxCodeId, Model.TaxCode, new { @class = "form-control" })
-            </div>
+            </div> 
         </div>
     </div>
     <div class="clearfix">
@@ -89,8 +92,37 @@
     $(document).ready(function () {
         $('[type=date]').attr('class', 'form-control');
 
-        @*$('#btnCancel').click(function () {
-            window.location.href = '@Url.Content("~/Customer/Index")';
+        $('.AccountLookup').click(function () {
+            var sobId = 6;
+            $.ajax({
+                url: '@Url.Content("~/CodeCombinition/LookupAccountCode")',
+                data: { sobId: sobId },
+                datatype: 'html',
+                type: 'post',
+                error: function (error) { },
+                success: function (data) {
+                    $('#dvAccountLookup').html(data);
+                    $('#dvAccountLookup').dialog("open");
+                    $(this).next('input').focus();
+                    return false;
+                }
+            });
+        });
+        @*$('#CodeCombinationId').on('focus', function () {
+            var sobId = 6;
+            $.ajax({
+                url: '@Url.Content("~/CodeCombinition/LookupAccountCode")',
+                data: { sobId: sobId },
+                datatype: 'html',
+                type: 'post',
+                error: function (error) { },
+                success: function (data) {
+                    $('#dvAccountLookup').html(data);
+                    $('#dvAccountLookup').dialog("open");
+                    $(this).next('input').focus();
+                    return false;
+                }
+            });
         });*@
     });
 </script>

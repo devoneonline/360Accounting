@@ -565,6 +565,7 @@
     <Content Include="Views\Remittance\_List.cshtml" />
     <Content Include="Views\Remittance\Edit.cshtml" />
     <Content Include="Views\Remittance\_Detail.cshtml" />
+    <Content Include="Views\Shared\_LookupAccountCode.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">
