@@ -42,7 +42,7 @@ namespace _360Accounting.Web
 
         public static List<PayablePeriodModel> GetPayablePeriods(long sobId)
         {
-            return service.GetAll(AuthenticationHelper.User.CompanyId)
+            return service.GetAll(AuthenticationHelper.User.CompanyId, sobId)
                 .Select(x => new PayablePeriodModel(x)).ToList();
         }
     }

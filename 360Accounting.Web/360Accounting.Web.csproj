@@ -185,6 +185,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Common\AuthenticationHelper.cs" />
+    <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\PayablePeriodController.cs" />
     <Compile Include="Controllers\WithholdingController.cs" />
     <Compile Include="Controllers\InvoiceTypeController.cs" />
@@ -199,13 +200,13 @@
     <Compile Include="Helpers\AccountHelper.cs" />
     <Compile Include="Helpers\AccountValueHelper.cs" />
     <Compile Include="Helpers\BankHelper.cs" />
+    <Compile Include="Helpers\PaymentHelper.cs" />
     <Compile Include="Helpers\PayablePeriodHelper.cs" />
     <Compile Include="Helpers\CalendarHelper.cs" />
     <Compile Include="Helpers\CodeCombinationHelper.cs" />
     <Compile Include="Helpers\CompanyHelper.cs" />
     <Compile Include="Helpers\CurrencyHelper.cs" />
     <Compile Include="Helpers\InvoiceTypeHelper.cs" />
-    <Compile Include="Helpers\PaymentHelper.cs" />
     <Compile Include="Helpers\WithholdingHelper.cs" />
     <Compile Include="Helpers\CustomerHelper.cs" />
     <Compile Include="Helpers\CustomerSiteHelper.cs" />
@@ -249,9 +250,9 @@
     <Compile Include="Models\InvoiceModel.cs" />
     <Compile Include="Models\PaymentHeaderListModel.cs" />
     <Compile Include="Models\PaymentViewModel.cs" />
-    <Compile Include="Models\PaymentModel.cs" />
     <Compile Include="Models\PayablePeriodModel.cs" />
     <Compile Include="Models\PayablePeriodListModel.cs" />
+    <Compile Include="Models\PaymentModel.cs" />
     <Compile Include="Models\WithholdingListModel.cs" />
     <Compile Include="Models\InvoiceTypeListModel.cs" />
     <Compile Include="Models\WithholdingModel.cs" />

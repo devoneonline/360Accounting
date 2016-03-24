@@ -462,7 +462,7 @@ namespace _360Accounting.Web
             return entity;
         }
 
-        public static PaymentHeader GetEntityByModel(PaymentHeaderModel model)
+        public static PaymentHeader GetEntityByModel(PaymentViewModel model)
         {
             if (model == null) return null;
 
@@ -478,7 +478,7 @@ namespace _360Accounting.Web
                 SOBId = model.SOBId,
                 BankAccountId = model.BankAccountId,
                 VendorId = model.VendorId,
-                VendorSite = model.VendorSite
+                VendorSiteId = model.VendorSiteId,
             };
 
                 if (model.Id == 0)

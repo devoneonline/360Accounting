@@ -18,7 +18,7 @@ namespace _360Accounting.Core.Entities
 
         public long VendorId { get; set; }
 
-        public long VendorSite { get; set; }
+        public long VendorSiteId { get; set; }
 
         public long BankId { get; set; }
 

@@ -112,12 +112,12 @@ namespace _360Accounting.Web
             }
         }
 
-        public static PaymentHeaderModel Payment
+        public static PaymentViewModel Payment
         {
             get
             {
                 return HttpContext.Current.Session[SESSION_PAYMENT] == null ? null :
-                    (PaymentHeaderModel)HttpContext.Current.Session[SESSION_PAYMENT];
+                    (PaymentViewModel)HttpContext.Current.Session[SESSION_PAYMENT];
             }
             set
             {

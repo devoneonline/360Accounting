@@ -9,6 +9,6 @@ namespace _360Accounting.Core.Interfaces
 {
     public interface IPayablePeriodRepository : IRepository<PayablePeriod>
     {
-
+        IEnumerable<PayablePeriod> GetAll(long sobId, long companyId);
     }
 }

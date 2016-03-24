@@ -29,6 +29,17 @@ namespace _360Accounting.Data.Repositories
             return query;
         }
 
+        public IEnumerable<PayablePeriod> GetAll(long companyId, long sobid)
+        {
+            var query = from a in this.Context.PayablePeriods
+                        join b in this.Context.SetOfBooks on a.SOBId equals b.Id
+                        join c in this.Context.Companies on b.CompanyId equals c.Id
+                        where c.Id == companyId && a.SOBId == sobid
+                        select a;
+            return query;
+
+        }
+
         public string Insert(PayablePeriod entity)
         {
             this.Context.PayablePeriods.Add(entity);
