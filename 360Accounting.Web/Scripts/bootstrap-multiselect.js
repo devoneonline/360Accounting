@@ -384,7 +384,7 @@
             selectAllNumber: true,
             selectAllJustVisible: true,
             enableFiltering: false,
-            enableCaseInsensitiveFiltering: false,
+            enableCaseInsensitiveFiltering: true,
             enableFullValueFiltering: false,
             enableClickableOptGroups: false,
             enableCollapsibelOptGroups: false,
@@ -1548,7 +1548,6 @@
          * @returns {jQuery}
          */
         getOptionByValue: function (value) {
-
             var options = $('option', this.$select);
             var valueToCompare = value.toString();
 
@@ -1566,8 +1565,7 @@
          * @param {String} value
          * @returns {jQuery}
          */
-        getInputByValue: function (value) {
-
+        getInputByValue: function (value) {            
             var checkboxes = $('li input', this.$ul);
             var valueToCompare = value.toString();
 

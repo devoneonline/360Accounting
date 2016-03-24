@@ -26,13 +26,13 @@ namespace _360Accounting.Web.Controllers
         {
             CodeCombinitionCreateViewModel model =  new CodeCombinitionCreateViewModel();
             model.SegmentList = AccountHelper.GetSegmentListForCodeCombination(sobId);
-            model.SOBId = Convert.ToInt32(sobId);
+            model.SOBId = Convert.ToInt64(sobId);
             return PartialView("_Create", model);
         }
 
         public ActionResult LookupAccountCode(string sobId)
         {
-            var model = new object();
+            IEnumerable<Segment> model = AccountHelper.GetSegmentListForCodeCombination(sobId,true);
             return PartialView("_LookupAccountCode", model);
         }
 
@@ -42,6 +42,11 @@ namespace _360Accounting.Web.Controllers
             model.SegmentList = AccountHelper.GetSegmentListForCodeCombination(sobId);
             model.SOBId = Convert.ToInt32(sobId);
             return PartialView("_Edit", model);
+        }
+
+        public JsonResult GetLookupCode(string value)
+        {
+            return Json(AccountHelper.GetAccountIdBySegments(value));
         }
 
         public ActionResult UpdateCodeCombinition(long id, long sobId, string segmentValues, bool allowPosting, string startDate, string endDate)

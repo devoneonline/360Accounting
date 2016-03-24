@@ -17,10 +17,47 @@ namespace _360Accounting.Data.Repositories
             return value;
         }
 
-        public List<AccountValue> GetAccountValuesBySegment(long chartId, string segment)
+        public List<AccountValue> GetAccountValuesBySegment(long chartId, long sobId, string segment, int segmentNo, bool fetchSaved)
         {
-            List<AccountValue> valueList = this.Context.AccountValues.Where(x => x.Segment == segment && x.ChartId == chartId).ToList();
-            return valueList;
+            var query = this.Context.AccountValues.Where(x=> x.Segment == segment && x.ChartId == chartId);
+            IEnumerable<string> segmentList = new List<string>();
+            if (fetchSaved)
+            {
+                #region Preparing SegmentList
+
+                switch (segmentNo)
+	            {
+                    case 1:
+                        segmentList = this.Context.CodeCombinitions.Where(x => x.SOBId == sobId).Select(x => x.Segment1);
+                        break;
+                    case 2:
+                        segmentList = this.Context.CodeCombinitions.Where(x => x.SOBId == sobId).Select(x=> x.Segment2);
+                        break;
+                    case 3:
+                        segmentList = this.Context.CodeCombinitions.Where(x => x.SOBId == sobId).Select(x=> x.Segment3);
+                        break;
+                    case 4:
+                        segmentList = this.Context.CodeCombinitions.Where(x => x.SOBId == sobId).Select(x=> x.Segment4);
+                        break;
+                    case 5:
+                        segmentList = this.Context.CodeCombinitions.Where(x => x.SOBId == sobId).Select(x=> x.Segment5);
+                        break;
+                    case 6:
+                        segmentList = this.Context.CodeCombinitions.Where(x => x.SOBId == sobId).Select(x=> x.Segment6);
+                        break;
+                    case 7:
+                        segmentList = this.Context.CodeCombinitions.Where(x => x.SOBId == sobId).Select(x=> x.Segment7);
+                        break;
+                    case 8:
+                        segmentList = this.Context.CodeCombinitions.Where(x => x.SOBId == sobId).Select(x=> x.Segment8);
+                        break;
+
+                }
+                #endregion
+
+                return query.Where(x => segmentList.Contains(x.Value)).ToList();
+            }
+            return query.ToList();
         }
 
         public AccountValue GetSingle(string id, long companyId)

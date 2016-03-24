@@ -18,6 +18,11 @@ namespace _360Accounting.Web
             service = IoC.Resolve<ICodeCombinitionService>("CodeCombinitionService");
         }
 
+        public static CodeCombinitionViewModel GetSingle(long id)
+        {
+            return new CodeCombinitionViewModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
+        }
+
         public static IList<SelectListItem> GetAccounts(long sobId, DateTime startDate, DateTime endDate)
         {
             //logic editted by uzair, previous one was incorrect.
@@ -63,12 +68,10 @@ namespace _360Accounting.Web
             }
         }
 
-        public static List<CodeCombinitionViewModel> 
-            GetCodeCombinations(CodeCombinitionListModel model)
+        public static List<CodeCombinitionViewModel> GetCodeCombinations(CodeCombinitionListModel model)
         {
-            return service.GetAll(AuthenticationHelper.User.CompanyId, 
-                model.SOBId, model.SearchText, true, model.Page, 
-                model.SortColumn, model.SortDirection)
+            return
+                service.GetAll(AuthenticationHelper.User.CompanyId, model.SOBId, model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
                 .Select(x => new CodeCombinitionViewModel(x)).ToList();
         }
 

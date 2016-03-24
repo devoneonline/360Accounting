@@ -1,7 +1,7 @@
 ﻿@model _360Accounting.Web.Models.CurrencyViewModel
 
 @{
-    ViewBag.Title = "Edit Currency";
+    ViewBag.Title = "Currency";
 }
 
 <div class="container">
@@ -21,6 +21,10 @@
             @Html.ValidationSummary()
             @Html.HiddenFor(m => m.SOBId)
             @Html.HiddenFor(m => m.CompanyId)
+            @Html.HiddenFor(m => m.CreateBy)
+            @Html.HiddenFor(m => m.CreateDate)
+            @Html.HiddenFor(m => m.UpdateBy)
+            @Html.HiddenFor(m => m.UpdateDate)
 
             <div class="form-group">
                 @Html.LabelFor(m => m.CurrencyCode)

@@ -19,62 +19,68 @@
             @Html.ValidationSummary()
             <input type="hidden" name="Id" value="@Model.Id" />
             @Html.HiddenFor(m => m.CustomerId)
+            @Html.HiddenFor(m => m.CreateBy)
+            @Html.HiddenFor(m => m.CreateDate)
+            @Html.HiddenFor(m => m.UpdateBy)
+            @Html.HiddenFor(m => m.UpdateDate)
 
-    <div class="clearfix">
+            <div class="clearfix">
 
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(model => model.SiteName)
-                @Html.TextBoxFor(model => model.SiteName, new { @class = "form-control" })
-            </div>
-        </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SiteName)
+                        @Html.TextBoxFor(model => model.SiteName, new { @class = "form-control" })
+                    </div>
+                </div>
 
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(m => m.CodeCombinationId)
-                @Html.DropDownListFor(m => m.CodeCombinationId, Model.CodeCombination, new { @class = "form-control" })
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.CodeCombinationId)
+                    <div class="form-group input-group">
+                        @Html.HiddenFor(m=> m.CodeCombinationId)
+                        @Html.TextBoxFor(m => m.CodeCombinationString, new { @class = "form-control AccountLookup", @readonly = "readonly", @placeholder = "Click to get account" })
+                        <span class="input-group-addon"><a href="#" class="AccountLookup" tabindex="-1"><i class="fa fa-search"></i></a></span>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <div class="clearfix">
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(model => model.SiteContact)
-                @Html.TextBoxFor(model => model.SiteContact, new { @class = "form-control" })
-            </div>
-        </div>
+            <div class="clearfix">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SiteContact)
+                        @Html.TextBoxFor(model => model.SiteContact, new { @class = "form-control" })
+                    </div>
+                </div>
 
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(m => m.TaxCodeId)
-                @Html.DropDownListFor(m => m.TaxCodeId, Model.TaxCode, new { @class = "form-control" })
+                <div class="col-md-6">
+                    <div class="form-group customDropDownWrapper">
+                        @Html.LabelFor(m => m.TaxCodeId)
+                        @Html.DropDownListFor(m => m.TaxCodeId, Model.TaxCode, new { @class = "form-control" })
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="clearfix">
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(model => model.SiteAddress)
-                @Html.TextAreaFor(model => model.SiteAddress, new { @class = "form-control" })
+            <div class="clearfix">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SiteAddress)
+                        @Html.TextAreaFor(model => model.SiteAddress, new { @class = "form-control" })
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <div class="clearfix">
-        <div class="col-md-2">
-            <div class="form-group">
-                @Html.LabelFor(model => model.StartDate)
-                @Html.EditorFor(model => model.StartDate, new { @class = "form-control" })
+            <div class="clearfix">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.StartDate)
+                        @Html.EditorFor(model => model.StartDate, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EndDate)
+                        @Html.EditorFor(model => model.EndDate, new { @class = "form-control" })
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-group">
-                @Html.LabelFor(model => model.EndDate)
-                @Html.EditorFor(model => model.EndDate, new { @class = "form-control" })
-            </div>
-        </div>
-    </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-default tstyCus-btn" />
@@ -89,8 +95,21 @@
     $(document).ready(function () {
         $('[type=date]').attr('class', 'form-control');
 
-        @*$('#btnCancel').click(function () {
-            window.location.href = '@Url.Content("~/Customer/Index")';
-        });*@
+        $('.AccountLookup').click(function () {
+            var sobId = 18;
+            $.ajax({
+                url: '@Url.Content("~/CodeCombinition/LookupAccountCode")',
+                data: { sobId: sobId },
+                datatype: 'html',
+                type: 'post',
+                error: function (error) { },
+                success: function (data) {
+                    $('#dvAccountLookup').html(data);
+                    $('#dvAccountLookup').dialog("open");
+                    $(this).next('input').focus();
+                    return false;
+                }
+            });
+        });
     });
 </script>

@@ -18,17 +18,17 @@ namespace _360Accounting.Web
             service = IoC.Resolve<IReceiptService>("ReceiptService");
         }
 
-        public static List<ReceiptViewModel> GetReceipts(long bankId,
-            long bankAccountId, [Optional]DateTime receiptDate)
+        public static IEnumerable<ReceiptViewModel> GetReceipts(long bankId,
+            long bankAccountId, DateTime? receiptDate = null)
         {
             return service.GetReceipts(SessionHelper.SOBId, bankId, bankAccountId, receiptDate)
                 .Select(x => new ReceiptViewModel(x)).ToList();
         }
 
-        public static List<SelectListItem> GetReceiptList(long bankId, long bankAccountId,
-            [Optional]DateTime receiptDate)
+        public static IEnumerable<SelectListItem> GetReceiptList(long bankId, long bankAccountId,
+            DateTime? receiptDate = null)
         {
-            List<SelectListItem> receiptList = GetReceipts(bankId, bankAccountId, receiptDate)
+            IEnumerable<SelectListItem> receiptList = GetReceipts(bankId, bankAccountId, receiptDate)
                 .Select(x => new SelectListItem
                 {
                     Text = "RECEIPT # " + x.ReceiptNumber + " of CUSTOMER " + x.CustomerName + " Amounting : " + x.ReceiptAmount,

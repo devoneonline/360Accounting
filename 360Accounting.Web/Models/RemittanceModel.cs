@@ -26,12 +26,13 @@ namespace _360Accounting.Web.Models
         public long BankAccountId { get; set; }
     }
 
-    public class RemittanceModel
+    public class RemittanceModel : ModelBase
     {
         #region Properties
         public IList<RemittanceDetailModel> Remittances { get; set; }
         
         public long Id { get; set; }
+        public long CompanyId { get; set; }
         public long SOBId { get; set; }
         public long BankId { get; set; }
         public long BankAccountId { get; set; }
@@ -45,7 +46,6 @@ namespace _360Accounting.Web.Models
         #region Constructors
         public RemittanceModel()
         {
-            this.RemitDate = DateTime.Now;
         }
 
         public RemittanceModel(Remittance entity)
@@ -59,14 +59,20 @@ namespace _360Accounting.Web.Models
             this.RemitDate = entity.RemitDate;
             this.RemitNo = entity.RemitNo;
             this.SOBId = entity.SOBId;
+            this.CompanyId = entity.CompanyId;
+            this.CreateBy = entity.CreateBy;
+            this.CreateDate = entity.CreateDate;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
         }
         #endregion
     }
 
-    public class RemittanceDetailModel
+    public class RemittanceDetailModel : ModelBase
     {
         #region Properties
         public long Id { get; set; }
+        public long CompanyId { get; set; }
         public long SOBId { get; set; }
         public long BankId { get; set; }
         public long BankAccountId { get; set; }
@@ -89,7 +95,14 @@ namespace _360Accounting.Web.Models
             this.RemitDate = entity.RemitDate;
             this.RemitNo = entity.RemitNo;
             this.SOBId = entity.SOBId;
+            this.CompanyId = entity.CompanyId;
+            this.CreateBy = entity.CreateBy;
+            this.CreateDate = entity.CreateDate;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
         }
         #endregion
+
+        
     }
 }

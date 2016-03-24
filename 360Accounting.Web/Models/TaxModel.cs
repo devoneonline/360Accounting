@@ -17,11 +17,13 @@ namespace _360Accounting.Web.Models
         public long SOBId { get; set; }
     }
 
-    public class TaxModel
+    public class TaxModel : ModelBase
     {
         #region Properties
         public long Id { get; set; }
         public long SOBId { get; set; }
+        public long CompanyId { get; set; }
+
 
         [Display(Name = "Tax Name")]
         public string TaxName { get; set; }
@@ -53,11 +55,15 @@ namespace _360Accounting.Web.Models
             this.SOBId = entity.SOBId;
             this.StartDate = entity.StartDate;
             this.TaxName = entity.TaxName;
+            this.CompanyId = entity.CompanyId;
+            this.CreateBy = entity.CreateBy;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
         }
         #endregion
     }
 
-    public class TaxDetailModel
+    public class TaxDetailModel : ModelBase
     {
         #region Properties
         public long Id { get; set; }
@@ -82,6 +88,10 @@ namespace _360Accounting.Web.Models
             this.Rate = entity.Rate;
             this.StartDate = entity.StartDate;
             this.TaxId = entity.TaxId;
+            this.CreateBy = entity.CreateBy;
+            this.CreateDate = entity.CreateDate;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
         }
         #endregion
     }

@@ -49,5 +49,15 @@ namespace _360Accounting.Web
         {
             service.Delete(id, AuthenticationHelper.User.CompanyId);
         }
+
+        public static List<SelectListItem> GetSetOfBookList()
+        {
+            List<SelectListItem> list = GetSetOfBooks().Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.Id.ToString()
+                }).ToList();
+            return list;
+        }
     }
 }

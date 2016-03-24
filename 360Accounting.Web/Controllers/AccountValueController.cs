@@ -87,7 +87,8 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult AccountValuesPartial(string sobId, string segment)
         {
-            List<AccountValueViewModel> accountValuesList = AccountValueHelper.GetAccountValues(AccountHelper.GetAccountBySOBId(sobId).Id, segment);
+            //List<AccountValueViewModel> accountValuesList = AccountValueHelper.GetAccountValues(AccountHelper.GetAccountBySOBId(sobId).Id, segment);
+            List<AccountValueViewModel> accountValuesList = new List<AccountValueViewModel>();
             return PartialView("_List", accountValuesList);
         }
     }

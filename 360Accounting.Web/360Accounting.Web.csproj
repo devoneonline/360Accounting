@@ -186,6 +186,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Common\AuthenticationHelper.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
+    <Compile Include="Controllers\PayableInvoiceController.cs" />
     <Compile Include="Controllers\PayablePeriodController.cs" />
     <Compile Include="Controllers\WithholdingController.cs" />
     <Compile Include="Controllers\InvoiceTypeController.cs" />
@@ -201,6 +202,7 @@
     <Compile Include="Helpers\AccountValueHelper.cs" />
     <Compile Include="Helpers\BankHelper.cs" />
     <Compile Include="Helpers\PaymentHelper.cs" />
+    <Compile Include="Helpers\PayableInvoiceHelper.cs" />
     <Compile Include="Helpers\PayablePeriodHelper.cs" />
     <Compile Include="Helpers\CalendarHelper.cs" />
     <Compile Include="Helpers\CodeCombinationHelper.cs" />
@@ -209,7 +211,6 @@
     <Compile Include="Helpers\InvoiceTypeHelper.cs" />
     <Compile Include="Helpers\WithholdingHelper.cs" />
     <Compile Include="Helpers\CustomerHelper.cs" />
-    <Compile Include="Helpers\CustomerSiteHelper.cs" />
     <Compile Include="Helpers\InvoiceHelper.cs" />
     <Compile Include="Helpers\InvoiceSourceHelper.cs" />
     <Compile Include="Helpers\JVHelper.cs" />
@@ -248,6 +249,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\InvoiceModel.cs" />
+    <Compile Include="Models\PayableInvoiceModel.cs" />
     <Compile Include="Models\PaymentHeaderListModel.cs" />
     <Compile Include="Models\PaymentViewModel.cs" />
     <Compile Include="Models\PayablePeriodModel.cs" />
@@ -282,7 +284,6 @@
     <Compile Include="Models\CustomerModel.cs" />
     <Compile Include="Models\FeatureViewModel.cs" />
     <Compile Include="Models\InvoiceSourceViewModel.cs" />
-    <Compile Include="Models\JournalVoucherCreateModel.cs" />
     <Compile Include="Models\JournalVoucherListModel.cs" />
     <Compile Include="Models\JournalVoucherViewModel.cs" />
     <Compile Include="Models\JVModel.cs" />
@@ -464,16 +465,13 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\User\ManageUser.cshtml" />
-    <Content Include="Views\Account\Create.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Account\_List.cshtml" />
     <Content Include="Views\AccountValue\Edit.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\Shared\_Menu.cshtml" />
-    <Content Include="Views\Company\Create.cshtml" />
     <Content Include="Views\Company\Edit.cshtml" />
     <Content Include="Views\Company\Index.cshtml" />
-    <Content Include="Views\SetOfBook\Create.cshtml" />
     <Content Include="Views\SetOfBook\Edit.cshtml" />
     <Content Include="Views\SetOfBook\Index.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
@@ -484,7 +482,6 @@
     <Content Include="Views\CodeCombinition\Index.cshtml" />
     <Content Include="Views\CodeCombinition\_Edit.cshtml" />
     <Content Include="Views\CodeCombinition\_List.cshtml" />
-    <Content Include="Views\Currency\Create.cshtml" />
     <Content Include="Views\Currency\Edit.cshtml" />
     <Content Include="Views\Currency\Index.cshtml" />
     <Content Include="Views\Currency\_List.cshtml" />
@@ -495,13 +492,8 @@
     <Content Include="Views\Calendar\_List.cshtml" />
     <Content Include="Views\Calendar\Edit.cshtml" />
     <Content Include="Views\Calendar\ChangeStatus.cshtml" />
-    <Content Include="Views\JournalVoucher\Index.cshtml" />
-    <Content Include="Views\JournalVoucher\Create.cshtml" />
-    <Content Include="Views\JournalVoucher\Edit.cshtml" />
-    <Content Include="Views\JournalVoucher\_JournalVoucherDetailList.cshtml" />
     <Content Include="Views\User\CreateCompanyFeatureList.cshtml" />
     <Content Include="Views\User\FeatureSet.cshtml" />
-    <Content Include="Views\JournalVoucher\_List.cshtml" />
     <Content Include="Views\Calendar\_OldList.cshtml" />
     <Content Include="Views\User\_List.cshtml" />
     <Content Include="Views\User\UserList.cshtml" />
@@ -526,7 +518,6 @@
     <Content Include="Views\JV\Create.cshtml" />
     <Content Include="Views\JV\Index.cshtml" />
     <Content Include="Views\JV\_List.cshtml" />
-    <Content Include="Views\Customer\Create.cshtml" />
     <Content Include="Views\Customer\Index.cshtml" />
     <Content Include="Views\Customer\_List.cshtml" />
     <Content Include="Views\Customer\Edit.cshtml" />
@@ -566,6 +557,10 @@
     <Content Include="Views\Remittance\_List.cshtml" />
     <Content Include="Views\Remittance\Edit.cshtml" />
     <Content Include="Views\Remittance\_Detail.cshtml" />
+    <Content Include="Views\PayableInvoice\Index.cshtml" />
+    <Content Include="Views\PayableInvoice\_List.cshtml" />
+    <Content Include="Views\PayableInvoice\Edit.cshtml" />
+    <Content Include="Views\Shared\_LookupAccountCode.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

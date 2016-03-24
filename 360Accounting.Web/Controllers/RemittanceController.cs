@@ -1,4 +1,5 @@
-﻿using _360Accounting.Web.Models;
+﻿using _360Accounting.Common;
+using _360Accounting.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -171,7 +172,7 @@ namespace _360Accounting.Web.Controllers
             
             if (model == null)
             {
-                List<SelectListItem> Receipts = ReceiptHelper
+                IEnumerable<SelectListItem> Receipts = ReceiptHelper
                     .GetReceiptList(bankId, bankAccountId);
 
                 model = new RemittanceModel
@@ -180,8 +181,9 @@ namespace _360Accounting.Web.Controllers
                     BankId = bankId,
                     SOBId = sobId,
                     RemitNo = "New",
-                    RemitDate = DateTime.Now
+                    RemitDate = Const.CurrentDate
                 };
+                SessionHelper.DocumentDate = model.RemitDate;
                 SessionHelper.Remittance = model;
             }
             return View("Edit", model);
@@ -247,10 +249,10 @@ namespace _360Accounting.Web.Controllers
                         Convert.ToInt32(model.Banks.First().Value) : 0;
                 }
 
-                if (model.BankAccounts == null && model.SetOfBooks.Any() && model.Banks.Any())
+                if (model.BankAccounts == null && model.Banks.Any())
                 {
                     model.BankAccounts = BankHelper.GetBankAccountList
-                        (Convert.ToInt32(model.BankAccounts.First().Value));
+                        (Convert.ToInt32(model.Banks.First().Value));
                     model.BankAccountId = model.BankAccounts.Any() ?
                         Convert.ToInt32(model.BankAccounts.First().Value) : 0;
                 }

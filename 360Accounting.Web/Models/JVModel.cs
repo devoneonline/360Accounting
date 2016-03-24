@@ -8,7 +8,7 @@ using System.Web;
 
 namespace _360Accounting.Web.Models
 {
-    public class GLHeaderModel
+    public class GLHeaderModel : ModelBase
     {
         public long Id { get; set; }
         
@@ -51,11 +51,15 @@ namespace _360Accounting.Web.Models
             this.GLDate = entity.GLDate;
             this.DocumentNo = entity.DocumentNo;
             this.ConversionRate = entity.ConversionRate;
+            this.CreateBy = entity.CreateBy;
+            this.CreateDate = entity.CreateDate;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
         }
     }
 
 
-    public class GLLinesModel
+    public class GLLinesModel : ModelBase
     {
         public long Id { get; set; }
         public long HeaderId { get; set; }
@@ -86,6 +90,10 @@ namespace _360Accounting.Web.Models
             this.Quantity = entity.Qty;
             this.Description = entity.Description;
             this.TaxRateCode = entity.TaxRateCode;
+            this.CreateBy = entity.CreateBy;
+            this.CreateDate = entity.CreateDate;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
         }
     }
 }

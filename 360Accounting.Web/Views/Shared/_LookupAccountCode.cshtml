@@ -1,0 +1,52 @@
+﻿@model  IEnumerable<_360Accounting.Web.Models.Segment>
+
+@{
+    ViewBag.Title = "Account Combination";
+}
+
+
+@{ int count = 0; }
+    @foreach (var item in Model)
+    {
+        count++;
+        <div class="clearfix">
+            <div class="col-lg-12 customDropDownWrapper form-group">
+                @{string comboName = "Combo_" + count.ToString();}
+                @Html.Label(item.SegmentName)
+                @Html.DropDownList(comboName, item.SegmentValueList, new { @class = "form-control" })
+            </div>
+        </div>
+    }
+    <div class="clearfix">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <input type="button" value="Select" class="tstyCus-btn btn btn-default" id="btnSelect" />
+            </div>
+        </div>
+    </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('select').multiselect({
+            enableFiltering: true
+        });
+
+        $('#btnSelect').click(function () {
+            var value=''; 
+            $(':selected').each(function (index, element) {
+                if (value != '')
+                {
+                    value = value + '.';
+                }
+                value = value + element.value;
+            });
+            var url = '@Url.Content("~/CodeCombinition/GetLookupCode")';
+            $.post(url, { value: value }, function (result) {
+                $('#CodeCombinationString').val(value);
+                $('#CodeCombinationId').val(result);
+                $('#dvAccountLookup').dialog('close');
+            });
+        });
+
+    });
+</script>

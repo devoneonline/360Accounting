@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
-    public class AccountValueViewModel:ModelBase
+    public class AccountValueViewModel : ModelBase
     {
         #region Constructors
         public AccountValueViewModel()
@@ -28,11 +28,15 @@ namespace _360Accounting.Web.Models
             this.ValueName = entity.ValueName;
             this.CreateBy = entity.CreateBy;
             this.CreateDate = entity.CreateDate;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
         }
         #endregion
 
         #region Properties
         public long Id { get; set; }
+
+        public long CompanyId { get; set; }
 
         public long ChartId { get; set; }
 

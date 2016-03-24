@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace _360Accounting.Web
 {
@@ -14,6 +15,17 @@ namespace _360Accounting.Web
         static InvoiceTypeHelper()
         {
             service = IoC.Resolve<IInvoiceTypeService>("InvoiceTypeService");
+        }
+
+        public static List<SelectListItem> GetInvoiceTypes(long sobId, DateTime startDate, DateTime endDate)
+        {
+            List<SelectListItem> list = service.GetAll(AuthenticationHelper.CompanyId.Value, sobId, startDate, endDate)
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Description,
+                    Value = x.Id.ToString()
+                }).ToList();
+            return list;
         }
 
         public static string Save(InvoiceTypeModel model)

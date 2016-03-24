@@ -46,6 +46,8 @@ namespace _360Accounting.Web.Models
             this.SegmentName8 = bo.SegmentName8;
             this.CreateBy = bo.CreateBy;
             this.CreateDate = bo.CreateDate;
+            this.UpdateBy = bo.UpdateBy;
+            this.UpdateDate = bo.UpdateDate;
         }
         #endregion
 

@@ -8,7 +8,7 @@ using System.Web;
 
 namespace _360Accounting.Web.Models
 {
-    public class CustomerModel
+    public class CustomerModel : ModelBase
     {
         public CustomerModel(Customer entity)
         {
@@ -18,6 +18,11 @@ namespace _360Accounting.Web.Models
             this.EndDate = entity.EndDate;
             this.Id = entity.Id;
             this.StartDate = entity.StartDate;
+            this.CompanyId = entity.CompanyId;
+            this.CreateBy = entity.CreateBy;
+            this.CreateDate = entity.CreateDate;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
         }
 
         public CustomerModel()

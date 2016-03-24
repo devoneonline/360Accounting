@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace _360Accounting.Web
 {
@@ -42,6 +43,11 @@ namespace _360Accounting.Web
         {
             return service.GetWithholdings(AuthenticationHelper.User.CompanyId, sobId, codeCombinitionId, vendorId)
                 .Select(a => new WithholdingModel(a)).ToList();
+        }
+
+        public static List<SelectListItem> GetWithHoldingList(long vendorId, long vendorSiteId, DateTime startDate, DateTime endDate)
+        {
+            throw new NotImplementedException();
         }
     }
 }

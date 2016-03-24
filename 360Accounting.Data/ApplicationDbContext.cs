@@ -20,6 +20,10 @@ namespace _360Accounting.Data
 
         #region DbSets
 
+        public DbSet<PayableInvoiceDetail> PayableInvoiceDetails { get; set; }
+
+        public DbSet<PayableInvoice> PayableInvoices { get; set; }
+
         public DbSet<Remittance> Remittances { get; set; }
 
         public DbSet<InvoiceDetail> InvoiceDetails { get; set; }
@@ -97,6 +101,12 @@ namespace _360Accounting.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ////base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<PayableInvoice>().ToTable("tbPayableInvoice");
+            modelBuilder.Entity<PayableInvoice>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<PayableInvoiceDetail>().ToTable("tbPayableInvoiceDetail");
+            modelBuilder.Entity<PayableInvoiceDetail>().HasKey(t => t.Id);
 
             modelBuilder.Entity<Remittance>().ToTable("tbRemittance");
             modelBuilder.Entity<Remittance>().HasKey(t => t.Id);

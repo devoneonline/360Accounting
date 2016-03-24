@@ -23,9 +23,9 @@ namespace _360Accounting.Service
             return this.repository.GetAccountValueBySegment(chartId, segment);
         }
 
-        public List<AccountValue> GetAccountValuesBySegment(long chartId, string segment)
+        public List<AccountValue> GetAccountValuesBySegment(long chartId, long sobId, string segment, int segmentNo, bool fetchSaved)
         {
-            return this.repository.GetAccountValuesBySegment(chartId, segment);
+            return this.repository.GetAccountValuesBySegment(chartId, sobId, segment, segmentNo, fetchSaved);
         }
 
         public AccountValue GetSingle(string id, long companyId)
@@ -57,10 +57,5 @@ namespace _360Accounting.Service
         {
             return this.repository.Count(companyId);
         }
-
-        //public List<AccountValue> GetAll(long companyId, string segment)
-        //{
-        //    return this.repository.GetAll(companyId, segment).ToList();
-        //}
     }
 }

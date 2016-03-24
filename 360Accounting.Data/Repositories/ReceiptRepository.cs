@@ -12,7 +12,7 @@ namespace _360Accounting.Data.Repositories
 {
     public class ReceiptRepository : Repository, IReceiptRepository
     {
-        public IEnumerable<ReceiptView> GetReceipts(long sobId, long bankId, long bankAccountId)
+        public IEnumerable<ReceiptView> GetReceipts(long sobId, long bankId, long bankAccountId, DateTime? date = null)
         {
             var query = from a in this.Context.Receipts
                         join b in this.Context.SetOfBooks on a.SOBId equals b.Id
@@ -45,6 +45,10 @@ namespace _360Accounting.Data.Repositories
                             CustomerSiteName = h.SiteName,
                             PeriodId = a.PeriodId
                         };
+
+            if (date != null)
+                query = query.Where(x => x.ReceiptDate == date);
+
             return query;
         }
 

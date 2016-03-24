@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace _360Accounting.Web
 {
@@ -42,6 +43,30 @@ namespace _360Accounting.Web
             return model.Id > 0
                 ? service.Update(entity)
                 : service.Insert(entity);
+        }
+
+        public static List<SelectListItem> GetVendorSiteList(long vendorId)
+        {
+            return GetAllSites(vendorId).Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.Id.ToString()
+            }).ToList();
+        }
+
+        public static List<VendorModel> GetAll(DateTime startDate, DateTime endDate)
+        {
+            var entityList = service.GetAll(AuthenticationHelper.CompanyId.Value, startDate, endDate);
+            return entityList.Select(x => new VendorModel(x)).ToList();
+        }
+
+        public static List<SelectListItem> GetVendorList(DateTime startDate, DateTime endDate)
+        {
+            return GetAll(startDate, endDate).Select(x => new SelectListItem
+                {
+                    Text = x.Name,
+                    Value = x.Id.ToString()
+                }).ToList();
         }
 
         public static VendorModel GetSingle(string id)

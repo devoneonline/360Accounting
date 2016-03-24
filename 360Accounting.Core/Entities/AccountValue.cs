@@ -27,5 +27,7 @@ namespace _360Accounting.Core.Entities
         public string AccountType { get; set; }
 
         public int? Levl { get; set; }
+
+        public long CompanyId { get; set; }
     }
 }

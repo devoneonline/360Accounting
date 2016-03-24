@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
-    public class CustomerSiteViewModel
+    public class CustomerSiteViewModel : ModelBase
     {
         public CustomerSiteViewModel(CustomerSiteView entity)
         {
@@ -27,6 +27,10 @@ namespace _360Accounting.Web.Models
                 this.StartDate = entity.StartDate;
                 this.CodeCombinationName = Utility.CodeCombination(entity.CodeCombination, ".");
                 this.TaxCodeName = entity.TaxCodeName;
+                this.CreateBy = entity.CreateBy;
+                this.CreateDate = entity.CreateDate;
+                this.UpdateBy = entity.UpdateBy;
+                this.UpdateDate = entity.UpdateDate;
             }
         }
 

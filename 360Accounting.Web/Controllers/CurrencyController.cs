@@ -35,20 +35,20 @@ namespace _360Accounting.Web.Controllers
         {
             CurrencyViewModel model = new CurrencyViewModel();
             model.SOBId = sobId;
-            return View(model);
+            return View("Edit", model);
         }
 
-        [HttpPost]
-        public ActionResult Create(CurrencyViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                string result = CurrencyHelper.SaveCurrency(model);
-                return RedirectToAction("Index");
-            }
+        //[HttpPost]
+        //public ActionResult Create(CurrencyViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        string result = CurrencyHelper.SaveCurrency(model);
+        //        return RedirectToAction("Index");
+        //    }
 
-            return View(model);
-        }
+        //    return View(model);
+        //}
 
         public ActionResult Edit(string id)
         {
