@@ -58,12 +58,11 @@
     </Compile>
     <Compile Include="Services\PayableInvoiceDetailService.cs" />
     <Compile Include="Services\PayableInvoiceService.cs" />
-    <Compile Include="Services\PaymentHeaderService.cs" />
-    <Compile Include="Services\PaymentInvoiceLineService.cs" />
     <Compile Include="Services\InvoiceDetailService.cs" />
     <Compile Include="Services\InvoiceService.cs" />
     <Compile Include="Services\PayablePeriodService.cs" />
     <Compile Include="Services\InvoiceTypeService.cs" />
+    <Compile Include="Services\PaymentService.cs" />
     <Compile Include="Services\WithholdingService.cs" />
     <Compile Include="Services\ReceiptService.cs" />
     <Compile Include="Services\AccountService.cs" />

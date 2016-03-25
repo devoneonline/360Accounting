@@ -33,6 +33,11 @@ namespace _360Accounting.Service
             return this.repository.GetAll(companyId);
         }
 
+        public IEnumerable<PayablePeriod> GetAll(long companyId, long sobId)
+        {
+            return this.repository.GetAll(companyId, sobId);
+        }
+
         public string Insert(PayablePeriod entity)
         {
             if (entity.IsValid())

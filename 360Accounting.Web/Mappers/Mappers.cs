@@ -638,7 +638,7 @@ namespace _360Accounting.Web
             return entity;
         }
 
-        public static PaymentHeader GetEntityByModel(PaymentHeaderModel model)
+        public static PaymentHeader GetEntityByModel(PaymentViewModel model)
         {
             if (model == null) return null;
 
@@ -654,7 +654,7 @@ namespace _360Accounting.Web
             {
                 entity.CreateBy = model.CreateBy;
                 entity.CreateDate = model.CreateDate;
-                entity.CompanyId = model.CompanyId;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value; //Not exist.. have to do this..
             }
 
             entity.Amount = model.Amount;
@@ -667,7 +667,7 @@ namespace _360Accounting.Web
             entity.SOBId = model.SOBId;
             entity.BankAccountId = model.BankAccountId;
             entity.VendorId = model.VendorId;
-            entity.VendorSite = model.VendorSite;
+            entity.VendorSiteId = model.VendorSiteId;
             entity.UpdateBy = AuthenticationHelper.UserId;
             entity.UpdateDate = DateTime.Now;
             return entity;

@@ -13,6 +13,8 @@ namespace _360Accounting.Data.Repositories
     {
         public Invoice GetSingle(long companyId, long sobId, long periodId, long currencyId)
         {
+
+
             IEnumerable<Invoice> entityList = this.GetAll(companyId);
             if (entityList.Count() > 0)
             {
@@ -28,8 +30,7 @@ namespace _360Accounting.Data.Repositories
 
         public IEnumerable<Invoice> GetAll(long companyId, long sobId, long periodId, long currencyId)
         {
-            IEnumerable<Invoice> list = this.Context.Invoices
-                .Where(x => x.SOBId == sobId && 
+            IEnumerable<Invoice> list = this.Context.Invoices.Where(x => x.SOBId == sobId && 
                     x.PeriodId == periodId &&
                     x.CurrencyId == currencyId).ToList();
             return list;
@@ -37,14 +38,14 @@ namespace _360Accounting.Data.Repositories
 
         public Invoice GetSingle(string id, long companyId)
         {
-            Invoice invoice = this.GetAll(companyId)
-                .FirstOrDefault(x => x.Id == Convert.ToInt32(id));
+            long longId = Convert.ToInt64(id);
+            Invoice invoice = this.Context.Invoices.FirstOrDefault(a => a.CompanyId == companyId && a.Id == longId);
             return invoice;
         }
 
         public IEnumerable<Invoice> GetAll(long companyId)
         {
-            IEnumerable<Invoice> list = this.Context.Invoices;
+            IEnumerable<Invoice> list = this.Context.Invoices.Where(x => x.CompanyId == companyId);
             return list;
         }
 

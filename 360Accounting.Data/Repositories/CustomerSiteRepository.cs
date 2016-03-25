@@ -14,8 +14,11 @@ namespace _360Accounting.Data.Repositories
     {
         public CustomerSite GetSingle(string id, long companyId)
         {
-            IEnumerable<CustomerSite> customerSites = this.Context.CustomerSites;
-            CustomerSite custSite = customerSites.FirstOrDefault(x => x.Id == Convert.ToInt32(id));
+            long longId = Convert.ToInt64(id);
+            CustomerSite custSite = (from a in this.Context.CustomerSites
+                                    join b in this.Context.Customers on a.CustomerId equals b.Id
+                                    where b.CompanyId == companyId && a.Id == longId
+                                    select a).FirstOrDefault();
             return custSite;
         }
 

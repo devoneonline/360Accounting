@@ -94,11 +94,10 @@
     <Compile Include="IoC.cs" />
     <Compile Include="IRepository\IPayableInvoiceDetailRepository.cs" />
     <Compile Include="IRepository\IPayableInvoiceRepository.cs" />
-    <Compile Include="IRepository\IPaymentHeaderRepository.cs" />
-    <Compile Include="IRepository\IPaymentInvoiceLineRepository.cs" />
     <Compile Include="IRepository\IInvoiceRepository.cs" />
     <Compile Include="IRepository\IInvoiceDetailRepository.cs" />
     <Compile Include="IRepository\IPayablePeriodRepository.cs" />
+    <Compile Include="IRepository\IPaymentRepository.cs" />
     <Compile Include="IRepository\IWithholdingRepository.cs" />
     <Compile Include="IRepository\IInvoiceTypeRepository.cs" />
     <Compile Include="IRepository\IRemittanceRepository.cs" />
@@ -131,11 +130,10 @@
     <Compile Include="IService\IBankAccountService.cs" />
     <Compile Include="IService\IPayableInvoiceDetailService.cs" />
     <Compile Include="IService\IPayableInvoiceService.cs" />
-    <Compile Include="IService\IPaymentHeaderService.cs" />
-    <Compile Include="IService\IPaymentInvoiceLineService.cs" />
     <Compile Include="IService\IInvoiceDetailService.cs" />
     <Compile Include="IService\IInvoiceService.cs" />
     <Compile Include="IService\IPayablePeriodService.cs" />
+    <Compile Include="IService\IPaymentService.cs" />
     <Compile Include="IService\IWithholdingService.cs" />
     <Compile Include="IService\IInvoiceTypeService.cs" />
     <Compile Include="IService\IReceiptService.cs" />

@@ -35,8 +35,7 @@
   <object name="PayablePeriodRepository" type="_360Accounting.Data.Repositories.PayablePeriodRepository, 360Accounting.Data"> </object>
   <object name="WithholdingRepository" type="_360Accounting.Data.Repositories.WithholdingRepository, 360Accounting.Data"> </object>
   <object name="InvoiceTypeRepository" type="_360Accounting.Data.Repositories.InvoiceTypeRepository, 360Accounting.Data"> </object>
-  <object name="PaymentHeaderRepository" type="_360Accounting.Data.Repositories.PaymentHeaderRepository, 360Accounting.Data"> </object>
-  <object name="PaymentInvoiceLineRepository" type="_360Accounting.Data.Repositories.PaymentInvoiceLineRepository, 360Accounting.Data"> </object>
+  <object name="PaymentRepository" type="_360Accounting.Data.Repositories.PaymentRepository, 360Accounting.Data"> </object>
 
 
   <object name="PayableInvoiceDetailService" type="_360Accounting.Service.PayableInvoiceDetailService, 360Accounting.Service" >
@@ -137,14 +136,10 @@
   <object name="InvoiceTypeService" type="_360Accounting.Service.InvoiceTypeService, 360Accounting.Service">
     <constructor-arg name="repo" ref="InvoiceTypeRepository" />
   </object>
-  <object name="PaymentHeaderService" type="_360Accounting.Service.PaymentHeaderService, 360Accounting.Service">
-    <constructor-arg name="repo" ref="PaymentHeaderRepository" />
+  <object name="PaymentService" type="_360Accounting.Service.PaymentService, 360Accounting.Service">
+    <constructor-arg name="repo" ref="PaymentRepository" />
   </object>
-  <object name="PaymentInvoiceLineService" type="_360Accounting.Service.PaymentInvoiceLineService, 360Accounting.Service">
-    <constructor-arg name="repo" ref="PaymentInvoiceLineRepository" />
-  </object>
-
-
+  
 </objects>
 
 
