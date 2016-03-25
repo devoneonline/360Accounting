@@ -27,7 +27,7 @@
     </div>
 
     <div id="dvList" class="col-lg-12 cusGridWrapper">
-        @Html.Action("TaxPartialByModel", Model)
+        @Html.Action("ListPartial", new { sobId = Model.SOBId })
     </div>
 </div>
 
@@ -52,7 +52,7 @@
         });
 
         $('#SOBId').change(function () {
-            var url = '@Url.Content("~/Tax/TaxPartial")';
+            var url = '@Url.Content("~/Tax/ListPartial")';
             $.get(url, { sobId: $(this).val() },
                 function (data)
                 {

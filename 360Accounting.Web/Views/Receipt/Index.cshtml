@@ -51,7 +51,7 @@
             <input type="button" value="Create New" class="btn btn-default tstyCus-btn" id="btnNew" />
         </div>
         <div id="dvList" class="col-lg-12 cusGridWrapper">
-            @Html.Action("ReceiptListPartial", new { periodId = Model.PeriodId, sobId = Model.SOBId, customerId=Model.CustomerId, currencyId=Model.CurrencyId })
+            @Html.Action("ListPartial", new { periodId = Model.PeriodId, sobId = Model.SOBId, customerId=Model.CustomerId, currencyId=Model.CurrencyId })
         </div>
     </div>
 </div>
@@ -65,7 +65,7 @@
         $('#SOBId').change(function () {
             $('#dvList').html("Please wait..");
             $.ajax({
-                url: '@Url.Content("~/Receipt/ReceiptListPartial")',
+                url: '@Url.Content("~/Receipt/ListPartial")',
                 data: {
                     periodId: $('#PeriodId').val(),
                     sobId: $('#BankId').val(),

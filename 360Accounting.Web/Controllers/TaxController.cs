@@ -33,13 +33,7 @@ namespace _360Accounting.Web.Controllers
             return View(model);
         }
 
-        public ActionResult TaxPartialByModel(TaxListModel model)
-        {
-            SessionHelper.SOBId = model.SOBId;
-            return PartialView("_List", TaxHelper.GetTaxes(model.SOBId));
-        }
-
-        public ActionResult TaxPartial(long sobId)
+        public ActionResult ListPartial(long sobId)
         {
             SessionHelper.SOBId = sobId;
             return PartialView("_List", TaxHelper.GetTaxes(sobId));

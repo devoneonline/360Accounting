@@ -42,7 +42,7 @@
     </div>
 
     <div id="dvList" class="col-lg-12 cusGridWrapper">
-        @Html.Action("ListByModelPartial", Model)
+        @Html.Action("ListPartial", new { sobId = Model.SOBId, periodId = Model.PeriodId, currencyId = Model.CurrencyId })
     </div>
 </div>
 
@@ -71,7 +71,7 @@
         jQuery.ajaxSetup({ async: false });
 
         function RefreshGrid() {
-            var url = '@Url.Content("~/Invoice/InvoicePartial")';
+            var url = '@Url.Content("~/Invoice/ListPartial")';
 
             $.get(url, { sobId: $('#SOBId').val(), periodId: $('#PeriodId').val(), currencyId: $('#CurrencyId').val() },
                 function (data) {

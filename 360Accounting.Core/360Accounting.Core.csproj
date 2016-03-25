@@ -50,6 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\InventoryPeriod.cs" />
+    <Compile Include="Entities\Item.cs" />
     <Compile Include="Entities\PayableInvoice.cs" />
     <Compile Include="Entities\PaymentView.cs" />
     <Compile Include="Entities\Payment.cs" />

@@ -73,14 +73,14 @@ namespace _360Accounting.Web
             return entity;
         }
 
-        public static Remittance GetEntityByModel(RemittanceDetailModel model)
+        public static Remittance GetEntityByModel(RemittanceDetailModel model, int count)
         {
             if (model == null)
                 return null;
 
             Remittance entity = new Remittance();
 
-            if (model.Id == 0)
+            if (count == 0)
             {
                 entity.CreateBy = AuthenticationHelper.UserId;
                 entity.CreateDate = DateTime.Now;
