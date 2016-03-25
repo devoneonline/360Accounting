@@ -13,7 +13,7 @@ namespace _360Accounting.Data.Repositories
     {
         public IEnumerable<Vendor> GetAll(long companyId, DateTime startDate, DateTime endDate)
         {
-            return this.Context.Vendors.Where(x => x.CompanyId == companyId && x.StartDate == startDate && x.EndDate == endDate);
+            return this.Context.Vendors.Where(x => x.CompanyId == companyId && x.StartDate <= startDate && x.EndDate >= endDate);
         }
         
         public Vendor GetSingle(string id, long companyId)

@@ -12,6 +12,12 @@ namespace _360Accounting.Data.Repositories
 {
     public class PayablePeriodRepository : Repository, IPayablePeriodRepository
     {
+        public IEnumerable<PayablePeriod> GetAll(long companyId, long sobId)
+        {
+            IEnumerable<PayablePeriod> list = this.Context.PayablePeriods.Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.Status == "Open");
+            return list;
+        }
+        
         public PayablePeriod GetSingle(string id, long companyId)
         {
             PayablePeriod payablePeriod = this.GetAll(companyId)

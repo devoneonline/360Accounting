@@ -14,16 +14,13 @@
     </div>
 
     <div class="clearfix">
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <div class="form-group">
                 @Html.LabelFor(m => m.SetOfBooks)
                 @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control criteria" })
             </div>
         </div>
-    </div>
-
-    <div class="clearfix">
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <div class="form-group">
                 @Html.LabelFor(m => m.Periods)
                 @Html.DropDownListFor(m => m.PeriodId, Model.Periods, new { @class = "form-control criteria" })

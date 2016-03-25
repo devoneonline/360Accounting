@@ -91,8 +91,8 @@ namespace _360Accounting.Web
             }
 
             //Create New Invoice #...
-            string yearDigit = DateTime.Now.ToString("yy");
-            string monthDigit = DateTime.Now.ToString("MM");
+            string yearDigit = SessionHelper.Invoice.InvoiceDate.ToString("yy");
+            string monthDigit = SessionHelper.Invoice.InvoiceDate.ToString("MM");
             string invoiceNo = int.Parse("1").ToString().PadLeft(4, '0');
 
             return yearDigit + monthDigit + invoiceNo;

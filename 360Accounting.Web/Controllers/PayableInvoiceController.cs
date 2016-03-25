@@ -9,6 +9,118 @@ namespace _360Accounting.Web.Controllers
 {
     public class PayableInvoiceController : Controller
     {
+        public ActionResult SaveInvoice(long invoiceTypeId, string invoiceDate,
+            string remarks, long vendorId, long vendorSiteId, long whTaxId,
+            string amount, string status)
+        {
+            string message = "";
+            try
+            {
+                bool saved = false;
+                if (SessionHelper.PayableInvoice != null)
+                {
+                    SessionHelper.PayableInvoice.InvoiceTypeId = invoiceTypeId;
+                    SessionHelper.PayableInvoice.InvoiceDate = Convert.ToDateTime(invoiceDate);
+                    SessionHelper.PayableInvoice.Remarks = remarks;
+                    SessionHelper.PayableInvoice.VendorId = vendorId;
+                    SessionHelper.PayableInvoice.VendorSiteId = vendorSiteId;
+                    SessionHelper.PayableInvoice.WHTaxId = whTaxId;
+                    SessionHelper.PayableInvoice.Amount = SessionHelper.PayableInvoice.InvoiceDetail.Sum(x => x.Amount);
+                    SessionHelper.PayableInvoice.Status = status;
+                    SessionHelper.PayableInvoice.InvoiceNo = PayableInvoiceHelper.GetInvoiceNo(AuthenticationHelper.User.CompanyId, SessionHelper.PayableInvoice.SOBId, SessionHelper.PayableInvoice.PeriodId);
+
+                    PayableInvoiceHelper.Update(SessionHelper.PayableInvoice);
+                    SessionHelper.PayableInvoice = null;
+                    saved = true;
+                    message = "Saved successfully";
+                }
+                else
+                    message = "No voucher information available!";
+                return Json(new { success = saved, message = message });
+            }
+            catch (Exception e)
+            {
+                message = e.Message;
+                return Json(new { success = false, message = message });
+            }
+        }
+
+        public ActionResult DeletePartial(PayableInvoiceDetailModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    PayableInvoiceModel invoice = SessionHelper.PayableInvoice;
+                    PayableInvoiceHelper.DeleteInvoiceDetail(model);
+                    SessionHelper.PayableInvoice = invoice;
+                    IList<PayableInvoiceDetailModel> invoiceDetail = PayableInvoiceHelper.GetInvoiceDetail();
+                    return PartialView("_Detail", invoiceDetail);
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            return PartialView("_Detail");
+            //return PartialView("_Detail", InvoiceHelper.GetInvoiceDetail());
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult UpdatePartial(PayableInvoiceDetailModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    PayableInvoiceHelper.UpdateInvoiceDetail(model);
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            return PartialView("_Detail", PayableInvoiceHelper.GetInvoiceDetail());
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult AddNewPartial(PayableInvoiceDetailModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    bool validated = false;
+                    if (SessionHelper.PayableInvoice != null)
+                    {
+                        model.Id = SessionHelper.PayableInvoice.InvoiceDetail.Count() + 1;
+                        validated = true;
+                    }
+                    else
+                        model.Id = 1;
+
+                    if (validated)
+                        PayableInvoiceHelper.Insert(model);
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            return PartialView("_Detail", PayableInvoiceHelper.GetInvoiceDetail());
+        }
+
+        public ActionResult DetailPartial()
+        {
+            return PartialView("_Detail", PayableInvoiceHelper.GetInvoiceDetail());
+        }
+
         public JsonResult WHTaxList(long vendorId, long vendorSiteId)
         {
             List<SelectListItem> whTaxList = WithholdingHelper.GetWithHoldingList(vendorId, vendorSiteId, SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
@@ -39,8 +151,8 @@ namespace _360Accounting.Web.Controllers
         {
             SessionHelper.SOBId = sobId;
 
-            SessionHelper.Calendar = CalendarHelper.GetCalendar(periodId.ToString());
-            
+            SessionHelper.Calendar = CalendarHelper.GetCalendar(PayablePeriodHelper.GetPayablePeriod(periodId.ToString()).CalendarId.ToString());
+
             ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(sobId.ToString()).Name;
             ViewBag.PeriodName = SessionHelper.Calendar.PeriodName;
             
@@ -51,7 +163,7 @@ namespace _360Accounting.Web.Controllers
                 List<SelectListItem> vendorSites = VendorHelper.GetVendorSiteList(vendors.Any() ? Convert.ToInt64(vendors.First().Value) : 0);
                 List<SelectListItem> whTaxes = WithholdingHelper.GetWithHoldingList(vendors.Any() ? Convert.ToInt64(vendors.First().Value) : 0,
                     vendorSites.Any() ? Convert.ToInt64(vendorSites.First().Value) : 0, SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
-                List<SelectListItem> invoiceTypes = InvoiceTypeHelper.GetInvoiceTypes(model.SOBId, SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
+                List<SelectListItem> invoiceTypes = InvoiceTypeHelper.GetInvoiceTypes(SessionHelper.SOBId, SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
 
                 model = new PayableInvoiceModel
                 {
@@ -70,6 +182,9 @@ namespace _360Accounting.Web.Controllers
                     Convert.ToInt64(invoiceTypes.First().Value) : 0,
                     PeriodId = periodId,
                     SOBId = sobId,
+                    WHTaxes = whTaxes,
+                    WHTaxId = whTaxes.Any() ?
+                    Convert.ToInt64(invoiceTypes.First().Value) : 0
                 };
                 SessionHelper.PayableInvoice = model;
             }
@@ -78,7 +193,7 @@ namespace _360Accounting.Web.Controllers
 
         public JsonResult PeriodList(long sobId)
         {
-            List<SelectListItem> periodList = CalendarHelper.GetCalendarsList(sobId);
+            List<SelectListItem> periodList = PayablePeriodHelper.GetPeriodList(sobId);
             return Json(periodList, JsonRequestBehavior.AllowGet);
         }
 
@@ -92,7 +207,7 @@ namespace _360Accounting.Web.Controllers
         {
             PayableInvoiceModel model = PayableInvoiceHelper.GetInvoice(id);
             SessionHelper.SOBId = model.SOBId;
-            SessionHelper.Calendar = CalendarHelper.GetCalendar(periodId.ToString());
+            SessionHelper.Calendar = CalendarHelper.GetCalendar(PayablePeriodHelper.GetPayablePeriod(periodId.ToString()).CalendarId.ToString()); 
             
             ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(sobId.ToString()).Name;
             ViewBag.PeriodName = SessionHelper.Calendar.PeriodName;
@@ -102,7 +217,7 @@ namespace _360Accounting.Web.Controllers
             model.PeriodId = periodId;
 
             VendorModel vendors = VendorHelper.GetSingle(model.VendorId.ToString());
-            VendorModel vendorSites = VendorHelper.GetSingle(model.VendorSiteId.ToString());
+            VendorSiteModel vendorSites = VendorHelper.GetSingle(model.VendorSiteId);
             WithholdingModel withHoldingTaxes = WithholdingHelper.GetWithholding(model.WHTaxId.ToString());
             InvoiceTypeModel invoiceTypes = InvoiceTypeHelper.GetInvoiceType(model.InvoiceTypeId.ToString());
 
@@ -145,7 +260,7 @@ namespace _360Accounting.Web.Controllers
                 .GetInvoices(sobId, periodId));
         }
 
-        public ActionResult ListByModelPartial(InvoiceListModel model)
+        public ActionResult ListByModelPartial(PayableInvoiceListModel model)
         {
             SessionHelper.SOBId = model.SOBId;
             return PartialView("_List", PayableInvoiceHelper
@@ -164,7 +279,7 @@ namespace _360Accounting.Web.Controllers
 
             if (model.Periods == null && model.SetOfBooks.Any())
             {
-                model.Periods = CalendarHelper.GetCalendarsList(Convert.ToInt64(model.SetOfBooks.First().Value));
+                model.Periods = PayablePeriodHelper.GetPeriodList(Convert.ToInt64(model.SetOfBooks.First().Value));
                 model.PeriodId = model.Periods.Any() ?
                     Convert.ToInt32(model.Periods.First().Value) : 0;
             }

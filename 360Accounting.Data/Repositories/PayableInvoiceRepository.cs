@@ -13,24 +13,24 @@ namespace _360Accounting.Data.Repositories
     {
         public PayableInvoice GetSingle(long companyId, long sobId, long periodId)
         {
-            throw new NotImplementedException();
-            //IEnumerable<Invoice> entityList = this.GetAll(companyId);
-            //if (entityList.Count() > 0)
-            //{
-            //    Invoice entity = entityList.Where(x => x.SOBId == sobId && x.PeriodId == periodId &&
-            //    x.CurrencyId == currencyId).OrderByDescending(rec => rec.Id).First();
-            //    return entity;
-            //}
-            //else
-            //{
-            //    return null;
-            //}
+            IEnumerable<PayableInvoice> entityList = this.GetAll(companyId);
+            if (entityList.Count() > 0)
+            {
+                PayableInvoice entity = entityList.Where(x => x.SOBId == sobId && x.PeriodId == periodId)
+                    .OrderByDescending(rec => rec.Id).First();
+                return entity;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public IEnumerable<PayableInvoice> GetAll(long companyId, long sobId, long periodId)
         {
-            IEnumerable<PayableInvoice> list = this.Context.PayableInvoices.Where(x => x.SOBId == sobId && x.PeriodId == periodId).ToList();
+            IEnumerable<PayableInvoice> list = this.GetAll(companyId).Where(x => x.SOBId == sobId && x.PeriodId == periodId);
             return list;
+
         }
         public PayableInvoice GetSingle(string id, long companyId)
         {

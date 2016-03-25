@@ -3,10 +3,6 @@
 
 @model _360Accounting.Web.Models.PayableInvoiceModel
 
-<br />
-<br />
-<br />
-
 @{
     ViewBag.Title = "Payable Invoice";
 }
@@ -35,73 +31,70 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.InvoiceNo)
                     @Html.TextBoxFor(model => model.InvoiceNo, new { @readonly = "readonly", @class = "form-control" })
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-2">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.InvoiceTypeId)
+                    @Html.LabelFor(model => model.InvoiceTypes)
                     @Html.DropDownListFor(model => model.InvoiceTypeId, Model.InvoiceTypes, new { @class = "form-control" })
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.InvoiceDate)
                     @Html.EditorFor(model => model.InvoiceDate)
                 </div>
             </div>
-        </div>
-    <div class="row">
-        <div class="col-lg-4">
-            <div class="form-group">
-                @Html.LabelFor(model => model.VendorId)
-                @Html.DropDownListFor(model => model.VendorId, Model.Vendors, new { @class = "form-control" })
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Remarks)
+                    @Html.TextAreaFor(model => model.Remarks, new { @class = "form-control" })
+                </div>
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="form-group">
-                @Html.LabelFor(model => model.VendorSiteId)
-                @Html.DropDownListFor(model => model.VendorSiteId, Model.VendorSites, new { @class = "form-control" })
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Vendors)
+                    @Html.DropDownListFor(model => model.VendorId, Model.Vendors, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.VendorSites)
+                    @Html.DropDownListFor(model => model.VendorSiteId, Model.VendorSites, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.WHTaxes)
+                    @Html.DropDownListFor(model => model.WHTaxId, Model.WHTaxes, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Status)
+                    @Html.TextBoxFor(model => model.Status, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Amount)
+                    @Html.TextBoxFor(model => model.Amount, new { @readonly = "readonly", @class = "form-control" })
+                </div>
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="form-group">
-                @Html.LabelFor(model => model.WHTaxId)
-                @Html.DropDownListFor(model => model.WHTaxId, Model.WHTaxes, new { @class = "form-control" })
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="form-group">
-                @Html.LabelFor(model => model.Remarks)
-                @Html.TextBoxFor(model => model.Remarks, new { @class = "form-control" })
-            </div>
-        </div>
-
-        <div class="col-lg-3">
-            <div class="form-group">
-                @Html.LabelFor(model => model.Status)
-                @Html.TextBoxFor(model => model.Status, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="col-lg-3">
-            <div class="form-group">
-                @Html.LabelFor(model => model.Amount)
-                @Html.TextBoxFor(model => model.Amount, new { @readonly = "readonly", @class = "form-control" })
-            </div>
-        </div>
-    </div>
         
-    <div class="row">
-        <div class="col-lg-12">
-            @Html.Partial("_Detail", Model.InvoiceDetail)
+        <div class="row">
+            <div class="col-lg-12">
+                @Html.Partial("_Detail", Model.InvoiceDetail)
+            </div>
         </div>
-    </div>
-}
+    }
 </div>
 
 <script type="text/javascript">
@@ -172,7 +165,7 @@
 
         $('#btnSave').click(function () {
 
-            var invoiceType = $('#InvoiceType').val();
+            var invoiceTypeId = $('#InvoiceTypeId').val();
             var invoiceDate = $('#InvoiceDate').val();
             var remarks = $('#Remarks').val();
             var vendorId = $('#VendorId').val();
@@ -183,7 +176,7 @@
 
             var url = '@Url.Content("~/PayableInvoice/SaveInvoice")';
             $.post(url, {
-                invoiceType: invoiceType, invoiceDate: invoiceDate,
+                invoiceTypeId: invoiceTypeId, invoiceDate: invoiceDate,
                 remarks: remarks, vendorId: vendorId,
                 vendorSiteId: vendorSiteId, whTaxId: whTaxId,
                 amount: amount, status: status

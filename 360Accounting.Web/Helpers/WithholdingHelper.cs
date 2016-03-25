@@ -47,7 +47,12 @@ namespace _360Accounting.Web
 
         public static List<SelectListItem> GetWithHoldingList(long vendorId, long vendorSiteId, DateTime startDate, DateTime endDate)
         {
-            throw new NotImplementedException();
+            return service.GetAll(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, vendorId, vendorSiteId, startDate, endDate)
+                .Select(x => new SelectListItem 
+                {
+                    Value = x.Id.ToString(),
+                    Text = x.Description
+                }).ToList();
         }
     }
 }

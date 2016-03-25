@@ -41,7 +41,10 @@ namespace _360Accounting.Web.Controllers
                 if (SessionHelper.Remittance != null)
                 {
                     SessionHelper.Remittance.RemitDate = Convert.ToDateTime(remitDate);
-                    SessionHelper.Remittance.RemitNo = RemittanceHelper.GetRemitNo(AuthenticationHelper.User.CompanyId, SessionHelper.Invoice.SOBId, SessionHelper.Invoice.PeriodId, SessionHelper.Invoice.CurrencyId);
+                    if (SessionHelper.Remittance.RemitNo == "New")
+                    {
+                        SessionHelper.Remittance.RemitNo = RemittanceHelper.GetRemitNo(AuthenticationHelper.User.CompanyId, SessionHelper.Invoice.SOBId, SessionHelper.Invoice.PeriodId, SessionHelper.Invoice.CurrencyId);
+                    }
 
                     RemittanceHelper.Update(SessionHelper.Remittance);
                     SessionHelper.Remittance = null;

@@ -1,6 +1,4 @@
-﻿@*@model _360Accounting.Web.Models.InvoiceDetailModel*@
-
-@{
+﻿@{
     Html.EnableClientValidation();
     Html.EnableUnobtrusiveJavaScript();
 
@@ -35,7 +33,7 @@
 
                 column.ColumnType = MVCxGridViewColumnType.ComboBox;
                 var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
-                comboBoxProperties.DataSource = InvoiceSourceHelper.GetInvoiceSources((_360Accounting.Web.SessionHelper.SOBId),
+                comboBoxProperties.DataSource = InvoiceSourceHelper.GetInvoiceSources(_360Accounting.Web.SessionHelper.SOBId,
                     _360Accounting.Web.SessionHelper.Calendar.StartDate,
                     _360Accounting.Web.SessionHelper.Calendar.EndDate);
                 comboBoxProperties.TextField = "Text";

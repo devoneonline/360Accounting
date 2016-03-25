@@ -566,7 +566,10 @@ namespace _360Accounting.Web.Controllers
                         SessionHelper.JV.GLDate = Convert.ToDateTime(glDate);
                         SessionHelper.JV.ConversionRate = Convert.ToDecimal(cRate);
                         SessionHelper.JV.Description = descr;
-                        SessionHelper.JV.DocumentNo = JVHelper.GetDocNo(AuthenticationHelper.User.CompanyId, SessionHelper.JV.PeriodId, SessionHelper.JV.SOBId, SessionHelper.JV.CurrencyId);
+                        if (SessionHelper.JV.DocumentNo == "New")
+                        {
+                            SessionHelper.JV.DocumentNo = JVHelper.GetDocNo(AuthenticationHelper.User.CompanyId, SessionHelper.JV.PeriodId, SessionHelper.JV.SOBId, SessionHelper.JV.CurrencyId);
+                        }
 
                         JVHelper.Update(SessionHelper.JV);
                         SessionHelper.JV = null;

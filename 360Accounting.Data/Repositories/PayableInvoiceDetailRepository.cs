@@ -13,10 +13,9 @@ namespace _360Accounting.Data.Repositories
     {
         public IList<PayableInvoiceDetail> GetAll(long companyId, long invoiceId)
         {
-            throw new NotImplementedException();
-            //IList<InvoiceDetail> list = this.Context.InvoiceDetails
-            //    .Where(x => x.InvoiceId == invoiceId).ToList();
-            //return list;
+            IList<PayableInvoiceDetail> list = this.GetAll(companyId)
+                .Where(x => x.InvoiceId == invoiceId).ToList();
+            return list;
         }
 
         public PayableInvoiceDetail GetSingle(string id, long companyId)

@@ -560,6 +560,7 @@
     <Content Include="Views\PayableInvoice\_List.cshtml" />
     <Content Include="Views\PayableInvoice\Edit.cshtml" />
     <Content Include="Views\Shared\_LookupAccountCode.cshtml" />
+    <Content Include="Views\PayableInvoice\_Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

@@ -80,7 +80,11 @@ namespace _360Accounting.Web.Controllers
                     SessionHelper.Invoice.Remarks = remarks;
                     SessionHelper.Invoice.CustomerId = customerId;
                     SessionHelper.Invoice.CustomerSiteId = customerSiteId;
-                    SessionHelper.Invoice.InvoiceNo = InvoiceHelper.GetInvoiceNo(AuthenticationHelper.User.CompanyId, SessionHelper.Invoice.SOBId, SessionHelper.Invoice.PeriodId, SessionHelper.Invoice.CurrencyId);
+                    if (SessionHelper.Invoice.InvoiceNo == "New")
+                    {
+                        SessionHelper.Invoice.InvoiceNo = InvoiceHelper.GetInvoiceNo(AuthenticationHelper.User.CompanyId, SessionHelper.Invoice.SOBId, SessionHelper.Invoice.PeriodId, SessionHelper.Invoice.CurrencyId);
+                    }
+                    
 
                     InvoiceHelper.Update(SessionHelper.Invoice);
                     SessionHelper.Invoice = null;

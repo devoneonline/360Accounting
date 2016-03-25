@@ -68,8 +68,8 @@ namespace _360Accounting.Web
             }
 
             //Create New DocNum..
-            string yearDigit = DateTime.Now.ToString("yy");
-            string monthDigit = DateTime.Now.ToString("MM");
+            string yearDigit = SessionHelper.JV.GLDate.ToString("yy");
+            string monthDigit = SessionHelper.JV.GLDate.ToString("MM");
             string docNo = int.Parse("1").ToString().PadLeft(4, '0');
 
             return yearDigit + monthDigit + docNo;
