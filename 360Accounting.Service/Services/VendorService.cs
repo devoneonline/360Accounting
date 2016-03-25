@@ -1,11 +1,11 @@
-﻿using _360Accounting.Core.IService;
+﻿using _360Accounting.Core;
 using _360Accounting.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using _360Accounting.Core.IRepository;
+using _360Accounting.Core.Interfaces;
 
 namespace _360Accounting.Service
 {

@@ -248,7 +248,9 @@
     <Compile Include="Models\BankAccountViewModel.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\InventoryPeriodModel.cs" />
     <Compile Include="Models\InvoiceModel.cs" />
+    <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\PayableInvoiceModel.cs" />
     <Compile Include="Models\PaymentHeaderListModel.cs" />
     <Compile Include="Models\PaymentViewModel.cs" />
