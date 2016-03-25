@@ -27,7 +27,10 @@ namespace _360Accounting.Web.Controllers
                     SessionHelper.PayableInvoice.WHTaxId = whTaxId;
                     SessionHelper.PayableInvoice.Amount = SessionHelper.PayableInvoice.InvoiceDetail.Sum(x => x.Amount);
                     SessionHelper.PayableInvoice.Status = status;
-                    SessionHelper.PayableInvoice.InvoiceNo = PayableInvoiceHelper.GetInvoiceNo(AuthenticationHelper.User.CompanyId, SessionHelper.PayableInvoice.SOBId, SessionHelper.PayableInvoice.PeriodId);
+                    if (SessionHelper.PayableInvoice.InvoiceNo == "New")
+                    {
+                        SessionHelper.PayableInvoice.InvoiceNo = PayableInvoiceHelper.GetInvoiceNo(AuthenticationHelper.User.CompanyId, SessionHelper.PayableInvoice.SOBId, SessionHelper.PayableInvoice.PeriodId);
+                    }                    
 
                     PayableInvoiceHelper.Update(SessionHelper.PayableInvoice);
                     SessionHelper.PayableInvoice = null;

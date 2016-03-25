@@ -14,7 +14,7 @@ namespace _360Accounting.Data.Repositories
     {
         public IEnumerable<PayablePeriod> GetAll(long companyId, long sobId)
         {
-            IEnumerable<PayablePeriod> list = this.Context.PayablePeriods.Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.Status == "Open");
+            IEnumerable<PayablePeriod> list = this.GetAll(companyId).Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.Status == "Open");
             return list;
         }
         
@@ -33,17 +33,6 @@ namespace _360Accounting.Data.Repositories
                         where c.Id == companyId
                         select a;
             return query;
-        }
-
-        public IEnumerable<PayablePeriod> GetAll(long companyId, long sobid)
-        {
-            var query = from a in this.Context.PayablePeriods
-                        join b in this.Context.SetOfBooks on a.SOBId equals b.Id
-                        join c in this.Context.Companies on b.CompanyId equals c.Id
-                        where c.Id == companyId && a.SOBId == sobid
-                        select a;
-            return query;
-
         }
 
         public string Insert(PayablePeriod entity)
