@@ -9,36 +9,36 @@ using System.Threading.Tasks;
 
 namespace _360Accounting.Data.Repositories
 {
-    public class InventoryPeriodRepository : Repository, IInventoryPeriodRepository
+    public class WarehouseRepository : Repository, IWarehouseRepository
     {
-        public IEnumerable<InventoryPeriod> GetAll(long companyId, long sobId)
+        public IEnumerable<Warehouse> GetAll(long companyId, long sobId)
         {
-            IEnumerable<InventoryPeriod> list = this.GetAll(companyId).Where(x => x.SOBId == sobId && x.Status == "Open");
+            IEnumerable<Warehouse> list = this.GetAll(companyId).Where(x => x.SOBId == sobId && x.Status == "Active");
             return list;
         }
 
-        public InventoryPeriod GetSingle(string id, long companyId)
+        public Warehouse GetSingle(string id, long companyId)
         {
-            InventoryPeriod inventoryPeriod = this.GetAll(companyId)
+            Warehouse warehouse = this.GetAll(companyId)
                 .FirstOrDefault(x => x.Id == Convert.ToInt32(id));
-            return inventoryPeriod;
+            return warehouse;
         }
 
-        public IEnumerable<InventoryPeriod> GetAll(long companyId)
+        public IEnumerable<Warehouse> GetAll(long companyId)
         {
-            return this.Context.InventoryPeriods.Where(rec => rec.CompanyId == companyId);
+            return this.Context.Warehouses.Where(x => x.CompanyId == companyId);
         }
 
-        public string Insert(InventoryPeriod entity)
+        public string Insert(Warehouse entity)
         {
-            this.Context.InventoryPeriods.Add(entity);
+            this.Context.Warehouses.Add(entity);
             this.Commit();
             return entity.Id.ToString();
         }
 
-        public string Update(InventoryPeriod entity)
+        public string Update(Warehouse entity)
         {
-            var originalEntity = this.Context.InventoryPeriods.Find(entity.Id);
+            var originalEntity = this.Context.Warehouses.Find(entity.Id);
             this.Context.Entry(originalEntity).CurrentValues.SetValues(entity);
             this.Context.Entry(originalEntity).State = EntityState.Modified;
             this.Commit();
@@ -47,7 +47,7 @@ namespace _360Accounting.Data.Repositories
 
         public void Delete(string id, long companyId)
         {
-            this.Context.InventoryPeriods.Remove(this.GetSingle(id, companyId));
+            this.Context.Warehouses.Remove(this.GetSingle(id, companyId));
             this.Commit();
         }
 

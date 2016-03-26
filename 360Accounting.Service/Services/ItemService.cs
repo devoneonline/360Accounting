@@ -17,6 +17,11 @@ namespace _360Accounting.Service
         {
             this.repository = repo;
         }
+
+        public IEnumerable<Item> GetAll(long companyId, long sobId)
+        {
+            return this.repository.GetAll(companyId, sobId);
+        }
         
         public ItemWarehouse GetSingle(long id)
         {

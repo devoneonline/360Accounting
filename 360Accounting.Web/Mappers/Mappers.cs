@@ -9,7 +9,7 @@ namespace _360Accounting.Web
 {
     public static class Mappers
     {
-        public static ItemWarehouse GetEntityByModel(ItemWarehouse model, int count)
+        public static ItemWarehouse GetEntityByModel(ItemWarehouseModel model, int count)
         {
             if (model == null)
                 return null;
@@ -34,7 +34,7 @@ namespace _360Accounting.Web
             entity.StartDate = model.StartDate;
             entity.UpdateBy = AuthenticationHelper.UserId;
             entity.UpdateDate = DateTime.Now;
-            entity.WarehouseCode = model.WarehouseCode;
+            entity.WarehouseId = model.WarehouseId;
             return entity;
         }
 

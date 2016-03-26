@@ -1,4 +1,6 @@
-﻿using System;
+﻿using _360Accounting.Common;
+using _360Accounting.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -17,6 +19,34 @@ namespace _360Accounting.Web.Models
 
     public class ItemModel : ModelBase
     {
+        public ItemModel(Item entity)
+        {
+            this.COGSCodeCombinationId = entity.COGSCodeCombinationId;
+            this.CompanyId = entity.CompanyId;
+            this.CreateBy = entity.CreateBy;
+            this.CreateDate = entity.CreateDate;
+            this.DefaultBuyer = entity.DefaultBuyer;
+            this.Description = entity.Description;
+            this.Id = entity.Id;
+            this.ItemCode = entity.ItemCode;
+            this.ItemName = entity.ItemName;
+            this.LotControl = entity.LotControl;
+            this.Orderable = entity.Orderable;
+            this.Purchaseable = entity.Purchaseable;
+            this.ReceiptRouting = entity.ReceiptRouting;
+            this.SalesCodeCombinationId = entity.SalesCodeCombinationId;
+            this.SerialControl = entity.SerialControl;
+            this.Shipable = entity.Shipable;
+            this.SOBId = entity.SOBId;
+            this.Status = entity.Status;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
+        }
+
+        public ItemModel()
+        {
+        }
+
         public long Id { get; set; }
         public long CompanyId { get; set; }
         public long SOBId { get; set; }
@@ -73,16 +103,36 @@ namespace _360Accounting.Web.Models
                 return list;
             }
         }
+
+        public List<ItemWarehouseModel> ItemWarehouses { get; set; }
     }
 
     public class ItemWarehouseModel : ModelBase
     {
+        public ItemWarehouseModel()
+        {
+            this.StartDate = Const.CurrentDate;
+            this.EndDate = Const.EndDate;
+        }
+
+        public ItemWarehouseModel(ItemWarehouse entity)
+        {
+            this.CreateBy = entity.CreateBy;
+            this.CreateDate = entity.CreateDate;
+            this.EndDate = entity.EndDate;
+            this.Id = entity.Id;
+            this.ItemId = entity.ItemId;
+            this.SOBId = entity.SOBId;
+            this.StartDate = entity.StartDate;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
+            this.WarehouseId = entity.WarehouseId;
+        }
+
         public long Id { get; set; }
         public long SOBId { get; set; }
         public long ItemId { get; set; }
-
-        [Display(Name = "Warehouse Code")]
-        public string WarehouseCode { get; set; }
+        public long WarehouseId { get; set; }
 
         [Required]
         [Display(Name = "Start Date")]
@@ -95,5 +145,7 @@ namespace _360Accounting.Web.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime EndDate { get; set; }
+
+        public List<SelectListItem> Warehouses { get; set; }
     }
 }
