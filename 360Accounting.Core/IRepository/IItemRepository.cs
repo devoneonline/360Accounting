@@ -18,5 +18,7 @@ namespace _360Accounting.Core.Interfaces
         long Update(ItemWarehouse entity);
 
         void DeleteItemWarehouse(long id);
+
+        IEnumerable<Item> GetAll(long companyId, long sobId);
     }
 }

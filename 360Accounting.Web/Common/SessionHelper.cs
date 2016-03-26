@@ -8,6 +8,7 @@ namespace _360Accounting.Web
 {
     public class SessionHelper
     {
+        private const string Sesson_Item = "Item";
         private const string Session_DocumentDate = "DocumentDate";
         private const string Session_Calendar = "Calendar";
         private const string Session_Receipt = "Receipt";
@@ -21,6 +22,19 @@ namespace _360Accounting.Web
         private const string Session_Remittance = "Remittance";
         private const string Sesson_Payment = "Payment";
         private const string Sesson_PayableInvoice = "PayableInvoice";
+        
+        public static ItemModel Item
+        {
+            get
+            {
+                return HttpContext.Current.Session[Sesson_Item] == null ? null :
+                    (ItemModel)HttpContext.Current.Session[Sesson_Item];
+            }
+            set
+            {
+                HttpContext.Current.Session[Sesson_Item] = value;
+            }
+        }
 
         public static PayableInvoiceModel PayableInvoice
         {

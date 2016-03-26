@@ -65,6 +65,7 @@
     <Compile Include="Services\PayablePeriodService.cs" />
     <Compile Include="Services\InvoiceTypeService.cs" />
     <Compile Include="Services\PaymentService.cs" />
+    <Compile Include="Services\WarehouseService.cs" />
     <Compile Include="Services\WithholdingService.cs" />
     <Compile Include="Services\ReceiptService.cs" />
     <Compile Include="Services\AccountService.cs" />

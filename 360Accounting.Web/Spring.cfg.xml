@@ -4,6 +4,7 @@
   <description>360Accounting Configuration</description>
 
   <object name="ItemRepository" type="_360Accounting.Data.Repositories.ItemRepository, 360Accounting.Data"> </object>
+  <object name="WarehouseRepository" type="_360Accounting.Data.Repositories.WarehouseRepository, 360Accounting.Data"> </object>
   <object name="InventoryPeriodRepository" type="_360Accounting.Data.Repositories.InventoryPeriodRepository, 360Accounting.Data"> </object>
   <object name="PayableInvoiceDetailRepository" type="_360Accounting.Data.Repositories.PayableInvoiceDetailRepository, 360Accounting.Data"> </object>
   <object name="PayableInvoiceRepository" type="_360Accounting.Data.Repositories.PayableInvoiceRepository, 360Accounting.Data"> </object>
@@ -42,6 +43,9 @@
 
   <object name="ItemService" type="_360Accounting.Service.ItemService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="ItemRepository" />
+  </object>
+  <object name="WarehouseService" type="_360Accounting.Service.WarehouseService, 360Accounting.Service" >
+    <constructor-arg name="repo" ref="WarehouseRepository" />
   </object>
   <object name="InventoryPeriodService" type="_360Accounting.Service.InventoryPeriodService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="InventoryPeriodRepository" />

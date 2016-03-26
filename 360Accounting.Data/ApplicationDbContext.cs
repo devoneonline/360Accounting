@@ -20,6 +20,8 @@ namespace _360Accounting.Data
 
         #region DbSets
 
+        public DbSet<Warehouse> Warehouses { get; set; }
+
         public DbSet<InventoryPeriod> InventoryPeriods { get; set; }
 
         public DbSet<Item> Items { get; set; }
@@ -107,6 +109,9 @@ namespace _360Accounting.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ////base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Warehouse>().ToTable("tbWarehouse");
+            modelBuilder.Entity<Warehouse>().HasKey(t => t.Id);
 
             modelBuilder.Entity<InventoryPeriod>().ToTable("tbInventoryPeriod");
             modelBuilder.Entity<InventoryPeriod>().HasKey(t => t.Id);

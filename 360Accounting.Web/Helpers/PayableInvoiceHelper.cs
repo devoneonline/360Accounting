@@ -35,6 +35,66 @@ namespace _360Accounting.Web
         }
         #endregion
 
+        public static IList<PayableInvoiceModel> GetInvoices(long sobId, long periodId)
+        {
+            IList<PayableInvoiceModel> modelList = service.GetAll(AuthenticationHelper.User.CompanyId, sobId, periodId).Select(x => new PayableInvoiceModel(x)).ToList();
+            return modelList;
+        }
+
+        public static IList<PayableInvoiceDetailModel> GetInvoiceDetail([Optional]string invoiceId)
+        {
+            if (invoiceId == null)
+                return getInvoiceDetail();
+            else
+                return getInvoiceDetailByInvoiceId(invoiceId);
+        }
+
+        public static void Insert(PayableInvoiceDetailModel model)
+        {
+            PayableInvoiceModel invoice = SessionHelper.PayableInvoice;
+            invoice.InvoiceDetail.Add(model);
+        }
+
+        public static void UpdateInvoiceDetail(PayableInvoiceDetailModel model)
+        {
+            PayableInvoiceModel invoice = SessionHelper.PayableInvoice;
+
+            invoice.InvoiceDetail.FirstOrDefault(x => x.Id == model.Id).CodeCombinationId = model.CodeCombinationId;
+            invoice.InvoiceDetail.FirstOrDefault(x => x.Id == model.Id).Amount = model.Amount;
+            invoice.InvoiceDetail.FirstOrDefault(x => x.Id == model.Id).Description = model.Description;
+        }
+
+        public static void DeleteInvoiceDetail(PayableInvoiceDetailModel model)
+        {
+            PayableInvoiceModel invoice = SessionHelper.PayableInvoice;
+            PayableInvoiceDetailModel invoiceDetail = invoice.InvoiceDetail.FirstOrDefault(x => x.Id == model.Id);
+            invoice.InvoiceDetail.Remove(invoiceDetail);
+        }
+
+        public static string GetInvoiceNo(long companyId, long sobId, long periodId)
+        {
+            ///TODO: plz audit this code
+            var previousInvoice = service.GetSingle(companyId, sobId, periodId);
+            string newInvoiceNo = "";
+            if (previousInvoice != null)
+            {
+                int outVal;
+                bool isNumeric = int.TryParse(previousInvoice.InvoiceNo, out outVal);
+                if (isNumeric && previousInvoice.InvoiceNo.Length == 8)
+                {
+                    newInvoiceNo = (int.Parse(previousInvoice.InvoiceNo) + 1).ToString();
+                    return newInvoiceNo;
+                }
+            }
+
+            //Create New Invoice #...
+            string yearDigit = SessionHelper.PayableInvoice.InvoiceDate.ToString("yy");
+            string monthDigit = SessionHelper.PayableInvoice.InvoiceDate.ToString("MM");
+            string invoiceNo = int.Parse("1").ToString().PadLeft(4, '0');
+
+            return yearDigit + monthDigit + invoiceNo;
+        }
+
         public static void Update(PayableInvoiceModel payableInvoiceModel)
         {
             PayableInvoice entity = Mappers.GetEntityByModel(payableInvoiceModel);
@@ -80,50 +140,9 @@ namespace _360Accounting.Web
             }
         }
 
-        public static string GetInvoiceNo(long companyId, long sobId, long periodId)
+        public static PayableInvoiceModel GetInvoice(string id)
         {
-            ///TODO: plz audit this code
-            var previousInvoice = service.GetSingle(companyId, sobId, periodId);
-            string newInvoiceNo = "";
-            if (previousInvoice != null)
-            {
-                int outVal;
-                bool isNumeric = int.TryParse(previousInvoice.InvoiceNo, out outVal);
-                if (isNumeric && previousInvoice.InvoiceNo.Length == 8)
-                {
-                    newInvoiceNo = (int.Parse(previousInvoice.InvoiceNo) + 1).ToString();
-                    return newInvoiceNo;
-                }
-            }
-
-            //Create New Invoice #...
-            string yearDigit = SessionHelper.PayableInvoice.InvoiceDate.ToString("yy");
-            string monthDigit = SessionHelper.PayableInvoice.InvoiceDate.ToString("MM");
-            string invoiceNo = int.Parse("1").ToString().PadLeft(4, '0');
-
-            return yearDigit + monthDigit + invoiceNo;
-        }
-        
-        public static void DeleteInvoiceDetail(PayableInvoiceDetailModel model)
-        {
-            PayableInvoiceModel invoice = SessionHelper.PayableInvoice;
-            PayableInvoiceDetailModel invoiceDetail = invoice.InvoiceDetail.FirstOrDefault(x => x.Id == model.Id);
-            invoice.InvoiceDetail.Remove(invoiceDetail);
-        }
-
-        public static void UpdateInvoiceDetail(PayableInvoiceDetailModel model)
-        {
-            PayableInvoiceModel invoice = SessionHelper.PayableInvoice;
-
-            invoice.InvoiceDetail.FirstOrDefault(x => x.Id == model.Id).CodeCombinationId = model.CodeCombinationId;
-            invoice.InvoiceDetail.FirstOrDefault(x => x.Id == model.Id).Amount = model.Amount;
-            invoice.InvoiceDetail.FirstOrDefault(x => x.Id == model.Id).Description = model.Description;
-        }
-
-        public static void Insert(PayableInvoiceDetailModel model)
-        {
-            PayableInvoiceModel invoice = SessionHelper.PayableInvoice;
-            invoice.InvoiceDetail.Add(model);
+            return new PayableInvoiceModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
         }
         
         public static void Delete(string id)
@@ -131,23 +150,10 @@ namespace _360Accounting.Web
             service.Delete(id, AuthenticationHelper.User.CompanyId);
         }
 
-        public static IList<PayableInvoiceDetailModel> GetInvoiceDetail([Optional]string invoiceId)
-        {
-            if (invoiceId == null)
-                return getInvoiceDetail();
-            else
-                return getInvoiceDetailByInvoiceId(invoiceId);        
-        }
+        
 
-        public static PayableInvoiceModel GetInvoice(string id)
-        {
-            return new PayableInvoiceModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
-        }
+        
 
-        public static IList<PayableInvoiceModel> GetInvoices(long sobId, long periodId)
-        {
-            IList<PayableInvoiceModel> modelList = service.GetAll(AuthenticationHelper.User.CompanyId, sobId, periodId).Select(x => new PayableInvoiceModel(x)).ToList();
-            return modelList;
-        }
+        
     }
 }

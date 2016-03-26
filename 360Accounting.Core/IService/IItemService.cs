@@ -15,5 +15,7 @@ namespace _360Accounting.Core
         long Update(ItemWarehouse entity);
         void DeleteItemWarehouse(long id);
         IEnumerable<ItemWarehouse> GetAllItemWarehouses(long itemId);
+
+        IEnumerable<Item> GetAll(long companyId, long sobId);
     }
 }

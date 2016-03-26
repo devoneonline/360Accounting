@@ -11,6 +11,11 @@ namespace _360Accounting.Data.Repositories
 {
     public class ItemRepository : Repository, IItemRepository
     {
+        public IEnumerable<Item> GetAll(long companyId, long sobId)
+        {
+            return this.GetAll(companyId).Where(x => x.SOBId == sobId);
+        }
+
         public ItemWarehouse GetSingle(long id)
         {
             return this.Context.ItemWarehouses.FirstOrDefault(x => x.Id == id);
