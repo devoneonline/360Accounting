@@ -139,7 +139,7 @@ namespace _360Accounting.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult ReceiptListPartial(long periodId, long sobId, long customerId, long currencyId)
+        public ActionResult ListPartial(long periodId, long sobId, long customerId, long currencyId)
         {
             IEnumerable<ReceiptView> boList = service
                 .GetReceipts(sobId, periodId, customerId, currencyId, AuthenticationHelper.User.CompanyId).ToList();

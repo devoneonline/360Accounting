@@ -410,15 +410,7 @@ namespace _360Accounting.Web.Controllers
             return View(model);
         }
 
-        public ActionResult JVPartialWithModel(JournalVoucherListModel model)
-        {
-            SessionHelper.SOBId = model.SOBId;
-            return PartialView("_List", JVHelper
-                .GetGLHeaders(model.SOBId, model.PeriodId,
-                model.CurrencyId));
-        }
-
-        public ActionResult JVPartial(long sobId, long periodId, long currencyId)
+        public ActionResult ListPartial(long sobId, long periodId, long currencyId)
         {
             SessionHelper.SOBId = sobId;
             return PartialView("_List", JVHelper

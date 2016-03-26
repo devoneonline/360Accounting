@@ -9,36 +9,31 @@ using System.Threading.Tasks;
 
 namespace _360Accounting.Service
 {
-    public class PayableInvoiceService : IPayableInvoiceService
+    public class InventoryPeriodService : IInventoryPeriodService
     {
-        private IPayableInvoiceRepository repository;
+        private IInventoryPeriodRepository repository;
 
-        public PayableInvoiceService(IPayableInvoiceRepository payableInvoiceRepository)
+        public InventoryPeriodService(IInventoryPeriodRepository repo)
         {
-            this.repository = payableInvoiceRepository;
+            this.repository = repo;
         }
 
-        public PayableInvoice GetSingle(long companyId, long sobId, long periodId)
+        public IEnumerable<InventoryPeriod> GetAll(long companyId, long sobId)
         {
-            return this.repository.GetSingle(companyId, sobId, periodId);
+            return this.repository.GetAll(companyId, sobId);
         }
 
-        public IEnumerable<PayableInvoice> GetAll(long companyId, long sobId, long periodId)
-        {
-            return this.repository.GetAll(companyId, sobId, periodId);
-        }
-
-        public PayableInvoice GetSingle(string id, long companyId)
+        public InventoryPeriod GetSingle(string id, long companyId)
         {
             return this.repository.GetSingle(id, companyId);
         }
 
-        public IEnumerable<PayableInvoice> GetAll(long companyId)
+        public IEnumerable<InventoryPeriod> GetAll(long companyId)
         {
             return this.repository.GetAll(companyId);
         }
 
-        public string Insert(PayableInvoice entity)
+        public string Insert(InventoryPeriod entity)
         {
             if (entity.IsValid())
                 return this.repository.Insert(entity);
@@ -46,7 +41,7 @@ namespace _360Accounting.Service
                 return "Entity is not in valid state";
         }
 
-        public string Update(PayableInvoice entity)
+        public string Update(InventoryPeriod entity)
         {
             if (entity.IsValid())
                 return this.repository.Update(entity);

@@ -37,7 +37,14 @@ namespace _360Accounting.Web.Models
         public long BankId { get; set; }
         public long BankAccountId { get; set; }
         public long ReceiptId { get; set; }
+
+        [Display(Name = "Remittance No.")]
         public string RemitNo { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}",
+            ApplyFormatInEditMode = true)]
+        [Display(Name = "Remittance Date")]
         public DateTime RemitDate { get; set; }
         //public string CustomerName { get; set; }
         //public decimal Amount { get; set; }

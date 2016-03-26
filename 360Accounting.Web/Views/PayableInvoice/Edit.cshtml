@@ -99,7 +99,6 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        jQuery.ajaxSetup({ async: false });
         $('#InvoiceDate').attr('class', 'form-control');
 
         $('#InvoiceDate').change(function () {
@@ -120,6 +119,8 @@
                 error: function () { }
             })
         })
+
+        jQuery.ajaxSetup({ async: false });
 
         $('#VendorId').change(function () {
             var url = '@Url.Content("~/PayableInvoice/VendorSiteList")';

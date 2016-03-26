@@ -59,7 +59,13 @@ namespace _360Accounting.Web
 
             foreach (var detail in remittanceModel.Remittances)
             {
-                Remittance entity = Mappers.GetEntityByModel(detail);
+                detail.RemitDate = remittanceModel.RemitDate;
+                detail.RemitNo = remittanceModel.RemitNo;
+                detail.SOBId = remittanceModel.SOBId;
+                detail.BankId = remittanceModel.BankId;
+                detail.BankAccountId = remittanceModel.BankAccountId;
+
+                Remittance entity = Mappers.GetEntityByModel(detail, savedDetail.Count());
                 if (entity.IsValid())
                 {
                     if (savedDetail.Count() > 0)
@@ -119,7 +125,7 @@ namespace _360Accounting.Web
 
         public static IList<RemittanceDetailModel> GetRemittanceDetail([Optional]string remitNo)
         {
-            if (remitNo == "New")
+            if (remitNo == null)
                 return getRemittanceDetail();
             else
                 return getRemittanceByRemitNo(remitNo);   

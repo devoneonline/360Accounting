@@ -9,7 +9,7 @@ var grid = Html.DevExpress().GridView(settings =>
     settings.Theme = "Office2010Black";
     settings.KeyFieldName = "Id";
 
-    settings.CallbackRouteValues = new { Controller = "JV", Action = "JVPartialWithModel" };
+    settings.CallbackRouteValues = new { Controller = "JV", Action = "ListPartial" };
 
     settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
     settings.SettingsBehavior.ConfirmDelete = true;

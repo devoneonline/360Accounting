@@ -248,7 +248,9 @@
     <Compile Include="Models\BankAccountViewModel.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\InventoryPeriodModel.cs" />
     <Compile Include="Models\InvoiceModel.cs" />
+    <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\PayableInvoiceModel.cs" />
     <Compile Include="Models\PaymentHeaderListModel.cs" />
     <Compile Include="Models\PaymentViewModel.cs" />
@@ -568,12 +570,13 @@
     <Content Include="Views\Remittance\Index.cshtml" />
     <Content Include="Views\Remittance\_List.cshtml" />
     <Content Include="Views\Remittance\Edit.cshtml" />
-    <Content Include="Views\Remittance\_Detail.cshtml" />
+    <Content Include="Views\Remittance\_DetailOld.cshtml" />
     <Content Include="Views\PayableInvoice\Index.cshtml" />
     <Content Include="Views\PayableInvoice\_List.cshtml" />
     <Content Include="Views\PayableInvoice\Edit.cshtml" />
     <Content Include="Views\Shared\_LookupAccountCode.cshtml" />
     <Content Include="Views\PayableInvoice\_Detail.cshtml" />
+    <Content Include="Views\Remittance\_Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

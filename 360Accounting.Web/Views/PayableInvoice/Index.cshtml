@@ -37,7 +37,7 @@
     </div>
 
     <div id="dvList" class="col-lg-12 cusGridWrapper">
-        @Html.Action("ListByModelPartial", Model)
+        @Html.Action("ListPartial", new { sobId = Model.SOBId, periodId = Model.PeriodId })
     </div>
 </div>
 
@@ -79,7 +79,7 @@
 
         $('#SOBId').change(function () {
             var url = '@Url.Content("~/PayableInvoice/PeriodList")';                                                                          //Make AR
-            
+            debugger;
             $.get(url, { sobId: $(this).val() },
                 function (data) {
                     var periodDropdown = $('#PeriodId');

@@ -29,15 +29,13 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.RemitNo)
                     @Html.TextBoxFor(model => model.RemitNo, new { @readonly = "readonly", @class = "form-control" })
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.RemitDate)
                     @Html.EditorFor(model => model.RemitDate)
@@ -47,7 +45,7 @@
         
         <div class="row">
             <div class="col-lg-12">
-                @Html.Partial("_Detail", Model)
+                @Html.Partial("_Detail", Model.Remittances)
             </div>
         </div>
     }
@@ -57,12 +55,10 @@
     $(document).ready(function () {
         ////jQuery.ajaxSetup({ async: false });
         $('#RemitDate').attr('class', 'form-control');
-        $('#btnSave').attr('disabled', true);
-        debugger;
         $('#RemitDate').change(function () {
             $.ajax({
                 url: '@Url.Content("~/Remittance/CheckDate")',                                      ////Make AR
-                data: { invoiceDate: $(this).val() },
+                data: { date: $(this).val() },
                 type: 'post',
                 datatype: 'json',
                 success: function (data)

@@ -25,10 +25,10 @@ namespace _360Accounting.Web
                 .Select(x => new ReceiptViewModel(x)).ToList();
         }
 
-        public static IEnumerable<SelectListItem> GetReceiptList(long bankId, long bankAccountId,
+        public static IList<SelectListItem> GetReceiptList(long bankId, long bankAccountId,
             DateTime? receiptDate = null)
         {
-            IEnumerable<SelectListItem> receiptList = GetReceipts(bankId, bankAccountId, receiptDate)
+            IList<SelectListItem> receiptList = GetReceipts(bankId, bankAccountId, receiptDate)
                 .Select(x => new SelectListItem
                 {
                     Text = "RECEIPT # " + x.ReceiptNumber + " of CUSTOMER " + x.CustomerName + " Amounting : " + x.ReceiptAmount,
@@ -36,6 +36,7 @@ namespace _360Accounting.Web
                 }).ToList();
 
             return receiptList;
+            
         }
     }
 }

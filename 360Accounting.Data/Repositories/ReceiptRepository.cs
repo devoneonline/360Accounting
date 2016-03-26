@@ -47,7 +47,11 @@ namespace _360Accounting.Data.Repositories
                         };
 
             if (date != null)
+            {
+                date = new DateTime(date.Value.Year, date.Value.Month, date.Value.Day);
                 query = query.Where(x => x.ReceiptDate == date);
+            }
+                
 
             return query;
         }

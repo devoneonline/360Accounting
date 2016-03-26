@@ -263,31 +263,32 @@ namespace _360Accounting.Web.Controllers
                 .GetInvoices(sobId, periodId));
         }
 
-        public ActionResult ListByModelPartial(PayableInvoiceListModel model)
-        {
-            SessionHelper.SOBId = model.SOBId;
-            return PartialView("_List", PayableInvoiceHelper
-                .GetInvoices(model.SOBId, model.PeriodId));
-        }
-
         public ActionResult Index(PayableInvoiceListModel model)
         {
-            SessionHelper.PayableInvoice = null;
-            if (model.SetOfBooks == null)
+            try
             {
-                model.SetOfBooks = SetOfBookHelper.GetSetOfBookList();
-                model.SOBId = model.SetOfBooks.Any() ?
-                    Convert.ToInt32(model.SetOfBooks.First().Value) : 0;
-            }
+                SessionHelper.PayableInvoice = null;
+                if (model.SetOfBooks == null)
+                {
+                    model.SetOfBooks = SetOfBookHelper.GetSetOfBookList();
+                    model.SOBId = model.SetOfBooks.Any() ?
+                        Convert.ToInt32(model.SetOfBooks.First().Value) : 0;
+                }
 
-            if (model.Periods == null && model.SetOfBooks.Any())
+                if (model.Periods == null && model.SetOfBooks.Any())
+                {
+                    model.Periods = PayablePeriodHelper.GetPeriodList(Convert.ToInt64(model.SetOfBooks.First().Value));
+                    model.PeriodId = model.Periods.Any() ?
+                        Convert.ToInt32(model.Periods.First().Value) : 0;
+                }
+
+                return View(model);
+            }
+            catch (Exception ex)
             {
-                model.Periods = PayablePeriodHelper.GetPeriodList(Convert.ToInt64(model.SetOfBooks.First().Value));
-                model.PeriodId = model.Periods.Any() ?
-                    Convert.ToInt32(model.Periods.First().Value) : 0;
+                ModelState.AddModelError("Error", ex);
+                return View(model);
             }
-
-            return View(model);
         }
     }
 }

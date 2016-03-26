@@ -56,7 +56,7 @@ namespace _360Accounting.Web.Models
         public long CustomerSiteId { get; set; }
         
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-mm-dd}",
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}",
             ApplyFormatInEditMode = true)]
         [Display(Name = "Document Date")]
         public DateTime InvoiceDate { get; set; }
