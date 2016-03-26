@@ -44,6 +44,7 @@ namespace _360Accounting.Web.Models
 
         public long BankId { get; set; }
 
+        [Required]
         [Display(Name = "Bank Account")]
         public string AccountName { get; set; }
 
@@ -63,11 +64,17 @@ namespace _360Accounting.Web.Models
         [Display(Name = "Cash Combinition")]
         public long Cash_CCID { get; set; }
 
+        public string Cash_CCIDString { get; set; }
+
         [Display(Name = "Remittance Combinition")]
         public long RemitCash_CCID { get; set; }
 
+        public string RemitCash_CCIDString { get; set; }
+
         [Display(Name = "Confirm Combinition")]
         public long Confirm_CCID { get; set; }
+
+        public string Confirm_CCIDString { get; set; }
 
         public List<SelectListItem> CodeCombinition { get; set; }
 

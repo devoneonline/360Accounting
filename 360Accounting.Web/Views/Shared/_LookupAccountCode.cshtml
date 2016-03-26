@@ -43,8 +43,8 @@
             });
             var url = '@Url.Content("~/CodeCombinition/GetLookupCode")';
             $.post(url, { value: value }, function (result) {
-                $('#CodeCombinationString').val(value);
-                $('#CodeCombinationId').val(result);
+                $('#' + lookupTextField).val(value);
+                $('#' + lookupValueField).val(result);
                 $('#dvAccountLookup').dialog('close');
             });
         });

@@ -16,9 +16,9 @@ Alter table tbInvoiceType Add CompanyId bigint not null default 1
 
 GO
 
-Alter table tbPayableInvoice Add CompanyId bigint not null default 1
+-- Alter table tbPayableInvoice Add CompanyId bigint not null default 1
 
-GO
+-- GO
 
 Alter table tbPayablePeriod Add CompanyId bigint not null default 1
 
