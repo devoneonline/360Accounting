@@ -14,7 +14,7 @@ namespace _360Accounting.Core.Entities
         public long CompanyId { get; set; }
         public long SOBId { get; set; }
         public long COGSCodeCombinationId { get; set; }
-        public long SateCodeCombinationId { get; set; }
+        public long SalesCodeCombinationId { get; set; }
         public string ItemCode { get; set; }
         public string ItemName { get; set; }
         public string Description { get; set; }
