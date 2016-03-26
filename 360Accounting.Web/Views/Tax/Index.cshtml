@@ -4,10 +4,6 @@
 @{
     ViewBag.Title = "Tax";
 }
-
-<br />
-<br />
-<br />
 <div class="container">
     <div class="clearfix">
         <div class="col-lg-12">
@@ -17,7 +13,7 @@
         </div>
     </div>
     <div class="col-lg-4">
-        <div class="form-group">
+        <div class="form-group customDropDownWrapper">
             @Html.LabelFor(m => m.SetOfBooks)
             @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control criteria" })
         </div>
@@ -36,7 +32,8 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        debugger;
+        $.noConflict();
+
         $('#btnCreate').click(function () {
             var continueCreate = true;
             var isValidInputs = $('#SOBId').filter(function () { return $(this).val() == null; });
