@@ -436,6 +436,18 @@
     <Content Include="Views\CustomerSite\Edit.cshtml" />
     <Content Include="Views\CustomerSite\Index.cshtml" />
     <Content Include="Views\CustomerSite\_List.cshtml" />
+    <Content Include="Views\Payment\Create.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Payment\createPartial.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Payment\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Payment\_List.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Views\Receipt\Create.cshtml">
       <SubType>Code</SubType>
     </Content>

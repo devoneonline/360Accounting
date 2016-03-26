@@ -10,5 +10,6 @@ namespace _360Accounting.Core
 {
     public interface ICustomerService : IService<Customer>
     {
+        IEnumerable<Customer> GetAll(long companyId, DateTime startDate, DateTime endDate);
     }
 }

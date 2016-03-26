@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Web;
+using System.Web.Mvc;
 
 namespace _360Accounting.Web
 {
@@ -40,6 +41,14 @@ namespace _360Accounting.Web
             IList<InvoiceModel> modelList = service
                 .GetAll(AuthenticationHelper.User.CompanyId, sobId, periodId, currencyId)
                 .Select(x => new InvoiceModel(x)).ToList();
+            return modelList;
+        }
+
+        public static List<SelectListItem> GetInvoices(long sobId, long periodId)
+        {
+            List<SelectListItem> modelList = service
+                .GetInvoices(AuthenticationHelper.User.CompanyId, sobId, periodId)
+                .Select(x => new SelectListItem { Text = x.InvoiceNo, Value = x.Id.ToString() }).ToList();
             return modelList;
         }
 

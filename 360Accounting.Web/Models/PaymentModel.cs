@@ -50,16 +50,22 @@ namespace _360Accounting.Web.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime PaymentDate { get; set; }
 
+        [Display(Name = "Period")]
         public long PeriodId { get; set; }
-        
+
+        [Display(Name = "Vendor")]
         public long VendorId { get; set; }
 
+        [Display(Name = "Vendor Site")]
         public long VendorSiteId { get; set; }
-        
+
+        [Display(Name = "Bank")]
         public long BankId { get; set; }
-        
+
+        [Display(Name = "Bank Account")]
         public long BankAccountId { get; set; }
 
+        [Display(Name = "Set of Book")]
         public long SOBId { get; set; }
 
         public decimal Amount { get; set; }
@@ -142,12 +148,16 @@ namespace _360Accounting.Web.Models
 
         #region Properties
 
+        [Display(Name="Vendor")]
         public List<SelectListItem> Vendor { get; set; }
 
+        [Display(Name = "Bank")]
         public List<SelectListItem> Bank { get; set; }
 
+        [Display(Name = "Set of Book")]
         public List<SelectListItem> SetOfBook { get; set; }
 
+        [Display(Name = "Period")]
         public List<SelectListItem> Period { get; set; }
 
         public IEnumerable<PaymentViewModel> Payments { get; set; }
@@ -200,7 +210,7 @@ namespace _360Accounting.Web.Models
 
         public List<SelectListItem> BankAccount { get; set; }
 
-        public List<PaymentInvoiceLinesModel> PaymentInvoiceLines { get; set; }
+        public IList<PaymentInvoiceLinesModel> PaymentInvoiceLines { get; set; }
 
         #endregion
     }

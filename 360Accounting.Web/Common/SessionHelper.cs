@@ -163,6 +163,18 @@ namespace _360Accounting.Web
             }
         }
 
+        public static long PeriodId
+        {
+            get
+            {
+                return Convert.ToInt64(HttpContext.Current.Session["PeriodId"].ToString());
+            }
+            set
+            {
+                HttpContext.Current.Session["PeriodId"] = value;
+            }
+        }
+
         public static long CodeCombinitionId
         {
             get

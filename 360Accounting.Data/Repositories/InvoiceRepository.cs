@@ -36,6 +36,13 @@ namespace _360Accounting.Data.Repositories
             return list;
         }
 
+        public IEnumerable<Invoice> GetInvoices(long companyId, long sobId, long periodId)
+        {
+            IEnumerable<Invoice> list = this.Context.Invoices.Where(x => x.SOBId == sobId &&
+                    x.PeriodId == periodId).ToList();
+            return list;
+        }
+
         public Invoice GetSingle(string id, long companyId)
         {
             long longId = Convert.ToInt64(id);

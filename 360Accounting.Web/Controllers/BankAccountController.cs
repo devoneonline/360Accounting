@@ -70,12 +70,8 @@ namespace _360Accounting.Web.Controllers
             BankAccountViewModel model = new BankAccountViewModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
             if (model.CodeCombinition == null)
             {
-                model.CodeCombinition = codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId).Select(a =>
-                    new SelectListItem
-                    {
-                        Text = a.Id.ToString(),
-                        Value = a.Id.ToString()
-                    }).ToList();
+                BankModel bank = BankHelper.GetBank(model.BankId.ToString());
+                model.CodeCombinition = CodeCombinationHelper.GetAccounts(bank.SOBId, bank.StartDate, bank.EndDate).ToList();
             }
             return View("Create", model);
         }
@@ -100,11 +96,18 @@ namespace _360Accounting.Web.Controllers
             if (ModelState.IsValid)
             {
                 string result = "";
-                if (model.Id > 0)
-                    result = service.Update(mapModel(model));
-                else
-                    result = service.Insert(mapModel(model));
+                bool validated = false;
+                BankModel bank = BankHelper.GetBank(model.BankId.ToString());
+                if (model.StartDate >= bank.StartDate && model.EndDate <= bank.EndDate)
+                    validated = true;
 
+                if (validated)
+                {
+                    if (model.Id > 0)
+                        result = service.Update(mapModel(model));
+                    else
+                        result = service.Insert(mapModel(model));
+                }
                 return RedirectToAction("Index", new { Id = model.BankId });
             }
             return View(model);
@@ -115,12 +118,8 @@ namespace _360Accounting.Web.Controllers
             BankAccountViewModel bankAccount = new BankAccountViewModel();
             if (bankAccount.CodeCombinition == null)
             {
-                bankAccount.CodeCombinition = codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId).Select(a =>
-                    new SelectListItem
-                    {
-                        Text = a.Id.ToString(),
-                        Value = a.Id.ToString()
-                    }).ToList();
+                BankModel bank = BankHelper.GetBank(bankId.ToString());
+                bankAccount.CodeCombinition = CodeCombinationHelper.GetAccounts(bank.SOBId, bank.StartDate, bank.EndDate).ToList();
             }
             bankAccount.BankId = bankId;
             return View(bankAccount);

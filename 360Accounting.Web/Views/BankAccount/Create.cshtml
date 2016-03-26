@@ -91,6 +91,44 @@
         $('[type=date]').attr('class', 'form-control');
     });
 
+    $('#StartDate').blur(function () {
+        $.ajax({
+            url: '@Url.Content("~/Bank/CheckStartDate")',
+            data: { startDate: $(this).val(), bankId: $('#BankId').val() },
+            type: 'post',
+            datatype: 'json',
+            success: function (data) {
+                if (!data) {
+                    alert('Bank Account Date must lie in the range of Bank Date.');
+                    $('#StartDate').focus();
+                    $('#btnSave').attr('disabled', true)
+                }
+                else
+                    $('#btnSave').attr('disabled', false)
+            },
+            error: function () { }
+        })
+    })
+
+    $('#EndDate').blur(function () {
+        $.ajax({
+            url: '@Url.Content("~/Bank/CheckEndDate")',
+            data: { endDate: $(this).val(), bankId: $('#BankId').val() },
+            type: 'post',
+            datatype: 'json',
+            success: function (data) {
+                if (!data) {
+                    alert('Bank Account Date must lie in the range of Bank Date.');
+                    $('#StartDate').focus();
+                    $('#btnSave').attr('disabled', true)
+                }
+                else
+                    $('#btnSave').attr('disabled', false)
+            },
+            error: function () { }
+        })
+    })
+
     $('#btnCancel').click(function () {
         var url = '@Url.Content("~/BankAccount/Index/")' + $('#BankId').val();
         window.location.href = url;
