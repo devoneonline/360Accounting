@@ -28,6 +28,11 @@ namespace _360Accounting.Service
             return this.repository.GetAll(companyId);
         }
 
+        public IEnumerable<Customer> GetAll(long companyId, DateTime startDate, DateTime endDate)
+        {
+            return this.repository.GetAll(companyId, startDate, endDate);
+        }
+
         public string Insert(Customer entity)
         {
             return this.repository.Insert(entity);

@@ -9,7 +9,7 @@
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 
 <div class="container">
-    <div class="clearfix">
+    <div class="row">
         <div class="col-lg-12">
             <h3 class="page-header">
                 @ViewBag.Title
@@ -30,72 +30,78 @@
         @Html.HiddenFor(m => m.CreateDate)
         @Html.HiddenFor(m => m.UpdateBy)
         @Html.HiddenFor(m => m.UpdateDate)
+        <input id="PrecisionLimit" type="hidden"value="@SessionHelper.PrecisionLimit" />
 
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(model => model.ReceiptNumber)
-                @Html.TextBoxFor(model => model.ReceiptNumber, new { @class = "form-control" })
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ReceiptNumber)
+                    @Html.TextBoxFor(model => model.ReceiptNumber, new { @class = "form-control" })
+                </div>
             </div>
-        </div>
 
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(model => model.ReceiptDate)
-                @Html.EditorFor(model => model.ReceiptDate, new { @class = "form-control" })
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ReceiptDate)
+                    @Html.EditorFor(model => model.ReceiptDate, new { @class = "form-control" })
+                </div>
             </div>
-        </div>
 
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(model => model.ConversionRate)
-                @Html.EditorFor(model => model.ConversionRate, new { @class = "form-control" })
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ReceiptAmount)
+                    @Html.TextBoxFor(model => model.ReceiptAmount, new { @class = "form-control", @type="number" })
+                </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ConversionRate)
+                    @Html.TextBoxFor(model => model.ConversionRate, new { @class = "form-control" })
+                </div>
+            </div>
 
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(model => model.ReceiptAmount)
-                @Html.EditorFor(model => model.ReceiptAmount, new { @class = "form-control" })
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Status)
+                    @Html.TextBoxFor(model => model.Status, new { @class = "form-control" })
+                </div>
             </div>
-        </div>
 
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(model => model.Status)
-                @Html.EditorFor(model => model.Status, new { @class = "form-control" })
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Remarks)
+                    @Html.TextBoxFor(model => model.Remarks, new { @class = "form-control" })
+                </div>
             </div>
         </div>
-
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(model => model.Remarks)
-                @Html.EditorFor(model => model.Remarks, new { @class = "form-control" })
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CustomerSiteId)
+                    @Html.DropDownListFor(model => model.CustomerSiteId, Model.CustomerSites, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.BankId)
+                    @Html.DropDownListFor(model => model.BankId, Model.Banks, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.BankAccountId)
+                    @Html.DropDownListFor(model => model.BankAccountId, Model.BankAccounts, new { @class = "form-control" })
+                </div>
             </div>
         </div>
-
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(model => model.CustomerSiteId)
-                @Html.DropDownListFor(model => model.CustomerSiteId, Model.CustomerSites, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(model => model.BankId)
-                @Html.DropDownListFor(model => model.BankId, Model.Banks, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(model => model.BankAccountId)
-                @Html.DropDownListFor(model => model.BankAccountId, Model.BankAccounts, new { @class = "form-control" })
-            </div>
-        </div>
-
-        <div class="col-md-12">
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default tstyCus-btn" />
-                <input id="btnCancel" type="button" value="Cancel" class="btn btn-default tstyCus-btn" />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-default tstyCus-btn" />
+                    <input id="btnCancel" type="button" value="Cancel" class="btn btn-default tstyCus-btn" />
+                </div>
             </div>
         </div>
     }
@@ -105,6 +111,51 @@
     $(document).ready(function () {
         $('[type=date]').attr('class', 'form-control');
     });
+
+    //Validation
+    $('#ReceiptAmount').keypress(function (e) {
+        if ($(this).val().indexOf('.') > -1) {
+            if (e.charCode == 46)
+                e.preventDefault();
+            else {
+                var decimalIndex = $(this).val().indexOf('.');
+                if ($(this).val().substring(decimalIndex + 1).length == $('#PrecisionLimit').val())
+                    e.preventDefault();
+            }
+        }
+    });
+
+    $('#BankId').change(function () {
+        var url1 = '@Url.Content("~/Receipt/BankAccountList")';
+
+        $.get(url1, { bankId: $(this).val() },
+            function (data) {
+                var bankAccountDropdown = $('#BankAccountId');
+                bankAccountDropdown.empty();
+                for (var i = 0; i < data.length; i++) {
+                    bankAccountDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
+                }
+            });
+    });
+
+    $('#ReceiptDate').blur(function () {
+        $.ajax({
+            url: '@Url.Content("~/Receipt/CheckReceiptDate")',
+            data: { receiptDate: $(this).val(), periodId: $('#PeriodId').val() },
+            type: 'post',
+            datatype: 'json',
+            success: function (data) {
+                if (!data) {
+                    alert('Receipt Date must lie in the range of current period.');
+                    $('#ReceiptDate').focus();
+                    $('#btnSave').attr('disabled', true)
+                }
+                else
+                    $('#btnSave').attr('disabled', false)
+            },
+            error: function () { }
+        })
+    })
 
     $('#btnCancel').click(function () {
         var url = '@Url.Content("~/Receipt/Index/")';

@@ -25,6 +25,13 @@ namespace _360Accounting.Data.Repositories
             return customerList;
         }
 
+        public IEnumerable<Customer> GetAll(long companyId, DateTime startDate, DateTime endDate)
+        {
+            IEnumerable<Customer> customerList = this.Context.Customers
+                .Where(x => x.CompanyId == companyId && (x.StartDate >= startDate && x.EndDate <= endDate));
+            return customerList;
+        }
+
         public string Insert(Customer entity)
         {
             this.Context.Customers.Add(entity);

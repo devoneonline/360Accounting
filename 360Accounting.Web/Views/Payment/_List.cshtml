@@ -1,0 +1,58 @@
+﻿
+@{Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
+
+var grid = Html.DevExpress().GridView(settings =>
+{
+    settings.Name = "Payment";
+    settings.Theme = "Office2010Black";
+    settings.KeyFieldName = "Id";
+
+    settings.CallbackRouteValues = new { Controller = "JV", Action = "PaymentPartialWithModel" };
+
+    settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+    settings.SettingsBehavior.ConfirmDelete = true;
+
+    settings.SettingsPager.Visible = true;
+    settings.Settings.ShowGroupPanel = false;
+    settings.Settings.ShowFilterRow = false;
+    settings.SettingsBehavior.AllowSort = false;
+    settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+    settings.Columns.Add(column =>
+    {
+        column.SetDataItemTemplateContent(c =>
+        {
+            ViewContext.Writer.Write(
+                Html.Raw("<a href='" + Url.Content("~/Payment/Edit?Id=") + DataBinder.Eval(c.DataItem, "Id") + "&vendorId=" + DataBinder.Eval(c.DataItem, "VendorId") + "&sobId=" + DataBinder.Eval(c.DataItem, "SOBId") + "&bankId=" + DataBinder.Eval(c.DataItem, "BankId") + "&periodId=" + DataBinder.Eval(c.DataItem, "PeriodId") + "'><i class='fa fa-edit'></i></a>")
+                    + "&nbsp;" +
+                Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/Payment/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
+            );
+        });
+
+        column.Settings.AllowDragDrop = DefaultBoolean.False;
+        column.Settings.AllowSort = DefaultBoolean.False;
+        column.Width = 70;
+    });
+    settings.Columns.Add("PaymentNo", "Payment #");
+    settings.Columns.Add("PaymentDate", "Payment Date").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;
+    settings.Columns.Add("VendorSiteName", "Vendor Site");
+    settings.Columns.Add("BankAccountName", "Bank Account");
+    settings.Columns.Add("Amount");
+    settings.Columns.Add("Status");
+});
+if (ViewData["EditError"] != null)
+{
+    grid.SetEditErrorText((string)ViewData["EditError"]);
+}
+}
+@grid.Bind(Model.Payments).GetHtml()
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.deleteQuestion').click(function () {
+            return confirm("Sure! you wanted to delete ?");
+        });
+    });
+</script>

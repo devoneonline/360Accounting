@@ -759,11 +759,11 @@ namespace _360Accounting.Web
             entity.Id = model.Id;
             entity.PaymentDate = model.PaymentDate;
             entity.PaymentNo = model.PaymentNo;
-            entity.Id = model.PeriodId;
             entity.Status = model.Status;
             entity.SOBId = model.SOBId;
             entity.BankAccountId = model.BankAccountId;
             entity.VendorId = model.VendorId;
+            entity.PeriodId = model.PeriodId;
             entity.VendorSiteId = model.VendorSiteId;
             entity.UpdateBy = AuthenticationHelper.UserId;
             entity.UpdateDate = DateTime.Now;

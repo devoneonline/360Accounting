@@ -50,7 +50,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            JVHelper.Delete(id);
+            PaymentHelper.Delete(id);
             return RedirectToAction("Index");
         }
 
@@ -58,8 +58,27 @@ namespace _360Accounting.Web.Controllers
         {
             PaymentViewModel model = PaymentHelper.GetPayment(id);
             SessionHelper.SOBId = model.SOBId;
-            SessionHelper.Calendar = new CalendarViewModel(calendarService.GetSingle(periodId.ToString(), AuthenticationHelper.User.CompanyId));
+            SessionHelper.PeriodId = periodId;
+            SessionHelper.Calendar = CalendarHelper.GetCalendar(periodId.ToString());
             //SessionHelper.PrecisionLimit = currencyService.GetSingle(currencyId.ToString(), AuthenticationHelper.User.CompanyId).Precision;
+
+            if (model.BankAccount == null)
+            {
+                model.BankAccount = BankHelper.GetBankAccountList(bankId);
+                model.BankAccountId = model.BankAccount.Any() ?
+                    Convert.ToInt32(model.BankAccount.First().Value) : 0;
+            }
+            if (model.VendorSite == null)
+            {
+                model.VendorSite = VendorHelper.GetAllSites(vendorId)
+                    .Select(x => new SelectListItem
+                    {
+                        Text = x.Name,
+                        Value = x.Id.ToString()
+                    }).ToList();
+                model.VendorSiteId = model.VendorSite.Any() ?
+                    Convert.ToInt32(model.VendorSite.First().Value) : 0;
+            }
 
             model.PaymentInvoiceLines = PaymentHelper.GetPaymentLines(id).ToList();
             model.SOBId = sobId;
@@ -86,7 +105,7 @@ namespace _360Accounting.Web.Controllers
                     Convert.ToInt32(model.SetOfBook.First().Value) : 0;
             }
 
-            if (model.Period == null && model.SetOfBook.Any())
+            if (model.Period == null)
             {
                 model.Period = CalendarHelper.GetCalendars(Convert.ToInt32(model.SetOfBook.First().Value))
                     .Select(x => new SelectListItem
@@ -95,6 +114,20 @@ namespace _360Accounting.Web.Controllers
                         Value = x.Id.ToString()
                     }).ToList();
                 model.PeriodId = model.Period.Any() ? Convert.ToInt32(model.Period.First().Value) : 0;
+            }
+
+            SessionHelper.Calendar = CalendarHelper.GetCalendar(model.PeriodId.ToString());
+
+            if (model.Vendor == null)
+            {
+                model.Vendor = VendorHelper.GetVendorList(SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
+                model.VendorId = model.Vendor.Any() ? Convert.ToInt32(model.Vendor.First().Value) : 0;
+            }
+
+            if (model.Bank == null)
+            {
+                model.Bank = BankHelper.GetBankList(model.SOBId);
+                model.BankId = model.Bank.Any() ? Convert.ToInt32(model.Bank.First().Value) : 0;
             }
 
             //if (model.Currencies == null && model.SetOfBooks.Any())
@@ -111,15 +144,17 @@ namespace _360Accounting.Web.Controllers
             return View(model);
         }
 
-        public ActionResult PaymentPartial(long sobId, long periodId, long vendorId, long bankId)
+        //public ActionResult PaymentPartial(long sobId, long periodId, long vendorId, long bankId)
+        public ActionResult PaymentPartial(PaymentListViewModel model)
         {
-            SessionHelper.SOBId = sobId;
-            return PartialView("_List", PaymentHelper.GetPayments(sobId, bankId, vendorId, periodId));
+            SessionHelper.SOBId = model.SOBId;
+            return PartialView("_List", PaymentHelper.GetPayments(model.SOBId, model.BankId, model.VendorId, model.PeriodId));
         }
 
         public ActionResult Create(long sobId, long periodId, long vendorId, long bankId)
         {
             SessionHelper.SOBId = sobId;
+            SessionHelper.PeriodId = periodId;
             SessionHelper.Calendar = CalendarHelper.GetCalendar(periodId.ToString());
             //SessionHelper.PrecisionLimit = CurrencyHelper.GetCurrency(currencyId.ToString()).Precision;
 
@@ -141,7 +176,7 @@ namespace _360Accounting.Web.Controllers
                 }
                 if (model.VendorSite == null)
                 {
-                    model.VendorSite = VendorHelper.GetAllSites(bankId)
+                    model.VendorSite = VendorHelper.GetAllSites(vendorId)
                         .Select(x => new SelectListItem
                         {
                             Text = x.Name,
@@ -150,8 +185,17 @@ namespace _360Accounting.Web.Controllers
                     model.VendorSiteId = model.VendorSite.Any() ?
                         Convert.ToInt32(model.VendorSite.First().Value) : 0;
                 }
+
+                ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(sobId.ToString()).Name;
+                ViewBag.PeriodName = SessionHelper.Calendar.PeriodName;
+                ViewBag.VendorName = VendorHelper.GetSingle(vendorId.ToString()).Name;
+                ViewBag.BankName = BankHelper.GetBank(bankId.ToString()).BankName;
+
                 SessionHelper.Payment = model;
+                if (SessionHelper.Payment.PaymentInvoiceLines == null)
+                    SessionHelper.Payment.PaymentInvoiceLines = new List<PaymentInvoiceLinesModel>();
             }
+            
             return View(model);
         }
 
@@ -173,7 +217,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult CreatePartial()
         {
-            return PartialView("createPartial", JVHelper.GetGLLines());
+            return PartialView("createPartial", PaymentHelper.GetPaymentLines());
         }
 
         [HttpPost, ValidateInput(false)]
@@ -184,9 +228,21 @@ namespace _360Accounting.Web.Controllers
                 try
                 {
                     bool validated = false;
-
+                    
                     if (SessionHelper.Payment != null)
                     {
+                        if (SessionHelper.Payment.BankAccountId == 0)
+                        {
+                            ViewData["EditError"] = "Please select Bank Account";
+                            return PartialView("createPartial", PaymentHelper.GetPaymentLines());
+                        }
+
+                        if (SessionHelper.Payment.VendorSiteId == 0)
+                        {
+                            ViewData["EditError"] = "Please select Vendor Site";
+                            return PartialView("createPartial", PaymentHelper.GetPaymentLines());
+                        }
+
                         model.Id = SessionHelper.Payment.PaymentInvoiceLines.Count() + 1;
                         validated = true;
                     }
@@ -247,7 +303,7 @@ namespace _360Accounting.Web.Controllers
             return PartialView("createPartial");
         }
 
-        public ActionResult SavePayment(PaymentViewModel model, string paymentName, string paymentDate, string cRate, string descr)
+        public ActionResult SavePayment(PaymentViewModel model)
         {
             string message = "";
             try
@@ -264,8 +320,9 @@ namespace _360Accounting.Web.Controllers
                     SessionHelper.Payment.Status = model.Status;
                     SessionHelper.Payment.VendorId = model.VendorId;
                     SessionHelper.Payment.VendorSiteId = model.VendorSiteId;
-                    
-                    SessionHelper.Payment.PaymentNo = PaymentHelper.GetPaymentNo(AuthenticationHelper.User.CompanyId, model.VendorId, model.SOBId, model.BankId, model.PeriodId);
+
+                    if (SessionHelper.Payment.Id == 0)
+                        SessionHelper.Payment.PaymentNo = PaymentHelper.GetPaymentNo(AuthenticationHelper.User.CompanyId, model.VendorId, model.SOBId, model.BankId, model.PeriodId);
 
                     PaymentHelper.Update(SessionHelper.Payment);
                     SessionHelper.Payment = null;
@@ -303,6 +360,19 @@ namespace _360Accounting.Web.Controllers
                         Value = x.Id.ToString()
                     }).ToList();
             return Json(periodList, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult BankList(long sobId)
+        {
+            List<SelectListItem> BankList = BankHelper.GetBankList(sobId);
+            return Json(BankList, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult VendorList(long periodId)
+        {
+            SessionHelper.Calendar = CalendarHelper.GetCalendar(periodId.ToString());
+            List<SelectListItem> VendorList = VendorHelper.GetVendorList(SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
+            return Json(VendorList, JsonRequestBehavior.AllowGet);
         }
     }
 }

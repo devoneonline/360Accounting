@@ -46,6 +46,12 @@ namespace _360Accounting.Web
                 .Select(a => new CustomerModel(a)).ToList();
         }
 
+        public static List<CustomerModel> GetCustomers(DateTime startDate, DateTime endDate)
+        {
+            return service.GetAll(AuthenticationHelper.User.CompanyId, startDate, endDate)
+                .Select(a => new CustomerModel(a)).ToList();
+        }
+
         public static List<CustomerSiteViewModel> GetCustomerSites(long customerId)
         {
             return siteService.GetAllbyCustomerId(customerId)

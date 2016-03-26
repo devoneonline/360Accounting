@@ -68,7 +68,7 @@ namespace _360Accounting.Web.Controllers
                     Value = a.Id.ToString()
                 }).ToList();
             }
-            model.SOBId = Convert.ToInt64(model.SetOfBooks.FirstOrDefault().Value);
+            model.SOBId = model.SetOfBooks.Count() > 0 ? Convert.ToInt64(model.SetOfBooks.FirstOrDefault().Value) : 0;
 
             if (model.Periods == null)
             {
@@ -78,17 +78,19 @@ namespace _360Accounting.Web.Controllers
                     Value = a.Id.ToString()
                 }).ToList();
             }
-            model.PeriodId = Convert.ToInt64(model.Periods.FirstOrDefault().Value);
+            model.PeriodId = model.Periods.Count() > 0 ? Convert.ToInt64(model.Periods.FirstOrDefault().Value) : 0;
+            SessionHelper.Calendar = CalendarHelper.GetCalendar(model.PeriodId.ToString());
 
             if (model.Customers == null)
             {
-                model.Customers = customerService.GetAll(AuthenticationHelper.User.CompanyId).Select(a => new SelectListItem
+                model.Customers = customerService.GetAll(AuthenticationHelper.User.CompanyId, SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate).
+                    Select(a => new SelectListItem
                 {
                     Text = a.CustomerName.ToString(),
                     Value = a.Id.ToString()
                 }).ToList();
             }
-            model.CustomerId = Convert.ToInt64(model.Customers.FirstOrDefault().Value);
+            model.CustomerId = model.Customers.Count() > 0 ? Convert.ToInt64(model.Customers.FirstOrDefault().Value) : 0;
 
             if (model.Currency == null)
             {
@@ -98,34 +100,18 @@ namespace _360Accounting.Web.Controllers
                     Value = a.Id.ToString()
                 }).ToList();
             }
-            model.CurrencyId = Convert.ToInt64(model.Currency.FirstOrDefault().Value);
+            model.CurrencyId = model.Currency.Count() > 0 ? Convert.ToInt64(model.Currency.FirstOrDefault().Value) : 0;
 
             return View(model);
         }
-
-        [HttpPost]
-        public ActionResult Edit(ReceiptViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                string result = "";
-                if (model.Id > 0)
-                    result = service.Update(mapModel(model));
-                else
-                    result = service.Insert(mapModel(model));
-                return RedirectToAction("Index");
-            }
-            return View(model);
-        }
-
+        
         public ActionResult Edit(string id)
         {
-
             ReceiptViewModel model = ReceiptViewtoReceipt(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
             
             if (model.CustomerSites == null)
             {
-                model.CustomerSites = customerSiteService.GetAll(AuthenticationHelper.User.CompanyId).Select(a => new SelectListItem
+                model.CustomerSites = CustomerHelper.GetCustomerSites(model.CustomerId).Select(a => new SelectListItem
                 {
                     Text = a.SiteName.ToString(),
                     Value = a.Id.ToString()
@@ -134,21 +120,16 @@ namespace _360Accounting.Web.Controllers
 
             if (model.Banks == null)
             {
-                model.Banks = bankService.GetAll(AuthenticationHelper.User.CompanyId).Select(a => new SelectListItem
-                {
-                    Text = a.BankName.ToString(),
-                    Value = a.Id.ToString()
-                }).ToList();
+                model.Banks = BankHelper.GetBankList(model.SOBId);
             }
 
             if (model.BankAccounts == null)
             {
-                model.BankAccounts = bankAccountService.GetAll(AuthenticationHelper.User.CompanyId).Select(a => new SelectListItem
-                {
-                    Text = a.AccountName.ToString(),
-                    Value = a.Id.ToString()
-                }).ToList();
+                model.BankAccounts = BankHelper.GetBankAccountList(model.BankId);
             }
+
+            SessionHelper.Calendar = CalendarHelper.GetCalendar(model.PeriodId.ToString());
+            SessionHelper.PrecisionLimit = CurrencyHelper.GetCurrency(model.CurrencyId.ToString()).Precision;
             return View("Create", model);
         }
 
@@ -172,11 +153,20 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                bool validated = false;
                 string result = "";
-                if (model.Id > 0)
-                    result = service.Update(mapModel(model));
-                else
-                    result = service.Insert(mapModel(model));
+                //Validation..
+                CalendarViewModel period = CalendarHelper.GetCalendar(model.PeriodId.ToString());
+                if (model.ReceiptDate >= period.StartDate && model.ReceiptDate <= period.EndDate)
+                    validated = true;
+
+                if (validated)
+                {
+                    if (model.Id > 0)
+                        result = service.Update(mapModel(model));
+                    else
+                        result = service.Insert(mapModel(model));
+                }
 
                 return RedirectToAction("Index");
             }
@@ -191,9 +181,12 @@ namespace _360Accounting.Web.Controllers
             receipt.CustomerId = customerId;
             receipt.CurrencyId = currencyId;
 
+            SessionHelper.PrecisionLimit = CurrencyHelper.GetCurrency(currencyId.ToString()).Precision;
+            SessionHelper.Calendar = CalendarHelper.GetCalendar(periodId.ToString());
+
             if (receipt.CustomerSites == null)
             {
-                receipt.CustomerSites = customerSiteService.GetAll(AuthenticationHelper.User.CompanyId).Select(a => new SelectListItem
+                receipt.CustomerSites = CustomerHelper.GetCustomerSites(receipt.CustomerId).Select(a => new SelectListItem
                 {
                     Text = a.SiteName.ToString(),
                     Value = a.Id.ToString()
@@ -202,20 +195,12 @@ namespace _360Accounting.Web.Controllers
 
             if (receipt.Banks == null)
             {
-                receipt.Banks = bankService.GetAll(AuthenticationHelper.User.CompanyId).Select(a => new SelectListItem
-                {
-                    Text = a.BankName.ToString(),
-                    Value = a.Id.ToString()
-                }).ToList();
+                receipt.Banks = BankHelper.GetBankList(receipt.SOBId);
             }
 
             if (receipt.BankAccounts == null)
             {
-                receipt.BankAccounts = bankAccountService.GetAll(AuthenticationHelper.User.CompanyId).Select(a => new SelectListItem
-                {
-                    Text = a.AccountName.ToString(),
-                    Value = a.Id.ToString()
-                }).ToList();
+                receipt.BankAccounts = BankHelper.GetBankAccountList(receipt.BankId);
             }
             
             return View(receipt);
@@ -240,6 +225,52 @@ namespace _360Accounting.Web.Controllers
                 SOBId = receipt.SOBId,
                 Status = receipt.Status
             };
+        }
+
+        public JsonResult CheckReceiptDate(DateTime receiptDate, long periodId)
+        {
+            bool returnData = true;
+            if (periodId > 0)
+            {
+                if (SessionHelper.Calendar != null)
+                {
+                    if (receiptDate >= SessionHelper.Calendar.StartDate && receiptDate <= SessionHelper.Calendar.EndDate)
+                        returnData = true;
+                    else
+                        returnData = false;
+                }
+            }
+            return Json(returnData);
+        }
+
+        public JsonResult PeriodList(long sobId)
+        {
+            List<SelectListItem> periodList = CalendarHelper.GetCalendars(sobId)
+                    .Select(x => new SelectListItem
+                    {
+                        Text = x.PeriodName,
+                        Value = x.Id.ToString()
+                    }).ToList();
+            return Json(periodList, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult CustomerList(long periodId)
+        {
+            CalendarViewModel calendar = CalendarHelper.GetCalendar(periodId.ToString());
+            List<SelectListItem> customerList = CustomerHelper.GetCustomers(calendar.StartDate, calendar.EndDate)
+                    .Select(x => new SelectListItem
+                    {
+                        Text = x.CustomerName,
+                        Value = x.Id.ToString()
+                    }).ToList();
+            return Json(customerList, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult BankAccountList(long bankId)
+        {
+            List<SelectListItem> bankAccountList = BankHelper.GetBankAccountList(bankId);
+
+            return Json(bankAccountList, JsonRequestBehavior.AllowGet);
         }
     }
 }
