@@ -23,7 +23,7 @@
         @Html.HiddenFor(m => m.UpdateBy)
         @Html.HiddenFor(m => m.UpdateDate)
 
-        <div class="form-group">
+        <div class="form-group customDropDownWrapper">
             @Html.LabelFor(m => m.SetOfBooks)
             @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control" })
         </div>

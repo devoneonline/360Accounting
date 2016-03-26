@@ -34,16 +34,17 @@
         $('#btnSelect').click(function () {
             var value=''; 
             $(':selected').each(function (index, element) {
-                if (value != '')
-                {
-                    value = value + '.';
+                if (element.parentNode.id.indexOf('Combo_')>=0) {
+                    if (value != '') {
+                        value = value + '.';
+                    }
+                    value = value + element.value;
                 }
-                value = value + element.value;
             });
             var url = '@Url.Content("~/CodeCombinition/GetLookupCode")';
             $.post(url, { value: value }, function (result) {
-                $('#CodeCombinationString').val(value);
-                $('#CodeCombinationId').val(result);
+                $('#' + lookupTextField).val(value);
+                $('#' + lookupValueField).val(result);
                 $('#dvAccountLookup').dialog('close');
             });
         });

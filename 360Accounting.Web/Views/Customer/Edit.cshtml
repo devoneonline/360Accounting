@@ -23,22 +23,14 @@
         @Html.HiddenFor(m => m.UpdateBy)
         @Html.HiddenFor(m => m.UpdateDate)
 
-            <div class="row">
+            <div class="clearfix">
                 <div class="col-md-6">
                     <div class="form-group">
                         @Html.LabelFor(model => model.CustomerName)
                         @Html.TextBoxFor(model => model.CustomerName, new { @class = "form-control" })
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.ContactNo)
-                        @Html.TextBoxFor(model => model.ContactNo, new { @class = "form-control" })
-                    </div>
-                </div>
-                <div class="col-md-2">
+                <div class="col-md-2 col-md-offset-1">
                     <div class="form-group">
                         @Html.LabelFor(model => model.StartDate)
                         @Html.EditorFor(model => model.StartDate, new { @class = "form-control" })
@@ -51,8 +43,7 @@
                     </div>
                 </div>
             </div>
-
-            <div class="row">
+            <div class="clearfix">
                 <div class="col-md-6">
                     <div class="form-group">
                         @Html.LabelFor(model => model.Address)
@@ -61,8 +52,17 @@
                 </div>
 
             </div>
+            <div class="clearfix">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ContactNo)
+                        @Html.TextBoxFor(model => model.ContactNo, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
 
-            <div class="row">
+
+            <div class="clearfix">
                 <div class="col-md-12">
                     <div class="form-group">
                         <input type="submit" value="Create" class="btn btn-default tstyCus-btn" />

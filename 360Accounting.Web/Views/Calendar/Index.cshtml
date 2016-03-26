@@ -1,4 +1,5 @@
 ﻿@Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
+
 @model _360Accounting.Web.Models.CalendarListModel
 
 @{
@@ -15,7 +16,7 @@
     </div>
 
     <div class="col-lg-6">
-        <div class="form-group">
+        <div class="form-group customDropDownWrapper">
             @Html.LabelFor(m => m.SetOfBooks)
             @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control" })
         </div>
@@ -32,6 +33,7 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
+        $.noConflict();
         $('#btnCreate').click(function () {
             var url = '@Url.Content("~/Calendar/Create?sobId=")' + $('#SOBId').val();
             window.location.href = url;

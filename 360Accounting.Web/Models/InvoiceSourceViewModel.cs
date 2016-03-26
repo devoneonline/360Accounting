@@ -38,6 +38,8 @@ namespace _360Accounting.Web.Models
         [Display(Name = "Account Code")]
         public long CodeCombinationId { get; set; }
 
+        public string CodeCombinationIdString { get; set; }
+
         public IList<SelectListItem> CodeCombinations { get; set; }
         //public List<SelectListItem> SetOfBooks { get; set; }
         

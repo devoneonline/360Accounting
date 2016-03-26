@@ -120,6 +120,8 @@ namespace _360Accounting.Web.Models
         [Display(Name = "Code Combination")]
         public long CodeCombinationId { get; set; }
 
+        public string CodeCombinationIdString { get; set; }
+
         public List<SelectListItem> TaxCode { get; set; }
 
         public List<SelectListItem> CodeCombination { get; set; }

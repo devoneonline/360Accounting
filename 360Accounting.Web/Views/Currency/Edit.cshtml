@@ -36,7 +36,7 @@
                 @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
             </div>
             
-            <div class="form-group">
+            <div class="form-group customDropDownWrapper">
                 @Html.LabelFor(m => m.Precision)
                 @Html.DropDownListFor(m => m.Precision, Model.PrecisionList, new { @class = "form-control" })
             </div>
