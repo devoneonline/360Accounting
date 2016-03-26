@@ -201,6 +201,8 @@
     <Compile Include="Helpers\AccountHelper.cs" />
     <Compile Include="Helpers\AccountValueHelper.cs" />
     <Compile Include="Helpers\BankHelper.cs" />
+    <Compile Include="Helpers\InventoryPeriodHelper.cs" />
+    <Compile Include="Helpers\ItemHelper.cs" />
     <Compile Include="Helpers\PaymentHelper.cs" />
     <Compile Include="Helpers\PayableInvoiceHelper.cs" />
     <Compile Include="Helpers\PayablePeriodHelper.cs" />
