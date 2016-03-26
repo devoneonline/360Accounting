@@ -34,7 +34,7 @@ namespace _360Accounting.Core.Entities
         public long Id { get; set; }
         public long SOBId { get; set; }
         public long ItemId { get; set; }
-        public string WarehouseCode { get; set; }
+        public long WarehouseId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
     }

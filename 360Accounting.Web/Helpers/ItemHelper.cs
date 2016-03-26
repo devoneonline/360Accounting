@@ -1,4 +1,5 @@
 ﻿using _360Accounting.Core;
+using _360Accounting.Core.Entities;
 using _360Accounting.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace _360Accounting.Web.Helpers
         private static IItemService service;
         
         #region Private Methods
-        private static IList<ItemWarehouseModel> getItemWarehousesByItemId(string itemId)
+        private static IList<ItemWarehouseModel> getItemWarehouseByItemId(string itemId)
         {
             IList<ItemWarehouseModel> modelList = service
                 .GetAllItemWarehouses(Convert.ToInt32(itemId))
@@ -22,7 +23,7 @@ namespace _360Accounting.Web.Helpers
             return modelList;
         }
 
-        private static IList<ItemWarehouseModel> getItemWarehouses()
+        private static IList<ItemWarehouseModel> getItemWarehouse()
         {
             return SessionHelper.Item.ItemWarehouses;
         }
@@ -46,9 +47,9 @@ namespace _360Accounting.Web.Helpers
         public static IList<ItemWarehouseModel> GetItemWarehouses([Optional]string itemId)
         {
             if (itemId == null)
-                return getItemWarehouses();
+                return getItemWarehouse();
             else
-                return getItemWarehousesByItemId(itemId);
+                return getItemWarehouseByItemId(itemId);
         }
 
         public static void Insert(ItemWarehouseModel model)
@@ -63,7 +64,7 @@ namespace _360Accounting.Web.Helpers
 
             item.ItemWarehouses.FirstOrDefault(x => x.Id == model.Id).EndDate = model.EndDate;
             item.ItemWarehouses.FirstOrDefault(x => x.Id == model.Id).StartDate = model.StartDate;
-            item.ItemWarehouses.FirstOrDefault(x => x.Id == model.Id).WarehouseCode = model.WarehouseCode;
+            item.ItemWarehouses.FirstOrDefault(x => x.Id == model.Id).WarehouseId = model.WarehouseId;
         }
 
         public static void DeleteInvoiceDetail(ItemWarehouseModel model)
@@ -73,84 +74,60 @@ namespace _360Accounting.Web.Helpers
             item.ItemWarehouses.Remove(itemWarehouse);
         }
 
-        //public static string GetInvoiceNo(long companyId, long sobId, long periodId, long currencyId)
-        //{
-        //    ///TODO: plz audit this code
-        //    var previousInvoice = service.GetSingle(companyId, sobId, periodId, currencyId);
-        //    string newInvoiceNo = "";
-        //    if (previousInvoice != null)
-        //    {
-        //        int outVal;
-        //        bool isNumeric = int.TryParse(previousInvoice.InvoiceNo, out outVal);
-        //        if (isNumeric && previousInvoice.InvoiceNo.Length == 8)
-        //        {
-        //            newInvoiceNo = (int.Parse(previousInvoice.InvoiceNo) + 1).ToString();
-        //            return newInvoiceNo;
-        //        }
-        //    }
+        public static void Update(ItemModel itemModel)
+        {
+            Item entity = Mappers.GetEntityByModel(itemModel);
 
-        //    //Create New Invoice #...
-        //    string yearDigit = SessionHelper.Invoice.InvoiceDate.ToString("yy");
-        //    string monthDigit = SessionHelper.Invoice.InvoiceDate.ToString("MM");
-        //    string invoiceNo = int.Parse("1").ToString().PadLeft(4, '0');
+            string result = string.Empty;
+            if (entity.IsValid())
+            {
+                if (itemModel.Id > 0)
+                    result = service.Update(entity);
+                else
+                    result = service.Insert(entity);
 
-        //    return yearDigit + monthDigit + invoiceNo;
-        //}
+                if (!string.IsNullOrEmpty(result))
+                {
+                    var savedDetail = getItemWarehouseByItemId(result);
+                    if (savedDetail.Count() > itemModel.ItemWarehouses.Count())
+                    {
+                        var tobeDeleted = savedDetail.Take(savedDetail.Count() - itemModel.ItemWarehouses.Count());
+                        foreach (var item in tobeDeleted)
+                        {
+                            service.DeleteItemWarehouse(item.Id);
+                        }
+                        savedDetail = getItemWarehouseByItemId(result);
+                    }
 
-        //public static void Update(ItemModel invoiceModel)
-        //{
-        //    Invoice entity = Mappers.GetEntityByModel(invoiceModel);
+                    foreach (var detail in itemModel.ItemWarehouses)
+                    {
+                        ItemWarehouse detailEntity = Mappers.GetEntityByModel(detail, savedDetail.Count());
+                        if (detailEntity.IsValid())
+                        {
+                            detailEntity.ItemId = Convert.ToInt64(result);
+                            if (savedDetail.Count() > 0)
+                            {
+                                detailEntity.Id = savedDetail.FirstOrDefault().Id;
+                                savedDetail.Remove(savedDetail.FirstOrDefault(rec => rec.Id == detailEntity.Id));
+                                service.Update(detailEntity);
+                            }
+                            else
+                                service.Insert(detailEntity);
+                        }
+                    }
+                }
+            }
+        }
 
-        //    string result = string.Empty;
-        //    if (entity.IsValid())
-        //    {
-        //        if (invoiceModel.Id > 0)
-        //            result = service.Update(entity);
-        //        else
-        //            result = service.Insert(entity);
+        public static ItemModel GetItem(string id)
+        {
+            return new ItemModel(service.GetSingle
+                (id, AuthenticationHelper.User.CompanyId));
+        }
 
-        //        if (!string.IsNullOrEmpty(result))
-        //        {
-        //            var savedDetail = getInvoiceDetailByInvoiceId(result);
-        //            if (savedDetail.Count() > invoiceModel.InvoiceDetail.Count())
-        //            {
-        //                var tobeDeleted = savedDetail.Take(savedDetail.Count() - invoiceModel.InvoiceDetail.Count());
-        //                foreach (var item in tobeDeleted)
-        //                {
-        //                    detailService.Delete(item.Id.ToString(), AuthenticationHelper.User.CompanyId);
-        //                }
-        //                savedDetail = getInvoiceDetailByInvoiceId(result);
-        //            }
-
-        //            foreach (var detail in invoiceModel.InvoiceDetail)
-        //            {
-        //                InvoiceDetail detailEntity = Mappers.GetEntityByModel(detail);
-        //                if (detailEntity.IsValid())
-        //                {
-        //                    detailEntity.InvoiceId = Convert.ToInt64(result);
-        //                    if (savedDetail.Count() > 0)
-        //                    {
-        //                        detailEntity.Id = savedDetail.FirstOrDefault().Id;
-        //                        savedDetail.Remove(savedDetail.FirstOrDefault(rec => rec.Id == detailEntity.Id));
-        //                        detailService.Update(detailEntity);
-        //                    }
-        //                    else
-        //                        detailService.Insert(detailEntity);
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
-        //public static ItemModel GetInvoice(string id)
-        //{
-        //    return new InvoiceModel(service.GetSingle
-        //        (id, AuthenticationHelper.User.CompanyId));
-        //}
-
-        //public static void Delete(string id)
-        //{
-        //    service.Delete(id, AuthenticationHelper.User.CompanyId);
-        //}
+        public static void Delete(string id)
+        {
+            service.Delete(id, AuthenticationHelper.User.CompanyId);
+        }
     }
 }

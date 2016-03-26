@@ -85,9 +85,9 @@ GO
 
 ALTER TABLE [dbo].[tbItemWarehouse] ADD CONSTRAINT [FK_tbItemWarehouse_tbSetOfBook] FOREIGN KEY ([SOBId]) REFERENCES [dbo].[tbSetOfBook] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
 GO
-ALTER TABLE [dbo].[tbItemWarehouse] ADD CONSTRAINT [FK_tbItemWarehouse_tbItem] FOREIGN KEY ([ItemId]) REFERENCES [dbo].[tbItem] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
+ALTER TABLE [dbo].[tbItemWarehouse] ADD CONSTRAINT [FK_tbItemWarehouse_tbItem] FOREIGN KEY ([ItemId]) REFERENCES [dbo].[tbItem] ([Id])
 GO
-ALTER TABLE [dbo].[tbItemWarehouse] ADD CONSTRAINT [FK_tbItemWarehouse_tbWarehouse] FOREIGN KEY ([WarehouseId]) REFERENCES [dbo].[tbWarehouse] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
+ALTER TABLE [dbo].[tbItemWarehouse] ADD CONSTRAINT [FK_tbItemWarehouse_tbWarehouse] FOREIGN KEY ([WarehouseId]) REFERENCES [dbo].[tbWarehouse] ([Id])
 GO
 
 update tbFeature set Href = '~/InventoryPeriod' where id = 81

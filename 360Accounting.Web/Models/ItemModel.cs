@@ -126,15 +126,13 @@ namespace _360Accounting.Web.Models
             this.StartDate = entity.StartDate;
             this.UpdateBy = entity.UpdateBy;
             this.UpdateDate = entity.UpdateDate;
-            this.WarehouseCode = entity.WarehouseCode;
+            this.WarehouseId = entity.WarehouseId;
         }
 
         public long Id { get; set; }
         public long SOBId { get; set; }
         public long ItemId { get; set; }
-
-        [Display(Name = "Warehouse Code")]
-        public string WarehouseCode { get; set; }
+        public long WarehouseId { get; set; }
 
         [Required]
         [Display(Name = "Start Date")]
@@ -147,5 +145,7 @@ namespace _360Accounting.Web.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime EndDate { get; set; }
+
+        public List<SelectListItem> Warehouses { get; set; }
     }
 }
