@@ -13,8 +13,8 @@ namespace _360Accounting.Core
         IEnumerable<Invoice> GetAll(long companyId, long sobId,
             long periodId, long currencyId);
 
-
-
         Invoice GetSingle(long companyId, long sobId, long periodId, long currencyId);
+
+        IEnumerable<Invoice> GetInvoices(long companyId, long sobId, long periodId);
     }
 }

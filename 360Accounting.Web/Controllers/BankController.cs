@@ -110,5 +110,33 @@ namespace _360Accounting.Web.Controllers
             bank.SOBId = sobId;
             return View(bank);
         }
+
+        public JsonResult CheckStartDate(DateTime startDate, long bankId)
+        {
+            bool returnData = true;
+            if (bankId > 0)
+            {
+                BankModel bank = BankHelper.GetBank(bankId.ToString());
+                if (startDate >= bank.StartDate)
+                    returnData = true;
+                else
+                    returnData = false;
+            }
+            return Json(returnData);
+        }
+
+        public JsonResult CheckEndDate(DateTime endDate, long bankId)
+        {
+            bool returnData = true;
+            if (bankId > 0)
+            {
+                BankModel bank = BankHelper.GetBank(bankId.ToString());
+                if (endDate <= bank.EndDate)
+                    returnData = true;
+                else
+                    returnData = false;
+            }
+            return Json(returnData);
+        }
     }
 }

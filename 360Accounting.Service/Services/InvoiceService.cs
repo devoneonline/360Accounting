@@ -28,6 +28,11 @@ namespace _360Accounting.Service
             return this.repository.GetAll(companyId, sobId, periodId, currencyId);
         }
 
+        public IEnumerable<Invoice> GetInvoices(long companyId, long sobId, long periodId)
+        {
+            return this.repository.GetInvoices(companyId, sobId, periodId);
+        }
+
         public Invoice GetSingle(string id, long companyId)
         {
             return this.repository.GetSingle(id, companyId);
