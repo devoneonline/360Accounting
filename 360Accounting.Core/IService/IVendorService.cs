@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _360Accounting.Core.IService
+namespace _360Accounting.Core
 {
     public interface IVendorService : IService<Vendor>
     {
@@ -15,5 +15,7 @@ namespace _360Accounting.Core.IService
         long Update(VendorSite entity);
         void DeleteSite(long id, long companyId);
         IEnumerable<VendorSiteView> GetAllSites(long vendorId, long companyId);
+
+        IEnumerable<Vendor> GetAll(long companyId, DateTime startDate, DateTime endDate);
     }
 }

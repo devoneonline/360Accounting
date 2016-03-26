@@ -25,14 +25,15 @@ namespace _360Accounting.Web.Controllers
 
             model.Remittances = RemittanceHelper.GetRemittanceDetail(remitNo);
             model.SOBId = sobId;
-            model.BankId = sobId;
+            model.BankId = bankId;
             model.BankAccountId = bankAccountId;
 
+            SessionHelper.DocumentDate = model.RemitDate;
             SessionHelper.Remittance = model;
             return View(model);
         }
 
-        public ActionResult SaveInvoice(string remitDate)
+        public ActionResult SaveRemittance(string remitDate)
         {
             string message = "";
             try
@@ -41,7 +42,10 @@ namespace _360Accounting.Web.Controllers
                 if (SessionHelper.Remittance != null)
                 {
                     SessionHelper.Remittance.RemitDate = Convert.ToDateTime(remitDate);
-                    SessionHelper.Remittance.RemitNo = RemittanceHelper.GetRemitNo(AuthenticationHelper.User.CompanyId, SessionHelper.Invoice.SOBId, SessionHelper.Invoice.PeriodId, SessionHelper.Invoice.CurrencyId);
+                    if (SessionHelper.Remittance.RemitNo == "New")
+                    {
+                        SessionHelper.Remittance.RemitNo = RemittanceHelper.GetRemitNo(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, SessionHelper.Bank.Id, SessionHelper.BankAccount.Id);
+                    }
 
                     RemittanceHelper.Update(SessionHelper.Remittance);
                     SessionHelper.Remittance = null;
@@ -98,7 +102,7 @@ namespace _360Accounting.Web.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("_Detail", InvoiceHelper.GetInvoiceDetail());
+            return PartialView("_Detail", RemittanceHelper.GetRemittanceDetail());
         }
 
         [HttpPost, ValidateInput(false)]
@@ -127,7 +131,7 @@ namespace _360Accounting.Web.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("_Detail", InvoiceHelper.GetInvoiceDetail());
+            return PartialView("_Detail", RemittanceHelper.GetRemittanceDetail());
         }
 
         public ActionResult DetailPartial()
@@ -172,8 +176,8 @@ namespace _360Accounting.Web.Controllers
             
             if (model == null)
             {
-                IEnumerable<SelectListItem> Receipts = ReceiptHelper
-                    .GetReceiptList(bankId, bankAccountId);
+                //IEnumerable<SelectListItem> Receipts = ReceiptHelper
+                //    .GetReceiptList(bankId, bankAccountId);
 
                 model = new RemittanceModel
                 {
@@ -181,7 +185,8 @@ namespace _360Accounting.Web.Controllers
                     BankId = bankId,
                     SOBId = sobId,
                     RemitNo = "New",
-                    RemitDate = Const.CurrentDate
+                    RemitDate = Const.CurrentDate,
+                    Remittances = new List<RemittanceDetailModel>()
                 };
                 SessionHelper.DocumentDate = model.RemitDate;
                 SessionHelper.Remittance = model;
@@ -206,24 +211,6 @@ namespace _360Accounting.Web.Controllers
             SessionHelper.SOBId = sobId;
             return PartialView("_List", RemittanceHelper
                 .GetRemittances(sobId, bankId, bankAccountId));
-        }
-
-        //Ye action mujhe pasand nai hai... pata nai q bana na par raha hai...{ HMUAUK }
-        public ActionResult ListByModelPartial(RemittanceListModel model)
-        {
-            try
-            {
-                SessionHelper.SOBId = model.SOBId;
-                return PartialView("_List", RemittanceHelper
-                    .GetRemittances(model.SOBId, model.BankId,
-                    model.BankAccountId));
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("Error", ex);
-                return View(model);
-            }
-            
         }
 
         public ActionResult Index(RemittanceListModel model)

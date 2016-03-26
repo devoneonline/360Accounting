@@ -50,11 +50,11 @@ namespace _360Accounting.Web.Models
         public string InvoiceNo { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-mm-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Invoice Date")]
         public DateTime InvoiceDate { get; set; }
 
-        [Display(Name = "Remarks")]
+        [Display(Name = "Description")]
         public string Remarks { get; set; }
 
         [Display(Name = "Status")]

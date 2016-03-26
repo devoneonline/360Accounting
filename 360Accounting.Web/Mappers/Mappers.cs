@@ -9,13 +9,13 @@ namespace _360Accounting.Web
 {
     public static class Mappers
     {
-        public static PayableInvoiceDetail GetEntityByModel(PayableInvoiceDetailModel model)
+        public static PayableInvoiceDetail GetEntityByModel(PayableInvoiceDetailModel model, int count)
         {
             if (model == null)
                 return null;
 
             PayableInvoiceDetail entity = new PayableInvoiceDetail();
-            if (model.Id == 0)
+            if (count == 0)
             {
                 entity.CreateBy = AuthenticationHelper.UserId;
                 entity.CreateDate = DateTime.Now;
@@ -67,17 +67,20 @@ namespace _360Accounting.Web
             entity.Status = model.Status;
             entity.UpdateBy = model.UpdateBy;
             entity.UpdateDate = model.UpdateDate;
+            entity.VendorId = model.VendorId;
+            entity.VendorSiteId = model.VendorSiteId;
+            entity.WHTaxId = model.WHTaxId;
             return entity;
         }
 
-        public static Remittance GetEntityByModel(RemittanceDetailModel model)
+        public static Remittance GetEntityByModel(RemittanceDetailModel model, int count)
         {
             if (model == null)
                 return null;
 
             Remittance entity = new Remittance();
 
-            if (model.Id == 0)
+            if (count == 0)
             {
                 entity.CreateBy = AuthenticationHelper.UserId;
                 entity.CreateDate = DateTime.Now;
@@ -635,7 +638,7 @@ namespace _360Accounting.Web
             return entity;
         }
 
-        public static PaymentHeader GetEntityByModel(PaymentHeaderModel model)
+        public static PaymentHeader GetEntityByModel(PaymentViewModel model)
         {
             if (model == null) return null;
 
@@ -651,7 +654,7 @@ namespace _360Accounting.Web
             {
                 entity.CreateBy = model.CreateBy;
                 entity.CreateDate = model.CreateDate;
-                entity.CompanyId = model.CompanyId;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value; //Not exist.. have to do this..
             }
 
             entity.Amount = model.Amount;
@@ -664,7 +667,7 @@ namespace _360Accounting.Web
             entity.SOBId = model.SOBId;
             entity.BankAccountId = model.BankAccountId;
             entity.VendorId = model.VendorId;
-            entity.VendorSite = model.VendorSite;
+            entity.VendorSiteId = model.VendorSiteId;
             entity.UpdateBy = AuthenticationHelper.UserId;
             entity.UpdateDate = DateTime.Now;
             return entity;

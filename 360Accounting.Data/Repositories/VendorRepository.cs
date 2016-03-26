@@ -1,5 +1,5 @@
-﻿using _360Accounting.Core.IRepository;
-using _360Accounting.Core.Entities;
+﻿using _360Accounting.Core.Entities;
+using _360Accounting.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +11,11 @@ namespace _360Accounting.Data.Repositories
 {
     public class VendorRepository : Repository, IVendorRepository
     {
+        public IEnumerable<Vendor> GetAll(long companyId, DateTime startDate, DateTime endDate)
+        {
+            return this.Context.Vendors.Where(x => x.CompanyId == companyId && x.StartDate <= startDate && x.EndDate >= endDate);
+        }
+        
         public Vendor GetSingle(string id, long companyId)
         {
             long longId=Convert.ToInt64(id);

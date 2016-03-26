@@ -12,6 +12,11 @@ namespace _360Accounting.Data.Repositories
 {
     public class InvoiceTypeRepository : Repository, IInvoiceTypeRepository
     {
+        public IEnumerable<InvoiceType> GetAll(long companyId, long sobId, DateTime startDate, DateTime endDate)
+        {
+            return this.GetAll(companyId).Where(x => x.SOBId == sobId && x.DateFrom <= startDate && x.DateTo >= endDate);
+        }
+        
         public InvoiceType GetSingle(string id, long companyId)
         {
             InvoiceType invoiceType = this.GetAll(companyId)

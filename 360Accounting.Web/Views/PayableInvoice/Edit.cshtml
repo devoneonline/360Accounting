@@ -3,10 +3,6 @@
 
 @model _360Accounting.Web.Models.PayableInvoiceModel
 
-<br />
-<br />
-<br />
-
 @{
     ViewBag.Title = "Payable Invoice";
 }
@@ -26,7 +22,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="navbar-left">
-                    SOB: @ViewBag.SOBName / Period: @ViewBag.PeriodName / Currency : @ViewBag.CurrencyName
+                    SOB: @ViewBag.SOBName / Period: @ViewBag.PeriodName
                 </div>
                 <div class="navbar-right">
                     <input type="button" value="Save" id="btnSave" class="btn btn-default tstyCus-btn" />
@@ -35,79 +31,86 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.InvoiceNo)
                     @Html.TextBoxFor(model => model.InvoiceNo, new { @readonly = "readonly", @class = "form-control" })
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-2">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.InvoiceTypeId)
+                    @Html.LabelFor(model => model.InvoiceTypes)
                     @Html.DropDownListFor(model => model.InvoiceTypeId, Model.InvoiceTypes, new { @class = "form-control" })
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.InvoiceDate)
                     @Html.EditorFor(model => model.InvoiceDate)
                 </div>
             </div>
-        </div>
-    <div class="row">
-        <div class="col-lg-4">
-            <div class="form-group">
-                @Html.LabelFor(model => model.VendorId)
-                @Html.DropDownListFor(model => model.VendorId, Model.Vendors, new { @class = "form-control" })
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Remarks)
+                    @Html.TextAreaFor(model => model.Remarks, new { @class = "form-control" })
+                </div>
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="form-group">
-                @Html.LabelFor(model => model.VendorSiteId)
-                @Html.DropDownListFor(model => model.VendorSiteId, Model.VendorSites, new { @class = "form-control" })
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Vendors)
+                    @Html.DropDownListFor(model => model.VendorId, Model.Vendors, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.VendorSites)
+                    @Html.DropDownListFor(model => model.VendorSiteId, Model.VendorSites, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.WHTaxes)
+                    @Html.DropDownListFor(model => model.WHTaxId, Model.WHTaxes, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Status)
+                    @Html.TextBoxFor(model => model.Status, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Amount)
+                    @Html.TextBoxFor(model => model.Amount, new { @readonly = "readonly", @class = "form-control" })
+                </div>
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="form-group">
-                @Html.LabelFor(model => model.WHTaxId)
-                @Html.DropDownListFor(model => model.WHTaxId, Model.WHTaxes, new { @class = "form-control" })
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="form-group">
-                @Html.LabelFor(model => model.Remarks)
-                @Html.TextBoxFor(model => model.Remarks, new { @class = "form-control" })
-            </div>
-        </div>
-    </div>
         
-    <div class="row">
-        <div class="col-lg-12">
-            @Html.Partial("_Detail", Model.InvoiceDetail)
+        <div class="row">
+            <div class="col-lg-12">
+                @Html.Partial("_Detail", Model.InvoiceDetail)
+            </div>
         </div>
-    </div>
-}
+    }
 </div>
 
 <script type="text/javascript">
     $(document).ready(function () {
-        ////jQuery.ajaxSetup({ async: false });
         $('#InvoiceDate').attr('class', 'form-control');
-        debugger;
+
         $('#InvoiceDate').change(function () {
             $.ajax({
                 url: '@Url.Content("~/PayableInvoice/CheckDate")',
                 data: { invoiceDate: $(this).val(), periodId: $('#PeriodId').val() },
                 type: 'post',
                 datatype: 'json',
-                success: function (data)
-                {
+                success: function (data) {
                     if (data)
                         $('#btnSave').attr('disabled', false);
-                    else
-                    {
+                    else {
                         alert('Date must lie in the range of current period.');
                         $('#InvoiceDate').focus();
                         $('#btnSave').attr('disabled', true);
@@ -117,44 +120,72 @@
             })
         })
 
+        jQuery.ajaxSetup({ async: false });
+
         $('#VendorId').change(function () {
-            var url = '@Url.Content("~/Invoice/CustomerSiteList")';
-            $.get(url, { customerId: $(this).val() },
+            var url = '@Url.Content("~/PayableInvoice/VendorSiteList")';
+            var url2 = '@Url.Content("~/PayableInvoice/WHTaxList")';
+
+            $.get(url, { vendorId: $(this).val() },
                 function (data) {
-                    var customerSiteDropdown = $('#CustomerSiteId');
-                    customerSiteDropdown.empty();
+                    var vendorSiteDropdown = $('#VendorSiteId');
+                    vendorSiteDropdown.empty();
                     for (var i = 0; i < data.length; i++) {
-                        customerSiteDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
+                        vendorSiteDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
+                    }
+
+                    $.get(url2, { vendorId: $(this).val(), vendorSiteId: data[0].value },
+                        function (data) {
+                            var whTaxDropdown = $('#WHTaxId');
+                            whTaxDropdown.empty();
+                            for (var i = 0; i < data.length; i++) {
+                                whTaxDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
+                            }
+                        });
+                });  
+        });
+
+        $('#VendorSiteId').change(function () {
+            var url = '@Url.Content("~/PayableInvoice/WithHoldingTaxList")';
+
+            $.get(url, { vendorId: $('#VendorId').val(), vendorSiteId: $(this).val() },
+                function (data) {
+                    var whTaxDropdown = $('#WHTaxId');
+                    whTaxDropdown.empty();
+                    for (var i = 0; i < data.length; i++) {
+                        whTaxDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
                     }
                 });
         });
 
         $('#btnCancel').click(function () {
             if (confirm('Do you want to leave this page?')) {
-                window.location.href = '@Url.Content("~/Invoice")';
+                window.location.href = '@Url.Content("~/PayableInvoice")';
             }
         });
 
         $('#btnSave').click(function () {
 
-            var invoiceType = $('#InvoiceType').val();
+            var invoiceTypeId = $('#InvoiceTypeId').val();
             var invoiceDate = $('#InvoiceDate').val();
-            var conversionRate = $('#ConversionRate').val();
-            var Remarks = $('#Remarks').val();
-            var customerId = $('#CustomerId').val();
-            var customerSiteId = $('#CustomerSiteId').val();
-            ////var OrderId = $('#OrderId').val();
+            var remarks = $('#Remarks').val();
+            var vendorId = $('#VendorId').val();
+            var vendorSiteId = $('#VendorSiteId').val();
+            var whTaxId = $('#WHTaxId').val();
+            var amount = $('#Amount').val();
+            var status = $('#Status').val();
 
-            var url = '@Url.Content("~/Invoice/SaveInvoice")';
+            var url = '@Url.Content("~/PayableInvoice/SaveInvoice")';
             $.post(url, {
-                invoiceType: invoiceType, invoiceDate: invoiceDate,
-                conversionRate: conversionRate, Remarks: Remarks,
-                customerId: customerId, customerSiteId: customerSiteId
+                invoiceTypeId: invoiceTypeId, invoiceDate: invoiceDate,
+                remarks: remarks, vendorId: vendorId,
+                vendorSiteId: vendorSiteId, whTaxId: whTaxId,
+                amount: amount, status: status
             },
                 function (result) {
                     if (result.success) {
                         alert(result.message);
-                        window.location.href = '@Url.Content("~/Invoice")';
+                        window.location.href = '@Url.Content("~/PayableInvoice")';
                     }
                     else
                         alert(result.message);

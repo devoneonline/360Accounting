@@ -14,16 +14,13 @@
     </div>
 
     <div class="clearfix">
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <div class="form-group">
                 @Html.LabelFor(m => m.SetOfBooks)
                 @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control criteria" })
             </div>
         </div>
-    </div>
-
-    <div class="clearfix">
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <div class="form-group">
                 @Html.LabelFor(m => m.Periods)
                 @Html.DropDownListFor(m => m.PeriodId, Model.Periods, new { @class = "form-control criteria" })
@@ -40,7 +37,7 @@
     </div>
 
     <div id="dvList" class="col-lg-12 cusGridWrapper">
-        @Html.Action("ListByModelPartial", Model)
+        @Html.Action("ListPartial", new { sobId = Model.SOBId, periodId = Model.PeriodId })
     </div>
 </div>
 
@@ -56,7 +53,7 @@
             })
 
             if (continueCreate) {
-                var url = '@Url.Content("~/Invoice/Create?sobId=")' +                                                                   //Make AR
+                var url = '@Url.Content("~/PayableInvoice/Create?sobId=")' +                                                                   //Make AR
                     $('#SOBId').val() +
                     "&periodId=" + $('#PeriodId').val()
                 window.location.href = url;
@@ -68,7 +65,7 @@
         jQuery.ajaxSetup({ async: false });
 
         function RefreshGrid() {
-            var url = '@Url.Content("~/PayableInvoice/InvoicePartial")';
+            var url = '@Url.Content("~/PayableInvoice/ListPartial")';
 
             $.get(url, { sobId: $('#SOBId').val(), periodId: $('#PeriodId').val() },
                 function (data) {
@@ -82,7 +79,7 @@
 
         $('#SOBId').change(function () {
             var url = '@Url.Content("~/PayableInvoice/PeriodList")';                                                                          //Make AR
-            
+            debugger;
             $.get(url, { sobId: $(this).val() },
                 function (data) {
                     var periodDropdown = $('#PeriodId');

@@ -12,6 +12,12 @@ namespace _360Accounting.Data.Repositories
 {
     public class WithholdingRepository : Repository, IWithholdingRepository
     {
+        public IEnumerable<Withholding> GetAll(long companyId, long sobId, long vendorId, long vendorSiteId, DateTime startDate, DateTime endDate)
+        {
+            return this.GetAll(companyId).Where(x => x.SOBId == sobId && x.VendorId == vendorId && x.VendorSiteId == vendorSiteId &&
+                x.DateFrom <= startDate && x.DateTo >= endDate);
+        }
+
         public Withholding GetSingle(string id, long companyId)
         {
             Withholding withholding = this.GetAll(companyId)
@@ -70,5 +76,6 @@ namespace _360Accounting.Data.Repositories
         {
             return this.Context.SaveChanges();
         }
+
     }
 }

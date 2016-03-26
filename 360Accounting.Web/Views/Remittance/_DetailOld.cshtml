@@ -1,0 +1,48 @@
+﻿@{
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+
+    var grid = Html.DevExpress().GridView(
+        settings =>
+        {
+            settings.Name = "GridView";
+            settings.KeyFieldName = "Id";
+            settings.CallbackRouteValues = new { Controller = "Remittance", Action = "DetailPartial" };
+            ////Ye kia hai mujhe pata nai hai islye isko bnd rakha hai...
+            //settings.CustomActionRouteValues = new { Controller = "Editing", Action = "ChangeEditModePartial" };
+            settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Remittance", Action = "AddNewPartial" };
+            settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Remittance", Action = "UpdatePartial" };
+            settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Remittance", Action = "DeletePartial" };
+            settings.SettingsEditing.Mode = GridViewEditingMode.Inline;
+            settings.SettingsBehavior.ConfirmDelete = true;
+            settings.SettingsPopup.EditForm.Width = 600;
+            settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+            //Client side validation is allowed on Batch Edit mode.
+            //settings.ClientSideEvents.BatchEditStartEditing = String.Format("function() {{ PrintHello(); }}");
+
+            settings.CommandColumn.Visible = true;
+            settings.CommandColumn.ShowNewButton = true;
+            settings.CommandColumn.ShowDeleteButton = true;
+            settings.CommandColumn.ShowEditButton = true;
+
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "ReceiptId";
+                column.Caption = "Receipt";
+
+                column.ColumnType = MVCxGridViewColumnType.ComboBox;
+                var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+                comboBoxProperties.DataSource = ReceiptHelper.GetReceiptList(SessionHelper.Bank.Id, SessionHelper.BankAccount.Id, SessionHelper.DocumentDate);                    
+                comboBoxProperties.TextField = "Text";
+                comboBoxProperties.ValueField = "Value";
+                comboBoxProperties.ValueType = typeof(int);
+            });            
+        });
+
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

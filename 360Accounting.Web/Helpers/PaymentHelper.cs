@@ -8,41 +8,54 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Mvc;
+using _360Accounting.Core.IService;
 
 namespace _360Accounting.Web
 {
     public static class PaymentHelper
     {
-        private static IPaymentHeaderService service;
-        private static IPaymentInvoiceLineService lineService;
-
+        private static IPaymentService service;
 
         static PaymentHelper()
         {
-            service = IoC.Resolve<IPaymentHeaderService>("PaymentHeaderService");
-            lineService = IoC.Resolve<IPaymentInvoiceLineService>("PaymentInvoiceLineService");
+            service = IoC.Resolve<IPaymentService>("PaymentService");
         }
 
-        public static PaymentHeaderModel GetPayment(string id)
+        public static PaymentViewModel GetPayment(string id)
         {
-            PaymentHeaderModel paymentHeader = new PaymentHeaderModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
-            paymentHeader.PaymentInvoiceLines = getPaymentLinesByHeaderId(id);
+            PaymentModel payment = new PaymentModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
 
-            return paymentHeader;
+            PaymentViewModel paymentView = new PaymentViewModel
+            {
+                Amount = payment.Amount,
+                BankAccountId = payment.BankAccountId,
+                BankAccountName = "",
+                BankId = payment.BankId,
+                CreateBy = payment.CreateBy,
+                CreateDate = payment.CreateDate,
+                Id = payment.Id,
+                PaymentDate = payment.PaymentDate,
+                PaymentNo = payment.PaymentNo,
+                PeriodId = payment.PeriodId,
+                SOBId = payment.SOBId,
+                Status = payment.Status,
+                UpdateBy = payment.UpdateBy,
+                UpdateDate = payment.UpdateDate,
+                VendorId = payment.VendorId,
+                VendorSiteId = payment.VendorSiteId,
+                VendorSiteName = ""
+            };
+
+            return paymentView;
         }
 
-        public static PaymentHeaderModel GetPaymentHeader(string id)
+        public static PaymentListViewModel GetPayments(long sobId, long bankId, long vendorId, long periodId)
         {
-            return new PaymentHeaderModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
-        }
+            PaymentListViewModel model = new PaymentListViewModel();
+            model.Payments = service.GetAll(AuthenticationHelper.User.CompanyId, vendorId, bankId, sobId, periodId).ToList()
+                .Select(x => new PaymentViewModel(x)).ToList();
 
-        //to be implemented after controller and view creation..
-        public static IList<PaymentHeaderModel> GetPaymentHeaders(long sobId, long periodId, long currencyId)
-        {
-            IList<PaymentHeaderModel> modelList = service
-                .GetAll(AuthenticationHelper.User.CompanyId).ToList()
-                .Select(x => new PaymentHeaderModel(x)).ToList();
-            return modelList;
+            return model;
         }
 
         public static IList<PaymentInvoiceLinesModel> GetPaymentLines([Optional]string headerId)
@@ -50,36 +63,33 @@ namespace _360Accounting.Web
             if (headerId == null)
                 return getPaymentLines();
             else
-                return getPaymentLinesByHeaderId(headerId);
+                return getpaymentLinesbyPaymentId(headerId);
         }
 
-        //Logic of Num generation
-        public static string GetDocNo(long companyId, long periodId, long sobId, long currencyId)
+        public static string GetPaymentNo(long companyId, long vendorId, long sobId, long bankId, long periodId)
         {
-            //var currentDocument = service.GetSingle(companyId, periodId, sobId, currencyId);
-            //string newDocNo = "";
-            //if (currentDocument != null)
-            //{
-            //    int outVal;
-            //    bool isNumeric = int.TryParse(currentDocument.DocumentNo, out outVal);
-            //    if (isNumeric && currentDocument.DocumentNo.Length == 8)
-            //    {
-            //        newDocNo = (int.Parse(currentDocument.DocumentNo) + 1).ToString();
-            //        return newDocNo;
-            //    }
-            //}
+            var currentDocument = service.GetSingle(companyId, vendorId, bankId, sobId, periodId);
+            string newDocNo = "";
+            if (currentDocument != null)
+            {
+                int outVal;
+                bool isNumeric = int.TryParse(currentDocument.PaymentNo, out outVal);
+                if (isNumeric && currentDocument.PaymentNo.Length == 8)
+                {
+                    newDocNo = (int.Parse(currentDocument.PaymentNo) + 1).ToString();
+                    return newDocNo;
+                }
+            }
 
-            ////Create New DocNum..
-            //string yearDigit = DateTime.Now.ToString("yy");
-            //string monthDigit = DateTime.Now.ToString("MM");
-            //string docNo = int.Parse("1").ToString().PadLeft(4, '0');
+            //Create New DocNum..
+            string yearDigit = DateTime.Now.ToString("yy");
+            string monthDigit = DateTime.Now.ToString("MM");
+            string docNo = int.Parse("1").ToString().PadLeft(4, '0');
 
-            //return yearDigit + monthDigit + docNo;
-
-            return "";
+            return yearDigit + monthDigit + docNo;
         }
 
-        public static void Update(PaymentHeaderModel payment)
+        public static void Update(PaymentViewModel payment)
         {
             PaymentHeader entity = Mappers.GetEntityByModel(payment);
 
@@ -93,15 +103,15 @@ namespace _360Accounting.Web
 
                 if (!string.IsNullOrEmpty(result))
                 {
-                    var savedLines = getPaymentLinesByHeaderId(result);
+                    var savedLines = getpaymentLinesbyPaymentId(result);
                     if (savedLines.Count() > payment.PaymentInvoiceLines.Count())
                     {
                         var tobeDeleted = savedLines.Take(savedLines.Count() - payment.PaymentInvoiceLines.Count());
                         foreach (var item in tobeDeleted)
                         {
-                            lineService.Delete(item.Id.ToString(), AuthenticationHelper.User.CompanyId);
+                            service.DeleteLine(item.Id, AuthenticationHelper.User.CompanyId);
                         }
-                        savedLines = getPaymentLinesByHeaderId(result);
+                        savedLines = getpaymentLinesbyPaymentId(result);
                     }
 
                     foreach (var line in payment.PaymentInvoiceLines)
@@ -114,35 +124,33 @@ namespace _360Accounting.Web
                             {
                                 lineEntity.Id = savedLines.FirstOrDefault().Id;
                                 savedLines.Remove(savedLines.FirstOrDefault(rec => rec.Id == lineEntity.Id));
-                                lineService.Update(lineEntity);
+                                service.Update(lineEntity);
                             }
                             else
-                                lineService.Insert(lineEntity);
+                                service.Insert(lineEntity);
                         }
                     }
                 }
             }
         }
 
-        public static void UpdatePaymentInvoiceLine(PaymentInvoiceLinesModel model)
+        public static void UpdatePaymentLine(PaymentInvoiceLinesModel model)
         {
-            PaymentHeaderModel header = SessionHelper.Payment;
+            PaymentViewModel header = SessionHelper.Payment;
             header.PaymentInvoiceLines.FirstOrDefault(x => x.Id == model.Id).Amount = model.Amount;
-            header.PaymentInvoiceLines.FirstOrDefault(x => x.Id == model.Id).Id = model.Id;
             header.PaymentInvoiceLines.FirstOrDefault(x => x.Id == model.Id).InvoiceId = model.InvoiceId;
-            header.PaymentInvoiceLines.FirstOrDefault(x => x.Id == model.Id).PaymentId = model.PaymentId;
         }
 
         public static void DeletePaymentLine(PaymentInvoiceLinesModel model)
         {
-            PaymentHeaderModel header = SessionHelper.Payment;
+            PaymentViewModel header = SessionHelper.Payment;
             PaymentInvoiceLinesModel paymentLine = header.PaymentInvoiceLines.FirstOrDefault(x => x.Id == model.Id);
             header.PaymentInvoiceLines.Remove(paymentLine);
         }
 
         public static void Insert(PaymentInvoiceLinesModel model)
         {
-            PaymentHeaderModel header = SessionHelper.Payment;
+            PaymentViewModel header = SessionHelper.Payment;
             header.PaymentInvoiceLines.Add(model);
         }
 
@@ -154,13 +162,12 @@ namespace _360Accounting.Web
         #region Private Methods
         private static IList<PaymentInvoiceLinesModel> getPaymentLines()
         {
-            return SessionHelper.Payment.PaymentInvoiceLines;
+            return SessionHelper.Payment.PaymentInvoiceLines.ToList();
         }
 
-        private static IList<PaymentInvoiceLinesModel> getPaymentLinesByHeaderId(string headerId)
+        private static IList<PaymentInvoiceLinesModel> getpaymentLinesbyPaymentId(string headerId)
         {
-            IList<PaymentInvoiceLinesModel> modelList = lineService.GetAll
-                (AuthenticationHelper.User.CompanyId, Convert.ToInt32(headerId)).
+            List<PaymentInvoiceLinesModel> modelList = service.GetAllLines(Convert.ToInt64(headerId), AuthenticationHelper.User.CompanyId).
                 Select(x => new PaymentInvoiceLinesModel(x)).ToList();
             return modelList;
         }

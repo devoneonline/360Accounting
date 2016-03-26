@@ -54,9 +54,15 @@ namespace _360Accounting.Web
             }).ToList();
         }
 
-        public static List<SelectListItem> GetVendorList()
+        public static List<VendorModel> GetAll(DateTime startDate, DateTime endDate)
         {
-            return GetAll().Select(x => new SelectListItem
+            var entityList = service.GetAll(AuthenticationHelper.CompanyId.Value, startDate, endDate);
+            return entityList.Select(x => new VendorModel(x)).ToList();
+        }
+
+        public static List<SelectListItem> GetVendorList(DateTime startDate, DateTime endDate)
+        {
+            return GetAll(startDate, endDate).Select(x => new SelectListItem
                 {
                     Text = x.Name,
                     Value = x.Id.ToString()

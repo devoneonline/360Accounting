@@ -66,7 +66,7 @@ namespace _360Accounting.Web.Models
             this.SOBId = entity.SOBId;
             this.Status = entity.Status;
             this.VendorId = entity.VendorId;
-            this.VendorSiteId = entity.VendorSite;
+            this.VendorSiteId = entity.VendorSiteId;
             this.VendorSiteName = entity.VendorSiteName;
             this.BankAccountName = entity.BankAccountName;
             this.CompanyId = entity.CompanyId;

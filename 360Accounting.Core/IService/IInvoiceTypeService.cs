@@ -11,5 +11,7 @@ namespace _360Accounting.Core
     public interface IInvoiceTypeService : IService<InvoiceType>
     {
         IEnumerable<InvoiceType> GetInvoiceTypes(long sobId, long companyId);
+
+        IEnumerable<InvoiceType> GetAll(long companyId, long sobId, DateTime startDate, DateTime endDate);
     }
 }

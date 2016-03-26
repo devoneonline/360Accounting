@@ -80,7 +80,11 @@ namespace _360Accounting.Web.Controllers
                     SessionHelper.Invoice.Remarks = remarks;
                     SessionHelper.Invoice.CustomerId = customerId;
                     SessionHelper.Invoice.CustomerSiteId = customerSiteId;
-                    SessionHelper.Invoice.InvoiceNo = InvoiceHelper.GetInvoiceNo(AuthenticationHelper.User.CompanyId, SessionHelper.Invoice.SOBId, SessionHelper.Invoice.PeriodId, SessionHelper.Invoice.CurrencyId);
+                    if (SessionHelper.Invoice.InvoiceNo == "New")
+                    {
+                        SessionHelper.Invoice.InvoiceNo = InvoiceHelper.GetInvoiceNo(AuthenticationHelper.User.CompanyId, SessionHelper.Invoice.SOBId, SessionHelper.Invoice.PeriodId, SessionHelper.Invoice.CurrencyId);
+                    }
+                    
 
                     InvoiceHelper.Update(SessionHelper.Invoice);
                     SessionHelper.Invoice = null;
@@ -256,19 +260,11 @@ namespace _360Accounting.Web.Controllers
             return Json(periodList, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult InvoicePartial(long sobId, long periodId, long currencyId)
+        public ActionResult ListPartial(long sobId, long periodId, long currencyId)
         {
             SessionHelper.SOBId = sobId;
             return PartialView("_List", InvoiceHelper
                 .GetInvoices(sobId, periodId, currencyId));
-        }
-
-        public ActionResult ListByModelPartial(InvoiceListModel model)
-        {
-            SessionHelper.SOBId = model.SOBId;
-            return PartialView("_List", InvoiceHelper
-                .GetInvoices(model.SOBId, model.PeriodId,
-                model.CurrencyId));
         }
 
         public ActionResult Index(InvoiceListModel model)

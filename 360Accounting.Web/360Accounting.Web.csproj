@@ -185,6 +185,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Common\AuthenticationHelper.cs" />
+    <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\PayableInvoiceController.cs" />
     <Compile Include="Controllers\PayablePeriodController.cs" />
     <Compile Include="Controllers\WithholdingController.cs" />
@@ -200,6 +201,7 @@
     <Compile Include="Helpers\AccountHelper.cs" />
     <Compile Include="Helpers\AccountValueHelper.cs" />
     <Compile Include="Helpers\BankHelper.cs" />
+    <Compile Include="Helpers\PaymentHelper.cs" />
     <Compile Include="Helpers\PayableInvoiceHelper.cs" />
     <Compile Include="Helpers\PayablePeriodHelper.cs" />
     <Compile Include="Helpers\CalendarHelper.cs" />
@@ -207,7 +209,6 @@
     <Compile Include="Helpers\CompanyHelper.cs" />
     <Compile Include="Helpers\CurrencyHelper.cs" />
     <Compile Include="Helpers\InvoiceTypeHelper.cs" />
-    <Compile Include="Helpers\PaymentHelper.cs" />
     <Compile Include="Helpers\WithholdingHelper.cs" />
     <Compile Include="Helpers\CustomerHelper.cs" />
     <Compile Include="Helpers\InvoiceHelper.cs" />
@@ -247,13 +248,15 @@
     <Compile Include="Models\BankAccountViewModel.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\InventoryPeriodModel.cs" />
     <Compile Include="Models\InvoiceModel.cs" />
+    <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\PayableInvoiceModel.cs" />
     <Compile Include="Models\PaymentHeaderListModel.cs" />
     <Compile Include="Models\PaymentViewModel.cs" />
-    <Compile Include="Models\PaymentModel.cs" />
     <Compile Include="Models\PayablePeriodModel.cs" />
     <Compile Include="Models\PayablePeriodListModel.cs" />
+    <Compile Include="Models\PaymentModel.cs" />
     <Compile Include="Models\WithholdingListModel.cs" />
     <Compile Include="Models\InvoiceTypeListModel.cs" />
     <Compile Include="Models\WithholdingModel.cs" />
@@ -555,11 +558,13 @@
     <Content Include="Views\Remittance\Index.cshtml" />
     <Content Include="Views\Remittance\_List.cshtml" />
     <Content Include="Views\Remittance\Edit.cshtml" />
-    <Content Include="Views\Remittance\_Detail.cshtml" />
+    <Content Include="Views\Remittance\_DetailOld.cshtml" />
     <Content Include="Views\PayableInvoice\Index.cshtml" />
     <Content Include="Views\PayableInvoice\_List.cshtml" />
     <Content Include="Views\PayableInvoice\Edit.cshtml" />
     <Content Include="Views\Shared\_LookupAccountCode.cshtml" />
+    <Content Include="Views\PayableInvoice\_Detail.cshtml" />
+    <Content Include="Views\Remittance\_Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

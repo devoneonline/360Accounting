@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _360Accounting.Core.IRepository
+namespace _360Accounting.Core.Interfaces
 {
     public interface IVendorRepository : IRepository<Vendor>
     {
@@ -15,5 +15,7 @@ namespace _360Accounting.Core.IRepository
         long Update(VendorSite entity);
         void DeleteSite(long id, long companyId);
         IEnumerable<VendorSiteView> GetAllSites(long vendorId, long companyId);
+
+        IEnumerable<Vendor> GetAll(long companyId, DateTime startDate, DateTime endDate);
     }
 }

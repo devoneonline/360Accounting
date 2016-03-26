@@ -20,6 +20,12 @@ namespace _360Accounting.Data
 
         #region DbSets
 
+        public DbSet<InventoryPeriod> InventoryPeriods { get; set; }
+
+        public DbSet<Item> Items { get; set; }
+
+        public DbSet<ItemWarehouse> ItemWarehouses { get; set; }
+
         public DbSet<PayableInvoiceDetail> PayableInvoiceDetails { get; set; }
 
         public DbSet<PayableInvoice> PayableInvoices { get; set; }
@@ -101,6 +107,15 @@ namespace _360Accounting.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ////base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<InventoryPeriod>().ToTable("tbInventoryPeriod");
+            modelBuilder.Entity<InventoryPeriod>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<Item>().ToTable("tbItem");
+            modelBuilder.Entity<Item>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<ItemWarehouse>().ToTable("tbItemWarehouse");
+            modelBuilder.Entity<ItemWarehouse>().HasKey(t => t.Id);
 
             modelBuilder.Entity<PayableInvoice>().ToTable("tbPayableInvoice");
             modelBuilder.Entity<PayableInvoice>().HasKey(t => t.Id);

@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace _360Accounting.Core.Interfaces
 {
-    public interface IPaymentHeaderRepository : IRepository<PaymentHeader>
+    public interface IInventoryPeriodRepository : IRepository<InventoryPeriod>
     {
-        
+        IEnumerable<InventoryPeriod> GetAll(long companyId, long sobId);
     }
 }

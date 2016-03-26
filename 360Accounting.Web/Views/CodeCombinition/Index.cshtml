@@ -25,19 +25,25 @@
     </div>
 </div>
 
-<div id="dvInput">
+<div id="dvInput" class="mydialog">
 
 </div>
+            @*//create: function (e, ui) { $(this).css("z-index", "-1"); },*@
 
 <script type="text/javascript">
+    var zind = function () {
+        var z = 1000 - jQuery('.mydialog.ui-dialog-content').length;
+        return z;
+    };
     $(function () {
         $.noConflict();
         $('#dvInput').dialog({
             modal: true,
             title: "Code Combinition",
             autoOpen: false,
-            height: 400,
+            height: 'auto',
             width: 500,
+            zIndex: zind,
         });
     });
 

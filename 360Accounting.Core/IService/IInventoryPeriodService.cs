@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace _360Accounting.Core
 {
-    public interface IPaymentInvoiceLineService : IService<PaymentInvoiceLines>
+    public interface IInventoryPeriodService : IService<InventoryPeriod>
     {
-        IList<PaymentInvoiceLines> GetAll(long companyId, long headerId);
+        IEnumerable<InventoryPeriod> GetAll(long companyId, long sobId);
     }
 }

@@ -18,6 +18,11 @@ namespace _360Accounting.Service
             this.repository = repo;
         }
 
+        public IEnumerable<Withholding> GetAll(long companyId, long sobId, long vendorId, long vendorSiteId, DateTime startDate, DateTime endDate)
+        {
+            return this.repository.GetAll(companyId, sobId, vendorId, vendorSiteId, startDate, endDate);
+        }
+
         public Withholding GetSingle(string id, long companyId)
         {
             return this.repository.GetSingle(id,companyId);

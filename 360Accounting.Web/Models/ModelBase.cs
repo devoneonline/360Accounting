@@ -14,6 +14,5 @@ namespace _360Accounting.Web.Models
         public Guid? UpdateBy { get; set; }
 
         public DateTime? UpdateDate { get; set; }
-
     }
 }

@@ -11,7 +11,7 @@ var grid = Html.DevExpress().GridView(settings =>
     settings.Theme = "Office2010Black";
     settings.KeyFieldName = "Id";
 
-    settings.CallbackRouteValues = new { Controller = "Receipt", Action = "ReceiptListPartial" };
+    settings.CallbackRouteValues = new { Controller = "Receipt", Action = "ListPartial" };
 
     //settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
     settings.SettingsBehavior.ConfirmDelete = true;

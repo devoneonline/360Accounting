@@ -10,5 +10,7 @@ namespace _360Accounting.Core.Interfaces
     public interface IWithholdingRepository : IRepository<Withholding>
     {
         IEnumerable<Withholding> GetWithholdings(long companyId, long sobId, long codeCombinitionId, long vendorId);
+
+        IEnumerable<Withholding> GetAll(long companyId, long sobId, long vendorId, long vendorSiteId, DateTime startDate, DateTime endDate);
     }
 }

@@ -1,6 +1,4 @@
-﻿@*CREATED THIS _LIST AS EMPTY WITHOIUT MODEL VIEW*@
-
-@{Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
+﻿@{Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
             new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
             new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
 
@@ -14,9 +12,6 @@ var grid = Html.DevExpress().GridView(settings =>
     {
         Controller = "Remittance",
         Action = "ListPartial",
-        abc = "sobId",
-        def = "bankId",
-        ghi = "bankAccount"
     };
 
     //settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
@@ -35,7 +30,7 @@ var grid = Html.DevExpress().GridView(settings =>
             ViewContext.Writer.Write(
                 Html.Raw("<a href='" + Url.Content("~/Remittance/Edit?remitNo=") + DataBinder.Eval(c.DataItem, "RemitNo") + "&sobId=" + DataBinder.Eval(c.DataItem, "SOBId") + "&bankId=" + DataBinder.Eval(c.DataItem, "BankId") + "&bankAccountId=" + DataBinder.Eval(c.DataItem, "BankAccountId") + "'><i class='fa fa-edit'></i></a>")
                     + "&nbsp;" +
-                Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/Remittance/Delete/") + DataBinder.Eval(c.DataItem, "RemitNo") + "'><i class='fa fa-trash-o'></i></a>")
+                Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/Remittance/Delete?remitNo=") + DataBinder.Eval(c.DataItem, "RemitNo") + "'><i class='fa fa-trash-o'></i></a>")
             );
         });
 
