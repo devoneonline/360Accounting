@@ -185,6 +185,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Common\AuthenticationHelper.cs" />
+    <Compile Include="Controllers\InventoryPeriodController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\PayableInvoiceController.cs" />
     <Compile Include="Controllers\PayablePeriodController.cs" />
@@ -440,6 +441,12 @@
     <Content Include="Views\CustomerSite\Edit.cshtml" />
     <Content Include="Views\CustomerSite\Index.cshtml" />
     <Content Include="Views\CustomerSite\_List.cshtml" />
+    <Content Include="Views\InventoryPeriod\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\InventoryPeriod\_List.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Views\Payment\Create.cshtml">
       <SubType>Code</SubType>
     </Content>

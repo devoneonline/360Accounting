@@ -26,12 +26,7 @@ namespace _360Accounting.Data.Repositories
 
         public IEnumerable<InventoryPeriod> GetAll(long companyId)
         {
-            var query = from a in this.Context.InventoryPeriods
-                        join b in this.Context.SetOfBooks on a.SOBId equals b.Id
-                        join c in this.Context.Companies on b.CompanyId equals c.Id
-                        where c.Id == companyId
-                        select a;
-            return query;
+            return this.Context.InventoryPeriods.Where(rec => rec.CompanyId == companyId);
         }
 
         public string Insert(InventoryPeriod entity)
