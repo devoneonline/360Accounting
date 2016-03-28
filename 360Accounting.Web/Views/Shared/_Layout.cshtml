@@ -23,7 +23,7 @@
                     <span class="navbar-brand"><img class="img-responsive" src='@Url.Content("~/Content/images/logo.png")' alt="" /></span>
                 </div>
                 <div class="navbar-collapse collapse">
-                    <div class="customClientLogo">@AuthenticationHelper.CompanyName</div>
+                    <div class="customClientLogo">@AuthenticationHelper.CompanyName <a href="#">(Ahsan Book)</a></div>
                     @Html.Partial("_LoginPartial")
                     @Html.Partial("_Menu")
                 </div>
@@ -43,16 +43,45 @@
 
     </div>
     <script type="text/javascript">
+        var lookupTextField = '';
+        var lookupValueField = '';
         $(document).ready(function () {
+
+            $('select').multiselect({
+                enableFiltering: true
+            });
+
+
             $(function () {
                 $('#dvAccountLookup').dialog({
                     modal: true,
                     title: "Account Lookup",
                     autoOpen: false,
-                    height: 400,
+                    height: 450,
                     width: 500,
                 });
             });
+
+
+            $('.AccountLookup').click(function () {
+                lookupValueField = (this.id).replace('String', '');
+                lookupTextField = this.id;
+                var sobId = 6;
+                $.ajax({
+                    url: '@Url.Content("~/CodeCombinition/LookupAccountCode")',
+                    data: { sobId: sobId },
+                    datatype: 'html',
+                    type: 'post',
+                    error: function (error) { },
+                    success: function (data) {
+                        $('#dvAccountLookup').html(data);
+                        $('#dvAccountLookup').dialog("open");
+                        $(this).next('input').focus();
+                        return false;
+                    }
+                });
+            });
+
         });
     </script>
 </body>

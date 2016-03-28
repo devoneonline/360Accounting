@@ -35,10 +35,11 @@
                 </div>
 
                 <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.CodeCombinationId)
-
-                        @Html.DropDownListFor(m => m.CodeCombinationId, Model.CodeCombination, new { @class = "form-control" })
+                    @Html.LabelFor(m => m.CodeCombinationId)
+                    <div class="form-group input-group">
+                        @Html.TextBoxFor(model => model.CodeCombinationIdString, new { @class = "form-control AccountLookup", @readonly = "readonly", @placeholder = "Click to get account" })
+                        <span class="input-group-addon"><a href="#" class="AccountLookup" tabindex="-1" id="CodeCombinationIdString"><i class="fa fa-search"></i></a></span>
+                        @Html.HiddenFor(m => m.CodeCombinationId)
                     </div>
                 </div>
             </div>
@@ -52,7 +53,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <div class="form-group">
+                    <div class="form-group customDropDownWrapper">
                         @Html.LabelFor(m => m.TaxCodeId)
                         @Html.DropDownListFor(m => m.TaxCodeId, Model.TaxCode, new { @class = "form-control" })
                     </div>
