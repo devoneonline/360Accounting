@@ -75,7 +75,7 @@ namespace _360Accounting.Web.Helpers
 
             item.ItemWarehouses.FirstOrDefault(x => x.Id == model.Id).EndDate = model.EndDate;
             item.ItemWarehouses.FirstOrDefault(x => x.Id == model.Id).StartDate = model.StartDate;
-            item.ItemWarehouses.FirstOrDefault(x => x.Id == model.Id).WarehouseCode = model.WarehouseCode;
+            item.ItemWarehouses.FirstOrDefault(x => x.Id == model.Id).WarehouseId = model.WarehouseId;
         }
 
         public static void DeleteItemDetail(ItemWarehouseModel model)

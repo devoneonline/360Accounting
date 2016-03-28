@@ -835,7 +835,7 @@ namespace _360Accounting.Web
                 ItemId = model.ItemId,
                 SOBId = model.SOBId,
                 StartDate = model.StartDate,
-                WarehouseCode = model.WarehouseCode
+                WarehouseId = model.WarehouseId
             };
             if (model.Id == 0)
             {

@@ -132,7 +132,6 @@ namespace _360Accounting.Web.Models
         public long Id { get; set; }
         public long SOBId { get; set; }
         public long ItemId { get; set; }
-        public long WarehouseId { get; set; }
 
         [Display(Name = "Warehouse")]
         public long WarehouseId { get; set; }
