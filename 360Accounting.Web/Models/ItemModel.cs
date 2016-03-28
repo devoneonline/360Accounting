@@ -127,6 +127,7 @@ namespace _360Accounting.Web.Models
             this.UpdateBy = entity.UpdateBy;
             this.UpdateDate = entity.UpdateDate;
             this.WarehouseCode = entity.WarehouseCode;
+            this.WarehouseId = entity.WarehouseId;
         }
 
         public long Id { get; set; }
@@ -135,6 +136,9 @@ namespace _360Accounting.Web.Models
 
         [Display(Name = "Warehouse Code")]
         public string WarehouseCode { get; set; }
+
+        [Display(Name = "Warehouse")]
+        public long WarehouseId { get; set; }
 
         [Required]
         [Display(Name = "Start Date")]

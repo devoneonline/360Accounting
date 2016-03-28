@@ -35,6 +35,7 @@ namespace _360Accounting.Web
             entity.UpdateBy = AuthenticationHelper.UserId;
             entity.UpdateDate = DateTime.Now;
             entity.WarehouseCode = model.WarehouseCode;
+            entity.WarehouseId = model.WarehouseId;
             return entity;
         }
 
@@ -780,6 +781,62 @@ namespace _360Accounting.Web
                 PaymentId = model.PaymentId,
                 InvoiceId = model.InvoiceId,
                 Id = model.Id
+            };
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+            }
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
+
+        public static Warehouse GetEntityByModel(WarehouseModel model)
+        {
+            if (model == null) return null;
+
+            Warehouse entity = new Warehouse();
+
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+                entity.CompanyId = model.CompanyId;
+            }
+
+            entity.WarehouseName = model.WarehouseName;
+            entity.Id = model.Id;
+            entity.SOBId = model.SOBId;
+            entity.Status = model.Status;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
+
+        public static ItemWarehouse GetEntityByModel(ItemWarehouseModel model)
+        {
+            if (model == null) return null;
+
+            ItemWarehouse entity = new ItemWarehouse
+            {
+                Id = model.Id,
+                EndDate = model.EndDate,
+                ItemId = model.ItemId,
+                SOBId = model.SOBId,
+                StartDate = model.StartDate,
+                WarehouseCode = model.WarehouseCode
             };
             if (model.Id == 0)
             {
