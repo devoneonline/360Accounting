@@ -18,6 +18,18 @@ namespace _360Accounting.Web
             service = IoC.Resolve<ISetOfBookService>("SetOfBookService");
         }
 
+        private static SetOfBook getEntityByModel(SetOfBookModel model)
+        {
+            if (model == null) return null;
+
+            return new SetOfBook
+            {
+                CompanyId = AuthenticationHelper.User.CompanyId,
+                Id = model.Id,
+                Name = model.Name
+            };
+        }
+
         public static List<SetOfBookModel> GetSetOfBooks()
         {
             return service.GetByCompanyId(AuthenticationHelper.User.CompanyId)
@@ -37,12 +49,12 @@ namespace _360Accounting.Web
 
         public static string Insert(SetOfBookModel model)
         {
-            return service.Insert(Mappers.GetEntityByModel(model));
+            return service.Insert(getEntityByModel(model));
         }
 
         public static string Update(SetOfBookModel model)
         {
-            return service.Update(Mappers.GetEntityByModel(model));
+            return service.Update(getEntityByModel(model));
         }
 
         public static void Delete(string id)

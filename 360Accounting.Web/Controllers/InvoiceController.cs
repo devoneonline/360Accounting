@@ -154,7 +154,7 @@ namespace _360Accounting.Web.Controllers
                     bool validated = false;
                     if (SessionHelper.Invoice != null)
                     {
-                        model.Id = SessionHelper.Invoice.InvoiceDetail.Count() + 1;
+                        model.Id = SessionHelper.Invoice.InvoiceDetail.Last().Id + 1;
                         validated = true;
                     }
                     else

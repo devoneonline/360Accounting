@@ -19,6 +19,38 @@ namespace _360Accounting.Web
         }
 
         #region Private Methods
+        private static Remittance getEntityByModel(RemittanceDetailModel model, int count)
+        {
+            if (model == null)
+                return null;
+
+            Remittance entity = new Remittance();
+
+            if (count == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+                entity.CompanyId = model.CompanyId;
+            }
+
+            entity.BankAccountId = model.BankAccountId;
+            entity.BankId = model.BankId;
+            entity.Id = model.Id;
+            entity.ReceiptId = model.ReceiptId;
+            entity.RemitDate = model.RemitDate;
+            entity.RemitNo = model.RemitNo;
+            entity.SOBId = model.SOBId;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
+
         private static IList<RemittanceDetailModel> getRemittanceByRemitNo(string remitNo)
         {
 
@@ -65,7 +97,7 @@ namespace _360Accounting.Web
                 detail.BankId = remittanceModel.BankId;
                 detail.BankAccountId = remittanceModel.BankAccountId;
 
-                Remittance entity = Mappers.GetEntityByModel(detail, savedDetail.Count());
+                Remittance entity = getEntityByModel(detail, savedDetail.Count());
                 if (entity.IsValid())
                 {
                     if (savedDetail.Count() > 0)

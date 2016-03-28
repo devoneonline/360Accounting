@@ -121,7 +121,7 @@ namespace _360Accounting.Web.Controllers
                     bool validInput = false;
                     if (SessionHelper.Tax != null)
                     {
-                        model.Id = SessionHelper.Tax.TaxDetails.Count() + 1;
+                        model.Id = SessionHelper.Tax.TaxDetails.Last().Id + 1;
                         if (SessionHelper.Tax.TaxDetails.Any(rec => rec.CodeCombinationId == model.CodeCombinationId))
                             ViewData["EditError"] = "Duplicate accounts can not be added.";
                         else

@@ -1,4 +1,5 @@
 ﻿using _360Accounting.Core;
+using _360Accounting.Core.Entities;
 using _360Accounting.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -18,15 +19,46 @@ namespace _360Accounting.Web
             siteService = IoC.Resolve<ICustomerSiteService>("CustomerSiteService");
         }
 
+        private static Customer getEntityByModel(CustomerModel model)
+        {
+            if (model == null) return null;
+
+            Customer entity = new Customer();
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+                entity.CompanyId = model.CompanyId;
+            }
+
+            entity.Address = model.Address;
+            entity.ContactNo = model.ContactNo;
+            entity.CustomerName = model.CustomerName;
+            entity.EndDate = model.EndDate;
+            entity.Id = model.Id;
+            entity.StartDate = model.StartDate;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+
+            return entity;
+
+        }
+
         public static string SaveCustomer(CustomerModel model)
         {
             if (model.Id > 0)
             {
-                return service.Update(Mappers.GetEntityByModel(model));
+                return service.Update(getEntityByModel(model));
             }
             else
             {
-                return service.Insert(Mappers.GetEntityByModel(model));
+                return service.Insert(getEntityByModel(model));
             }
         }
 

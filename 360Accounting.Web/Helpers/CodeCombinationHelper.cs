@@ -18,6 +18,44 @@ namespace _360Accounting.Web
             service = IoC.Resolve<ICodeCombinitionService>("CodeCombinitionService");
         }
 
+        private static CodeCombinition getEntityByModel(CodeCombinitionCreateViewModel model)
+        {
+            if (model == null) return null;
+
+            var entity = new CodeCombinition();
+
+            entity.AllowedPosting = model.AllowedPosting;
+            entity.EndDate = model.EndDate;
+            entity.Id = model.Id;
+            entity.Segment1 = model.Segment1;
+            entity.Segment2 = model.Segment2;
+            entity.Segment3 = model.Segment3;
+            entity.Segment4 = model.Segment4;
+            entity.Segment5 = model.Segment5;
+            entity.Segment6 = model.Segment6;
+            entity.Segment7 = model.Segment7;
+            entity.Segment8 = model.Segment8;
+            entity.SOBId = model.SOBId;
+            entity.StartDate = model.StartDate;
+
+            if (model.Id == 0)
+            {
+                entity.CompanyId = AuthenticationHelper.User.CompanyId;
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+            else
+            {
+                entity.CompanyId = model.CompanyId;
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+            }
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+
+            return entity;
+        }
+
         public static CodeCombinitionViewModel GetSingle(long id)
         {
             return new CodeCombinitionViewModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
@@ -60,11 +98,11 @@ namespace _360Accounting.Web
         {
             if (model.Id > 0)
             {
-                return service.Update(Mappers.GetEntityByModel(model));
+                return service.Update(getEntityByModel(model));
             }
             else
             {
-                return service.Insert(Mappers.GetEntityByModel(model));
+                return service.Insert(getEntityByModel(model));
             }
         }
 

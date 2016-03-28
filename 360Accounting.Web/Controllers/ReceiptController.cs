@@ -192,17 +192,29 @@ namespace _360Accounting.Web.Controllers
                     Value = a.Id.ToString()
                 }).ToList();
             }
+            else
+            {
+                receipt.CustomerSites = new List<SelectListItem>();
+            }
 
             if (receipt.Banks == null)
             {
                 receipt.Banks = BankHelper.GetBankList(receipt.SOBId);
+            }
+            else
+            {
+                receipt.Banks = new List<SelectListItem>();
             }
 
             if (receipt.BankAccounts == null)
             {
                 receipt.BankAccounts = BankHelper.GetBankAccountList(receipt.BankId);
             }
-            
+            else
+            {
+                receipt.BankAccounts = new List<SelectListItem>();
+            }
+
             return View(receipt);
         }
 

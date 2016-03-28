@@ -91,7 +91,7 @@ namespace _360Accounting.Web
 
         public static void Update(PaymentViewModel payment)
         {
-            PaymentHeader entity = Mappers.GetEntityByModel(payment);
+            PaymentHeader entity = getEntityByModel(payment);
 
             string result = string.Empty;
             if (entity.IsValid())
@@ -116,7 +116,7 @@ namespace _360Accounting.Web
 
                     foreach (var line in payment.PaymentInvoiceLines)
                     {
-                        PaymentInvoiceLines lineEntity = Mappers.GetEntityByModel(line);
+                        PaymentInvoiceLines lineEntity = getEntityByModel(line);
                         if (lineEntity.IsValid())
                         {
                             lineEntity.PaymentId = Convert.ToInt64(result);
@@ -160,6 +160,67 @@ namespace _360Accounting.Web
         }
 
         #region Private Methods
+        private static PaymentHeader getEntityByModel(PaymentViewModel model)
+        {
+            if (model == null) return null;
+
+            PaymentHeader entity = new PaymentHeader();
+
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value; //Not exist.. have to do this..
+            }
+
+            entity.Amount = model.Amount;
+            entity.BankId = model.BankId;
+            entity.Id = model.Id;
+            entity.PaymentDate = model.PaymentDate;
+            entity.PaymentNo = model.PaymentNo;
+            entity.Status = model.Status;
+            entity.SOBId = model.SOBId;
+            entity.BankAccountId = model.BankAccountId;
+            entity.VendorId = model.VendorId;
+            entity.PeriodId = model.PeriodId;
+            entity.VendorSiteId = model.VendorSiteId;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
+
+        private static PaymentInvoiceLines getEntityByModel(PaymentInvoiceLinesModel model)
+        {
+            if (model == null) return null;
+
+            PaymentInvoiceLines entity = new PaymentInvoiceLines
+            {
+                Amount = model.Amount,
+                PaymentId = model.PaymentId,
+                InvoiceId = model.InvoiceId,
+                Id = model.Id
+            };
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+            }
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
+
         private static IList<PaymentInvoiceLinesModel> getPaymentLines()
         {
             return SessionHelper.Payment.PaymentInvoiceLines.ToList();

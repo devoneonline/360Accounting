@@ -1,4 +1,5 @@
 ﻿using _360Accounting.Core;
+using _360Accounting.Core.Entities;
 using _360Accounting.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,17 @@ namespace _360Accounting.Web
             service = IoC.Resolve<ICompanyService>("CompanyService");
         }
 
+        private static Company getEntityByModel(CompanyModel model)
+        {
+            if (model == null) return null;
+
+            return new Company
+            {
+                Id = model.Id,
+                Name = model.Name
+            };
+        }
+
         public static IEnumerable<CompanyModel> GetCompanies()
         {
             return service.GetAll(AuthenticationHelper.User.CompanyId)
@@ -26,11 +38,11 @@ namespace _360Accounting.Web
         {
             if (model.Id > 0)
             {
-                return service.Update(Mappers.GetEntityByModel(model));
+                return service.Update(getEntityByModel(model));
             }
             else
             {
-                return service.Insert(Mappers.GetEntityByModel(model));
+                return service.Insert(getEntityByModel(model));
             }
         }
 

@@ -243,7 +243,7 @@ namespace _360Accounting.Web.Controllers
                             return PartialView("createPartial", PaymentHelper.GetPaymentLines());
                         }
 
-                        model.Id = SessionHelper.Payment.PaymentInvoiceLines.Count() + 1;
+                        model.Id = SessionHelper.Payment.PaymentInvoiceLines.Last().Id + 1;
                         validated = true;
                     }
                     else

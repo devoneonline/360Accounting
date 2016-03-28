@@ -22,6 +22,62 @@ namespace _360Accounting.Web
         }
 
         #region Private Methods
+        private static TaxDetail getEntityByModel(TaxDetailModel model)
+        {
+            if (model == null) return null;
+            TaxDetail entity = new TaxDetail();
+
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+            }
+            entity.CodeCombinationId = model.CodeCombinationId;
+            entity.EndDate = model.EndDate;
+            entity.Id = model.Id;
+            entity.Rate = model.Rate;
+            entity.StartDate = model.StartDate;
+            entity.TaxId = model.TaxId;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+
+            return entity;
+        }
+
+        private static Tax getEntityByModel(TaxModel model)
+        {
+            if (model == null) return null;
+            Tax entity = new Tax();
+
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+                entity.CompanyId = model.CompanyId;
+            }
+
+            entity.EndDate = model.EndDate;
+            entity.Id = model.Id;
+            entity.SOBId = model.SOBId;
+            entity.StartDate = model.StartDate;
+            entity.TaxName = model.TaxName;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+
+            return entity;
+        }
+
         private static IList<TaxDetailModel> getTaxDetail()
         {
             return SessionHelper.Tax.TaxDetails;
@@ -69,7 +125,7 @@ namespace _360Accounting.Web
         public static void Update(TaxModel model)
         {
             //tax ko entity mai lia
-            Tax entity = Mappers.GetEntityByModel(model);
+            Tax entity = getEntityByModel(model);
 
             string result = string.Empty;
             if (entity.IsValid())
@@ -108,7 +164,7 @@ namespace _360Accounting.Web
                     foreach (var detailModel in model.TaxDetails)
                     {
                         //detail ki entity li
-                        TaxDetail detailEntity = Mappers.GetEntityByModel(detailModel);
+                        TaxDetail detailEntity = getEntityByModel(detailModel);
                         if (detailEntity.IsValid())
                         {
                             //tax id dali

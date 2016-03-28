@@ -1,4 +1,5 @@
 ﻿using _360Accounting.Core;
+using _360Accounting.Core.Entities;
 using _360Accounting.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -17,15 +18,49 @@ namespace _360Accounting.Web
             service = IoC.Resolve<IWithholdingService>("WithholdingService");
         }
 
+        private static Withholding getEntityByModel(WithholdingModel model)
+        {
+            if (model == null) return null;
+
+            Withholding entity = new Withholding();
+
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+                entity.CompanyId = model.CompanyId;
+            }
+
+            entity.Code = model.WithholdingCode;
+            entity.VendorSiteId = model.VendorSiteId;
+            entity.VendorId = model.VendorId;
+            entity.SOBId = model.SOBId;
+            entity.Rate = model.Rate;
+            entity.Description = model.Description;
+            entity.DateTo = model.DateTo;
+            entity.DateFrom = model.DateFrom;
+            entity.CodeCombinitionId = model.CodeCombinitionId;
+            entity.Id = model.Id;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
+
         public static string Save(WithholdingModel model)
         {
             if (model.Id > 0)
             {
-                return service.Update(Mappers.GetEntityByModel(model));
+                return service.Update(getEntityByModel(model));
             }
             else
             {
-                return service.Insert(Mappers.GetEntityByModel(model));
+                return service.Insert(getEntityByModel(model));
             }
         }
 
