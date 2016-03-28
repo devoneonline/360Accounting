@@ -1,0 +1,52 @@
+﻿@{
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+
+    var grid = Html.DevExpress().GridView(
+        settings =>
+        {
+            settings.Name = "Warehouses";
+            settings.KeyFieldName = "Id";
+            settings.CallbackRouteValues = new { Controller = "Warehouse", Action = "CreatePartial" };
+            settings.CustomActionRouteValues = new { Controller = "Editing", Action = "ChangeEditModePartial" };
+            settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Warehouse", Action = "AddNewInline" };
+            settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Warehouse", Action = "UpdateInline" };
+            settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Warehouse", Action = "DeleteInline" };
+            settings.SettingsEditing.Mode = GridViewEditingMode.Inline;
+            settings.SettingsBehavior.ConfirmDelete = true;
+            settings.SettingsPopup.EditForm.Width = 600;
+            settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+            settings.CommandColumn.Visible = true;
+            settings.CommandColumn.ShowNewButton = true;
+            settings.CommandColumn.ShowDeleteButton = true;
+            settings.CommandColumn.ShowEditButton = true;
+            
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "WarehouseName";
+                column.Caption = "Warehouse Name";
+            });
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "Status";
+                column.Caption = "Status";
+
+                column.ColumnType = MVCxGridViewColumnType.ComboBox;
+                var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+                List<SelectListItem> items = new List<SelectListItem>();
+                items.Add(new SelectListItem { Value = "Active", Text = "Active" });
+                items.Add(new SelectListItem { Value = "Inactive", Text = "Inactive" });
+                comboBoxProperties.DataSource = items;
+                comboBoxProperties.TextField = "Text";
+                comboBoxProperties.ValueField = "Value";
+                comboBoxProperties.ValueType = typeof(string);
+            });
+        });
+
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

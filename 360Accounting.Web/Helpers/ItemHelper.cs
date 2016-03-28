@@ -13,9 +13,14 @@ namespace _360Accounting.Web.Helpers
     public static class ItemHelper
     {
         private static IItemService service;
+
+        static ItemHelper() 
+        {
+            service = IoC.Resolve<IItemService>("ItemService");
+        }
         
         #region Private Methods
-        private static IList<ItemWarehouseModel> getItemWarehouseByItemId(string itemId)
+        private static IList<ItemWarehouseModel> getItemWarehousesByItemId(string itemId)
         {
             IList<ItemWarehouseModel> modelList = service
                 .GetAllItemWarehouses(Convert.ToInt32(itemId))
@@ -23,7 +28,7 @@ namespace _360Accounting.Web.Helpers
             return modelList;
         }
 
-        private static IList<ItemWarehouseModel> getItemWarehouse()
+        private static IList<ItemWarehouseModel> getItemWarehouses()
         {
             return SessionHelper.Item.ItemWarehouses;
         }
@@ -37,6 +42,12 @@ namespace _360Accounting.Web.Helpers
             return modelList;
         }
 
+        public static ItemModel GetItem(string id)
+        {
+            ItemModel model = new ItemModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            return model;
+        }
+
         public static List<SelectListItem> GetItemList(long sobId)
         {
             List<SelectListItem> modelList = ItemHelper.GetItems(sobId)
@@ -47,12 +58,12 @@ namespace _360Accounting.Web.Helpers
         public static IList<ItemWarehouseModel> GetItemWarehouses([Optional]string itemId)
         {
             if (itemId == null)
-                return getItemWarehouse();
+                return getItemWarehouses();
             else
-                return getItemWarehouseByItemId(itemId);
+                return getItemWarehousesByItemId(itemId);
         }
 
-        public static void Insert(ItemWarehouseModel model)
+        public static void InsertItemDetail(ItemWarehouseModel model)
         {
             ItemModel item = SessionHelper.Item;
             item.ItemWarehouses.Add(model);
@@ -67,14 +78,14 @@ namespace _360Accounting.Web.Helpers
             item.ItemWarehouses.FirstOrDefault(x => x.Id == model.Id).WarehouseId = model.WarehouseId;
         }
 
-        public static void DeleteInvoiceDetail(ItemWarehouseModel model)
+        public static void DeleteItemDetail(ItemWarehouseModel model)
         {
             ItemModel item = SessionHelper.Item;
             ItemWarehouseModel itemWarehouse = item.ItemWarehouses.FirstOrDefault(x => x.Id == model.Id);
             item.ItemWarehouses.Remove(itemWarehouse);
         }
 
-        public static void Update(ItemModel itemModel)
+        public static void Save(ItemModel itemModel)
         {
             Item entity = Mappers.GetEntityByModel(itemModel);
 
@@ -88,7 +99,7 @@ namespace _360Accounting.Web.Helpers
 
                 if (!string.IsNullOrEmpty(result))
                 {
-                    var savedDetail = getItemWarehouseByItemId(result);
+                    var savedDetail = GetItemWarehouses(result);
                     if (savedDetail.Count() > itemModel.ItemWarehouses.Count())
                     {
                         var tobeDeleted = savedDetail.Take(savedDetail.Count() - itemModel.ItemWarehouses.Count());
@@ -96,12 +107,12 @@ namespace _360Accounting.Web.Helpers
                         {
                             service.DeleteItemWarehouse(item.Id);
                         }
-                        savedDetail = getItemWarehouseByItemId(result);
+                        savedDetail = GetItemWarehouses(result);
                     }
 
                     foreach (var detail in itemModel.ItemWarehouses)
                     {
-                        ItemWarehouse detailEntity = Mappers.GetEntityByModel(detail, savedDetail.Count());
+                        ItemWarehouse detailEntity = Mappers.GetEntityByModel(detail);
                         if (detailEntity.IsValid())
                         {
                             detailEntity.ItemId = Convert.ToInt64(result);
@@ -117,12 +128,6 @@ namespace _360Accounting.Web.Helpers
                     }
                 }
             }
-        }
-
-        public static ItemModel GetItem(string id)
-        {
-            return new ItemModel(service.GetSingle
-                (id, AuthenticationHelper.User.CompanyId));
         }
 
         public static void Delete(string id)
