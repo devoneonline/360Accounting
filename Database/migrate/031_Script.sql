@@ -24,13 +24,13 @@ GO
 
 -- Constraints and Indexes
 
-ALTER TABLE [dbo].[tbPayableInvoice] ADD CONSTRAINT [tbPayableInvoice] PRIMARY KEY CLUSTERED ([Id])
+ALTER TABLE [dbo].[tbPayableInvoice] ADD CONSTRAINT [PK_PayableInvoice] PRIMARY KEY CLUSTERED ([Id])
 ALTER TABLE [dbo].[tbPayableInvoice] ADD CONSTRAINT [FK_tbPayableInvoice_tbSetOfBook] FOREIGN KEY ([SOBId]) REFERENCES [dbo].[tbSetOfBook] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
 
 --Need to put constraint with cascading currently giving error when cascade
 ---------------------------------------------------------------------------
-ALTER TABLE [dbo].[tbPayableInvoice] ADD CONSTRAINT [FK_tbPayInvoice_tbVendor] FOREIGN KEY ([VendorId]) REFERENCES [dbo].[tbVendor] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
-ALTER TABLE [dbo].[tbPayableInvoice] ADD CONSTRAINT [FK_tbPayableInvoice_tbVendorSite] FOREIGN KEY ([VendorSitId]) REFERENCES [dbo].[tbVendorSite] ([Id]) ON DELETE NO Action ON UPDATE NO Action
+ALTER TABLE [dbo].[tbPayableInvoice] ADD CONSTRAINT [FK_tbPayInvoice_tbVendor] FOREIGN KEY ([VendorId]) REFERENCES [dbo].[tbVendor] ([Id]) 
+ALTER TABLE [dbo].[tbPayableInvoice] ADD CONSTRAINT [FK_tbPayableInvoice_tbVendorSite] FOREIGN KEY ([VendorSiteId]) REFERENCES [dbo].[tbVendorSite] ([Id]) ON DELETE NO Action ON UPDATE NO Action
 ALTER TABLE [dbo].[tbPayableInvoice] ADD CONSTRAINT [FK_tbPayableInvoice_tbPayablePeriod] FOREIGN KEY ([PeriodId]) REFERENCES [dbo].[tbPayablePeriod] ([Id]) ON DELETE NO Action ON UPDATE NO Action
 ALTER TABLE [dbo].[tbPayableInvoice] ADD CONSTRAINT [FK_tbPayableInvoice_tbInvoiceType] FOREIGN KEY ([InvoiceTypeId]) REFERENCES [dbo].[tbInvoiceType] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
 ALTER TABLE [dbo].[tbPayableInvoice] ADD CONSTRAINT [FK_tbPayableInvoice_tbWithholding] FOREIGN KEY ([WHTaxId]) REFERENCES [dbo].[tbWithholding] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
@@ -57,7 +57,7 @@ GO
 
 ALTER TABLE [dbo].[tbPayableInvoiceDetail] ADD CONSTRAINT [PK_tbPayableInvoiceDetail] PRIMARY KEY CLUSTERED ([Id])
 ALTER TABLE [dbo].[tbPayableInvoiceDetail] ADD CONSTRAINT [FK_tbPayableInvoiceDetail_PayInvoice] FOREIGN KEY ([InvoiceId]) REFERENCES [dbo].[tbPayableInvoice] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
-ALTER TABLE [dbo].[tbPayableInvoiceDetail] ADD CONSTRAINT [FK_tbPayableInvoiceDetail_tbCodeCombinition] FOREIGN KEY ([CodeCombinationId]) REFERENCES [dbo].[tbCodeCombinitioin] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
+ALTER TABLE [dbo].[tbPayableInvoiceDetail] ADD CONSTRAINT [FK_tbPayableInvoiceDetail_tbCodeCombinition] FOREIGN KEY ([CodeCombinationId]) REFERENCES [dbo].[tbCodeCombinition] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
 
 GO
 
