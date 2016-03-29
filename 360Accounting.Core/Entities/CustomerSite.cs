@@ -41,9 +41,9 @@ namespace _360Accounting.Core.Entities
 
         public string SiteContact { get; set; }
 
-        public long? TaxCodeId { get; set; }
+        public long? TaxId { get; set; }
 
-        public string TaxCodeName { get; set; }
+        public string TaxName { get; set; }
 
         public long CodeCombinationId { get; set; }
 

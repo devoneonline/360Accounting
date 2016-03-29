@@ -3,7 +3,19 @@
 
 @model _360Accounting.Web.Models.GLHeaderModel
 
+@{
+    ViewBag.Title = "Journal Voucher";
+}
+
 <div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
+        </div>
+    </div>
+
     @using (Html.BeginForm())
     {
         @Html.HiddenFor(m=> m.Id)

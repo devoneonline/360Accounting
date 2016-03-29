@@ -45,6 +45,7 @@ namespace _360Accounting.Web.Models
 
         [Required]
         [Display(Name = "Period")]
+        [StringLength(30, ErrorMessage = "Period Name should not exceed length of 30 characters")]
         public string PeriodName { get; set; }
 
         [Required]

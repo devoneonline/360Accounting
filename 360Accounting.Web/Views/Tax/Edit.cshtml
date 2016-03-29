@@ -8,6 +8,14 @@
 }
 
 <div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
+        </div>
+    </div>
+
     @using (Html.BeginForm())
     {
         @Html.HiddenFor(m => m.Id)
@@ -27,22 +35,20 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-5">
                 <div class="form-group">
 
                     @Html.LabelFor(model => model.TaxName)
                     @Html.TextBoxFor(model => model.TaxName, new { @class = "form-control" })
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-2 col-lg-offset-1">
                 <div class="form-group">
                     @Html.LabelFor(model => model.StartDate)
                     @Html.EditorFor(model => model.StartDate)
                 </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.EndDate)
                     @Html.EditorFor(model => model.EndDate)

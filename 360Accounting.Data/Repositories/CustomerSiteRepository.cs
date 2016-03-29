@@ -42,8 +42,8 @@ namespace _360Accounting.Data.Repositories
                             SiteContact = a.SiteContact,
                             SiteName = a.SiteName,
                             StartDate = a.StartDate,
-                            TaxCodeId = a.TaxCodeId,
-                            TaxCodeName = d.TaxName,
+                            TaxId = a.TaxCodeId,
+                            TaxName = d.TaxName,
                             UpdateBy = a.UpdateBy,
                             UpdateDate = a.UpdateDate
                         };

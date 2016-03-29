@@ -27,7 +27,7 @@ namespace _360Accounting.Data.Repositories
 
         public IEnumerable<Tax> GetAll(long companyId)
         {
-            IEnumerable<Tax> taxList = this.Context.Taxes;
+            IEnumerable<Tax> taxList = this.Context.Taxes.Where(x => x.CompanyId == companyId);
             return taxList;
         }
 

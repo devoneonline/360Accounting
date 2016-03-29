@@ -50,6 +50,36 @@ namespace _360Accounting.Web
 
         }
 
+        private static CustomerSite getEntityByModel(CustomerSiteModel model)
+        {
+            if (model == null) return null;
+
+            CustomerSite entity = new CustomerSite();
+
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+            }
+            entity.CodeCombinationId = model.CodeCombinationId;
+            entity.CustomerId = model.CustomerId;
+            entity.EndDate = model.EndDate;
+            entity.Id = model.Id;
+            entity.SiteAddress = model.SiteAddress;
+            entity.SiteContact = model.SiteContact;
+            entity.SiteName = model.SiteName;
+            entity.StartDate = model.StartDate;
+            entity.TaxCodeId = model.TaxId;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
+
         public static string SaveCustomer(CustomerModel model)
         {
             if (model.Id > 0)
@@ -72,6 +102,11 @@ namespace _360Accounting.Web
             service.Delete(id, AuthenticationHelper.User.CompanyId);
         }
 
+        public static void DeleteCustomerSite(string id)
+        {
+            siteService.Delete(id, AuthenticationHelper.CompanyId.Value);
+        }
+
         public static List<CustomerModel> GetCustomers()
         {
             return service.GetAll(AuthenticationHelper.User.CompanyId)
@@ -90,10 +125,30 @@ namespace _360Accounting.Web
                 .Select(a => new CustomerSiteViewModel(a)).ToList();
         }
 
+        public static IEnumerable<CustomerSiteModel> GetCustomerSites()
+        {
+            IEnumerable<CustomerSiteModel> list = siteService.GetAll(AuthenticationHelper.CompanyId.Value).Select(x => new CustomerSiteModel(x)).ToList();
+            return list;
+        }
+
         public static CustomerSiteModel GetCustomerSite(string customerSiteId)
         {
             CustomerSiteModel customerSite = new CustomerSiteModel(siteService.GetSingle(customerSiteId, AuthenticationHelper.User.CompanyId));
             return customerSite;
         }
+
+        public static string SaveCustomerSite(CustomerSiteModel model)
+        {
+            if (model.Id > 0)
+            {
+                return siteService.Update(getEntityByModel(model));
+            }
+            else
+            {
+                return siteService.Insert(getEntityByModel(model));
+            }
+        }
+
+        
     }
 }

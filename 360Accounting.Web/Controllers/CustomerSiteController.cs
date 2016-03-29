@@ -12,13 +12,13 @@ namespace _360Accounting.Web.Controllers
     [Authorize]
     public class CustomerSiteController : Controller
     {
-        private ICustomerSiteService service;
+        //private ICustomerSiteService service;
         private ICodeCombinitionService codeCombinationService;
         private ITaxService taxService;
 
         public CustomerSiteController()
         {
-            service = IoC.Resolve<ICustomerSiteService>("CustomerSiteService");
+            //service = IoC.Resolve<ICustomerSiteService>("CustomerSiteService");
             codeCombinationService = IoC.Resolve<ICodeCombinitionService>("CodeCombinitionService");
             taxService = IoC.Resolve<ITaxService>("TaxService");
         }
@@ -27,9 +27,7 @@ namespace _360Accounting.Web.Controllers
         {
             ViewBag.CustomerId = Id;
             List<CustomerSiteViewModel> model = new List<CustomerSiteViewModel>();
-            IEnumerable<CustomerSiteView> list;
-            list = service.GetAllbyCustomerId(Id);
-            model = list.Select(a => new CustomerSiteViewModel(a)).ToList();
+            model = CustomerHelper.GetCustomerSites(Id);
             return View(model);
         }
 
@@ -37,7 +35,7 @@ namespace _360Accounting.Web.Controllers
         {
             CustomerSiteModel model;
             if (id != null)
-                model = new CustomerSiteModel(service.GetSingle(id.Value.ToString(), AuthenticationHelper.User.CompanyId));
+                model = CustomerHelper.GetCustomerSite(id.Value.ToString());
             else
             {
                 model = new CustomerSiteModel();
@@ -65,61 +63,31 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                string result = "";
-                if (model.Id > 0)
-                    result = service.Update(mapModel(model));
-                else
-                    result = service.Insert(mapModel(model));
-
-                return RedirectToAction("Index", new { Id = model.CustomerId });
+                try
+                {
+                    string result = "";
+                    result = CustomerHelper.SaveCustomerSite(model);
+                    return RedirectToAction("Index", new { Id = model.CustomerId });
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Error", ex.Message);
+                }
+                
             }
             return View(model);
         }
 
         public ActionResult Delete(string id, long CustomerId)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            CustomerHelper.DeleteCustomerSite(id);
             return RedirectToAction("Index", new { Id = CustomerId });
         }
 
         public ActionResult CustomerSiteListPartial()
         {
-            IEnumerable<CustomerSiteModel> list = service
-                .GetAll(AuthenticationHelper.User.CompanyId)
-                .Select(a => new CustomerSiteModel(a)).ToList();
+            IEnumerable<CustomerSiteModel> list = CustomerHelper.GetCustomerSites();
             return PartialView("_List", list);
         }
-
-        #region Private Methods
-        private CustomerSite mapModel(CustomerSiteModel model)
-        {
-            if (model == null) return null;
-            CustomerSite entity = new CustomerSite();
-            entity.CustomerId = model.CustomerId;
-            entity.CodeCombinationId = model.CodeCombinationId;
-            entity.EndDate = model.EndDate;
-            entity.Id = model.Id;
-            entity.SiteAddress = model.SiteAddress;
-            entity.SiteContact = model.SiteContact;
-            entity.SiteName = model.SiteName;
-            entity.StartDate = model.StartDate;
-            entity.TaxCodeId = model.TaxCodeId;
-
-            if (model.Id == 0)
-            {
-                entity.CreateBy = AuthenticationHelper.UserId;
-                entity.CreateDate = DateTime.Now;
-            }
-            else
-            {
-                entity.CreateBy = model.CreateBy;
-                entity.CreateDate = model.CreateDate;
-            }
-            entity.UpdateBy = AuthenticationHelper.UserId;
-            entity.UpdateDate = DateTime.Now;
-            return entity;
-        }
-        #endregion
-
     }
 }

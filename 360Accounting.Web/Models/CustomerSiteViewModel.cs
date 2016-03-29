@@ -21,12 +21,12 @@ namespace _360Accounting.Web.Models
                 this.SiteAddress = entity.SiteAddress;
                 this.SiteContact = entity.SiteContact;
                 this.SiteName = entity.SiteName;
-                this.TaxCodeId = entity.TaxCodeId;
+                this.TaxId = entity.TaxId;
                 this.EndDate = entity.EndDate;
                 this.Id = entity.Id;
                 this.StartDate = entity.StartDate;
                 this.CodeCombinationName = Utility.CodeCombination(entity.CodeCombination, ".");
-                this.TaxCodeName = entity.TaxCodeName;
+                this.TaxName = entity.TaxName;
                 this.CreateBy = entity.CreateBy;
                 this.CreateDate = entity.CreateDate;
                 this.UpdateBy = entity.UpdateBy;
@@ -54,10 +54,10 @@ namespace _360Accounting.Web.Models
         [StringLength(15, MinimumLength = 1)]
         public string SiteContact { get; set; }
 
-        [Display(Name = "Tax Code")]
-        public long? TaxCodeId { get; set; }
+        [Display(Name = "Tax")]
+        public long? TaxId { get; set; }
 
-        public string TaxCodeName { get; set; }
+        public string TaxName { get; set; }
 
         [Display(Name = "Code Combination")]
         public long CodeCombinationId { get; set; }

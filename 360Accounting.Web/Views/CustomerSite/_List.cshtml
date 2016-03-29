@@ -43,7 +43,7 @@ var grid = Html.DevExpress().GridView(settings =>
     settings.Columns.Add("StartDate", "Start Date").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;
     settings.Columns.Add("EndDate", "End Date").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;
     settings.Columns.Add("CodeCombinationName", "Receivable A/c.");
-    settings.Columns.Add("TaxCodeName", "Sales Tax");
+    settings.Columns.Add("TaxName", "Sales Tax");
 });
 if (ViewData["EditError"] != null)
 {

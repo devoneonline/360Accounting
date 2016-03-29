@@ -39,19 +39,19 @@ namespace _360Accounting.Core.Entities
         public DateTime EndDate { get; set; }
     }
 
-    public class TaxDum : EntityBase
-    {
-        [Key]
-        public long Id { get; set; }
+    //public class TaxDum : EntityBase
+    //{
+    //    [Key]
+    //    public long Id { get; set; }
 
-        public string TaxName { get; set; }
+    //    public string TaxName { get; set; }
 
-        public decimal TaxRate { get; set; }
+    //    public decimal TaxRate { get; set; }
 
-        public DateTime StartDate { get; set; }
+    //    public DateTime StartDate { get; set; }
 
-        public DateTime EndDate { get; set; }
+    //    public DateTime EndDate { get; set; }
 
-        public long CodeCombinationId { get; set; }
-    }
+    //    public long CodeCombinationId { get; set; }
+    //}
 }

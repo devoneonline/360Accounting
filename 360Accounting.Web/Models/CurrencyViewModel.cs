@@ -36,6 +36,7 @@ namespace _360Accounting.Web.Models
 
         [Required]
         [Display(Name = "Currency Code")]
+        [StringLength(3, ErrorMessage = "Crrency Code should not exceed 3 characters.")]
         public string CurrencyCode { get; set; }
 
         [Display(Name = "SOBId")]
@@ -46,6 +47,7 @@ namespace _360Accounting.Web.Models
 
         [Required]
         [Display(Name = "Currency Name")]
+        [StringLength(255, ErrorMessage = "Crrency Name should not exceed 255 characters.")]
         public string Name { get; set; }
 
         [Display(Name = "Precision")]
