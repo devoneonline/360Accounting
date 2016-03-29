@@ -19,6 +19,7 @@ namespace _360Accounting.Web.Models
 
     public class ItemModel : ModelBase
     {
+        #region Constructors
         public ItemModel(Item entity)
         {
             this.COGSCodeCombinationId = entity.COGSCodeCombinationId;
@@ -46,7 +47,9 @@ namespace _360Accounting.Web.Models
         public ItemModel()
         {
         }
+        #endregion
 
+        #region Properties
         public long Id { get; set; }
         public long CompanyId { get; set; }
         public long SOBId { get; set; }
@@ -105,10 +108,13 @@ namespace _360Accounting.Web.Models
         }
 
         public List<ItemWarehouseModel> ItemWarehouses { get; set; }
+
+        #endregion
     }
 
     public class ItemWarehouseModel : ModelBase
     {
+        #region Constructors
         public ItemWarehouseModel()
         {
             this.StartDate = Const.CurrentDate;
@@ -128,10 +134,14 @@ namespace _360Accounting.Web.Models
             this.UpdateDate = entity.UpdateDate;
             this.WarehouseId = entity.WarehouseId;
         }
+        #endregion
 
+        #region Properties
         public long Id { get; set; }
         public long SOBId { get; set; }
         public long ItemId { get; set; }
+
+        [Display(Name = "Warehouse")]
         public long WarehouseId { get; set; }
 
         [Required]
@@ -147,5 +157,6 @@ namespace _360Accounting.Web.Models
         public DateTime EndDate { get; set; }
 
         public List<SelectListItem> Warehouses { get; set; }
+        #endregion
     }
 }

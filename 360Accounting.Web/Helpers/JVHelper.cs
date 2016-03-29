@@ -77,7 +77,7 @@ namespace _360Accounting.Web
 
         public static void Update(GLHeaderModel jv)
         {
-            GLHeader entity = Mappers.GetEntityByModel(jv);
+            GLHeader entity = getEntityByModel(jv);
 
             string result = string.Empty;
             if (entity.IsValid())
@@ -102,7 +102,7 @@ namespace _360Accounting.Web
 
                     foreach (var line in jv.GlLines)
                     {
-                        GLLines lineEntity = Mappers.GetEntityByModel(line, jv.ConversionRate);
+                        GLLines lineEntity = getEntityByModel(line, jv.ConversionRate);
                         if (lineEntity.IsValid())
                         {
                             lineEntity.HeaderId = Convert.ToInt64(result);
@@ -152,6 +152,67 @@ namespace _360Accounting.Web
         }
 
         #region Private Methods
+        private static GLHeader getEntityByModel(GLHeaderModel model)
+        {
+            if (model == null) return null;
+
+            GLHeader entity = new GLHeader();
+            entity.Id = model.Id;
+            entity.JournalName = model.JournalName;
+            entity.ConversionRate = model.ConversionRate;
+            entity.CurrencyId = model.CurrencyId;
+            entity.Description = model.Description;
+            entity.DocumentNo = model.DocumentNo;
+            entity.GLDate = model.GLDate;
+            entity.PeriodId = model.PeriodId;
+            entity.SOBId = model.SOBId;
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+                entity.CompanyId = model.CompanyId;
+            }
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
+
+        private static GLLines getEntityByModel(GLLinesModel model, decimal conversionRate)
+        {
+            if (model == null) return null;
+
+            GLLines entity = new GLLines();
+            entity.Id = model.Id;
+            entity.HeaderId = model.HeaderId;
+            entity.CodeCombinationId = model.CodeCombinationId;
+            entity.Description = model.Description;
+            entity.EnteredCr = model.EnteredCr;
+            entity.EnteredDr = model.EnteredDr;
+            entity.AccountedCr = model.EnteredCr * conversionRate;
+            entity.AccountedDr = model.EnteredDr * conversionRate;
+            entity.Qty = model.Quantity;
+            entity.TaxRateCode = model.TaxRateCode;
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+            }
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
+
         private static IList<GLLinesModel> getGLLines()
         {
             return SessionHelper.JV.GlLines;

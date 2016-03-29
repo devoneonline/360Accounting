@@ -8,10 +8,11 @@ namespace _360Accounting.Web
 {
     public class SessionHelper
     {
+        private const string Sesson_Locator = "Locator";
         private const string Sesson_Item = "Item";
         private const string Session_DocumentDate = "DocumentDate";
         private const string Session_Calendar = "Calendar";
-        private const string Session_Receipt = "Receipt";
+        private const string Session_Receipts = "Receipts";
         private const string Session_Bank = "Bank";
         private const string Session_PrecisionLimit = "PrecisionLimit";
         private const string Session_SOBId = "SOBId";
@@ -22,7 +23,20 @@ namespace _360Accounting.Web
         private const string Session_Remittance = "Remittance";
         private const string Sesson_Payment = "Payment";
         private const string Sesson_PayableInvoice = "PayableInvoice";
-        
+
+        public static LocatorModel Locator
+        {
+            get
+            {
+                return HttpContext.Current.Session[Sesson_Locator] == null ? null :
+                    (LocatorModel)HttpContext.Current.Session[Sesson_Locator];
+            }
+            set
+            {
+                HttpContext.Current.Session[Sesson_Locator] = value;
+            }
+        }
+
         public static ItemModel Item
         {
             get
@@ -49,16 +63,16 @@ namespace _360Accounting.Web
             }
         }
 
-        public static ReceiptModel Receipt
+        public static ReceiptModel Receipts
         {
             get
             {
-                return HttpContext.Current.Session[Session_Receipt] == null ? null :
-                    (ReceiptModel)HttpContext.Current.Session[Session_Receipt];
+                return HttpContext.Current.Session[Session_Receipts] == null ? null :
+                    (ReceiptModel)HttpContext.Current.Session[Session_Receipts];
             }
             set
             {
-                HttpContext.Current.Session[Session_Receipt] = value;
+                HttpContext.Current.Session[Session_Receipts] = value;
             }
         }
 

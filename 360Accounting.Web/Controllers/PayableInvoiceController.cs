@@ -100,7 +100,7 @@ namespace _360Accounting.Web.Controllers
                     bool validated = false;
                     if (SessionHelper.PayableInvoice != null)
                     {
-                        model.Id = SessionHelper.PayableInvoice.InvoiceDetail.Count() + 1;
+                        model.Id = SessionHelper.PayableInvoice.InvoiceDetail.Last().Id + 1;
                         validated = true;
                     }
                     else
@@ -168,27 +168,22 @@ namespace _360Accounting.Web.Controllers
                     vendorSites.Any() ? Convert.ToInt64(vendorSites.First().Value) : 0, SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
                 List<SelectListItem> invoiceTypes = InvoiceTypeHelper.GetInvoiceTypes(SessionHelper.SOBId, SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
 
-                model = new PayableInvoiceModel
-                {
-                    CompanyId = AuthenticationHelper.User.CompanyId,
-                    Vendors = vendors,
-                    VendorId = vendors.Any() ?
-                    Convert.ToInt64(vendors.First().Value) : 0,
-                    VendorSites = vendorSites,
-                    VendorSiteId = vendorSites.Any() ?
-                    Convert.ToInt64(vendorSites.First().Value) : 0,
-                    InvoiceDate = SessionHelper.Calendar.StartDate,
-                    InvoiceDetail = new List<PayableInvoiceDetailModel>(),
-                    InvoiceNo = "New",
-                    InvoiceTypes = invoiceTypes,
-                    InvoiceTypeId = invoiceTypes.Any() ?
-                    Convert.ToInt64(invoiceTypes.First().Value) : 0,
-                    PeriodId = periodId,
-                    SOBId = sobId,
-                    WHTaxes = whTaxes,
-                    WHTaxId = whTaxes.Any() ?
-                    Convert.ToInt64(invoiceTypes.First().Value) : 0
-                };
+                model = new PayableInvoiceModel();
+                model.CompanyId = AuthenticationHelper.User.CompanyId;
+                model.Vendors = vendors.Any() ? vendors : new List<SelectListItem>();
+                model.VendorId = vendors.Any() ? Convert.ToInt64(vendors.First().Value) : 0;
+                model.VendorSites = vendorSites.Any() ? vendorSites : new List<SelectListItem>();
+                model.VendorSiteId = vendorSites.Any() ? Convert.ToInt64(vendorSites.First().Value) : 0;
+                model.InvoiceDate = SessionHelper.Calendar.StartDate;
+                model.InvoiceDetail = new List<PayableInvoiceDetailModel>();
+                model.InvoiceNo = "New";
+                model.InvoiceTypes = invoiceTypes.Any() ? invoiceTypes : new List<SelectListItem>();
+                model.InvoiceTypeId = invoiceTypes.Any() ? Convert.ToInt64(invoiceTypes.First().Value) : 0;
+                model.PeriodId = periodId;
+                model.SOBId = sobId;
+                model.WHTaxes = whTaxes.Any() ? whTaxes : new List<SelectListItem>();
+                model.WHTaxId = whTaxes.Any() ? Convert.ToInt64(whTaxes.First().Value) : 0;
+                
                 SessionHelper.PayableInvoice = model;
             }
             return View("Edit", model);

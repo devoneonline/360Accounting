@@ -18,15 +18,44 @@ namespace _360Accounting.Web
             service = IoC.Resolve<IInvoiceSourceService>("InvoiceSourceService");
         }
 
+        private static InvoiceSource getEntityByModel(InvoiceSourceViewModel model)
+        {
+            if (model == null) return null;
+            InvoiceSource entity = new InvoiceSource();
+
+            entity.CodeCombinationId = model.CodeCombinationId;
+            entity.StartDate = model.StartDate;
+            entity.EndDate = model.EndDate;
+            entity.Description = model.Description;
+            entity.Id = model.Id;
+            entity.SOBId = model.SOBId;
+            if (model.Id == 0)
+            {
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+            else
+            {
+                entity.CompanyId = model.CompanyId;
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+            }
+            entity.UpdateDate = DateTime.Now;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+
+            return entity;
+        }
+
         public static string SaveInvoiceSource(InvoiceSourceViewModel model)
     {
             if (model.Id > 0)
             {
-                return service.Update(Mappers.GetEntityByModel(model));
+                return service.Update(getEntityByModel(model));
             }
             else
             {
-                return service.Insert(Mappers.GetEntityByModel(model));
+                return service.Insert(getEntityByModel(model));
             }
         }
 

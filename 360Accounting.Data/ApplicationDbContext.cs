@@ -20,6 +20,10 @@ namespace _360Accounting.Data
 
         #region DbSets
 
+        public DbSet<LocatorWarehouse> LocatorWarehouses { get; set; }
+
+        public DbSet<Locator> Locators { get; set; }
+
         public DbSet<Warehouse> Warehouses { get; set; }
 
         public DbSet<InventoryPeriod> InventoryPeriods { get; set; }
@@ -74,17 +78,11 @@ namespace _360Accounting.Data
 
         public DbSet<Calendar> Calendars { get; set; }
 
-        //public DbSet<JournalVoucher> JournalVouchers { get; set; }
-
-        //public DbSet<JournalVoucherDetail> JournalVoucherDetails { get; set; }
-
         public DbSet<aspnet_User> Users { get; set; }
 
         public DbSet<GLHeader> GLHeaders { get; set; }
 
         public DbSet<GLLines> GLLines { get; set; }
-
-        //public DbSet<TaxDum> Taxes { get; set; }
 
         public DbSet<Bank> Banks { get; set; }
 
@@ -109,6 +107,12 @@ namespace _360Accounting.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ////base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Locator>().ToTable("tbLocator");
+            modelBuilder.Entity<Locator>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<LocatorWarehouse>().ToTable("tbLocatorWarehouse");
+            modelBuilder.Entity<LocatorWarehouse>().HasKey(t => t.Id);
 
             modelBuilder.Entity<Warehouse>().ToTable("tbWarehouse");
             modelBuilder.Entity<Warehouse>().HasKey(t => t.Id);

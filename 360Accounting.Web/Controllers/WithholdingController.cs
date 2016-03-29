@@ -34,7 +34,7 @@ namespace _360Accounting.Web.Controllers
                 model.CodeCombinition = CodeCombinationHelper.GetCodeCombinations(model.SOBId, AuthenticationHelper.User.CompanyId)
                     .Select(x => new SelectListItem
                     {
-                        Text = x.Id.ToString(),
+                        Text = Utility.Stringize(".", x.Segment1, x.Segment2, x.Segment3, x.Segment4, x.Segment5, x.Segment6, x.Segment7, x.Segment8),
                         Value = x.Id.ToString()
                     }).ToList();
             }

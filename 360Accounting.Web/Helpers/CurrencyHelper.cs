@@ -1,4 +1,5 @@
 ﻿using _360Accounting.Core;
+using _360Accounting.Core.Entities;
 using _360Accounting.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -16,15 +17,44 @@ namespace _360Accounting.Web
             service = IoC.Resolve<ICurrencyService>("CurrencyService");
         }
 
+        private static Currency getEntityByModel(CurrencyViewModel model)
+        {
+            if (model == null) return null;
+
+            Currency entity = new Currency();
+
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+                entity.CompanyId = model.CompanyId;
+            }
+
+            entity.CurrencyCode = model.CurrencyCode;
+            entity.Id = model.Id;
+            entity.Name = model.Name;
+            entity.Precision = model.Precision;
+            entity.SOBId = model.SOBId;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
+
         public static string SaveCurrency(CurrencyViewModel model)
         {
             if (model.Id > 0)
             {
-                return service.Update(Mappers.GetEntityByModel(model));
+                return service.Update(getEntityByModel(model));
             }
             else
             {
-                return service.Insert(Mappers.GetEntityByModel(model));
+                return service.Insert(getEntityByModel(model));
             }
         }
 

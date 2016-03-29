@@ -21,15 +21,9 @@ namespace _360Accounting.Web.Models
         public string Description { get; set; }
 
         public long SOBId { get; set; }
-
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Date From")]
+        
         public DateTime DateFrom { get; set; }
 
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Date To")]
         public DateTime DateTo { get; set; }
 
         public InvoiceTypeModel()

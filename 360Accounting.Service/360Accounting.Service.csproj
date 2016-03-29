@@ -58,6 +58,7 @@
     </Compile>
     <Compile Include="Services\InventoryPeriodService.cs" />
     <Compile Include="Services\ItemService.cs" />
+    <Compile Include="Services\LocatorService.cs" />
     <Compile Include="Services\PayableInvoiceDetailService.cs" />
     <Compile Include="Services\PayableInvoiceService.cs" />
     <Compile Include="Services\InvoiceDetailService.cs" />

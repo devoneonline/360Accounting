@@ -18,6 +18,40 @@ namespace _360Accounting.Web
             service = IoC.Resolve<ICalendarService>("CalendarService");
         }
 
+        private static Calendar getEntityByModel(CalendarViewModel model)
+        {
+            if (model == null) return null;
+
+            Calendar entity = new Calendar();
+
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+                entity.CompanyId = model.CompanyId;
+            }
+
+            entity.Adjusting = model.Adjusting;
+            entity.ClosingStatus = model.ClosingStatus;
+            entity.EndDate = model.EndDate;
+            entity.Id = model.Id;
+            entity.PeriodName = model.PeriodName;
+            entity.PeriodQuarter = model.PeriodQuarter;
+            entity.PeriodYear = model.PeriodYear;
+            entity.SeqNumber = model.SeqNumber;
+            entity.SOBId = model.SOBId;
+            entity.StartDate = model.StartDate;
+            entity.UpdateDate = DateTime.Now;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            return entity;
+        }
+
         public static CalendarViewModel GetPreviousCalendar(long sobId, int periodYear)
         {
             Calendar calendar = service.GetLastCalendarByYear(AuthenticationHelper.User.CompanyId, sobId, periodYear);
@@ -38,11 +72,11 @@ namespace _360Accounting.Web
         {
             if (model.Id > 0)
             {
-                return service.Update(Mappers.GetEntityByModel(model));
+                return service.Update(getEntityByModel(model));
             }
             else
             {
-                return service.Insert(Mappers.GetEntityByModel(model));
+                return service.Insert(getEntityByModel(model));
             }
         }
 
@@ -50,12 +84,6 @@ namespace _360Accounting.Web
         {
             service.Delete(id, AuthenticationHelper.User.CompanyId);
         }
-
-        //public static List<CalendarViewModel> GetCalendars(CalendarListModel model)
-        //{
-        //    return service.GetAll(AuthenticationHelper.User.CompanyId, model.SOBId != 0 ? model.SOBId : Convert.ToInt64(model.SetOfBooks.First().Value), model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
-        //        .Select(x => new CalendarViewModel(x)).ToList();
-        //}
 
         public static List<CalendarViewModel> GetCalendars(long sobId)
         {

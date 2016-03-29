@@ -481,7 +481,7 @@ namespace _360Accounting.Web.Controllers
                     }
                     if (SessionHelper.JV != null)
                     {
-                        model.Id = SessionHelper.JV.GlLines.Count() + 1;
+                        model.Id = SessionHelper.JV.GlLines.Last().Id + 1;
                         if (SessionHelper.JV.GlLines.Any(rec => rec.CodeCombinationId == model.CodeCombinationId))
                             ViewData["EditError"] = "Duplicate accounts can not be added.";
                         else

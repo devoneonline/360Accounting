@@ -21,6 +21,70 @@ namespace _360Accounting.Web
         }
 
         #region Private Methods
+        private static PayableInvoiceDetail getEntityByModel(PayableInvoiceDetailModel model, int count)
+        {
+            if (model == null)
+                return null;
+
+            PayableInvoiceDetail entity = new PayableInvoiceDetail();
+            if (count == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+            }
+
+            entity.Amount = model.Amount;
+            entity.CodeCombinationId = model.CodeCombinationId;
+            entity.Description = model.Description;
+            entity.Id = model.Id;
+            entity.InvoiceId = model.InvoiceId;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+
+            return entity;
+        }
+
+        private static PayableInvoice getEntityByModel(PayableInvoiceModel model)
+        {
+            if (model == null)
+                return null;
+
+            PayableInvoice entity = new PayableInvoice();
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+                entity.CompanyId = model.CompanyId;
+            }
+
+            entity.Amount = model.Amount;
+            entity.Id = model.Id;
+            entity.InvoiceDate = model.InvoiceDate;
+            entity.InvoiceNo = model.InvoiceNo;
+            entity.InvoiceTypeId = model.InvoiceTypeId;
+            entity.PeriodId = model.PeriodId;
+            entity.Remarks = model.Remarks;
+            entity.SOBId = model.SOBId;
+            entity.Status = model.Status;
+            entity.UpdateBy = model.UpdateBy;
+            entity.UpdateDate = model.UpdateDate;
+            entity.VendorId = model.VendorId;
+            entity.VendorSiteId = model.VendorSiteId;
+            entity.WHTaxId = model.WHTaxId;
+            return entity;
+        }
+
         private static IList<PayableInvoiceDetailModel> getInvoiceDetailByInvoiceId(string invoiceId)
         {
             IList<PayableInvoiceDetailModel> modelList = detailService
@@ -97,7 +161,7 @@ namespace _360Accounting.Web
 
         public static void Update(PayableInvoiceModel payableInvoiceModel)
         {
-            PayableInvoice entity = Mappers.GetEntityByModel(payableInvoiceModel);
+            PayableInvoice entity = getEntityByModel(payableInvoiceModel);
 
             string result = string.Empty;
             if (entity.IsValid())
@@ -122,7 +186,7 @@ namespace _360Accounting.Web
 
                     foreach (var detail in payableInvoiceModel.InvoiceDetail)
                     {
-                        PayableInvoiceDetail detailEntity = Mappers.GetEntityByModel(detail, savedDetail.Count());
+                        PayableInvoiceDetail detailEntity = getEntityByModel(detail, savedDetail.Count());
                         if (detailEntity.IsValid())
                         {
                             detailEntity.InvoiceId = Convert.ToInt64(result);

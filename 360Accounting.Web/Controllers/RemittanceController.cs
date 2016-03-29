@@ -115,7 +115,7 @@ namespace _360Accounting.Web.Controllers
                     bool validated = false;
                     if (SessionHelper.Remittance != null)
                     {
-                        model.Id = SessionHelper.Remittance.Remittances.Count() + 1;
+                        model.Id = SessionHelper.Remittance.Remittances.Last().Id + 1;
                         validated = true;
                     }
                     else
@@ -155,9 +155,10 @@ namespace _360Accounting.Web.Controllers
                     result = false;
             }
 
-            if (SessionHelper.Receipt != null)
+            if (SessionHelper.Receipts != null)
             {
-                if (date != SessionHelper.Receipt.ReceiptDate)
+                if (date != SessionHelper.Receipts.ReceiptDate)
+
                     result = false;
             }
 
@@ -176,9 +177,6 @@ namespace _360Accounting.Web.Controllers
             
             if (model == null)
             {
-                //IEnumerable<SelectListItem> Receipts = ReceiptHelper
-                //    .GetReceiptList(bankId, bankAccountId);
-
                 model = new RemittanceModel
                 {
                     BankAccountId = bankAccountId,
@@ -217,6 +215,7 @@ namespace _360Accounting.Web.Controllers
         {
             try
             {
+                SessionHelper.Remittance = null;
                 if (model.SetOfBooks == null)
                 {
                     model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()

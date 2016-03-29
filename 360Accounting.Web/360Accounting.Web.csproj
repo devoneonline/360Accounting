@@ -186,6 +186,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Common\AuthenticationHelper.cs" />
     <Compile Include="Controllers\InventoryPeriodController.cs" />
+    <Compile Include="Controllers\ItemController.cs" />
+    <Compile Include="Controllers\WarehouseController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\PayableInvoiceController.cs" />
     <Compile Include="Controllers\PayablePeriodController.cs" />
@@ -204,6 +206,8 @@
     <Compile Include="Helpers\BankHelper.cs" />
     <Compile Include="Helpers\InventoryPeriodHelper.cs" />
     <Compile Include="Helpers\ItemHelper.cs" />
+    <Compile Include="Helpers\LocatorHelper.cs" />
+    <Compile Include="Helpers\WarehouseHelper.cs" />
     <Compile Include="Helpers\PaymentHelper.cs" />
     <Compile Include="Helpers\PayableInvoiceHelper.cs" />
     <Compile Include="Helpers\PayablePeriodHelper.cs" />
@@ -227,7 +231,6 @@
     <Compile Include="Controllers\CustomerSiteController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\JournalVoucherController.cs" />
     <Compile Include="Controllers\JVController.cs" />
     <Compile Include="Controllers\SetOfBookController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -254,7 +257,10 @@
     <Compile Include="Models\InventoryPeriodModel.cs" />
     <Compile Include="Models\InvoiceModel.cs" />
     <Compile Include="Models\ItemModel.cs" />
+    <Compile Include="Models\LocatorModel.cs" />
     <Compile Include="Models\PayableInvoiceModel.cs" />
+    <Compile Include="Models\WarehouseListModel.cs" />
+    <Compile Include="Models\WarehouseModel.cs" />
     <Compile Include="Models\PaymentHeaderListModel.cs" />
     <Compile Include="Models\PaymentViewModel.cs" />
     <Compile Include="Models\PayablePeriodModel.cs" />
@@ -579,13 +585,18 @@
     <Content Include="Views\Remittance\Index.cshtml" />
     <Content Include="Views\Remittance\_List.cshtml" />
     <Content Include="Views\Remittance\Edit.cshtml" />
-    <Content Include="Views\Remittance\_DetailOld.cshtml" />
     <Content Include="Views\PayableInvoice\Index.cshtml" />
     <Content Include="Views\PayableInvoice\_List.cshtml" />
     <Content Include="Views\PayableInvoice\Edit.cshtml" />
     <Content Include="Views\Shared\_LookupAccountCode.cshtml" />
     <Content Include="Views\PayableInvoice\_Detail.cshtml" />
     <Content Include="Views\Remittance\_Detail.cshtml" />
+    <Content Include="Views\Warehouse\_List.cshtml" />
+    <Content Include="Views\Warehouse\Index.cshtml" />
+    <Content Include="Views\Item\_List.cshtml" />
+    <Content Include="Views\Item\Create.cshtml" />
+    <Content Include="Views\Item\createPartial.cshtml" />
+    <Content Include="Views\Item\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

@@ -1,4 +1,5 @@
 ﻿using _360Accounting.Core;
+using _360Accounting.Core.Entities;
 using _360Accounting.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,36 @@ namespace _360Accounting.Web
             service = IoC.Resolve<IInvoiceTypeService>("InvoiceTypeService");
         }
 
+        private static InvoiceType getEntityByModel(InvoiceTypeModel model)
+        {
+            if (model == null) return null;
+
+            InvoiceType entity = new InvoiceType();
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+                entity.CompanyId = model.CompanyId;
+            }
+
+            entity.Meaning = model.Meaning;
+            entity.SOBId = model.SOBId;
+            entity.Invoicetype = model.InvoiceType;
+            entity.Id = model.Id;
+            entity.Description = model.Description;
+            entity.DateTo = model.DateTo;
+            entity.DateFrom = model.DateFrom;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
+
         public static List<SelectListItem> GetInvoiceTypes(long sobId, DateTime startDate, DateTime endDate)
         {
             List<SelectListItem> list = service.GetAll(AuthenticationHelper.CompanyId.Value, sobId, startDate, endDate)
@@ -32,11 +63,11 @@ namespace _360Accounting.Web
         {
             if (model.Id > 0)
             {
-                return service.Update(Mappers.GetEntityByModel(model));
+                return service.Update(getEntityByModel(model));
             }
             else
             {
-                return service.Insert(Mappers.GetEntityByModel(model));
+                return service.Insert(getEntityByModel(model));
             }
         }
 

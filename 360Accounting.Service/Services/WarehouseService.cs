@@ -35,12 +35,18 @@ namespace _360Accounting.Service
 
         public string Insert(Warehouse entity)
         {
-            return this.repository.Insert(entity);
+            if (entity.IsValid())
+                return this.repository.Insert(entity);
+            else
+                return "Entity is not in a valid state";
         }
 
         public string Update(Warehouse entity)
         {
-            return this.repository.Update(entity);
+            if (entity.IsValid())
+                return this.repository.Update(entity);
+            else
+                return "Entity is not in a valid state";
         }
 
         public void Delete(string id, long companyId)
