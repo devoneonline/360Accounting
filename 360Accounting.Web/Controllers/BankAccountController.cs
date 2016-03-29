@@ -14,30 +14,12 @@ namespace _360Accounting.Web.Controllers
     public class BankAccountController : Controller
     {
         private IBankService bankService;
-        private IBankAccountService service;
+        //private IBankAccountService service;
         private ICodeCombinitionService codeCombinitionService;
-
-        #region Private Methods
-        private BankAccount mapModel(BankAccountViewModel model)
-        {
-            return new BankAccount
-            {
-                AccountName = model.AccountName,
-                AdditionalInformation = model.AdditionalInformation,
-                BankId = model.BankId,
-                Cash_CCID = model.Cash_CCID,
-                Confirm_CCID = model.Confirm_CCID,
-                EndDate = model.EndDate,
-                Id = model.Id,
-                RemitCash_CCID = model.RemitCash_CCID,
-                StartDate = model.StartDate
-            };
-        }
-        #endregion
 
         public BankAccountController()
         {
-            service = IoC.Resolve<IBankAccountService>("BankAccountService");
+            //service = IoC.Resolve<IBankAccountService>("BankAccountService");
             bankService = IoC.Resolve<IBankService>("BankService");
             codeCombinitionService = IoC.Resolve<ICodeCombinitionService>("CodeCombinitionService");
         }
@@ -56,10 +38,7 @@ namespace _360Accounting.Web.Controllers
             if (ModelState.IsValid)
             {
                 string result = "";
-                if (model.Id > 0)
-                    result = service.Update(mapModel(model));
-                else
-                    result = service.Insert(mapModel(model));
+                result = BankHelper.SaveBankAccount(model);
                 return RedirectToAction("Index");
             }
             return View(model);
@@ -67,7 +46,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Edit(string id)
         {
-            BankAccountViewModel model = new BankAccountViewModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            BankAccountViewModel model = BankHelper.GetBankAccount(id);
             if (model.CodeCombinition == null)
             {
                 BankModel bank = BankHelper.GetBank(model.BankId.ToString());
@@ -78,16 +57,13 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id, long bankId)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            BankHelper.DeleteBankAccount(id);
             return RedirectToAction("Index", new { Id = bankId });
         }
 
-        public ActionResult BankAccountListPartial(long bankId)
+        public ActionResult BankAccountListPartial(string bankId)
         {
-            IEnumerable<BankAccountViewModel> list = service
-                .GetBankAccounts(bankId, AuthenticationHelper.User.CompanyId)
-                .Select(a => new BankAccountViewModel(a)).ToList();
-            return PartialView("_List", list);
+            return PartialView("_List", BankHelper.GetBankAccounts(bankId));
         }
 
         [HttpPost]
@@ -103,11 +79,9 @@ namespace _360Accounting.Web.Controllers
 
                 if (validated)
                 {
-                    if (model.Id > 0)
-                        result = service.Update(mapModel(model));
-                    else
-                        result = service.Insert(mapModel(model));
+                    result = BankHelper.SaveBankAccount(model);
                 }
+
                 return RedirectToAction("Index", new { Id = model.BankId });
             }
             return View(model);

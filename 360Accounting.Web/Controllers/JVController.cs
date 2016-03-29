@@ -395,6 +395,10 @@ namespace _360Accounting.Web.Controllers
                     }).ToList();
                 model.PeriodId = model.Periods.Any() ? Convert.ToInt32(model.Periods.First().Value) : 0;
             }
+            else
+            {
+                model.Periods = new List<SelectListItem>();
+            }
 
             if (model.Currencies == null && model.SetOfBooks.Any())
             {
@@ -404,9 +408,13 @@ namespace _360Accounting.Web.Controllers
                         Text = x.Name,
                         Value = x.Id.ToString()
                     }).ToList();
-                model.CurrencyId = model.Currencies.Any() ? Convert.ToInt32(model.Currencies.First().Value) : 0;
-                
+                model.CurrencyId = model.Currencies.Any() ? Convert.ToInt32(model.Currencies.First().Value) : 0;                
             }
+            else
+            {
+                model.Currencies = new List<SelectListItem>();
+            }
+
             return View(model);
         }
 

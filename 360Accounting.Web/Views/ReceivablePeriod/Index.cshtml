@@ -1,10 +1,10 @@
 ﻿@Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView })
 @Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
 
-@model _360Accounting.Web.Models.PayablePeriodListModel
+@model _360Accounting.Web.Models.ReceivablePeriodListModel
 
 @{
-    ViewBag.Title = "Payable Periods";
+    ViewBag.Title = "Receivable Periods";
 }
 
 <div class="container">
@@ -34,7 +34,7 @@
         $('#SOBId').change(function () {
             $('#dvList').html("Please wait..");
             $.ajax({
-                url: '@Url.Content("~/PayablePeriod/GetPayablePeriods")',
+                url: '@Url.Content("~/ReceivablePeriod/GetReceivablePeriods")',
                 data: {
                     sobId: $('#SOBId').val()
                 },

@@ -70,6 +70,7 @@
     <Compile Include="Repositories\InvoiceRepository.cs" />
     <Compile Include="Repositories\PayablePeriodRepository.cs" />
     <Compile Include="Repositories\PaymentRepository.cs" />
+    <Compile Include="Repositories\ReceivablePeriodRepository.cs" />
     <Compile Include="Repositories\WarehouseRepository.cs" />
     <Compile Include="Repositories\WithholdingRepository.cs" />
     <Compile Include="Repositories\InvoiceTypeRepository.cs" />

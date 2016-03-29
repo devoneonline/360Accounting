@@ -16,7 +16,7 @@
     </div>
 
     <div class="col-lg-6">
-        <div class="form-group">
+        <div class="form-group customDropDownWrapper">
             @Html.LabelFor(m => m.SetOfBooks)
             @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control" })
         </div>
@@ -34,6 +34,8 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $.noConflict();
+
         $('#btnCreate').click(function () {
             var url = '@Url.Content("~/InvoiceSource/Create?sobId=")' +
                 $('#SOBId').val();

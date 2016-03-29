@@ -57,6 +57,7 @@
     <Compile Include="Entities\PaymentView.cs" />
     <Compile Include="Entities\Payment.cs" />
     <Compile Include="Entities\PayablePeriod.cs" />
+    <Compile Include="Entities\ReceivablePeriod.cs" />
     <Compile Include="Entities\Warehouse.cs" />
     <Compile Include="Entities\Withholding.cs" />
     <Compile Include="Entities\InvoiceType.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="IRepository\IInvoiceDetailRepository.cs" />
     <Compile Include="IRepository\IPayablePeriodRepository.cs" />
     <Compile Include="IRepository\IPaymentRepository.cs" />
+    <Compile Include="IRepository\IReceivablePeriodRepository.cs" />
     <Compile Include="IRepository\IWarehouseRepository.cs" />
     <Compile Include="IRepository\IWithholdingRepository.cs" />
     <Compile Include="IRepository\IInvoiceTypeRepository.cs" />
@@ -145,6 +147,7 @@
     <Compile Include="IService\IInvoiceService.cs" />
     <Compile Include="IService\IPayablePeriodService.cs" />
     <Compile Include="IService\IPaymentService.cs" />
+    <Compile Include="IService\IReceivablePeriodService.cs" />
     <Compile Include="IService\IWarehouseService.cs" />
     <Compile Include="IService\IWithholdingService.cs" />
     <Compile Include="IService\IInvoiceTypeService.cs" />

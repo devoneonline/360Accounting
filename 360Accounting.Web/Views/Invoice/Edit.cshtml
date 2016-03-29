@@ -39,9 +39,21 @@
                 </div>
             </div>
             <div class="col-lg-2">
-                <div class="form-group">
+                <div class="form-group customDropDownWrapper">
                     @Html.LabelFor(model => model.InvoiceType)
                     @Html.DropDownListFor(model => model.InvoiceType, Model.InvoiceTypes, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group customDropDownWrapper">
+                    @Html.LabelFor(model => model.CustomerId)
+                    @Html.DropDownListFor(model => model.CustomerId, Model.Customers, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group customDropDownWrapper">
+                    @Html.LabelFor(model => model.CustomerSiteId)
+                    @Html.DropDownListFor(model => model.CustomerSiteId, Model.CustomerSites, new { @class = "form-control" })
                 </div>
             </div>
         </div>
@@ -58,30 +70,13 @@
                     @Html.TextBoxFor(model => model.ConversionRate, new { @class = "form-control" })
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-8">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Remarks)
                     @Html.TextBoxFor(model => model.Remarks, new { @class = "form-control" })
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.CustomerId)
-                    @Html.DropDownListFor(model => model.CustomerId, Model.Customers, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.CustomerSiteId)
-                    @Html.DropDownListFor(model => model.CustomerSiteId, Model.CustomerSites, new { @class = "form-control" })
-                </div>
-            </div>
-        </div>
-
         <div class="row">
             <div class="col-lg-12">
                 @Html.Partial("_Detail", Model.InvoiceDetail)
@@ -93,8 +88,9 @@
 <script type="text/javascript">
     $(document).ready(function () {
         ////jQuery.ajaxSetup({ async: false });
+        $.noConflict();
         $('#InvoiceDate').attr('class', 'form-control');
-        debugger;
+        
         $('#InvoiceDate').change(function () {
             $.ajax({
                 url: '@Url.Content("~/Invoice/CheckDate")',

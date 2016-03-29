@@ -206,7 +206,7 @@ namespace _360Accounting.Web.Controllers
             InvoiceModel model = SessionHelper.Invoice;
             if (model == null)
             {
-                List<SelectListItem> customers = CustomerHelper.GetCustomers()
+                List<SelectListItem> customers = CustomerHelper.GetCustomers(SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate)
                     .Select(x => new SelectListItem
                     {
                         Text = x.CustomerName,
@@ -226,10 +226,10 @@ namespace _360Accounting.Web.Controllers
                 {
                     CompanyId = AuthenticationHelper.User.CompanyId,
                     CurrencyId = currencyId,
-                    Customers = customers,
+                    Customers = customers.Any() ? customers : new List<SelectListItem>(),
                     CustomerId = customers.Any() ? 
                     Convert.ToInt32(customers.First().Value) : 0,
-                    CustomerSites = customerSites,
+                    CustomerSites = customerSites.Any() ? customerSites : new List<SelectListItem>(),
                     CustomerSiteId = customerSites.Any() ?
                     Convert.ToInt32(customerSites.First().Value) : 0,
                     InvoiceDate = SessionHelper.Calendar.StartDate,
@@ -288,6 +288,10 @@ namespace _360Accounting.Web.Controllers
                 model.PeriodId = model.Periods.Any() ?
                     Convert.ToInt32(model.Periods.First().Value) : 0;
             }
+            else
+            {
+                model.Periods = new List<SelectListItem>();
+            }
 
             if (model.Currencies == null && model.SetOfBooks.Any())
             {
@@ -300,6 +304,11 @@ namespace _360Accounting.Web.Controllers
                 model.CurrencyId = model.Currencies.Any() ?
                     Convert.ToInt32(model.Currencies.First().Value) : 0;
             }
+            else
+            {
+                model.Currencies = new List<SelectListItem>();
+            }
+
             return View(model);
         }
  

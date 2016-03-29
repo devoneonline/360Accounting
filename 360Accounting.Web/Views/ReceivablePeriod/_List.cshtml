@@ -5,22 +5,23 @@
     var grid = Html.DevExpress().GridView(
         settings =>
         {
-            settings.Name = "PayablePeriods";
+            settings.Name = "ReceivablePeriods";
             settings.KeyFieldName = "Id";
-            settings.CallbackRouteValues = new { Controller = "PayablePeriod", Action = "ListPartial" };
+            settings.CallbackRouteValues = new { Controller = "ReceivablePeriod", Action = "ListPartial" };
             //settings.CustomActionRouteValues = new { Controller = "Editing", Action = "ChangeEditModePartial" };
-            settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "PayablePeriod", Action = "AddNewInline" };
-            settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "PayablePeriod", Action = "UpdateInline" };
-            settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "PayablePeriod", Action = "DeleteInline" };
+            settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "ReceivablePeriod", Action = "AddNewInline" };
+            settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "ReceivablePeriod", Action = "UpdateInline" };
+            settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "ReceivablePeriod", Action = "DeleteInline" };
             settings.SettingsEditing.Mode = GridViewEditingMode.Inline;
             settings.SettingsBehavior.ConfirmDelete = true;
-            settings.SettingsPopup.EditForm.Width = 600;
+            settings.SettingsPopup.EditForm.Width = 500;
             settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
 
             settings.CommandColumn.Visible = true;
             settings.CommandColumn.ShowNewButton = true;
             settings.CommandColumn.ShowDeleteButton = true;
             settings.CommandColumn.ShowEditButton = true;
+            settings.CommandColumn.Width = 300;
             
             settings.Columns.Add(column =>
             {

@@ -3,6 +3,7 @@
 <objects xmlns="http://www.springframework.net">
   <description>360Accounting Configuration</description>
 
+  <object name="ReceivablePeriodRepository" type="_360Accounting.Data.Repositories.ReceivablePeriodRepository, 360Accounting.Data"> </object>
   <object name="LocatorRepository" type="_360Accounting.Data.Repositories.LocatorRepository, 360Accounting.Data"> </object>
   <object name="ItemRepository" type="_360Accounting.Data.Repositories.ItemRepository, 360Accounting.Data"> </object>
   <object name="WarehouseRepository" type="_360Accounting.Data.Repositories.WarehouseRepository, 360Accounting.Data"> </object>
@@ -42,6 +43,9 @@
   <object name="PaymentRepository" type="_360Accounting.Data.Repositories.PaymentRepository, 360Accounting.Data"> </object>
 
 
+  <object name="ReceivablePeriodService" type="_360Accounting.Service.ReceivablePeriodService, 360Accounting.Service" >
+    <constructor-arg name="repo" ref="ReceivablePeriodRepository" />
+  </object>
   <object name="LocatorService" type="_360Accounting.Service.LocatorService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="LocatorRepository" />
   </object>
