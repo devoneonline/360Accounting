@@ -13,20 +13,21 @@ namespace _360Accounting.Data.Repositories
     {
         public SetOfBook GetSetOfBook(long companyId, string name)
         {
-            SetOfBook sob = this.GetAll(companyId).FirstOrDefault(x => x.Name == name);
+            SetOfBook sob = this.Context.SetOfBooks.FirstOrDefault(x => x.Name == name && x.CompanyId == companyId);
             return sob;
         }
 
         public List<SetOfBook> GetByCompanyId(long companyId)
         {
-            List<SetOfBook> list = this.Context.SetOfBooks
-                .Where(x => x.CompanyId == companyId).ToList();
+            List<SetOfBook> list = this.Context.SetOfBooks.Where(x => x.CompanyId == companyId).ToList();
             return list;
         }
 
         public SetOfBook GetSingle(string id, long companyId)
         {
-            SetOfBook sob = this.GetAll(companyId).FirstOrDefault(x => x.Id == Convert.ToInt64(id));
+            long longId=Convert.ToInt64(id);
+
+            SetOfBook sob = this.Context.SetOfBooks.FirstOrDefault(x => x.CompanyId == companyId && x.Id == longId);
             return sob;
         }
 
