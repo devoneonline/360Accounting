@@ -61,6 +61,7 @@ namespace _360Accounting.Web.Controllers
 
             model.ItemWarehouses = ItemHelper.GetItemWarehouses(id).ToList();
             model.SOBId = sobId;
+            model.CompanyId = AuthenticationHelper.User.CompanyId;
             SessionHelper.Item = model;
 
             return View("Create", model);
@@ -123,7 +124,7 @@ namespace _360Accounting.Web.Controllers
                     model.SalesCodeCombinationId = model.SalesCodeCombination.Any() ?
                         Convert.ToInt32(model.SalesCodeCombination.First().Value) : 0;
                 }
-
+                model.CompanyId = AuthenticationHelper.User.CompanyId;
                 ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(sobId.ToString()).Name;
 
                 SessionHelper.Item = model;
@@ -147,7 +148,7 @@ namespace _360Accounting.Web.Controllers
                 try
                 {
                     bool validated = false;
-                    
+                    model.SOBId = SessionHelper.SOBId;
                     if (SessionHelper.Item != null)
                     {
                         model.Id = SessionHelper.Item.ItemWarehouses.Count() + 1;
@@ -174,6 +175,7 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.SOBId = SessionHelper.SOBId;
                 try
                 {
                     ItemHelper.UpdateItemDetail(model);

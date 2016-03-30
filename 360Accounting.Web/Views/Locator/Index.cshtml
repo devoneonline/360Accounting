@@ -1,0 +1,72 @@
+﻿@Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
+@model _360Accounting.Web.Models.LocatorListModel
+
+@{
+    ViewBag.Title = "Locator";
+}
+
+<div class="container">
+    <div class="clearfix">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
+        </div>
+    </div>
+
+    <div class="col-lg-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.SOBId)
+            @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control criteria" })
+        </div>
+    </div>
+
+    <div class="col-lg-12">
+        <div class="form-group">
+            <input type="button" id="btnCreate" value="Create New" class="btn btn-default tstyCus-btn" />
+        </div>
+    </div>
+
+    <div id="dvList" class="col-lg-12 cusGridWrapper">
+        @Html.Action("LocatorPartial", Model)
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnCreate').click(function () {
+            var continueCreate = true;
+
+            var inValidInputs = $('#SOBId').filter(function () { return $(this).val() == null; });
+            inValidInputs.each(function (index, item) {
+                $('#' + item.id).css('border', '1px solid #ff6600');
+                continueCreate = false;
+            })
+
+            if (continueCreate) {
+                var url = '@Url.Content("~/Locator/Create?sobId=")' + $('#SOBId').val();
+                window.location.href = url;
+            }
+            else
+                alert('Please select the values.');
+        });
+
+        jQuery.ajaxSetup({ async: false });
+
+        function RefreshGrid() {
+            var url3 = '@Url.Content("~/Locator/LocatorPartial")';
+
+            var model = {
+                SOBId: $('#SOBId').val()
+            };
+
+            $.get(url3, model,
+                function (data) {
+                    $('#dvList').html(data);
+                });
+        }
+        $('#SOBId').change(function () {
+            RefreshGrid();
+        });
+    });
+</script>

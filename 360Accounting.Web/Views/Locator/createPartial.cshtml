@@ -7,11 +7,11 @@
         {
             settings.Name = "GridView";
             settings.KeyFieldName = "Id";
-            settings.CallbackRouteValues = new { Controller = "Item", Action = "CreatePartial" };
+            settings.CallbackRouteValues = new { Controller = "Locator", Action = "CreatePartial" };
             settings.CustomActionRouteValues = new { Controller = "Editing", Action = "ChangeEditModePartial" };
-            settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Item", Action = "AddNewPartial" };
-            settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Item", Action = "UpdatePartial" };
-            settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Item", Action = "DeletePartial" };
+            settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Locator", Action = "AddNewPartial" };
+            settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Locator", Action = "UpdatePartial" };
+            settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Locator", Action = "DeletePartial" };
             settings.SettingsEditing.Mode = GridViewEditingMode.EditForm;
             settings.SettingsBehavior.ConfirmDelete = true;
             settings.SettingsPopup.EditForm.Width = 600;
@@ -67,7 +67,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#btnAddNew').click(function () {
-            window.location.href = '@Url.Content("~/Item/AddNewPartial")';
+            window.location.href = '@Url.Content("~/Locator/AddNewPartial")';
         });
     });
 </script>

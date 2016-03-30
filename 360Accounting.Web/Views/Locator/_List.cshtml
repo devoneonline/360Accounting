@@ -4,11 +4,11 @@
 
 var grid = Html.DevExpress().GridView(settings =>
 {
-    settings.Name = "Item";
+    settings.Name = "Locator";
     settings.Theme = "Office2010Black";
     settings.KeyFieldName = "Id";
 
-    settings.CallbackRouteValues = new { Controller = "Item", Action = "ItemPartial" };
+    settings.CallbackRouteValues = new { Controller = "Locator", Action = "LocatorPartial" };
 
     settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
     settings.SettingsBehavior.ConfirmDelete = true;
@@ -24,9 +24,9 @@ var grid = Html.DevExpress().GridView(settings =>
         column.SetDataItemTemplateContent(c =>
         {
             ViewContext.Writer.Write(
-                Html.Raw("<a href='" + Url.Content("~/Item/Edit?Id=") + DataBinder.Eval(c.DataItem, "Id") + "&sobId=" + DataBinder.Eval(c.DataItem, "SOBId") + "'><i class='fa fa-edit'></i></a>")
+                Html.Raw("<a href='" + Url.Content("~/Locator/Edit?Id=") + DataBinder.Eval(c.DataItem, "Id") + "&sobId=" + DataBinder.Eval(c.DataItem, "SOBId") + "'><i class='fa fa-edit'></i></a>")
                     + "&nbsp;" +
-                Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/Item/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
+                Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/Locator/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
             );
         });
 
@@ -34,12 +34,8 @@ var grid = Html.DevExpress().GridView(settings =>
         column.Settings.AllowSort = DefaultBoolean.False;
         column.Width = 70;
     });
-    settings.Columns.Add("ItemCode", "Item Code");
-    settings.Columns.Add("ItemName", "Item Name");
-    settings.Columns.Add("Description");
     settings.Columns.Add("Status");
-    settings.Columns.Add("DefaultBuyer", "Default Buyer");
-    settings.Columns.Add("ReceiptRouting", "Receipt Routing");
+    settings.Columns.Add("Description");
 });
 if (ViewData["EditError"] != null)
 {
