@@ -76,7 +76,6 @@ namespace _360Accounting.Web.Models
                 this.Address = entity.Address;
                 this.Contact = entity.Contact;
                 this.Name = entity.Name;
-                this.TaxCodeId = entity.TaxCodeId;
                 this.EndDate = entity.EndDate;
                 this.Id = entity.Id;
                 this.StartDate = entity.StartDate;
@@ -114,15 +113,17 @@ namespace _360Accounting.Web.Models
         [StringLength(15, MinimumLength = 1)]
         public string Contact { get; set; }
 
-        [Display(Name = "Tax Code")]
-        public long? TaxCodeId { get; set; }
+        //[Display(Name = "Tax Code")]
+        //public long? TaxCodeId { get; set; }
 
+        [Required]
         [Display(Name = "Code Combination")]
         public long CodeCombinationId { get; set; }
 
-        public string CodeCombinationIdString { get; set; }
+        [Display(Name = "Code Combination")]
+        public string CodeCombinationString { get; set; }
 
-        public List<SelectListItem> TaxCode { get; set; }
+        //public List<SelectListItem> TaxCode { get; set; }
 
         public List<SelectListItem> CodeCombination { get; set; }
 
@@ -137,9 +138,11 @@ namespace _360Accounting.Web.Models
         public DateTime? EndDate { get; set; }
 
         #endregion
+
+        
     }
 
-    public class VendorSiteViewModel: VendorSiteModel
+    public class VendorSiteViewModel : VendorSiteModel
     {
         #region Constructor
 
@@ -157,12 +160,10 @@ namespace _360Accounting.Web.Models
                 this.Address = entity.Address;
                 this.Contact = entity.Contact;
                 this.Name = entity.Name;
-                this.TaxCodeId = entity.TaxCodeId;
                 this.EndDate = entity.EndDate;
                 this.Id = entity.Id;
                 this.StartDate = entity.StartDate;
                 this.CodeCombinationName = Utility.CodeCombination(entity.CodeCombination, ".");
-                this.TaxCodeName = entity.TaxCodeName;
             }
         }
 
@@ -171,7 +172,7 @@ namespace _360Accounting.Web.Models
         #region Properties
 
         public string CodeCombinationName { get; set; }
-        public string TaxCodeName { get; set; }
+        //public string TaxCodeName { get; set; }
 
         #endregion
     }

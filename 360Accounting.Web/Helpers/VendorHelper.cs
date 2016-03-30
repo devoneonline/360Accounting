@@ -155,7 +155,6 @@ namespace _360Accounting.Web
             }
             entity.EndDate = model.EndDate;
             entity.StartDate = model.StartDate;
-            entity.TaxCodeId = model.TaxCodeId;
             entity.UpdateBy = AuthenticationHelper.UserId;
             entity.UpdateDate = DateTime.Now;
             entity.VendorId = model.VendorId;

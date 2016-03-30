@@ -7,8 +7,8 @@
         {
             settings.Name = "PayablePeriods";
             settings.KeyFieldName = "Id";
-            settings.CallbackRouteValues = new { Controller = "PayablePeriod", Action = "CreatePartial" };
-            settings.CustomActionRouteValues = new { Controller = "Editing", Action = "ChangeEditModePartial" };
+            settings.CallbackRouteValues = new { Controller = "PayablePeriod", Action = "ListPartial" };
+            //settings.CustomActionRouteValues = new { Controller = "Editing", Action = "ChangeEditModePartial" };
             settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "PayablePeriod", Action = "AddNewInline" };
             settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "PayablePeriod", Action = "UpdateInline" };
             settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "PayablePeriod", Action = "DeleteInline" };

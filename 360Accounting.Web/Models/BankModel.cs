@@ -39,6 +39,8 @@ namespace _360Accounting.Web.Models
 
         public long CompanyId { get; set; }
 
+        [Required]
+        [StringLength(50, MinimumLength = 5, ErrorMessage = "Bank name should be atleast 5 & maximum 50 characters long.")]
         [Display(Name = "Bank Name")]
         public string BankName { get; set; }
 

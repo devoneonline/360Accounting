@@ -1,53 +1,45 @@
-﻿using _360Accounting.Core;
-using _360Accounting.Core.Entities;
-using _360Accounting.Data.Repositories;
-using _360Accounting.Service;
-using _360Accounting.Web.Models;
-using _360Accounting.Web;
+﻿using _360Accounting.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using DevExpress.Web.Mvc;
 
 namespace _360Accounting.Web.Controllers
 {
-    [Authorize]
-    public class PayablePeriodController : Controller
+    public class ReceivablePeriodController : Controller
     {
-        public ActionResult Index(PayablePeriodListModel model)
+        public ActionResult Index(ReceivablePeriodListModel model)
         {
             if (model.SetOfBooks == null)
             {
                 model.SetOfBooks = SetOfBookHelper.GetSetOfBookList();
-                model.SOBId = model.SetOfBooks.Any() ? Convert.ToInt64(model.SetOfBooks[0].Value) : 0;
             }
-            
+            model.SOBId = model.SOBId > 0 ? model.SOBId : Convert.ToInt64(model.SetOfBooks[0].Value.ToString());
             SessionHelper.SOBId = model.SOBId;
             return View(model);
         }
 
         public ActionResult ListPartial()
         {
-            return PartialView("_List", PayablePeriodHelper.GetPayablePeriods(SessionHelper.SOBId));
+            return PartialView("_List", ReceivablePeriodHelper.GetReceivablePeriods(SessionHelper.SOBId));
         }
 
-        public ActionResult GetPayablePeriods(long sobId)
+        public ActionResult GetReceivablePeriods(long sobId)
         {
             SessionHelper.SOBId = sobId;
-            return PartialView("_List", PayablePeriodHelper.GetPayablePeriods(SessionHelper.SOBId));
+            return PartialView("_List", ReceivablePeriodHelper.GetReceivablePeriods(SessionHelper.SOBId));
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult AddNewInline(PayablePeriodModel model)
+        public ActionResult AddNewInline(ReceivablePeriodModel model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     model.SOBId = SessionHelper.SOBId;
-                    PayablePeriodHelper.Save(model);
+                    ReceivablePeriodHelper.Save(model);
                 }
                 catch (Exception e)
                 {
@@ -56,18 +48,18 @@ namespace _360Accounting.Web.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("_List", PayablePeriodHelper.GetPayablePeriods(SessionHelper.SOBId));
+            return PartialView("_List", ReceivablePeriodHelper.GetReceivablePeriods(SessionHelper.SOBId));
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult UpdateInline(PayablePeriodModel model)
+        public ActionResult UpdateInline(ReceivablePeriodModel model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     model.SOBId = SessionHelper.SOBId;
-                    PayablePeriodHelper.Save(model);
+                    ReceivablePeriodHelper.Save(model);
                 }
                 catch (Exception e)
                 {
@@ -76,17 +68,17 @@ namespace _360Accounting.Web.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("_List", PayablePeriodHelper.GetPayablePeriods(SessionHelper.SOBId));
+            return PartialView("_List", ReceivablePeriodHelper.GetReceivablePeriods(SessionHelper.SOBId));
         }
 
-        public ActionResult DeleteInline(PayablePeriodModel model)
+        public ActionResult DeleteInline(ReceivablePeriodModel model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    PayablePeriodHelper.Delete(model.Id.ToString());
-                    return PartialView("_List", PayablePeriodHelper.GetPayablePeriods(SessionHelper.SOBId));
+                    ReceivablePeriodHelper.Delete(model.Id.ToString());
+                    return PartialView("_List", ReceivablePeriodHelper.GetReceivablePeriods(SessionHelper.SOBId));
                 }
                 catch (Exception e)
                 {
@@ -95,7 +87,7 @@ namespace _360Accounting.Web.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("_List", PayablePeriodHelper.GetPayablePeriods(SessionHelper.SOBId));
+            return PartialView("_List", ReceivablePeriodHelper.GetReceivablePeriods(SessionHelper.SOBId));
         }
     }
 }

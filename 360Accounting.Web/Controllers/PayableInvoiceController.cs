@@ -276,6 +276,10 @@ namespace _360Accounting.Web.Controllers
                     model.PeriodId = model.Periods.Any() ?
                         Convert.ToInt32(model.Periods.First().Value) : 0;
                 }
+                else if (model.Periods == null)
+                {
+                    model.Periods = new List<SelectListItem>();
+                }   
 
                 return View(model);
             }

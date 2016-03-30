@@ -65,7 +65,7 @@ namespace _360Accounting.Web
         {
             //logic editted by uzair, previous one was incorrect.
             //plz check this one also.
-            return service.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", false, null, "", "")
+            List<SelectListItem> list = service.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", false, null, "", "")
                 .Where(a => a.StartDate <= startDate && a.EndDate >= endDate)
                 .Select(x => new SelectListItem
                 {
@@ -73,6 +73,11 @@ namespace _360Accounting.Web
                     Value = x.Id.ToString()
                 }).ToList();
 
+            if (list.Count > 0)
+                return list;
+            else
+                return new List<SelectListItem>();
+            
             //if (SessionHelper.Calendar != null)
             //{
             //    return service.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", false, null, "", "")

@@ -45,6 +45,7 @@ namespace _360Accounting.Web.Models
         
         public long CompanyId { get; set; }
 
+        [Required]
         [Display(Name = "Source Name")]
         [StringLength(50, MinimumLength = 1)]
         public string Description { get; set; }

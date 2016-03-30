@@ -10,14 +10,11 @@ namespace _360Accounting.Web.Controllers
 {
     public class VendorController : Controller
     {
-
         private ICodeCombinitionService codeCombinationService;
-        private ITaxService taxService;
-
+        
         public VendorController()
         {
             codeCombinationService = IoC.Resolve<ICodeCombinitionService>("CodeCombinitionService");
-            taxService = IoC.Resolve<ITaxService>("TaxService");
         }
 
         public ActionResult Index()
@@ -94,12 +91,12 @@ namespace _360Accounting.Web.Controllers
                         Text = x.CodeCombinitionCode,
                         Value = x.Id.ToString()
                     }).ToList();
-            model.TaxCode = taxService.GetAll(AuthenticationHelper.User.CompanyId)
-                .Select(x => new SelectListItem
-                {
-                    Text = x.TaxName,
-                    Value = x.Id.ToString()
-                }).ToList();
+            //model.TaxCode = taxService.GetAll(AuthenticationHelper.User.CompanyId)
+            //    .Select(x => new SelectListItem
+            //    {
+            //        Text = x.TaxName,
+            //        Value = x.Id.ToString()
+            //    }).ToList();
             return View(model);
         }
 
@@ -123,12 +120,12 @@ namespace _360Accounting.Web.Controllers
                         Text = x.CodeCombinitionCode,
                         Value = x.Id.ToString()
                     }).ToList();
-            model.TaxCode = taxService.GetAll(AuthenticationHelper.User.CompanyId)
-                .Select(x => new SelectListItem
-                {
-                    Text = x.TaxName,
-                    Value = x.Id.ToString()
-                }).ToList();
+            //model.TaxCode = taxService.GetAll(AuthenticationHelper.User.CompanyId)
+            //    .Select(x => new SelectListItem
+            //    {
+            //        Text = x.TaxName,
+            //        Value = x.Id.ToString()
+            //    }).ToList();
 
             return View(model);
         }

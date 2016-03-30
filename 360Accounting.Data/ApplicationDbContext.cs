@@ -20,6 +20,8 @@ namespace _360Accounting.Data
 
         #region DbSets
 
+        public DbSet<ReceivablePeriod> ReceivablePeriods { get; set; }
+
         public DbSet<LocatorWarehouse> LocatorWarehouses { get; set; }
 
         public DbSet<Locator> Locators { get; set; }
@@ -107,6 +109,9 @@ namespace _360Accounting.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ////base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ReceivablePeriod>().ToTable("tbReceivablePeriod");
+            modelBuilder.Entity<ReceivablePeriod>().HasKey(t => t.Id);
 
             modelBuilder.Entity<Locator>().ToTable("tbLocator");
             modelBuilder.Entity<Locator>().HasKey(t => t.Id);

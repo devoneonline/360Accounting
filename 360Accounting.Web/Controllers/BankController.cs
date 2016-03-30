@@ -13,44 +13,12 @@ namespace _360Accounting.Web.Controllers
     [Authorize]
     public class BankController : Controller
     {
-        private IBankService service;
-        private ISetOfBookService sobService;
-
-        #region Private Methods
-        private Bank mapModel(BankModel model)
-        {
-            return new Bank
-            {
-                Remarks = model.Remarks,
-                SOBId = model.SOBId,
-                CreateDate = DateTime.Now,
-                BankName = model.BankName,
-                EndDate = model.EndDate,
-                Id = model.Id,
-                StartDate = model.StartDate,
-                UpdateDate = DateTime.Now
-            };
-        }
-        #endregion
-
-        public BankController()
-        {
-            service = IoC.Resolve<IBankService>("BankService");
-            sobService = IoC.Resolve<ISetOfBookService>("SetOfBookService");
-        }
-
         public ActionResult Index()
         {
             BankListModel model = new BankListModel();
             if (model.SetOfBooks == null)
             {
-                model.SetOfBooks = sobService
-                    .GetByCompanyId(AuthenticationHelper.User.CompanyId)
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.Name,
-                        Value = x.Id.ToString()
-                    }).ToList();
+                model.SetOfBooks = SetOfBookHelper.GetSetOfBookList();
             }
 
             model.SOBId = Convert.ToInt64(model.SetOfBooks.FirstOrDefault().Value);
@@ -62,7 +30,7 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                string result = service.Update(mapModel(model));
+                string result = BankHelper.SaveBank(model);
                 return RedirectToAction("Index");
             }
             return View(model);
@@ -70,21 +38,18 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Edit(string id)
         {
-            BankModel model = new BankModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
-            return View("Create", model);
+            return View("Create", BankHelper.GetBank(id));
         }
 
         public ActionResult Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            BankHelper.Delete(id);
             return RedirectToAction("Index");
         }
 
         public ActionResult BankListPartial(long sobId)
         {
-            IEnumerable<BankModel> list = service
-                .GetBySOBId(sobId)
-                .Select(a => new BankModel(a)).ToList();
+            IEnumerable<BankModel> list = BankHelper.GetBanks(sobId);
             return PartialView("_List", list);
         }
 
@@ -94,11 +59,7 @@ namespace _360Accounting.Web.Controllers
             if (ModelState.IsValid)
             {
                 string result = "";
-                if (model.Id > 0)
-                    result = service.Update(mapModel(model));
-                else
-                    result = service.Insert(mapModel(model));
-
+                result = BankHelper.SaveBank(model);
                 return RedirectToAction("Index");
             }
             return View(model);

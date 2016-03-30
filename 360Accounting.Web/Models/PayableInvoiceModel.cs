@@ -26,9 +26,15 @@ namespace _360Accounting.Web.Models
         public long CompanyId { get; set; }
         public long Id { get; set; }
         public long SOBId { get; set; }
+
+        [Required]
         public long VendorId { get; set; }
+
+        [Required]
         public long VendorSiteId { get; set; }
         public long PeriodId { get; set; }
+
+        [Required]
         public long InvoiceTypeId { get; set; }
 
         [Display(Name = "With Holding Tax")]
@@ -43,12 +49,14 @@ namespace _360Accounting.Web.Models
         [Display(Name = "Invoice Type")]
         public List<SelectListItem> InvoiceTypes { get; set; }
 
+        [Required]
         [Display(Name = "WH Tax")]
         public long? WHTaxId { get; set; }
 
         [Display(Name = "Invoice No")]
         public string InvoiceNo { get; set; }
 
+        [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Invoice Date")]

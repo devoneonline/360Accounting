@@ -64,11 +64,16 @@ namespace _360Accounting.Web
 
         public static List<SelectListItem> GetSetOfBookList()
         {
-            List<SelectListItem> list = GetSetOfBooks().Select(x => new SelectListItem
+            List<SelectListItem> list = new List<SelectListItem>();
+
+            if (GetSetOfBooks().Count > 0)
+            {
+                list = GetSetOfBooks().Select(x => new SelectListItem
                 {
                     Text = x.Name,
                     Value = x.Id.ToString()
                 }).ToList();
+            }
             return list;
         }
     }

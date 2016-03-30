@@ -21,7 +21,7 @@ namespace _360Accounting.Web.Controllers
             RemittanceModel model = RemittanceHelper.GetRemittance(remitNo);
             SessionHelper.SOBId = model.SOBId;
             SessionHelper.Bank = BankHelper.GetBank(bankId.ToString());
-            SessionHelper.BankAccount = BankHelper.GetBankAccount(bankAccountId.ToString());
+            SessionHelper.BankAccount = BankHelper.GetBankAccount(bankAccountId);
 
             model.Remittances = RemittanceHelper.GetRemittanceDetail(remitNo);
             model.SOBId = sobId;
@@ -172,7 +172,7 @@ namespace _360Accounting.Web.Controllers
         {
             SessionHelper.SOBId = sobId;
             SessionHelper.Bank = BankHelper.GetBank(bankId.ToString());
-            SessionHelper.BankAccount = BankHelper.GetBankAccount(bankAccountId.ToString());
+            SessionHelper.BankAccount = BankHelper.GetBankAccount(bankAccountId);
             RemittanceModel model = SessionHelper.Remittance;
             
             if (model == null)

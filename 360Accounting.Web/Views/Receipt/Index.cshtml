@@ -16,28 +16,28 @@
     </div>
 
     <div class="col-lg-3">
-        <div class="form-group">
+        <div class="form-group customDropDownWrapper">
             @Html.LabelFor(m => m.SetOfBooks)
             @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control criteria" })
         </div>
     </div>
 
     <div class="col-lg-3">
-        <div class="form-group">
+        <div class="form-group customDropDownWrapper">
             @Html.LabelFor(m => m.Periods)
             @Html.DropDownListFor(m => m.PeriodId, Model.Periods, new { @class = "form-control criteria" })
         </div>
     </div>
 
     <div class="col-lg-3">
-        <div class="form-group">
+        <div class="form-group customDropDownWrapper">
             @Html.LabelFor(m => m.Customers)
             @Html.DropDownListFor(m => m.CustomerId, Model.Customers, new { @class = "form-control criteria" })
         </div>
     </div>
 
     <div class="col-lg-3">
-        <div class="form-group">
+        <div class="form-group customDropDownWrapper">
             @Html.LabelFor(m => m.Currency)
             @Html.DropDownListFor(m => m.CurrencyId, Model.Currency, new { @class = "form-control criteria" })
         </div>
@@ -53,6 +53,7 @@
     </div>
 </div>
 <script type="text/javascript">
+    
     $('#btnNew').click(function () {
         var continueCreate = true;
 
@@ -117,6 +118,6 @@
     }
 
     $(document).ready(function () {
-       
+
     });
 </script>

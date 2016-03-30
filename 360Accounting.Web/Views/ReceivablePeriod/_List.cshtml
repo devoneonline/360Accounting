@@ -5,28 +5,35 @@
     var grid = Html.DevExpress().GridView(
         settings =>
         {
-            settings.Name = "Warehouses";
+            settings.Name = "ReceivablePeriods";
             settings.KeyFieldName = "Id";
-            settings.CallbackRouteValues = new { Controller = "Warehouse", Action = "CreatePartial" };
-            settings.CustomActionRouteValues = new { Controller = "Editing", Action = "ChangeEditModePartial" };
-            settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Warehouse", Action = "AddNewInline" };
-            settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Warehouse", Action = "UpdateInline" };
-            settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Warehouse", Action = "DeleteInline" };
+            settings.CallbackRouteValues = new { Controller = "ReceivablePeriod", Action = "ListPartial" };
+            //settings.CustomActionRouteValues = new { Controller = "Editing", Action = "ChangeEditModePartial" };
+            settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "ReceivablePeriod", Action = "AddNewInline" };
+            settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "ReceivablePeriod", Action = "UpdateInline" };
+            settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "ReceivablePeriod", Action = "DeleteInline" };
             settings.SettingsEditing.Mode = GridViewEditingMode.Inline;
             settings.SettingsBehavior.ConfirmDelete = true;
-            settings.SettingsPopup.EditForm.Width = 600;
+            settings.SettingsPopup.EditForm.Width = 500;
             settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
 
             settings.CommandColumn.Visible = true;
             settings.CommandColumn.ShowNewButton = true;
             settings.CommandColumn.ShowDeleteButton = true;
             settings.CommandColumn.ShowEditButton = true;
-            settings.CommandColumn.Width = 200;
+            settings.CommandColumn.Width = 300;
             
             settings.Columns.Add(column =>
             {
-                column.FieldName = "WarehouseName";
-                column.Caption = "Warehouse Name";
+                column.FieldName = "CalendarId";
+                column.Caption = "Calendar";
+
+                column.ColumnType = MVCxGridViewColumnType.ComboBox;
+                var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+                comboBoxProperties.DataSource = CalendarHelper.GetCalendars(_360Accounting.Web.SessionHelper.SOBId);
+                comboBoxProperties.TextField = "PeriodName";
+                comboBoxProperties.ValueField = "Id";
+                comboBoxProperties.ValueType = typeof(int);
             });
             settings.Columns.Add(column =>
             {
@@ -36,8 +43,8 @@
                 column.ColumnType = MVCxGridViewColumnType.ComboBox;
                 var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
                 List<SelectListItem> items = new List<SelectListItem>();
-                items.Add(new SelectListItem { Value = "Active", Text = "Active" });
-                items.Add(new SelectListItem { Value = "Inactive", Text = "Inactive" });
+                items.Add(new SelectListItem { Value = "Open", Text = "Open" });
+                items.Add(new SelectListItem { Value = "Close", Text = "Close" });
                 comboBoxProperties.DataSource = items;
                 comboBoxProperties.TextField = "Text";
                 comboBoxProperties.ValueField = "Value";
