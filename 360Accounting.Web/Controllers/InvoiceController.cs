@@ -288,7 +288,7 @@ namespace _360Accounting.Web.Controllers
                 model.PeriodId = model.Periods.Any() ?
                     Convert.ToInt32(model.Periods.First().Value) : 0;
             }
-            else
+            else if (model.Periods == null)
             {
                 model.Periods = new List<SelectListItem>();
             }
@@ -304,7 +304,7 @@ namespace _360Accounting.Web.Controllers
                 model.CurrencyId = model.Currencies.Any() ?
                     Convert.ToInt32(model.Currencies.First().Value) : 0;
             }
-            else
+            else if (model.Currencies == null)
             {
                 model.Currencies = new List<SelectListItem>();
             }

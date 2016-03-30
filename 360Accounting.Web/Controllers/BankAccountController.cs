@@ -13,13 +13,6 @@ namespace _360Accounting.Web.Controllers
     [Authorize]
     public class BankAccountController : Controller
     {
-        private ICodeCombinitionService codeCombinitionService;
-
-        public BankAccountController()
-        {
-            codeCombinitionService = IoC.Resolve<ICodeCombinitionService>("CodeCombinitionService");
-        }
-
         public ActionResult Index(long Id)
         {
             BankAccountListModel model = new BankAccountListModel();

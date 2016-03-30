@@ -17,21 +17,23 @@
     </div>
 
     <div class="col-lg-4">
-        <div class="form-group">
+        <div class="form-group customDropDownWrapper">
             @Html.LabelFor(m => m.SetOfBooks)
             @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control" })
         </div>
     </div>
 
-    <div class="col-lg-4">
-        <div class="form-group">
-            @Html.LabelFor(m => m.CodeCombinition)
-            @Html.DropDownListFor(m => m.CodeCombinitionId, Model.CodeCombinition, new { @class = "form-control" })
+    <div class="col-md-4">
+        @Html.LabelFor(m => m.CodeCombinition)
+        <div class="form-group input-group">
+            @Html.HiddenFor(m => m.CodeCombinitionId)
+            @Html.TextBoxFor(m => m.CodeCombinationString, new { @class = "form-control AccountLookup", @readonly = "readonly", @placeholder = "Click to get account" })
+            <span class="input-group-addon"><a href="#" class="AccountLookup" tabindex="-1" id="CodeCombinationString"><i class="fa fa-search"></i></a></span>
         </div>
     </div>
 
     <div class="col-lg-4">
-        <div class="form-group">
+        <div class="form-group customDropDownWrapper">
             @Html.LabelFor(m => m.Vendor)
             @Html.DropDownListFor(m => m.VendorId, Model.Vendor, new { @class = "form-control" })
         </div>
@@ -45,6 +47,8 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
+        $.noConflict();
+
         $('#SOBId, #CodeCombinitionId, #VendorId').change(function () {
             $('#dvList').html("Please wait..");
             $.ajax({

@@ -15,13 +15,13 @@
 
     <div class="clearfix">
         <div class="col-lg-3">
-            <div class="form-group">
+            <div class="form-group customDropDownWrapper">
                 @Html.LabelFor(m => m.SetOfBooks)
                 @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control criteria" })
             </div>
         </div>
         <div class="col-lg-3">
-            <div class="form-group">
+            <div class="form-group customDropDownWrapper">
                 @Html.LabelFor(m => m.Periods)
                 @Html.DropDownListFor(m => m.PeriodId, Model.Periods, new { @class = "form-control criteria" })
             </div>
@@ -43,6 +43,8 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $.noConflict();
+
         $('#btnCreate').click(function () {
             var continueCreate = true;
 

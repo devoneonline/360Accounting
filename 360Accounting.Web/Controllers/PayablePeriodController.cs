@@ -21,8 +21,9 @@ namespace _360Accounting.Web.Controllers
             if (model.SetOfBooks == null)
             {
                 model.SetOfBooks = SetOfBookHelper.GetSetOfBookList();
+                model.SOBId = model.SetOfBooks.Any() ? Convert.ToInt64(model.SetOfBooks[0].Value) : 0;
             }
-            model.SOBId = model.SOBId > 0 ? model.SOBId : Convert.ToInt64(model.SetOfBooks[0].Value.ToString());
+            
             SessionHelper.SOBId = model.SOBId;
             return View(model);
         }

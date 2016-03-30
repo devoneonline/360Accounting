@@ -68,9 +68,9 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Index()
         {
             InvoiceSourceListModel model = new InvoiceSourceListModel();
-            model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()
-                .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList(); ;
-            model.SOBId = Convert.ToInt64(model.SetOfBooks.FirstOrDefault().Value);
+            model.SetOfBooks = SetOfBookHelper.GetSetOfBookList();
+
+            model.SOBId = model.SetOfBooks.Any() ? Convert.ToInt64(model.SetOfBooks.FirstOrDefault().Value) : 0;
             return View(model);
         }
     }

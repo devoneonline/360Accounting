@@ -64,8 +64,6 @@ namespace _360Accounting.Data.Repositories
             var query = from a in this.Context.VendorSites
                         join b in this.Context.Vendors on a.VendorId equals b.Id
                         join c in this.Context.CodeCombinitions on a.CodeCombinationId equals c.Id
-                        join d in this.Context.Taxes on a.TaxCodeId equals d.Id into cs
-                        from e in cs.DefaultIfEmpty()
                         where a.VendorId == vendorId && b.CompanyId == companyId
                         select new VendorSiteView
                         {
@@ -77,8 +75,6 @@ namespace _360Accounting.Data.Repositories
                             Contact = a.Contact,
                             EndDate = a.EndDate,
                             StartDate = a.StartDate,
-                            TaxCodeId = a.TaxCodeId,
-                            TaxCodeName = e.TaxName,
                             VendorId = a.VendorId
                         };
             return query.ToList();
