@@ -45,12 +45,22 @@
     <script type="text/javascript">
         var lookupTextField = '';
         var lookupValueField = '';
+
+        function SetMultiselect(combo, data) {
+            jQuery.noConflict();
+            var values = [];
+            for (var i = 0; i < data.length; i++) {
+                if (typeof data[i].Text != 'undefined' && typeof data[i].Value != 'undefined')
+                    values.push({ label: data[i].Text, value: data[i].Value });
+            }
+            $('#' + combo).multiselect('dataprovider', values);
+        }
+
         $(document).ready(function () {
 
             $('select').multiselect({
                 enableFiltering: true
             });
-
 
             $(function () {
                 $('#dvAccountLookup').dialog({

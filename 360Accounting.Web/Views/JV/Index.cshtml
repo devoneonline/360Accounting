@@ -71,15 +71,11 @@
                 alert('Please select the values.');
         });
 
+        jQuery.noConflict();
         jQuery.ajaxSetup({ async: false });
 
         function RefreshGrid() {
-            var url3 = '@Url.Content("~/JV/ListPartial")';
-
-            $.get(url3, { sobId: $('#SOBId').val(), periodId: $('#PeriodId').val(), currencyId: $('#CurrencyId').val() },
-                function (data) {
-                    $('#dvList').html(data);
-                });
+            $('#dvList').html(GetData('@Url.Content("~/JV/ListPartial")', { sobId: $('#SOBId').val(), periodId: $('#PeriodId').val(), currencyId: $('#CurrencyId').val() }));
         }
 
         $('#PeriodId, #CurrencyId').change(function () {
@@ -87,28 +83,28 @@
         });
 
         $('#SOBId').change(function () {
-            var url1 = '@Url.Content("~/JV/PeriodList")';
-            var url2 = '@Url.Content("~/JV/CurrencyList")';
-
-            $.get(url1, { sobId: $(this).val() },
-                function (data) {
-                    var periodDropdown = $('#PeriodId');
-                    periodDropdown.empty();
-                    for (var i = 0; i < data.length; i++) {
-                        periodDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
-                    }
-                });
-
-            $.get(url2, { sobId: $(this).val() },
-                function (data) {
-                    var currencyDropdown = $('#CurrencyId');
-                    currencyDropdown.empty();
-                    for (var i = 0; i < data.length; i++) {
-                        currencyDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
-                    }
-                });
-
+            SetMultiselect('PeriodId', GetData('@Url.Content("~/JV/PeriodList")', { sobId: $(this).val() }));
+            SetMultiselect('CurrencyId', GetData('@Url.Content("~/JV/CurrencyList")', { sobId: $(this).val() }));
             RefreshGrid();
         });
     });
+
+    function GetData(url, data)
+    {
+        var returnedData = [];
+        $('#dvList').html("Please wait..");
+        $.ajax({
+            url: url,
+            data: data,
+            datatype: 'json',
+            type: 'get',
+            async: false,
+            error: function (data) { alert(data); },
+            success: function (rtnData) {
+                returnedData = rtnData;
+            }
+        });
+
+        return returnedData;
+    }
 </script>
