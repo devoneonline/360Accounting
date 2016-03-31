@@ -179,6 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\MoveOrder\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="Controllers\InventoryPeriodController.cs" />
     <Compile Include="Controllers\LocatorController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
+    <Compile Include="Controllers\MoveOrderController.cs" />
     <Compile Include="Controllers\ReceivablePeriodController.cs" />
     <Compile Include="Controllers\WarehouseController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
@@ -209,6 +211,8 @@
     <Compile Include="Helpers\InventoryPeriodHelper.cs" />
     <Compile Include="Helpers\ItemHelper.cs" />
     <Compile Include="Helpers\LocatorHelper.cs" />
+    <Compile Include="Helpers\LotNumberHelper.cs" />
+    <Compile Include="Helpers\MoveOrderHelper.cs" />
     <Compile Include="Helpers\ReceivablePeriodHelper.cs" />
     <Compile Include="Helpers\WarehouseHelper.cs" />
     <Compile Include="Helpers\PaymentHelper.cs" />
@@ -261,6 +265,7 @@
     <Compile Include="Models\InvoiceModel.cs" />
     <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\LocatorModel.cs" />
+    <Compile Include="Models\MoveOrderModel.cs" />
     <Compile Include="Models\PayableInvoiceModel.cs" />
     <Compile Include="Models\ReceivablePeriodModel.cs" />
     <Compile Include="Models\WarehouseListModel.cs" />

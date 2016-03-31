@@ -8,6 +8,7 @@ namespace _360Accounting.Web
 {
     public class SessionHelper
     {
+        private const string Sesson_MoveOrder = "MoveOrder";
         private const string Sesson_Locator = "Locator";
         private const string Sesson_Item = "Item";
         private const string Session_DocumentDate = "DocumentDate";
@@ -23,6 +24,19 @@ namespace _360Accounting.Web
         private const string Session_Remittance = "Remittance";
         private const string Sesson_Payment = "Payment";
         private const string Sesson_PayableInvoice = "PayableInvoice";
+
+        public static MoveOrderModel MoveOrder
+        {
+            get
+            {
+                return HttpContext.Current.Session[Sesson_MoveOrder] == null ? null :
+                    (MoveOrderModel)HttpContext.Current.Session[Sesson_MoveOrder];
+            }
+            set
+            {
+                HttpContext.Current.Session[Sesson_MoveOrder] = value;
+            }
+        }
 
         public static LocatorModel Locator
         {

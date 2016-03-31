@@ -9,66 +9,61 @@ using System.Threading.Tasks;
 
 namespace _360Accounting.Data.Repositories
 {
-    public class ItemRepository : Repository, IItemRepository
+    public class MoveOrderRepository : Repository, IMoveOrderRepository
     {
-        public IEnumerable<Item> GetAll(long companyId, long sobId)
+        public IEnumerable<MoveOrder> GetAll(long companyId, long sobId)
         {
             return this.GetAll(companyId).Where(x => x.SOBId == sobId);
         }
 
-        //public ItemWarehouse GetSingle(long id)
-        //{
-        //    return this.Context.ItemWarehouses.FirstOrDefault(x => x.Id == id);
-        //}
-
-        public IEnumerable<ItemWarehouse> GetAllItemWarehouses(long itemId)
+        public IEnumerable<MoveOrderDetail> GetAllMoveOrderDetail(long moveOrderId)
         {
-            return this.Context.ItemWarehouses.Where(x => x.ItemId == itemId);
+            return this.Context.MoveOrderDetails.Where(x => x.MoveOrderId == moveOrderId);
         }
 
-        public long Insert(ItemWarehouse entity)
+        public long Insert(MoveOrderDetail entity)
         {
-            this.Context.ItemWarehouses.Add(entity);
+            this.Context.MoveOrderDetails.Add(entity);
             this.Commit();
             return entity.Id;
         }
 
-        public long Update(ItemWarehouse entity)
+        public long Update(MoveOrderDetail entity)
         {
-            var originalEntity = this.Context.ItemWarehouses.Find(entity.Id);
+            var originalEntity = this.Context.MoveOrderDetails.Find(entity.Id);
             this.Context.Entry(originalEntity).CurrentValues.SetValues(entity);
             this.Context.Entry(originalEntity).State = EntityState.Modified;
             this.Commit();
             return entity.Id;
         }
 
-        public void DeleteItemWarehouse(long id)
+        public void Delete(long id)
         {
-            this.Context.ItemWarehouses.Remove(this.Context.ItemWarehouses.Find(id));
+            this.Context.MoveOrderDetails.Remove(this.Context.MoveOrderDetails.Find(id));
             this.Commit();
         }
 
-        public Item GetSingle(string id, long companyId)
+        public MoveOrder GetSingle(string id, long companyId)
         {
             long longId = Convert.ToInt64(id);
-            return this.Context.Items.FirstOrDefault(x => x.CompanyId == companyId && x.Id == longId);
+            return this.Context.MoveOrders.FirstOrDefault(x => x.CompanyId == companyId && x.Id == longId);
         }
 
-        public IEnumerable<Item> GetAll(long companyId)
+        public IEnumerable<MoveOrder> GetAll(long companyId)
         {
-            return this.Context.Items.Where(x => x.CompanyId == companyId);
+            return this.Context.MoveOrders.Where(x => x.CompanyId == companyId);
         }
 
-        public string Insert(Item entity)
+        public string Insert(MoveOrder entity)
         {
-            this.Context.Items.Add(entity);
+            this.Context.MoveOrders.Add(entity);
             this.Commit();
             return entity.Id.ToString();
         }
 
-        public string Update(Item entity)
+        public string Update(MoveOrder entity)
         {
-            var originalEntity = this.Context.Items.Find(entity.Id);
+            var originalEntity = this.Context.MoveOrders.Find(entity.Id);
             this.Context.Entry(originalEntity).CurrentValues.SetValues(entity);
             this.Context.Entry(originalEntity).State = EntityState.Modified;
             this.Commit();
@@ -77,7 +72,7 @@ namespace _360Accounting.Data.Repositories
 
         public void Delete(string id, long companyId)
         {
-            this.Context.Items.Remove(this.GetSingle(id, companyId));
+            this.Context.MoveOrders.Remove(this.GetSingle(id, companyId));
             this.Commit();
         }
 

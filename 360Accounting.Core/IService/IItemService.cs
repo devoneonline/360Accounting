@@ -10,7 +10,7 @@ namespace _360Accounting.Core
 {
     public interface IItemService : IService<Item>
     {
-        ItemWarehouse GetSingle(long id);
+        //ItemWarehouse GetSingle(long id);
         long Insert(ItemWarehouse entity);
         long Update(ItemWarehouse entity);
         void DeleteItemWarehouse(long id);

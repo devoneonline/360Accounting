@@ -23,10 +23,10 @@ namespace _360Accounting.Service
             return this.repository.GetAll(companyId, sobId);
         }
         
-        public ItemWarehouse GetSingle(long id)
-        {
-            return this.repository.GetSingle(id);
-        }
+        //public ItemWarehouse GetSingle(long id)
+        //{
+        //    return this.repository.GetSingle(id);
+        //}
 
         public long Insert(ItemWarehouse entity)
         {

@@ -9,7 +9,7 @@ namespace _360Accounting.Core.Interfaces
 {
     public interface IItemRepository : IRepository<Item>
     {
-        ItemWarehouse GetSingle(long id);
+        //ItemWarehouse GetSingle(long id);
 
         IEnumerable<ItemWarehouse> GetAllItemWarehouses(long itemId);
 

@@ -20,6 +20,14 @@ namespace _360Accounting.Data
 
         #region DbSets
 
+        public DbSet<MoveOrder> MoveOrders { get; set; }
+
+        public DbSet<MoveOrderDetail> MoveOrderDetails { get; set; }
+
+        public DbSet<LotNumber> LotNumbers { get; set; }
+
+        public DbSet<SerialNumber> SerialNumbers { get; set; }
+
         public DbSet<ReceivablePeriod> ReceivablePeriods { get; set; }
 
         public DbSet<LocatorWarehouse> LocatorWarehouses { get; set; }
@@ -109,6 +117,18 @@ namespace _360Accounting.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ////base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<MoveOrder>().ToTable("tbMoveOrder");
+            modelBuilder.Entity<MoveOrder>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<MoveOrderDetail>().ToTable("tbMoveOrderDetail");
+            modelBuilder.Entity<MoveOrderDetail>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<LotNumber>().ToTable("tbLotNumber");
+            modelBuilder.Entity<LotNumber>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<SerialNumber>().ToTable("tbSerialNumber");
+            modelBuilder.Entity<SerialNumber>().HasKey(t => t.Id);
 
             modelBuilder.Entity<ReceivablePeriod>().ToTable("tbReceivablePeriod");
             modelBuilder.Entity<ReceivablePeriod>().HasKey(t => t.Id);
