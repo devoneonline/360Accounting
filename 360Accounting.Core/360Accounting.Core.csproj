@@ -53,6 +53,7 @@
     <Compile Include="Entities\InventoryPeriod.cs" />
     <Compile Include="Entities\Item.cs" />
     <Compile Include="Entities\Locator.cs" />
+    <Compile Include="Entities\MiscellaneousTransaction.cs" />
     <Compile Include="Entities\MoveOrder.cs" />
     <Compile Include="Entities\PayableInvoice.cs" />
     <Compile Include="Entities\PaymentView.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="IRepository\IItemRepository.cs" />
     <Compile Include="IRepository\ILocatorRepository.cs" />
     <Compile Include="IRepository\ILotNumberRepository.cs" />
+    <Compile Include="IRepository\IMiscellaneousTransactionRepository.cs" />
     <Compile Include="IRepository\IMoveOrderRepository.cs" />
     <Compile Include="IRepository\IPayableInvoiceDetailRepository.cs" />
     <Compile Include="IRepository\IPayableInvoiceRepository.cs" />
@@ -145,6 +147,7 @@
     <Compile Include="IService\IItemService.cs" />
     <Compile Include="IService\ILocatorService.cs" />
     <Compile Include="IService\ILotNumberService.cs" />
+    <Compile Include="IService\IMiscellaneousTransactionService.cs" />
     <Compile Include="IService\IMoveOrderService.cs" />
     <Compile Include="IService\IPayableInvoiceDetailService.cs" />
     <Compile Include="IService\IPayableInvoiceService.cs" />

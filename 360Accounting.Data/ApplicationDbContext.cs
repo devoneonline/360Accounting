@@ -20,6 +20,8 @@ namespace _360Accounting.Data
 
         #region DbSets
 
+        public DbSet<MiscellaneousTransaction> MiscellaneousTransactions { get; set; }
+
         public DbSet<MoveOrder> MoveOrders { get; set; }
 
         public DbSet<MoveOrderDetail> MoveOrderDetails { get; set; }
@@ -117,6 +119,9 @@ namespace _360Accounting.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ////base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<MiscellaneousTransaction>().ToTable("tbMiscellaneousTransaction");
+            modelBuilder.Entity<MiscellaneousTransaction>().HasKey(t => t.Id);
 
             modelBuilder.Entity<MoveOrder>().ToTable("tbMoveOrder");
             modelBuilder.Entity<MoveOrder>().HasKey(t => t.Id);

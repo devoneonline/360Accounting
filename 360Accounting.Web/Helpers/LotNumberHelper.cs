@@ -69,6 +69,58 @@ namespace _360Accounting.Web
             entity.UpdateDate = DateTime.Now;
             return entity;
         }
+
+        private static LotNumber GetLotEntityByMiscellaneousTransaction(MiscellaneousTransactionDetailModel model, int count)
+        {
+            if (model == null) return null;
+
+            LotNumber entity = new LotNumber();
+            if (count == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+            }
+
+            entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+            entity.Id = model.Id;
+            entity.ItemId = model.ItemId;
+            entity.LotNo = model.LotNo;
+            entity.SOBId = SessionHelper.SOBId;
+            entity.SourceId = model.Id;
+            entity.SourceType = "Miscellaneous Transaction";
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
+
+        private static SerialNumber GetSerialEntityByMiscellaneousTransaction(MiscellaneousTransactionDetailModel model, int count)
+        {
+            if (model == null) return null;
+
+            SerialNumber entity = new SerialNumber();
+            if (count == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+            }
+
+            entity.Id = model.Id;
+            entity.LotNo = model.LotNo;
+            entity.SerialNo = model.SerialNo;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
         #endregion
     }
 }

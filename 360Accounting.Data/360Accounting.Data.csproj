@@ -65,6 +65,7 @@
     <Compile Include="Repositories\ItemRepository.cs" />
     <Compile Include="Repositories\LocatorRepository.cs" />
     <Compile Include="Repositories\LotNumberRepository.cs" />
+    <Compile Include="Repositories\MiscellaneousTransactionRepository.cs" />
     <Compile Include="Repositories\MoveOrderRepository.cs" />
     <Compile Include="Repositories\PayableInvoiceDetailRepository.cs" />
     <Compile Include="Repositories\PayableInvoiceRepository.cs" />

@@ -212,6 +212,7 @@
     <Compile Include="Helpers\ItemHelper.cs" />
     <Compile Include="Helpers\LocatorHelper.cs" />
     <Compile Include="Helpers\LotNumberHelper.cs" />
+    <Compile Include="Helpers\MiscellaneousTransactionHelper.cs" />
     <Compile Include="Helpers\MoveOrderHelper.cs" />
     <Compile Include="Helpers\ReceivablePeriodHelper.cs" />
     <Compile Include="Helpers\WarehouseHelper.cs" />
@@ -265,6 +266,7 @@
     <Compile Include="Models\InvoiceModel.cs" />
     <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\LocatorModel.cs" />
+    <Compile Include="Models\MiscellaneousTransactionModel.cs" />
     <Compile Include="Models\MoveOrderModel.cs" />
     <Compile Include="Models\PayableInvoiceModel.cs" />
     <Compile Include="Models\ReceivablePeriodModel.cs" />

@@ -3,6 +3,7 @@
 <objects xmlns="http://www.springframework.net">
   <description>360Accounting Configuration</description>
 
+  <object name="MiscellaneousTransactionRepository" type="_360Accounting.Data.Repositories.MiscellaneousTransactionRepository, 360Accounting.Data"> </object>
   <object name="LotNumberRepository" type="_360Accounting.Data.Repositories.LotNumberRepository, 360Accounting.Data"> </object>
   <object name="MoveOrderRepository" type="_360Accounting.Data.Repositories.MoveOrderRepository, 360Accounting.Data"> </object>
   <object name="ReceivablePeriodRepository" type="_360Accounting.Data.Repositories.ReceivablePeriodRepository, 360Accounting.Data"> </object>
@@ -45,6 +46,9 @@
   <object name="PaymentRepository" type="_360Accounting.Data.Repositories.PaymentRepository, 360Accounting.Data"> </object>
 
 
+  <object name="MiscellaneousTransactionService" type="_360Accounting.Service.MiscellaneousTransactionService, 360Accounting.Service" >
+    <constructor-arg name="repo" ref="MiscellaneousTransactionRepository" />
+  </object>
   <object name="LotNumberService" type="_360Accounting.Service.LotNumberService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="LotNumberRepository" />
   </object>
