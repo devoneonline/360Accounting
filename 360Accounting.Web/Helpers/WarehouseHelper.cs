@@ -18,6 +18,36 @@ namespace _360Accounting.Web
             service = IoC.Resolve<IWarehouseService>("WarehouseService");
         }
 
+        #region Private Methods
+        private static Warehouse getEntityByModel(WarehouseModel model)
+        {
+            if (model == null) return null;
+
+            Warehouse entity = new Warehouse();
+
+            if (model.Id == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+                entity.CompanyId = model.CompanyId;
+            }
+
+            entity.WarehouseName = model.WarehouseName;
+            entity.Id = model.Id;
+            entity.SOBId = model.SOBId;
+            entity.Status = model.Status;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
+        #endregion
+
         public static WarehouseModel GetWarehouse(string id)
         {
             return new WarehouseModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
@@ -27,11 +57,11 @@ namespace _360Accounting.Web
         {
             if (model.Id > 0)
             {
-                return service.Update(Mappers.GetEntityByModel(model));
+                return service.Update(getEntityByModel(model));
             }
             else
             {
-                return service.Insert(Mappers.GetEntityByModel(model));
+                return service.Insert(getEntityByModel(model));
             }
         }
 

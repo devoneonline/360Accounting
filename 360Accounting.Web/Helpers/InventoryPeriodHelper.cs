@@ -1,4 +1,5 @@
 ﻿using _360Accounting.Core;
+using _360Accounting.Core.Entities;
 using _360Accounting.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,36 @@ namespace _360Accounting.Web
         {
             service = IoC.Resolve<IInventoryPeriodService>("InventoryPeriodService");
         }
+
+        #region Private Methods
+        private static InventoryPeriod getEntityByModel(InventoryPeriodModel model)
+        {
+            if (model == null)
+                return null;
+
+            InventoryPeriod entity = new InventoryPeriod();
+            if (model.Id == 0)
+            {
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+            else
+            {
+                entity.CompanyId = model.CompanyId;
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+            }
+
+            entity.CalendarId = model.CalendarId;
+            entity.Id = model.Id;
+            entity.SOBId = model.SOBId;
+            entity.Status = model.Status;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
+        #endregion
 
         public static List<SelectListItem> GetPeriodList(long sobId)
         {
@@ -41,11 +72,11 @@ namespace _360Accounting.Web
         {
             if (model.Id > 0)
             {
-                return service.Update(Mappers.GetEntityByModel(model));
+                return service.Update(getEntityByModel(model));
             }
             else
             {
-                return service.Insert(Mappers.GetEntityByModel(model));
+                return service.Insert(getEntityByModel(model));
             }
         }
 

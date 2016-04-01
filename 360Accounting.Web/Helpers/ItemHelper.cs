@@ -20,6 +20,75 @@ namespace _360Accounting.Web.Helpers
         }
         
         #region Private Methods
+        private static Item getEntityByModel(ItemModel model)
+        {
+            if (model == null)
+                return null;
+
+            Item entity = new Item();
+
+            if (model.Id == 0)
+            {
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+            else
+            {
+                entity.CompanyId = model.CompanyId;
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+            }
+
+            entity.COGSCodeCombinationId = model.COGSCodeCombinationId;
+            entity.DefaultBuyer = model.DefaultBuyer;
+            entity.Description = model.Description;
+            entity.Id = model.Id;
+            entity.ItemCode = model.ItemCode;
+            entity.ItemName = model.ItemName;
+            entity.LotControl = model.LotControl;
+            entity.Orderable = model.Orderable;
+            entity.Purchaseable = model.Purchaseable;
+            entity.ReceiptRouting = model.ReceiptRouting;
+            entity.SalesCodeCombinationId = model.SalesCodeCombinationId;
+            entity.SerialControl = model.SerialControl;
+            entity.Shipable = model.Shipable;
+            entity.SOBId = model.SOBId;
+            entity.Status = model.Status;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+            return entity;
+        }
+
+        private static ItemWarehouse getEntityByModel(ItemWarehouseModel model, int count)
+        {
+            if (model == null)
+                return null;
+
+            ItemWarehouse entity = new ItemWarehouse();
+
+            if (count == 0)
+            {
+                entity.CreateBy = AuthenticationHelper.UserId;
+                entity.CreateDate = DateTime.Now;
+            }
+            else
+            {
+                entity.CreateBy = model.CreateBy;
+                entity.CreateDate = model.CreateDate;
+            }
+
+            entity.EndDate = model.EndDate;
+            entity.Id = model.Id;
+            entity.ItemId = model.ItemId;
+            entity.SOBId = model.SOBId;
+            entity.StartDate = model.StartDate;
+            entity.UpdateBy = AuthenticationHelper.UserId;
+            entity.UpdateDate = DateTime.Now;
+            entity.WarehouseId = model.WarehouseId;
+            return entity;
+        }
+
         private static IList<ItemWarehouseModel> getItemWarehousesByItemId(string itemId)
         {
             IList<ItemWarehouseModel> modelList = service
@@ -87,7 +156,7 @@ namespace _360Accounting.Web.Helpers
 
         public static void Save(ItemModel itemModel)
         {
-            Item entity = Mappers.GetEntityByModel(itemModel);
+            Item entity = getEntityByModel(itemModel);
 
             string result = string.Empty;
             if (entity.IsValid())
@@ -112,7 +181,7 @@ namespace _360Accounting.Web.Helpers
 
                     foreach (var detail in itemModel.ItemWarehouses)
                     {
-                        ItemWarehouse detailEntity = Mappers.GetEntityByModel(detail);
+                        ItemWarehouse detailEntity = getEntityByModel(detail, savedDetail.Count());
                         if (detailEntity.IsValid())
                         {
                             detailEntity.ItemId = Convert.ToInt64(result);
