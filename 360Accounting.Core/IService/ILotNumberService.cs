@@ -10,5 +10,8 @@ namespace _360Accounting.Core
 {
     public interface ILotNumberService : IService<LotNumber>
     {
+        bool CheckLotNumAvailability(long companyId, string lotNum, long itemId, long sobId);
+
+        bool CheckSerialNumAvailability(long companyId, string lotNum, string serialNum);
     }
 }

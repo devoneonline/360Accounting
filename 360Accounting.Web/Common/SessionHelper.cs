@@ -24,6 +24,7 @@ namespace _360Accounting.Web
         private const string Session_Remittance = "Remittance";
         private const string Sesson_Payment = "Payment";
         private const string Sesson_PayableInvoice = "PayableInvoice";
+        private const string Session_MiscellaneousTransaction = "MiscellaneousTransaction";
 
         public static MoveOrderModel MoveOrder
         {
@@ -268,6 +269,17 @@ namespace _360Accounting.Web
             }
         }
 
-        
+        public static MiscellaneousTransactionModel MiscellaneousTransaction
+        {
+            get
+            {
+                return HttpContext.Current.Session[Session_MiscellaneousTransaction] == null ? null :
+                    (MiscellaneousTransactionModel)HttpContext.Current.Session[Session_MiscellaneousTransaction];
+            }
+            set
+            {
+                HttpContext.Current.Session[Session_MiscellaneousTransaction] = value;
+            }
+        }
     }
 }

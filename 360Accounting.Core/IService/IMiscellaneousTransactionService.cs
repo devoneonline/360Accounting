@@ -11,5 +11,7 @@ namespace _360Accounting.Core
     public interface IMiscellaneousTransactionService : IService<MiscellaneousTransaction>
     {
         IEnumerable<MiscellaneousTransaction> GetAll(long companyId, long sobId);
+
+        IEnumerable<MiscellaneousTransaction> GetAll(long companyId, long sobId, string type, long codeCombinationId);
     }
 }

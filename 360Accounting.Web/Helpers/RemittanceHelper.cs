@@ -170,6 +170,5 @@ namespace _360Accounting.Web
                 .Select(x => new RemittanceModel(x)).ToList();
             return modelList;
         }
-
     }
 }

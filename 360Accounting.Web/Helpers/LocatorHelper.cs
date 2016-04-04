@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Web;
+using System.Web.Mvc;
 
 namespace _360Accounting.Web
 {
@@ -87,10 +88,17 @@ namespace _360Accounting.Web
         }
         #endregion
 
-        public static IList<LocatorModel> GetLocators(long sobId)
+        public static IList<LocatorModel> GetLocatorsCombo(long sobId)
         {
             IList<LocatorModel> modelList = service.GetAll(AuthenticationHelper.User.CompanyId, sobId)
                 .Select(x => new LocatorModel(x)).ToList();
+            return modelList;
+        }
+
+        public static IList<SelectListItem> GetLocators(long sobId)
+        {
+            IList<SelectListItem> modelList = service.GetAll(AuthenticationHelper.User.CompanyId, sobId).Where(x => x.Status == "Active")
+                .Select(x => new SelectListItem { Text = x.Id.ToString(), Value = x.Id.ToString() }).ToList();
             return modelList;
         }
 

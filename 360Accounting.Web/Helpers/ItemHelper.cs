@@ -119,7 +119,7 @@ namespace _360Accounting.Web.Helpers
 
         public static List<SelectListItem> GetItemList(long sobId)
         {
-            List<SelectListItem> modelList = ItemHelper.GetItems(sobId)
+            List<SelectListItem> modelList = ItemHelper.GetItems(sobId).Where(x => x.Status == "Active")
                 .Select(x => new SelectListItem { Text = x.ItemName, Value = x.Id.ToString() }).ToList();
             return modelList;
         }

@@ -18,6 +18,7 @@ namespace _360Accounting.Web
         }
 
         #region Private Methods
+
         private static LotNumber GetLotEntityByMoveOrderModel(MoveOrderDetailModel model, int count)
         {
             if (model == null) return null;
@@ -121,6 +122,17 @@ namespace _360Accounting.Web
             entity.UpdateDate = DateTime.Now;
             return entity;
         }
+
         #endregion
+
+        public static bool CheckLotNumAvailability(string lotNum, long itemId, long sobId)
+        {
+            return service.CheckLotNumAvailability(AuthenticationHelper.User.CompanyId, lotNum, itemId, sobId);
+        }
+
+        public static bool CheckSerialNumAvailability(string lotNum, string serialNum)
+        {
+            return service.CheckSerialNumAvailability(AuthenticationHelper.User.CompanyId, lotNum, serialNum);
+        }
     }
 }

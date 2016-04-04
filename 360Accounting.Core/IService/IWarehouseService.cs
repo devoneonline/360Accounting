@@ -11,5 +11,7 @@ namespace _360Accounting.Core
     public interface IWarehouseService : IService<Warehouse>
     {
         IEnumerable<Warehouse> GetAll(long companyId, long sobId);
+
+        IEnumerable<Warehouse> GetAllforCombo(long companyId, long sobId);
     }
 }

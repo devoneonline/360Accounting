@@ -75,5 +75,11 @@ namespace _360Accounting.Web
             return service.GetAll(AuthenticationHelper.User.CompanyId, sobId)
                 .Select(x => new WarehouseModel(x)).ToList();
         }
+
+        public static List<SelectListItem> GetWarehousesCombo(long sobId)
+        {
+            return service.GetAllforCombo(AuthenticationHelper.User.CompanyId, sobId)
+                .Select(x => new SelectListItem { Text = x.WarehouseName, Value = x.Id.ToString() }).ToList();
+        }
     }
 }

@@ -10,5 +10,7 @@ namespace _360Accounting.Core.Interfaces
     public interface IWarehouseRepository : IRepository<Warehouse>
     {
         IEnumerable<Warehouse> GetAll(long companyId, long sobId);
+
+        IEnumerable<Warehouse> GetAllforCombo(long companyId, long sobId);
     }
 }

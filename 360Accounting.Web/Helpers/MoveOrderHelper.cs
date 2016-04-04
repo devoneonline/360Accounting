@@ -4,20 +4,25 @@ using _360Accounting.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Web;
+using System.Web.Mvc;
 
 namespace _360Accounting.Web
 {
     public class MoveOrderHelper
     {
         private static IMoveOrderService service;
+        private static ILotNumberService lotNumService;
 
         static MoveOrderHelper()
         {
             service = IoC.Resolve<IMoveOrderService>("MoveOrderService");
+            lotNumService = IoC.Resolve<ILotNumberService>("LotNumberService");
         }
 
         #region Private Methods
+
         private static MoveOrder GetEntityByModel(MoveOrderModel model)
         {
             if (model == null) return null;
@@ -77,6 +82,129 @@ namespace _360Accounting.Web
             return entity;
         }
 
+        private static IList<MoveOrderDetailModel> getMoveOrderDetailById(string moveOrderId)
+        {
+            IList<MoveOrderDetailModel> modelList = service
+                .GetAllMoveOrderDetail(Convert.ToInt32(moveOrderId))
+                .Select(x => new MoveOrderDetailModel(x)).ToList();
+            return modelList;
+        }
+
+        private static IList<MoveOrderDetailModel> getMoveOrderDetail()
+        {
+            return SessionHelper.MoveOrder.MoveOrderDetail;
+        }
+
         #endregion
+
+        public static IList<MoveOrderModel> GetMoveOrders(long sobId)
+        {
+            IList<MoveOrderModel> modelList = service
+                .GetAll(AuthenticationHelper.User.CompanyId, sobId)
+                .Select(x => new MoveOrderModel(x)).ToList();
+            return modelList;
+        }
+
+        public static MoveOrderModel GetMoveOrder(string id)
+        {
+            MoveOrderModel model = new MoveOrderModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            return model;
+        }
+
+        public static List<SelectListItem> GetMoveOrderList(long sobId)
+        {
+            List<SelectListItem> modelList = GetMoveOrders(sobId)
+                .Select(x => new SelectListItem { Text = x.MoveOrderNo, Value = x.Id.ToString() }).ToList();
+            return modelList;
+        }
+
+        public static IList<MoveOrderDetailModel> GetMoveOrderLines([Optional]string moveOrderId)
+        {
+            if (moveOrderId == null)
+                return getMoveOrderDetail();
+            else
+                return getMoveOrderDetailById(moveOrderId);
+        }
+
+        public static void InsertMoveOrderDetail(MoveOrderDetailModel model)
+        {
+            MoveOrderModel moveOrder = SessionHelper.MoveOrder;
+            moveOrder.MoveOrderDetail.Add(model);
+        }
+
+        public static void UpdateMoveOrderDetail(MoveOrderDetailModel model)
+        {
+            MoveOrderModel moveOrder = SessionHelper.MoveOrder;
+
+            moveOrder.MoveOrderDetail.FirstOrDefault(x => x.Id == model.Id).DateRequired = model.DateRequired;
+            moveOrder.MoveOrderDetail.FirstOrDefault(x => x.Id == model.Id).Id = model.Id;
+            moveOrder.MoveOrderDetail.FirstOrDefault(x => x.Id == model.Id).ItemId = model.ItemId;
+            moveOrder.MoveOrderDetail.FirstOrDefault(x => x.Id == model.Id).LocatorId = model.LocatorId;
+            moveOrder.MoveOrderDetail.FirstOrDefault(x => x.Id == model.Id).LotNo = model.LotNo;
+            moveOrder.MoveOrderDetail.FirstOrDefault(x => x.Id == model.Id).MoveOrderId = model.MoveOrderId;
+            moveOrder.MoveOrderDetail.FirstOrDefault(x => x.Id == model.Id).Quantity = model.Quantity;
+            moveOrder.MoveOrderDetail.FirstOrDefault(x => x.Id == model.Id).SerialNo = model.SerialNo;
+            moveOrder.MoveOrderDetail.FirstOrDefault(x => x.Id == model.Id).WarehouseId = model.WarehouseId;
+        }
+
+        public static void DeleteMoveOrderDetail(MoveOrderDetailModel model)
+        {
+            MoveOrderModel moveOrder = SessionHelper.MoveOrder;
+            MoveOrderDetailModel moveOrderDetail = moveOrder.MoveOrderDetail.FirstOrDefault(x => x.Id == model.Id);
+            moveOrder.MoveOrderDetail.Remove(moveOrderDetail);
+        }
+
+        public static void Save(MoveOrderModel moveOrderModel)
+        {
+            MoveOrder entity = GetEntityByModel(moveOrderModel);
+
+            string result = string.Empty;
+            if (entity.IsValid())
+            {
+                if (moveOrderModel.Id > 0)
+                    result = service.Update(entity);
+                else
+                    result = service.Insert(entity);
+
+                if (!string.IsNullOrEmpty(result))
+                {
+                    var savedDetail = GetMoveOrderLines(result);
+                    if (savedDetail.Count() > moveOrderModel.MoveOrderDetail.Count())
+                    {
+                        var tobeDeleted = savedDetail.Take(savedDetail.Count() - moveOrderModel.MoveOrderDetail.Count());
+                        foreach (var item in tobeDeleted)
+                        {
+                            service.Delete(item.Id);
+                            //Delete Lot and SerialNumber
+                        }
+                        savedDetail = GetMoveOrderLines(result);
+                    }
+
+                    foreach (var detail in moveOrderModel.MoveOrderDetail)
+                    {
+                        MoveOrderDetail detailEntity = GetEntityByModel(detail, savedDetail.Count());
+                        if (detailEntity.IsValid())
+                        {
+                            detailEntity.ItemId = Convert.ToInt64(result);
+                            if (savedDetail.Count() > 0)
+                            {
+                                detailEntity.Id = savedDetail.FirstOrDefault().Id;
+                                savedDetail.Remove(savedDetail.FirstOrDefault(rec => rec.Id == detailEntity.Id));
+                                service.Update(detailEntity);
+                                //Update Lot and Serial Number
+                            }
+                            else
+                                service.Insert(detailEntity);
+                                //Insert Lot and Serial Number
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void Delete(string id)
+        {
+            service.Delete(id, AuthenticationHelper.User.CompanyId);
+        }
     }
 }
