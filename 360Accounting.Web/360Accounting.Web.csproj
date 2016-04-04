@@ -187,9 +187,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Common\AuthenticationHelper.cs" />
     <Compile Include="Controllers\InventoryPeriodController.cs" />
+    <Compile Include="Controllers\MoveOrderController.cs" />
     <Compile Include="Controllers\LocatorController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
-    <Compile Include="Controllers\MoveOrderController.cs" />
     <Compile Include="Controllers\ReceivablePeriodController.cs" />
     <Compile Include="Controllers\WarehouseController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />

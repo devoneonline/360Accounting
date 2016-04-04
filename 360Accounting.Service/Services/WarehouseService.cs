@@ -23,6 +23,11 @@ namespace _360Accounting.Service
             return this.repository.GetAll(companyId, sobId);
         }
 
+        public IEnumerable<Warehouse> GetAllforCombo(long companyId, long sobId)
+        {
+            return this.repository.GetAllforCombo(companyId, sobId);
+        }
+
         public Warehouse GetSingle(string id, long companyId)
         {
             return this.repository.GetSingle(id, companyId);

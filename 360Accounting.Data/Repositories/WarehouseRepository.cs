@@ -17,6 +17,17 @@ namespace _360Accounting.Data.Repositories
             return list;
         }
 
+        public IEnumerable<Warehouse> GetAllforCombo(long companyId, long sobId)
+        {
+            var query = from a in this.Context.Warehouses
+                        join b in this.Context.LocatorWarehouses on a.Id equals b.WarehouseId
+                        join c in this.Context.ItemWarehouses on a.Id equals c.WarehouseId
+                        where a.CompanyId == companyId && a.SOBId == sobId
+                        select a;
+
+            return query;
+        }
+
         public Warehouse GetSingle(string id, long companyId)
         {
             Warehouse warehouse = this.GetAll(companyId)

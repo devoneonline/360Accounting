@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _360Accounting.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -19,6 +20,19 @@ namespace _360Accounting.Web.Models
 
     public class MiscellaneousTransactionModel : ModelBase
     {
+        public MiscellaneousTransactionModel(MiscellaneousTransaction entity) 
+        {
+            this.Id = entity.Id;
+            this.CompanyId = entity.CompanyId;
+            this.CreateBy = entity.CreateBy;
+            this.CreateDate = entity.CreateDate;
+            this.SOBId = entity.SOBId;
+            this.TransactionDate = entity.TransactionDate;
+            this.TransactionType = entity.TransactionType;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
+        }
+
         public long Id { get; set; }
         public long CompanyId { get; set; }
         public long SOBId { get; set; }
@@ -43,6 +57,26 @@ namespace _360Accounting.Web.Models
 
     public class MiscellaneousTransactionDetailModel : ModelBase
     {
+        public MiscellaneousTransactionDetailModel(MiscellaneousTransaction entity) 
+        {
+            this.Id = entity.Id;
+            this.CompanyId = entity.CompanyId;
+            this.Cost = entity.Cost;
+            this.CreateBy = entity.CreateBy;
+            this.CreateDate = entity.CreateDate;
+            this.ItemId = entity.ItemId;
+            this.LocatorId = entity.LocatorId;
+            this.LotNo = entity.LotNo;
+            this.Quantity = entity.Quantity;
+            this.SerialNo = entity.SerialNo;
+            this.SOBId = entity.SOBId;
+            this.TransactionDate = entity.TransactionDate;
+            this.TransactionType = entity.TransactionType;
+            this.UpdateBy = entity.UpdateBy;
+            this.UpdateDate = entity.UpdateDate;
+            this.WarehouseId = entity.WarehouseId;
+        }
+
         public long Id { get; set; }
         public long CompanyId { get; set; }
         public long SOBId { get; set; }

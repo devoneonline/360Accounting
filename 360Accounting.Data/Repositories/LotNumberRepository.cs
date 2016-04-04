@@ -20,6 +20,16 @@ namespace _360Accounting.Data.Repositories
             throw new NotImplementedException();
         }
 
+        public bool CheckLotNumAvailability(long companyId, string lotNum, long itemId, long sobId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CheckSerialNumAvailability(long companyId, string lotNum, string serialNum)
+        {
+            throw new NotImplementedException();
+        }
+
         public string Insert(LotNumber entity)
         {
             throw new NotImplementedException();

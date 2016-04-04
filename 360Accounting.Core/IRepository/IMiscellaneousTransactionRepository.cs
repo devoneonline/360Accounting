@@ -10,5 +10,7 @@ namespace _360Accounting.Core.Interfaces
     public interface IMiscellaneousTransactionRepository : IRepository<MiscellaneousTransaction>
     {
         IEnumerable<MiscellaneousTransaction> GetAll(long companyId, long sobId);
+
+        IEnumerable<MiscellaneousTransaction> GetAll(long companyId, long sobId, string type, long codeCombinationId);
     }
 }
