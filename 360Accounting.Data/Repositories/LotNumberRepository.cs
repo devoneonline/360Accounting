@@ -22,12 +22,18 @@ namespace _360Accounting.Data.Repositories
 
         public bool CheckLotNumAvailability(long companyId, string lotNum, long itemId, long sobId)
         {
-            throw new NotImplementedException();
+            if (this.Context.LotNumbers.Where(x => x.CompanyId == companyId && x.LotNo == lotNum && x.SOBId == sobId && x.ItemId == itemId).Count() > 0)
+                return false;
+            else
+                return true;
         }
 
         public bool CheckSerialNumAvailability(long companyId, string lotNum, string serialNum)
         {
-            throw new NotImplementedException();
+            if (this.Context.SerialNumbers.Where(x => x.LotNo == lotNum && x.CompanyId == companyId && x.SerialNo == serialNum).Count() > 0)
+                return false;
+            else
+                return true;
         }
 
         public string Insert(LotNumber entity)

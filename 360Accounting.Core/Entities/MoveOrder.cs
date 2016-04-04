@@ -51,5 +51,6 @@ namespace _360Accounting.Core.Entities
         public long Id { get; set; }
         public string LotNo { get; set; }
         public string SerialNo { get; set; }
+        public long CompanyId { get; set; }
     }
 }
