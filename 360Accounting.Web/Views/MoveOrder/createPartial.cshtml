@@ -1,0 +1,105 @@
+﻿@{
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+
+    var grid = Html.DevExpress().GridView(
+        settings =>
+        {
+            settings.Name = "GridView";
+            settings.KeyFieldName = "Id";
+            settings.CallbackRouteValues = new { Controller = "MoveOrder", Action = "CreatePartial" };
+            //settings.CustomActionRouteValues = new { Controller = "Editing", Action = "ChangeEditModePartial" };
+            settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "MoveOrder", Action = "AddNewPartial" };
+            settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "MoveOrder", Action = "UpdatePartial" };
+            settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "MoveOrder", Action = "DeletePartial" };
+            settings.SettingsEditing.Mode = GridViewEditingMode.EditForm;
+            settings.SettingsBehavior.ConfirmDelete = true;
+            settings.SettingsPopup.EditForm.Width = 600;
+            settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+            //Client side validation is allowed on Batch Edit mode.
+            //settings.ClientSideEvents.BatchEditStartEditing = String.Format("function() {{ PrintHello(); }}");
+
+            settings.CommandColumn.Visible = true;
+            settings.CommandColumn.ShowNewButton = true;
+            settings.CommandColumn.ShowDeleteButton = true;
+            settings.CommandColumn.ShowEditButton = true;
+            
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "ItemId";
+                column.Caption = "Item";
+
+                column.ColumnType = MVCxGridViewColumnType.ComboBox;
+                var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+                comboBoxProperties.DataSource = _360Accounting.Web.Helpers.ItemHelper.GetItemList(SessionHelper.SOBId);
+                comboBoxProperties.TextField = "Text";
+                comboBoxProperties.ValueField = "Value";
+                comboBoxProperties.ValueType = typeof(int);
+            });
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "DateRequired";
+                column.Caption = "Date Required";
+
+                column.ColumnType = MVCxGridViewColumnType.DateEdit;
+                var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
+                //spinEditProperties.DisplayFormatString = "yyyy-MM-dd";
+            });
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "Quantity";
+                column.Caption = "Quantity";
+
+                column.ColumnType = MVCxGridViewColumnType.SpinEdit;
+                var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
+                spinEditProperties.NumberType = SpinEditNumberType.Float;
+                spinEditProperties.DisplayFormatString = "c";
+                spinEditProperties.NumberFormat = SpinEditNumberFormat.Number;
+                spinEditProperties.DisplayFormatInEditMode = true;
+                spinEditProperties.MinValue = 0;
+                spinEditProperties.MaxValue = 100000000;
+                spinEditProperties.SpinButtons.ShowLargeIncrementButtons = true;
+            });
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "WarehouseId";
+                column.Caption = "Warehouse";
+
+                column.ColumnType = MVCxGridViewColumnType.ComboBox;
+                var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+                comboBoxProperties.DataSource = WarehouseHelper.GetWarehousesCombo(SessionHelper.SOBId);
+                comboBoxProperties.TextField = "Text";
+                comboBoxProperties.ValueField = "Value";
+                comboBoxProperties.ValueType = typeof(int);
+            });
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "LocatorId";
+                column.Caption = "Locator";
+
+                column.ColumnType = MVCxGridViewColumnType.ComboBox;
+                var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+                comboBoxProperties.DataSource = LocatorHelper.GetLocators(SessionHelper.SOBId);
+                comboBoxProperties.TextField = "Text";
+                comboBoxProperties.ValueField = "Value";
+                comboBoxProperties.ValueType = typeof(int);
+            });
+            settings.Columns.Add("LotNo", "Lot No.");
+            settings.Columns.Add("SerialNo", "Serial No.");
+        });
+
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnAddNew').click(function () {
+            window.location.href = '@Url.Content("~/MoveOrder/AddNewPartial")';
+        });
+    });
+</script>

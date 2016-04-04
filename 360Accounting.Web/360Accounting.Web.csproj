@@ -179,7 +179,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\MoveOrder\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -187,6 +186,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Common\AuthenticationHelper.cs" />
     <Compile Include="Controllers\InventoryPeriodController.cs" />
+    <Compile Include="Controllers\MiscellaneousTransactionController.cs" />
     <Compile Include="Controllers\MoveOrderController.cs" />
     <Compile Include="Controllers\LocatorController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
@@ -614,6 +614,14 @@
     <Content Include="Views\Locator\Index.cshtml" />
     <Content Include="Views\ReceivablePeriod\Index.cshtml" />
     <Content Include="Views\ReceivablePeriod\_List.cshtml" />
+    <Content Include="Views\MoveOrder\_List.cshtml" />
+    <Content Include="Views\MoveOrder\Create.cshtml" />
+    <Content Include="Views\MoveOrder\createPartial.cshtml" />
+    <Content Include="Views\MoveOrder\Index.cshtml" />
+    <Content Include="Views\MiscellaneousTransaction\_List.cshtml" />
+    <Content Include="Views\MiscellaneousTransaction\Create.cshtml" />
+    <Content Include="Views\MiscellaneousTransaction\createPartial.cshtml" />
+    <Content Include="Views\MiscellaneousTransaction\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

@@ -154,6 +154,29 @@ namespace _360Accounting.Web
             moveOrder.MoveOrderDetail.Remove(moveOrderDetail);
         }
 
+        public static string GetDocNo(long companyId, long sobId)
+        {
+            var currentDocument = service.GetAll(companyId, sobId).OrderByDescending(x => x.Id).FirstOrDefault();
+            string newDocNo = "";
+            if (currentDocument != null)
+            {
+                int outVal;
+                bool isNumeric = int.TryParse(currentDocument.MoveOrderNo, out outVal);
+                if (isNumeric && currentDocument.MoveOrderNo.Length == 8)
+                {
+                    newDocNo = (int.Parse(currentDocument.MoveOrderNo) + 1).ToString();
+                    return newDocNo;
+                }
+            }
+
+            //Create New DocNum..
+            string yearDigit = SessionHelper.MoveOrder.MoveOrderDate.ToString("yy");
+            string monthDigit = SessionHelper.MoveOrder.MoveOrderDate.ToString("MM");
+            string docNo = int.Parse("1").ToString().PadLeft(4, '0');
+
+            return yearDigit + monthDigit + docNo;
+        }
+
         public static void Save(MoveOrderModel moveOrderModel)
         {
             MoveOrder entity = GetEntityByModel(moveOrderModel);

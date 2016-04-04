@@ -1,0 +1,95 @@
+﻿@Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView })
+@Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
+
+@model _360Accounting.Web.Models.MoveOrderModel
+
+<div class="container">
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.CompanyId)
+        @Html.HiddenFor(m => m.SOBId)
+        @Html.HiddenFor(m => m.CreateBy)
+        @Html.HiddenFor(m => m.CreateDate)
+        @Html.HiddenFor(m => m.UpdateBy)
+        @Html.HiddenFor(m => m.UpdateDate)
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="navbar-right">
+                    <input type="button" value="Save" id="btnSave" class="btn btn-default tstyCus-btn" />
+                    <input type="button" value="Cancel" id="btnCancel" class="btn btn-default tstyCus-btn" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MoveOrderNo)
+                    @Html.TextBoxFor(model => model.MoveOrderNo, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MoveOrderDate)
+                    @Html.EditorFor(model => model.MoveOrderDate)
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DateRequired)
+                    @Html.EditorFor(model => model.DateRequired)
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description)
+                    @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                @Html.Partial("CreatePartial", Model.MoveOrderDetail)
+            </div>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        
+        $('#DateRequired').attr('class', 'form-control');
+        $('#MoveOrderDate').attr('class', 'form-control');
+
+        $('#btnCancel').click(function () {
+            if (confirm('Do you want to leave this page?')) {
+                window.location.href = '@Url.Content("~/MoveOrder")';
+            }
+        });
+
+        $('#btnSave').click(function () {
+            var model = {
+                Id: $('#Id').val(),
+                CompanyId: $('#CompanyId').val(),
+                SOBId: $('#SOBId').val(),
+                Description: $('#Description').val(),
+                DateRequired: $('#DateRequired').val(),
+                MoveOrderDate: $('#MoveOrderDate').val(),
+                MoveOrderNo: $('#MoveOrderNo').val()
+            };
+
+            var url = '@Url.Content("~/MoveOrder/Save")';
+            $.post(url, model,
+                function (result) {
+                    if (result.success)
+                        window.location.href = '@Url.Content("~/MoveOrder")';
+                    else
+                        alert(result.message);
+                });
+        });
+    });
+</script>

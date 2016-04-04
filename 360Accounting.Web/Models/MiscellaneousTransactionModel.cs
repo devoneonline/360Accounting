@@ -20,6 +20,11 @@ namespace _360Accounting.Web.Models
 
     public class MiscellaneousTransactionModel : ModelBase
     {
+        public MiscellaneousTransactionModel()
+        {
+ 
+        }
+
         public MiscellaneousTransactionModel(MiscellaneousTransaction entity) 
         {
             this.Id = entity.Id;
@@ -41,6 +46,8 @@ namespace _360Accounting.Web.Models
         [Display(Name = "Account")]
         public long CodeCombinationId { get; set; }
         public string CodeCombinationString { get; set; }
+
+        public List<SelectListItem> CodeCombination { get; set; }
         
         [Required]
         [Display(Name = "Transaction Type")]

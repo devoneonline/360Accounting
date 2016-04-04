@@ -60,7 +60,7 @@ namespace _360Accounting.Web.Controllers
             return View(model);
         }
 
-        public ActionResult ItemPartial(MoveOrderListModel model)
+        public ActionResult MoveOrderPartial(MoveOrderListModel model)
         {
             SessionHelper.SOBId = model.SOBId;
             return PartialView("_List", MoveOrderHelper.GetMoveOrders(model.SOBId));
@@ -75,7 +75,9 @@ namespace _360Accounting.Web.Controllers
             {
                 model = new MoveOrderModel
                 {
-                    SOBId = sobId
+                    SOBId = sobId,
+                    DateRequired = DateTime.Now,
+                    MoveOrderDate = DateTime.Now
                 };
                 model.CompanyId = AuthenticationHelper.User.CompanyId;
                 ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(sobId.ToString()).Name;
@@ -201,7 +203,10 @@ namespace _360Accounting.Web.Controllers
                     SessionHelper.MoveOrder.Description = model.Description;
                     SessionHelper.MoveOrder.Id = model.Id;
                     SessionHelper.MoveOrder.MoveOrderDate = model.MoveOrderDate;
-                    SessionHelper.MoveOrder.MoveOrderNo = model.MoveOrderNo;
+                    if (model.Id > 0)
+                        SessionHelper.MoveOrder.MoveOrderNo = MoveOrderHelper.GetDocNo(model.CompanyId, model.SOBId);
+                    else
+                        SessionHelper.MoveOrder.MoveOrderNo = model.MoveOrderNo;
 
                     MoveOrderHelper.Save(SessionHelper.MoveOrder);
                     SessionHelper.MoveOrder = null;

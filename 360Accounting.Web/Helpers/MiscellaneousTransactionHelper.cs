@@ -112,7 +112,7 @@ namespace _360Accounting.Web
             moveOrder.MiscellaneousTransactionDetail.Add(model);
         }
 
-        public static void UpdateItemDetail(MiscellaneousTransactionDetailModel model)
+        public static void UpdateMiscellaneousTransactionDetail(MiscellaneousTransactionDetailModel model)
         {
             MiscellaneousTransactionModel miscellaneousTransaction = SessionHelper.MiscellaneousTransaction;
 
@@ -131,7 +131,7 @@ namespace _360Accounting.Web
             miscellaneousTransaction.MiscellaneousTransactionDetail.FirstOrDefault(x => x.Id == model.Id).WarehouseId = model.WarehouseId;
         }
 
-        public static void DeleteItemDetail(MiscellaneousTransactionDetailModel model)
+        public static void DeleteMiscellaneousTransactionDetail(MiscellaneousTransactionDetailModel model)
         {
             MiscellaneousTransactionModel miscellaneousTransaction = SessionHelper.MiscellaneousTransaction;
             MiscellaneousTransactionDetailModel miscellaneousTransactionDetail = miscellaneousTransaction.MiscellaneousTransactionDetail.FirstOrDefault(x => x.Id == model.Id);

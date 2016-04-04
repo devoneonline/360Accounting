@@ -1,0 +1,78 @@
+﻿@Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView })
+@Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
+
+@model _360Accounting.Web.Models.MiscellaneousTransactionModel
+
+<div class="container">
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.CompanyId)
+        @Html.HiddenFor(m => m.SOBId)
+        @Html.HiddenFor(m => m.CreateBy)
+        @Html.HiddenFor(m => m.CreateDate)
+        @Html.HiddenFor(m => m.UpdateBy)
+        @Html.HiddenFor(m => m.UpdateDate)
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="navbar-right">
+                    <input type="button" value="Save" id="btnSave" class="btn btn-default tstyCus-btn" />
+                    <input type="button" value="Cancel" id="btnCancel" class="btn btn-default tstyCus-btn" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group customDropDownWrapper">
+                    @Html.LabelFor(model => model.TransactionType)
+                    @Html.DropDownListFor(model => model.TransactionType, new List<SelectListItem>{
+                        new SelectListItem{ Text = "Receipt", Value = "Receipt"},
+                        new SelectListItem{Text = "Issue", Value = "Issue"}
+                    }, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <div class="form-group customDropDownWrapper">
+                    @Html.LabelFor(model => model.CodeCombinationId)
+                    @Html.DropDownListFor(model => model.CodeCombinationId, Model.CodeCombination, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                @Html.Partial("CreatePartial", Model.MiscellaneousTransactionDetail)
+            </div>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        
+        $('#btnCancel').click(function () {
+            if (confirm('Do you want to leave this page?')) {
+                window.location.href = '@Url.Content("~/MiscellaneousTransaction")';
+            }
+        });
+
+        $('#btnSave').click(function () {
+            var model = {
+                Id: $('#Id').val(),
+                CompanyId: $('#CompanyId').val(),
+                SOBId: $('#SOBId').val(),
+                CodeCombinationId: $('#CodeCombinationId').val(),
+                TransactionType: $('#TransactionType').val()
+            };
+
+            var url = '@Url.Content("~/MiscellaneousTransaction/Save")';
+            $.post(url, model,
+                function (result) {
+                    if (result.success)
+                        window.location.href = '@Url.Content("~/MiscellaneousTransaction")';
+                    else
+                        alert(result.message);
+                });
+        });
+    });
+</script>
