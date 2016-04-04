@@ -44,7 +44,6 @@ namespace _360Accounting.Web.Helpers
             entity.DefaultBuyer = model.DefaultBuyer;
             entity.Description = model.Description;
             entity.Id = model.Id;
-            entity.ItemCode = model.ItemCode;
             entity.ItemName = model.ItemName;
             entity.LotControl = model.LotControl;
             entity.Orderable = model.Orderable;

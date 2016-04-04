@@ -342,7 +342,7 @@ namespace _360Accounting.Web.Controllers
 
         public JsonResult CurrencyList(long sobId)
         {
-            List<SelectListItem> list = CurrencyHelper.GetCurrencyList(sobId)
+            List<SelectListItem> list = CurrencyHelper.GetCurrencies(sobId)
                     .Select(x => new SelectListItem
                     {
                         Text = x.Name,

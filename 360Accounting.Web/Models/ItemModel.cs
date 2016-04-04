@@ -29,7 +29,6 @@ namespace _360Accounting.Web.Models
             this.DefaultBuyer = entity.DefaultBuyer;
             this.Description = entity.Description;
             this.Id = entity.Id;
-            this.ItemCode = entity.ItemCode;
             this.ItemName = entity.ItemName;
             this.LotControl = entity.LotControl;
             this.Orderable = entity.Orderable;
@@ -55,15 +54,15 @@ namespace _360Accounting.Web.Models
         public long SOBId { get; set; }
 
         [Required]
-        [Display(Name = "Sales Code Combination")]
+        [Display(Name = "COGS Code Combination")]
         public long COGSCodeCombinationId { get; set; }
+
+        public string COGSCodeCombinationString { get; set; }
+        public string SalesCodeCombinationString { get; set; }
 
         [Required]
         [Display(Name = "Sales Code Combination")]
         public long SalesCodeCombinationId { get; set; }
-
-        [Display(Name = "Item Code")]
-        public string ItemCode { get; set; }
 
         [Required]
         [MaxLength(30, ErrorMessage = "Name should not exceed 50 characters.")]
@@ -103,6 +102,17 @@ namespace _360Accounting.Web.Models
                 List<SelectListItem> list = new List<SelectListItem>();
                 list.Add(new SelectListItem { Text = "Standard", Value = "Standard" });
                 list.Add(new SelectListItem { Text = "Direct", Value = "Direct" });
+                return list;
+            }
+        }
+
+        public List<SelectListItem> StatusList
+        {
+            get
+            {
+                List<SelectListItem> list = new List<SelectListItem>();
+                list.Add(new SelectListItem { Text = "Active", Value = "Active" });
+                list.Add(new SelectListItem { Text = "Inactive", Value = "Inactive" });
                 return list;
             }
         }

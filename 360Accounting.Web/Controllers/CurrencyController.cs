@@ -65,13 +65,13 @@ namespace _360Accounting.Web.Controllers
         {
             CurrencyListModel model = new CurrencyListModel();
             model.SOBId = sobId;
-            model.Currencies = CurrencyHelper.GetCurrencyList(sobId);
+            model.Currencies = CurrencyHelper.GetCurrencies(sobId);
             return PartialView("_List", model);
         }
 
         public ActionResult CurrencyListPartial(long sobId)
         {
-            return PartialView("_List", CurrencyHelper.GetCurrencyList(sobId));
+            return PartialView("_List", CurrencyHelper.GetCurrencies(sobId));
         }
     }
 }

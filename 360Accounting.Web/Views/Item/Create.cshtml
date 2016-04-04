@@ -24,70 +24,59 @@
         <div class="row">
             <div class="col-lg-3">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.ItemCode)
-                    @Html.TextBoxFor(model => model.ItemCode, new { @class = "form-control" })
-                </div>
-            </div>
-
-            <div class="col-lg-3">
-                <div class="form-group">
                     @Html.LabelFor(model => model.ItemName)
                     @Html.TextBoxFor(model => model.ItemName, new { @class = "form-control" })
                 </div>
             </div>
 
-            <div class="col-lg-3">
-                <div class="form-group">
+            <div class="col-lg-2">
+                <div class="form-group customDropDownWrapper">
                     @Html.LabelFor(model => model.Status)
-                    @Html.DropDownListFor(model => model.Status,
-                    new List<SelectListItem> {
-                        new SelectListItem{
-                            Text = "Active", Value = "Active"
-                        },
-                        new SelectListItem{
-                            Text = "Inactive", Value = "Inactive"
-                        } }, new { @class = "form-control" })
+                    @Html.DropDownListFor(model => model.Status, Model.StatusList, new { @class = "form-control" })
                 </div>
             </div>
 
-            <div class="col-lg-3">
+            <div class="col-lg-2">
+                <div class="form-group customDropDownWrapper">
+                    @Html.LabelFor(model => model.ReceiptRouting)
+                    @Html.DropDownListFor(model => model.ReceiptRouting, Model.ReceiptRoutingList, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-5">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Description)
-                    @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-3">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.COGSCodeCombinationId)
-                    @Html.DropDownListFor(model => model.COGSCodeCombinationId, Model.COGSCodeCombination, new { @class = "form-control" })
+                @Html.LabelFor(m => m.COGSCodeCombinationId)
+                <div class="form-group input-group">
+                    @Html.HiddenFor(m => m.COGSCodeCombinationId)
+                    @Html.TextBoxFor(m => m.COGSCodeCombinationString, new { @class = "form-control AccountLookup", @readonly = "readonly", @placeholder = "Click to get account" })
+                    <span class="input-group-addon"><a href="#" class="AccountLookup" tabindex="-1" id="COGSCodeCombinationString"><i class="fa fa-search"></i></a></span>
                 </div>
             </div>
 
             <div class="col-lg-3">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.SalesCodeCombinationId)
-                    @Html.DropDownListFor(model => model.SalesCodeCombinationId, Model.SalesCodeCombination, new { @class = "form-control" })
+                @Html.LabelFor(m => m.SalesCodeCombinationId)
+                <div class="form-group input-group">
+                    @Html.HiddenFor(m => m.SalesCodeCombinationId)
+                    @Html.TextBoxFor(m => m.SalesCodeCombinationString, new { @class = "form-control AccountLookup", @readonly = "readonly", @placeholder = "Click to get account" })
+                    <span class="input-group-addon"><a href="#" class="AccountLookup" tabindex="-1" id="SalesCodeCombinationString"><i class="fa fa-search"></i></a></span>
                 </div>
             </div>
 
-            <div class="col-lg-3">
+            <div class="col-lg-3 col-lg-offset-1">
                 <div class="form-group">
                     @Html.LabelFor(model => model.DefaultBuyer)
                     @Html.TextBoxFor(model => model.DefaultBuyer, new { @class = "form-control" })
                 </div>
             </div>
-
-            <div class="col-lg-3">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ReceiptRouting)
-                    @Html.DropDownListFor(model => model.ReceiptRouting, Model.ReceiptRoutingList, new { @class = "form-control" })
-                </div>
-            </div>
         </div>
         <div class="row">
-            <div class="col-lg-2">
+            <div class="col-lg-3">
                 <div class="form-group">
                     @Html.LabelFor(model => model.LotControl)
                     @Html.CheckBoxFor(model => model.LotControl)
@@ -133,6 +122,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $.noConflict();
         $('#btnCancel').click(function () {
             if (confirm('Do you want to leave this page?')) {
                 window.location.href = '@Url.Content("~/Item")';

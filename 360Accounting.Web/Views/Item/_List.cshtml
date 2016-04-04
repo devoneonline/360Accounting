@@ -2,49 +2,48 @@
             new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
             new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
 
-var grid = Html.DevExpress().GridView(settings =>
-{
-    settings.Name = "Item";
-    settings.Theme = "Office2010Black";
-    settings.KeyFieldName = "Id";
-
-    settings.CallbackRouteValues = new { Controller = "Item", Action = "ItemPartial" };
-
-    settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
-    settings.SettingsBehavior.ConfirmDelete = true;
-
-    settings.SettingsPager.Visible = true;
-    settings.Settings.ShowGroupPanel = false;
-    settings.Settings.ShowFilterRow = false;
-    settings.SettingsBehavior.AllowSort = false;
-    settings.SettingsBehavior.AllowSelectByRowClick = true;
-
-    settings.Columns.Add(column =>
+    var grid = Html.DevExpress().GridView(settings =>
     {
-        column.SetDataItemTemplateContent(c =>
-        {
-            ViewContext.Writer.Write(
-                Html.Raw("<a href='" + Url.Content("~/Item/Edit?Id=") + DataBinder.Eval(c.DataItem, "Id") + "&sobId=" + DataBinder.Eval(c.DataItem, "SOBId") + "'><i class='fa fa-edit'></i></a>")
-                    + "&nbsp;" +
-                Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/Item/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
-            );
-        });
+        settings.Name = "Item";
+        settings.Theme = "Office2010Black";
+        settings.KeyFieldName = "Id";
 
-        column.Settings.AllowDragDrop = DefaultBoolean.False;
-        column.Settings.AllowSort = DefaultBoolean.False;
-        column.Width = 70;
+        settings.CallbackRouteValues = new { Controller = "Item", Action = "ItemPartial" };
+
+        settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = false;
+        settings.Settings.ShowFilterRow = false;
+        settings.SettingsBehavior.AllowSort = false;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.Columns.Add(column =>
+        {
+            column.SetDataItemTemplateContent(c =>
+            {
+                ViewContext.Writer.Write(
+                    Html.Raw("<a href='" + Url.Content("~/Item/Edit?Id=") + DataBinder.Eval(c.DataItem, "Id") + "&sobId=" + DataBinder.Eval(c.DataItem, "SOBId") + "'><i class='fa fa-edit'></i></a>")
+                        + "&nbsp;" +
+                    Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/Item/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
+                );
+            });
+
+            column.Settings.AllowDragDrop = DefaultBoolean.False;
+            column.Settings.AllowSort = DefaultBoolean.False;
+            column.Width = 70;
+        });
+        settings.Columns.Add("ItemName", "Item Name");
+        settings.Columns.Add("Description");
+        settings.Columns.Add("Status");
+        settings.Columns.Add("DefaultBuyer", "Default Buyer");
+        settings.Columns.Add("ReceiptRouting", "Receipt Routing");
     });
-    settings.Columns.Add("ItemCode", "Item Code");
-    settings.Columns.Add("ItemName", "Item Name");
-    settings.Columns.Add("Description");
-    settings.Columns.Add("Status");
-    settings.Columns.Add("DefaultBuyer", "Default Buyer");
-    settings.Columns.Add("ReceiptRouting", "Receipt Routing");
-});
-if (ViewData["EditError"] != null)
-{
-    grid.SetEditErrorText((string)ViewData["EditError"]);
-}
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
 }
 @grid.Bind(Model).GetHtml()
 

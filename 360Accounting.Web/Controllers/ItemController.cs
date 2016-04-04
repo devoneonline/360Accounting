@@ -26,7 +26,7 @@ namespace _360Accounting.Web.Controllers
         
         public ActionResult Delete(string id)
         {
-            PaymentHelper.Delete(id);
+            ItemHelper.Delete(id);
             return RedirectToAction("Index");
         }
 
@@ -225,7 +225,6 @@ namespace _360Accounting.Web.Controllers
                     SessionHelper.Item.DefaultBuyer = model.DefaultBuyer;
                     SessionHelper.Item.Description = model.Description;
                     SessionHelper.Item.Id = model.Id;
-                    SessionHelper.Item.ItemCode = model.ItemCode;
                     SessionHelper.Item.ItemName = model.ItemName;
                     SessionHelper.Item.LotControl = model.LotControl;
                     SessionHelper.Item.Orderable = model.Orderable;
