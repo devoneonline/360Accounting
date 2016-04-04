@@ -402,7 +402,7 @@ namespace _360Accounting.Web.Controllers
 
             if (model.Currencies == null && model.SetOfBooks.Any())
             {
-                model.Currencies = CurrencyHelper.GetCurrencyList(Convert.ToInt32(model.SetOfBooks.First().Value))
+                model.Currencies = CurrencyHelper.GetCurrencies(Convert.ToInt32(model.SetOfBooks.First().Value))
                     .Select(x => new SelectListItem
                     {
                         Text = x.Name,
@@ -591,7 +591,7 @@ namespace _360Accounting.Web.Controllers
 
         public JsonResult CurrencyList(long sobId)
         {
-            List<SelectListItem> list = CurrencyHelper.GetCurrencyList(sobId)
+            List<SelectListItem> list = CurrencyHelper.GetCurrencies(sobId)
                     .Select(x => new SelectListItem
                     {
                         Text = x.Name,

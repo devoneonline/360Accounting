@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace _360Accounting.Web
 {
@@ -68,10 +69,20 @@ namespace _360Accounting.Web
             service.Delete(id, AuthenticationHelper.User.CompanyId);
         }
 
-        public static List<CurrencyViewModel> GetCurrencyList(long sobId)
+        public static List<CurrencyViewModel> GetCurrencies(long sobId)
         {
             return service.GetAll(AuthenticationHelper.User.CompanyId, sobId)
                 .Select(x => new CurrencyViewModel(x)).ToList();
+        }
+
+        public static List<SelectListItem> GetCurrencyList(long sobId)
+        {
+            List<SelectListItem> currencyList = GetCurrencies(sobId).Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.Id.ToString()
+            }).ToList();
+            return currencyList;
         }
     }
 }

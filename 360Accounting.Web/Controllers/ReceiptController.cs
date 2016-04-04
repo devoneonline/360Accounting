@@ -255,26 +255,26 @@ namespace _360Accounting.Web.Controllers
             return Json(returnData);
         }
 
+        public JsonResult CurrencyList(long sobId)
+        {
+            List<SelectListItem> currencyList = CurrencyHelper.GetCurrencyList(sobId);
+            return Json(currencyList, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult PeriodList(long sobId)
         {
-            List<SelectListItem> periodList = CalendarHelper.GetCalendars(sobId)
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.PeriodName,
-                        Value = x.Id.ToString()
-                    }).ToList();
+            List<SelectListItem> periodList = ReceivablePeriodHelper.GetPeriodList(sobId);
             return Json(periodList, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult CustomerList(long periodId)
         {
-            CalendarViewModel calendar = CalendarHelper.GetCalendar(periodId.ToString());
-            List<SelectListItem> customerList = CustomerHelper.GetCustomers(calendar.StartDate, calendar.EndDate)
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.CustomerName,
-                        Value = x.Id.ToString()
-                    }).ToList();
+            SessionHelper.Calendar = CalendarHelper.GetCalendar(PayablePeriodHelper.GetPayablePeriod(periodId.ToString()).CalendarId.ToString());
+            List<SelectListItem> customerList = CustomerHelper.GetCustomers(SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate).Select(x => new SelectListItem
+            {
+                Text = x.CustomerName,
+                Value = x.Id.ToString()
+            }).ToList();
             return Json(customerList, JsonRequestBehavior.AllowGet);
         }
 
