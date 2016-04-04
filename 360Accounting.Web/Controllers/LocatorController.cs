@@ -18,12 +18,7 @@ namespace _360Accounting.Web.Controllers
 {
     [Authorize]
     public class LocatorController : Controller
-    {
-        public LocatorController()
-        {
-
-        }
-        
+    {   
         public ActionResult Delete(string id)
         {
             LocatorHelper.Delete(id);

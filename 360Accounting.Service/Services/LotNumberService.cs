@@ -20,42 +20,42 @@ namespace _360Accounting.Service
 
         public LotNumber GetSingle(string id, long companyId)
         {
-            throw new NotImplementedException();
+            return this.repository.GetSingle(id, companyId);
         }
 
         public IEnumerable<LotNumber> GetAll(long companyId)
         {
-            throw new NotImplementedException();
+            return this.repository.GetAll(companyId);
         }
 
         public bool CheckLotNumAvailability(long companyId, string lotNum, long itemId, long sobId)
         {
-            throw new NotImplementedException();
+            return this.repository.CheckLotNumAvailability(companyId, lotNum, itemId, sobId);
         }
 
         public bool CheckSerialNumAvailability(long companyId, string lotNum, string serialNum)
         {
-            throw new NotImplementedException();
+            return this.repository.CheckSerialNumAvailability(companyId, lotNum, serialNum);
         }
 
         public string Insert(LotNumber entity)
         {
-            throw new NotImplementedException();
+            return this.repository.Insert(entity);
         }
 
         public string Update(LotNumber entity)
         {
-            throw new NotImplementedException();
+            return this.repository.Update(entity);
         }
 
         public void Delete(string id, long companyId)
         {
-            throw new NotImplementedException();
+            this.repository.Delete(id, companyId);
         }
 
         public int Count(long companyId)
         {
-            throw new NotImplementedException();
+            return this.repository.Count(companyId);
         }
     }
 }
