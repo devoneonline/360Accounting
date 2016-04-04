@@ -20,12 +20,12 @@ namespace _360Accounting.Service
 
         public LotNumber GetSingle(string id, long companyId)
         {
-            throw new NotImplementedException();
+            return this.repository.GetSingle(id, companyId);
         }
 
         public IEnumerable<LotNumber> GetAll(long companyId)
         {
-            throw new NotImplementedException();
+            return this.repository.GetAll(companyId);
         }
 
         public bool CheckLotNumAvailability(long companyId, string lotNum, long itemId, long sobId)
