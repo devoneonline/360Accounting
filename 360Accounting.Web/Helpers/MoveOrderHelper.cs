@@ -198,7 +198,17 @@ namespace _360Accounting.Web
                         foreach (var item in tobeDeleted)
                         {
                             service.Delete(item.Id);
-                            //Delete Lot and SerialNumber
+                            IEnumerable<LotNumber> lotNum = lotNumService.CheckLotNumAvailability(AuthenticationHelper.User.CompanyId, item.LotNo, item.ItemId, SessionHelper.SOBId);
+                            if (lotNum.Any())
+                            {
+                                LotNumberHelper.Delete(lotNum.FirstOrDefault().Id.ToString());
+                            }
+
+                            IEnumerable<SerialNumber> serialNum = lotNumService.CheckSerialNumAvailability(AuthenticationHelper.User.CompanyId, item.LotNo, item.SerialNo);
+                            if (serialNum.Any())
+                            {
+                                LotNumberHelper.DeleteSerialNumber(serialNum.FirstOrDefault().Id.ToString());
+                            }
                         }
                         savedDetail = GetMoveOrderLines(result);
                     }
@@ -208,17 +218,39 @@ namespace _360Accounting.Web
                         MoveOrderDetail detailEntity = GetEntityByModel(detail, savedDetail.Count());
                         if (detailEntity.IsValid())
                         {
-                            detailEntity.ItemId = Convert.ToInt64(result);
+                            detailEntity.MoveOrderId = Convert.ToInt64(result);
                             if (savedDetail.Count() > 0)
                             {
                                 detailEntity.Id = savedDetail.FirstOrDefault().Id;
                                 savedDetail.Remove(savedDetail.FirstOrDefault(rec => rec.Id == detailEntity.Id));
                                 service.Update(detailEntity);
-                                //Update Lot and Serial Number
+                                IEnumerable<LotNumber> lotNum = lotNumService.CheckLotNumAvailability(AuthenticationHelper.User.CompanyId, detailEntity.LotNo, detailEntity.ItemId, SessionHelper.SOBId);
+                                if (lotNum.Any())
+                                {
+                                    LotNumberHelper.Update(lotNum.FirstOrDefault());
+                                }
+
+                                IEnumerable<SerialNumber> serialNum = lotNumService.CheckSerialNumAvailability(AuthenticationHelper.User.CompanyId, detailEntity.LotNo, detailEntity.SerialNo);
+                                if (serialNum.Any())
+                                {
+                                    LotNumberHelper.UpdateSerialNumber(serialNum.FirstOrDefault());
+                                }
                             }
                             else
+                            {
                                 service.Insert(detailEntity);
-                                //Insert Lot and Serial Number
+                                IEnumerable<LotNumber> lotNum = lotNumService.CheckLotNumAvailability(AuthenticationHelper.User.CompanyId, detailEntity.LotNo, detailEntity.ItemId, SessionHelper.SOBId);
+                                if (!lotNum.Any())
+                                {
+                                    LotNumberHelper.Insert(new MoveOrderDetailModel(detailEntity));
+                                }
+
+                                IEnumerable<SerialNumber> serialNum = lotNumService.CheckSerialNumAvailability(AuthenticationHelper.User.CompanyId, detailEntity.LotNo, detailEntity.SerialNo);
+                                if (!serialNum.Any())
+                                {
+                                    LotNumberHelper.InsertSerialNumber(new MoveOrderDetailModel(detailEntity));
+                                }
+                            }
                         }
                     }
                 }

@@ -12,6 +12,6 @@ namespace _360Accounting.Core
     {
         IEnumerable<MiscellaneousTransaction> GetAll(long companyId, long sobId);
 
-        IEnumerable<MiscellaneousTransaction> GetAll(long companyId, long sobId, string type, long codeCombinationId);
+        IEnumerable<MiscellaneousTransaction> GetAll(long companyId, long sobId, string type, long codeCombinationId, DateTime transDate);
     }
 }

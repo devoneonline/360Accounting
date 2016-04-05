@@ -50,9 +50,10 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Edit(string id, long sobId)
         {
             MiscellaneousTransactionModel model = MiscellaneousTransactionHelper.GetMiscellaneousTransaction(id);
+            SessionHelper.MiscellaneousTransaction = model;
             SessionHelper.SOBId = model.SOBId;
 
-            model.MiscellaneousTransactionDetail = MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(model.SOBId, model.TransactionType, model.CodeCombinationId).ToList();
+            model.MiscellaneousTransactionDetail = MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(model.SOBId, model.TransactionType, model.CodeCombinationId, model.TransactionDate).ToList();
             model.SOBId = sobId;
             model.CompanyId = AuthenticationHelper.User.CompanyId;
 
@@ -64,7 +65,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Index(MiscellaneousTransactionListModel model)
         {
-            SessionHelper.Item = null;
+            SessionHelper.MiscellaneousTransaction = null;
             if (model.SetOfBooks == null)
             {
                 model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()
@@ -96,7 +97,7 @@ namespace _360Accounting.Web.Controllers
                 model = new MiscellaneousTransactionModel
                 {
                     SOBId = sobId,
-                    CodeCombination = getCodeCombinationList(model.SOBId),
+                    CodeCombination = getCodeCombinationList(sobId),
                     CompanyId = AuthenticationHelper.User.CompanyId,
                     TransactionDate = DateTime.Now
                 };
@@ -108,13 +109,20 @@ namespace _360Accounting.Web.Controllers
                 if (SessionHelper.MiscellaneousTransaction.MiscellaneousTransactionDetail == null)
                     SessionHelper.MiscellaneousTransaction.MiscellaneousTransactionDetail = new List<MiscellaneousTransactionDetailModel>();
             }
+            else
+                model.CodeCombination = getCodeCombinationList(sobId);
             
             return View(model);
         }
-
-        public ActionResult CreatePartial(long sobId, string type, long codeCombinationId)
+        
+        public ActionResult CreatePartial()
         {
-            return PartialView("createPartial", MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(sobId, type, codeCombinationId));
+            return PartialView("createPartial", MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(SessionHelper.SOBId, SessionHelper.MiscellaneousTransaction.TransactionType, SessionHelper.MiscellaneousTransaction.CodeCombinationId, SessionHelper.MiscellaneousTransaction.TransactionDate));
+        }
+
+        public ActionResult CreatePartialClient(string transactionType, long codeCombinationId, DateTime transactionDate)
+        {
+            return PartialView("createPartial", MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(SessionHelper.SOBId, transactionType, codeCombinationId, transactionDate));
         }
 
         [HttpPost, ValidateInput(false)]
@@ -125,7 +133,29 @@ namespace _360Accounting.Web.Controllers
                 try
                 {
                     bool validated = false;
-                    
+                    if (SessionHelper.MiscellaneousTransaction != null)
+                    {
+                        if (SessionHelper.MiscellaneousTransaction.MiscellaneousTransactionDetail.Any(rec => rec.LotNo == model.LotNo && rec.ItemId == model.ItemId))
+                        {
+                            ViewData["EditError"] = "Lot Number must be unique";
+                            return PartialView("createPartial", MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(model.SOBId, model.TransactionType, model.CodeCombinationId, model.TransactionDate));
+                        }
+                        if (SessionHelper.MiscellaneousTransaction.MiscellaneousTransactionDetail.Any(rec => rec.LotNo == model.LotNo && rec.SerialNo == model.SerialNo))
+                        {
+                            ViewData["EditError"] = "Serial Number must be unique";
+                            return PartialView("createPartial", MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(model.SOBId, model.TransactionType, model.CodeCombinationId, model.TransactionDate));
+                        }
+                    }
+                    if (LotNumberHelper.CheckLotNumAvailability(model.LotNo, model.ItemId, SessionHelper.SOBId).Any())
+                    {
+                        ViewData["EditError"] = "Lot Number must be unique";
+                        return PartialView("createPartial", MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(model.SOBId, model.TransactionType, model.CodeCombinationId, model.TransactionDate));
+                    }
+                    if (LotNumberHelper.CheckSerialNumAvailability(model.LotNo, model.SerialNo).Any())
+                    {
+                        ViewData["EditError"] = "Serial Number must be unique";
+                        return PartialView("createPartial", MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(model.SOBId, model.TransactionType, model.CodeCombinationId, model.TransactionDate));
+                    }
                     if (SessionHelper.MiscellaneousTransaction != null)
                     {
                         model.Id = SessionHelper.MiscellaneousTransaction.MiscellaneousTransactionDetail.Count() + 1;
@@ -135,7 +165,9 @@ namespace _360Accounting.Web.Controllers
                         model.Id = 1;
 
                     if (validated)
+                    {
                         MiscellaneousTransactionHelper.InsertMiscellaneousTransactionDetail(model);
+                    }
                 }
                 catch (Exception e)
                 {
@@ -144,7 +176,7 @@ namespace _360Accounting.Web.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("createPartial", MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(model.SOBId, model.TransactionType, model.CodeCombinationId));
+            return PartialView("createPartial", MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(model.SOBId, model.TransactionType, model.CodeCombinationId, model.TransactionDate));
         }
 
         [HttpPost, ValidateInput(false)]
@@ -154,6 +186,29 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
+                    if (SessionHelper.MiscellaneousTransaction != null)
+                    {
+                        if (SessionHelper.MiscellaneousTransaction.MiscellaneousTransactionDetail.Any(rec => rec.LotNo == model.LotNo && rec.ItemId == model.ItemId))
+                        {
+                            ViewData["EditError"] = "Lot Number must be unique";
+                            return PartialView("createPartial", MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(model.SOBId, model.TransactionType, model.CodeCombinationId, model.TransactionDate));
+                        }
+                        if (SessionHelper.MiscellaneousTransaction.MiscellaneousTransactionDetail.Any(rec => rec.LotNo == model.LotNo && rec.SerialNo == model.SerialNo))
+                        {
+                            ViewData["EditError"] = "Serial Number must be unique";
+                            return PartialView("createPartial", MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(model.SOBId, model.TransactionType, model.CodeCombinationId, model.TransactionDate));
+                        }
+                    }
+                    if (LotNumberHelper.CheckLotNumAvailability(model.LotNo, model.ItemId, SessionHelper.SOBId).Any())
+                    {
+                        ViewData["EditError"] = "Lot Number must be unique";
+                        return PartialView("createPartial", MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(model.SOBId, model.TransactionType, model.CodeCombinationId, model.TransactionDate));
+                    }
+                    if (LotNumberHelper.CheckSerialNumAvailability(model.LotNo, model.SerialNo).Any())
+                    {
+                        ViewData["EditError"] = "Serial Number must be unique";
+                        return PartialView("createPartial", MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(model.SOBId, model.TransactionType, model.CodeCombinationId, model.TransactionDate));
+                    }
                     MiscellaneousTransactionHelper.UpdateMiscellaneousTransactionDetail(model);
                 }
                 catch (Exception e)
@@ -163,7 +218,7 @@ namespace _360Accounting.Web.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("createPartial", MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(model.SOBId, model.TransactionType, model.CodeCombinationId));
+            return PartialView("createPartial", MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(model.SOBId, model.TransactionType, model.CodeCombinationId, model.TransactionDate));
         }
 
         public ActionResult DeletePartial(MiscellaneousTransactionDetailModel model)
@@ -175,7 +230,7 @@ namespace _360Accounting.Web.Controllers
                     MiscellaneousTransactionModel MiscellaneousTransaction = SessionHelper.MiscellaneousTransaction;
                     MiscellaneousTransactionHelper.DeleteMiscellaneousTransactionDetail(model);
                     SessionHelper.MiscellaneousTransaction = MiscellaneousTransaction;
-                    IList<MiscellaneousTransactionDetailModel> MiscellaneousTransactionDetail = MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(model.SOBId, model.TransactionType, model.CodeCombinationId);
+                    IList<MiscellaneousTransactionDetailModel> MiscellaneousTransactionDetail = MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(model.SOBId, model.TransactionType, model.CodeCombinationId, model.TransactionDate);
                     return PartialView("createPartial", MiscellaneousTransactionDetail);
                 }
                 catch (Exception e)
@@ -202,6 +257,16 @@ namespace _360Accounting.Web.Controllers
                     SessionHelper.MiscellaneousTransaction.SOBId = model.SOBId;
                     SessionHelper.MiscellaneousTransaction.TransactionDate = model.TransactionDate;
                     SessionHelper.MiscellaneousTransaction.TransactionType = model.TransactionType;
+
+                    //Setting the parent fields..
+                    foreach (var item in SessionHelper.MiscellaneousTransaction.MiscellaneousTransactionDetail)
+                    {
+                        item.TransactionType = model.TransactionType;
+                        item.CodeCombinationId = model.CodeCombinationId;
+                        item.CompanyId = AuthenticationHelper.User.CompanyId;
+                        item.SOBId = SessionHelper.SOBId;
+                        item.TransactionDate = model.TransactionDate;
+                    }
 
                     MiscellaneousTransactionHelper.Save(SessionHelper.MiscellaneousTransaction);
                     SessionHelper.MiscellaneousTransaction = null;

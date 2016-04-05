@@ -23,17 +23,22 @@ namespace _360Accounting.Service
             return this.repository.GetSingle(id, companyId);
         }
 
+        public SerialNumber GetSingleSerialNum(string id, long companyId)
+        {
+            return this.repository.GetSingleSerialNum(id, companyId);
+        }
+
         public IEnumerable<LotNumber> GetAll(long companyId)
         {
             return this.repository.GetAll(companyId);
         }
 
-        public bool CheckLotNumAvailability(long companyId, string lotNum, long itemId, long sobId)
+        public IEnumerable<LotNumber> CheckLotNumAvailability(long companyId, string lotNum, long itemId, long sobId)
         {
             return this.repository.CheckLotNumAvailability(companyId, lotNum, itemId, sobId);
         }
 
-        public bool CheckSerialNumAvailability(long companyId, string lotNum, string serialNum)
+        public IEnumerable<SerialNumber> CheckSerialNumAvailability(long companyId, string lotNum, string serialNum)
         {
             return this.repository.CheckSerialNumAvailability(companyId, lotNum, serialNum);
         }
@@ -51,6 +56,21 @@ namespace _360Accounting.Service
         public void Delete(string id, long companyId)
         {
             this.repository.Delete(id, companyId);
+        }
+
+        public string InsertSerialNum(SerialNumber entity)
+        {
+            return this.repository.InsertSerialNum(entity);
+        }
+
+        public string UpdateSerialNum(SerialNumber entity)
+        {
+            return this.repository.UpdateSerialNum(entity);
+        }
+
+        public void DeleteSerialNum(string id, long companyId)
+        {
+            this.repository.DeleteSerialNum(id, companyId);
         }
 
         public int Count(long companyId)

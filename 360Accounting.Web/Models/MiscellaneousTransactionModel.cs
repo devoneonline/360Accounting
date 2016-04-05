@@ -36,6 +36,7 @@ namespace _360Accounting.Web.Models
             this.TransactionType = entity.TransactionType;
             this.UpdateBy = entity.UpdateBy;
             this.UpdateDate = entity.UpdateDate;
+            this.CodeCombinationId = entity.CodeCombinationId;
         }
 
         public long Id { get; set; }
@@ -64,6 +65,11 @@ namespace _360Accounting.Web.Models
 
     public class MiscellaneousTransactionDetailModel : ModelBase
     {
+        public MiscellaneousTransactionDetailModel()
+        {
+
+        }
+
         public MiscellaneousTransactionDetailModel(MiscellaneousTransaction entity) 
         {
             this.Id = entity.Id;
@@ -82,6 +88,7 @@ namespace _360Accounting.Web.Models
             this.UpdateBy = entity.UpdateBy;
             this.UpdateDate = entity.UpdateDate;
             this.WarehouseId = entity.WarehouseId;
+            this.CodeCombinationId = entity.CodeCombinationId;
         }
 
         public long Id { get; set; }

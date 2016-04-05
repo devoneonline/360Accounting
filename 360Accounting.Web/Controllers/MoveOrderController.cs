@@ -106,12 +106,25 @@ namespace _360Accounting.Web.Controllers
                     //Daterequired validation..
                     //Warehouse validation..
                     //Locator validation..
-                    if (!LotNumberHelper.CheckLotNumAvailability(model.LotNo, model.ItemId, SessionHelper.SOBId))
+                    if (SessionHelper.MoveOrder != null)
+                    {
+                        if (SessionHelper.MoveOrder.MoveOrderDetail.Any(rec => rec.LotNo == model.LotNo && rec.ItemId == model.ItemId))
+                        {
+                            ViewData["EditError"] = "Lot Number must be unique";
+                            return PartialView("createPartial", MoveOrderHelper.GetMoveOrderLines());
+                        }
+                        if (SessionHelper.MoveOrder.MoveOrderDetail.Any(rec => rec.LotNo == model.LotNo && rec.SerialNo == model.SerialNo))
+                        {
+                            ViewData["EditError"] = "Serial Number must be unique";
+                            return PartialView("createPartial", MoveOrderHelper.GetMoveOrderLines());
+                        }
+                    }
+                    if (LotNumberHelper.CheckLotNumAvailability(model.LotNo, model.ItemId, SessionHelper.SOBId).Any())
                     {
                         ViewData["EditError"] = "Lot Number must be unique";
                         return PartialView("createPartial", MoveOrderHelper.GetMoveOrderLines());
                     }
-                    if (!LotNumberHelper.CheckSerialNumAvailability(model.LotNo, model.SerialNo))
+                    if (LotNumberHelper.CheckSerialNumAvailability(model.LotNo, model.SerialNo).Any())
                     {
                         ViewData["EditError"] = "Serial Number must be unique";
                         return PartialView("createPartial", MoveOrderHelper.GetMoveOrderLines());
@@ -147,12 +160,25 @@ namespace _360Accounting.Web.Controllers
                     //Daterequired validation..
                     //Warehouse validation..
                     //Locator validation..
-                    if (!LotNumberHelper.CheckLotNumAvailability(model.LotNo, model.ItemId, SessionHelper.SOBId))
+                    if (SessionHelper.MoveOrder != null)
+                    {
+                        if (SessionHelper.MoveOrder.MoveOrderDetail.Any(rec => rec.LotNo == model.LotNo && rec.ItemId == model.ItemId))
+                        {
+                            ViewData["EditError"] = "Lot Number must be unique";
+                            return PartialView("createPartial", MoveOrderHelper.GetMoveOrderLines());
+                        }
+                        if (SessionHelper.MoveOrder.MoveOrderDetail.Any(rec => rec.LotNo == model.LotNo && rec.SerialNo == model.SerialNo))
+                        {
+                            ViewData["EditError"] = "Serial Number must be unique";
+                            return PartialView("createPartial", MoveOrderHelper.GetMoveOrderLines());
+                        }
+                    }
+                    if (LotNumberHelper.CheckLotNumAvailability(model.LotNo, model.ItemId, SessionHelper.SOBId).Any())
                     {
                         ViewData["EditError"] = "Lot Number must be unique";
                         return PartialView("createPartial", MoveOrderHelper.GetMoveOrderLines());
                     }
-                    if (!LotNumberHelper.CheckSerialNumAvailability(model.LotNo, model.SerialNo))
+                    if (LotNumberHelper.CheckSerialNumAvailability(model.LotNo, model.SerialNo).Any())
                     {
                         ViewData["EditError"] = "Serial Number must be unique";
                         return PartialView("createPartial", MoveOrderHelper.GetMoveOrderLines());
@@ -204,9 +230,9 @@ namespace _360Accounting.Web.Controllers
                     SessionHelper.MoveOrder.Id = model.Id;
                     SessionHelper.MoveOrder.MoveOrderDate = model.MoveOrderDate;
                     if (model.Id > 0)
-                        SessionHelper.MoveOrder.MoveOrderNo = MoveOrderHelper.GetDocNo(model.CompanyId, model.SOBId);
-                    else
                         SessionHelper.MoveOrder.MoveOrderNo = model.MoveOrderNo;
+                    else
+                        SessionHelper.MoveOrder.MoveOrderNo = MoveOrderHelper.GetDocNo(model.CompanyId, model.SOBId);
 
                     MoveOrderHelper.Save(SessionHelper.MoveOrder);
                     SessionHelper.MoveOrder = null;

@@ -23,9 +23,9 @@ namespace _360Accounting.Service
             return this.repository.GetAll(companyId, sobId);
         }
 
-        public IEnumerable<MiscellaneousTransaction> GetAll(long companyId, long sobId, string type, long codeCombinationId)
+        public IEnumerable<MiscellaneousTransaction> GetAll(long companyId, long sobId, string type, long codeCombinationId, DateTime transDate)
         {
-            return this.repository.GetAll(companyId, sobId, type, codeCombinationId);
+            return this.repository.GetAll(companyId, sobId, type, codeCombinationId, transDate);
         }
 
         public MiscellaneousTransaction GetSingle(string id, long companyId)

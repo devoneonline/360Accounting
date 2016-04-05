@@ -38,9 +38,16 @@
                     @Html.DropDownListFor(model => model.CodeCombinationId, Model.CodeCombination, new { @class = "form-control" })
                 </div>
             </div>
+
+            <div class="col-lg-3">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TransactionDate)
+                    @Html.EditorFor(model => model.TransactionDate)
+                </div>
+            </div>
         </div>
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12" id="dvList">
                 @Html.Partial("CreatePartial", Model.MiscellaneousTransactionDetail)
             </div>
         </div>
@@ -49,7 +56,8 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        
+        $('#TransactionDate').attr('class', 'form-control');
+        //$.noConflict();
         $('#btnCancel').click(function () {
             if (confirm('Do you want to leave this page?')) {
                 window.location.href = '@Url.Content("~/MiscellaneousTransaction")';
@@ -62,7 +70,8 @@
                 CompanyId: $('#CompanyId').val(),
                 SOBId: $('#SOBId').val(),
                 CodeCombinationId: $('#CodeCombinationId').val(),
-                TransactionType: $('#TransactionType').val()
+                TransactionType: $('#TransactionType').val(),
+                TransactionDate: $('#TransactionDate').val()
             };
 
             var url = '@Url.Content("~/MiscellaneousTransaction/Save")';
@@ -74,5 +83,18 @@
                         alert(result.message);
                 });
         });
+
+        $('#TransactionType, #CodeCombinationId, #TransactionDate').change(function () {
+            $.ajax({
+                url: '@Url.Content("~/MiscellaneousTransaction/CreatePartialClient")',
+                data: { transactionType: $('#TransactionType').val(), codeCombinationId: $('#CodeCombinationId').val(), transactionDate: $('#TransactionDate').val() },
+                datatype: 'json',
+                type: 'get',
+                success: function (received) {
+                    $('#dvList').empty().html(received);
+                },
+                error: function (received) { alert(received) }
+            })
+        })
     });
 </script>

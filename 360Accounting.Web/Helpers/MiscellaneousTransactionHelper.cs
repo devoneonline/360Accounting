@@ -13,10 +13,12 @@ namespace _360Accounting.Web
     public static class MiscellaneousTransactionHelper
     {
         private static IMiscellaneousTransactionService service;
+        private static ILotNumberService lotNumService;
 
         static MiscellaneousTransactionHelper()
         {
             service = IoC.Resolve<IMiscellaneousTransactionService>("MiscellaneousTransactionService");
+            lotNumService = IoC.Resolve<ILotNumberService>("LotNumberService");
         }
 
         #region Private Methods
@@ -62,10 +64,10 @@ namespace _360Accounting.Web
             return SessionHelper.MiscellaneousTransaction.MiscellaneousTransactionDetail;
         }
 
-        private static IList<MiscellaneousTransactionDetailModel> getMiscellaneousTransaction(long sobId, string type, long codeCombinationId)
+        private static IList<MiscellaneousTransactionDetailModel> getMiscellaneousTransaction(long sobId, string type, long codeCombinationId, DateTime transDate)
         {
             IList<MiscellaneousTransactionDetailModel> modelList = service
-                .GetAll(AuthenticationHelper.User.CompanyId, sobId, type, codeCombinationId)
+                .GetAll(AuthenticationHelper.User.CompanyId, sobId, type, codeCombinationId, transDate)
                 .Select(x => new MiscellaneousTransactionDetailModel(x)).ToList();
             return modelList;
         }
@@ -93,17 +95,22 @@ namespace _360Accounting.Web
             return modelList;
         }
 
-        public static IList<MiscellaneousTransactionDetailModel> GetMiscellaneousTransactionDetail(long sobId, string type, long codeCombinationId)
+        public static IList<MiscellaneousTransactionDetailModel> GetMiscellaneousTransactionDetail(long sobId, string type, long codeCombinationId, DateTime transDate)
         {
             if (SessionHelper.MiscellaneousTransaction != null)
-                return getMiscellaneousTransaction();
-            else
             {
-                IList<MiscellaneousTransactionDetailModel> modelList = service
-                .GetAll(AuthenticationHelper.User.CompanyId, sobId, type, codeCombinationId)
-                .Select(x => new MiscellaneousTransactionDetailModel(x)).ToList();
-                return modelList;
+                if (SessionHelper.MiscellaneousTransaction.MiscellaneousTransactionDetail != null && SessionHelper.MiscellaneousTransaction.MiscellaneousTransactionDetail.Count() > 0)
+                    return getMiscellaneousTransaction().Where(rec => rec.SOBId == sobId && rec.TransactionType == type && rec.CodeCombinationId == codeCombinationId && rec.TransactionDate == transDate).ToList();
+                if (SessionHelper.MiscellaneousTransaction.Id > 0)
+                {
+                    IList<MiscellaneousTransactionDetailModel> modelList = service
+                    .GetAll(AuthenticationHelper.User.CompanyId, sobId, type, codeCombinationId, transDate)
+                    .Select(x => new MiscellaneousTransactionDetailModel(x)).ToList();
+                    return modelList;
+                }
             }
+
+            return new List<MiscellaneousTransactionDetailModel>();
         }
 
         public static void InsertMiscellaneousTransactionDetail(MiscellaneousTransactionDetailModel model)
@@ -140,7 +147,7 @@ namespace _360Accounting.Web
 
         public static void Save(MiscellaneousTransactionModel miscellaneousTransactionModel)
         {
-            var savedDetail = getMiscellaneousTransaction(miscellaneousTransactionModel.SOBId, miscellaneousTransactionModel.TransactionType, miscellaneousTransactionModel.CodeCombinationId);
+            var savedDetail = getMiscellaneousTransaction(miscellaneousTransactionModel.SOBId, miscellaneousTransactionModel.TransactionType, miscellaneousTransactionModel.CodeCombinationId, miscellaneousTransactionModel.TransactionDate);
             if (SessionHelper.MiscellaneousTransaction != null)
             {
                 if (savedDetail.Count() > miscellaneousTransactionModel.MiscellaneousTransactionDetail.Count())
@@ -149,8 +156,19 @@ namespace _360Accounting.Web
                     foreach (var item in tobeDeleted)
                     {
                         service.Delete(item.Id.ToString(), AuthenticationHelper.User.CompanyId);
+                        IEnumerable<LotNumber> lotNum = lotNumService.CheckLotNumAvailability(AuthenticationHelper.User.CompanyId, item.LotNo, item.ItemId, SessionHelper.SOBId);
+                        if (lotNum.Any())
+                        {
+                            LotNumberHelper.Delete(lotNum.FirstOrDefault().Id.ToString());
+                        }
+
+                        IEnumerable<SerialNumber> serialNum = lotNumService.CheckSerialNumAvailability(AuthenticationHelper.User.CompanyId, item.LotNo, item.SerialNo);
+                        if (serialNum.Any())
+                        {
+                            LotNumberHelper.DeleteSerialNumber(serialNum.FirstOrDefault().Id.ToString());
+                        }
                     }
-                    savedDetail = getMiscellaneousTransaction(miscellaneousTransactionModel.SOBId, miscellaneousTransactionModel.TransactionType, miscellaneousTransactionModel.CodeCombinationId);
+                    savedDetail = getMiscellaneousTransaction(miscellaneousTransactionModel.SOBId, miscellaneousTransactionModel.TransactionType, miscellaneousTransactionModel.CodeCombinationId, miscellaneousTransactionModel.TransactionDate);
                 }
 
                 foreach (var detail in miscellaneousTransactionModel.MiscellaneousTransactionDetail)
@@ -163,9 +181,33 @@ namespace _360Accounting.Web
                             detailEntity.Id = savedDetail.FirstOrDefault().Id;
                             savedDetail.Remove(savedDetail.FirstOrDefault(rec => rec.Id == detailEntity.Id));
                             service.Update(detailEntity);
+                            IEnumerable<LotNumber> lotNum = lotNumService.CheckLotNumAvailability(AuthenticationHelper.User.CompanyId, detailEntity.LotNo, detailEntity.ItemId, SessionHelper.SOBId);
+                            if (lotNum.Any())
+                            {
+                                LotNumberHelper.Update(lotNum.FirstOrDefault());
+                            }
+
+                            IEnumerable<SerialNumber> serialNum = lotNumService.CheckSerialNumAvailability(AuthenticationHelper.User.CompanyId, detailEntity.LotNo, detailEntity.SerialNo);
+                            if (serialNum.Any())
+                            {
+                                LotNumberHelper.UpdateSerialNumber(serialNum.FirstOrDefault());
+                            }
                         }
                         else
+                        {
                             service.Insert(detailEntity);
+                            IEnumerable<LotNumber> lotNum = lotNumService.CheckLotNumAvailability(AuthenticationHelper.User.CompanyId, detailEntity.LotNo, detailEntity.ItemId, SessionHelper.SOBId);
+                            if (!lotNum.Any())
+                            {
+                                LotNumberHelper.Insert(new MiscellaneousTransactionDetailModel(detailEntity));
+                            }
+
+                            IEnumerable<SerialNumber> serialNum = lotNumService.CheckSerialNumAvailability(AuthenticationHelper.User.CompanyId, detailEntity.LotNo, detailEntity.SerialNo);
+                            if (!serialNum.Any())
+                            {
+                                LotNumberHelper.InsertSerialNumber(new MiscellaneousTransactionDetailModel(detailEntity));
+                            }
+                        }
                     }
                 }
             }

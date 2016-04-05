@@ -18,26 +18,27 @@ namespace _360Accounting.Data.Repositories
             return entity;
         }
 
+        public SerialNumber GetSingleSerialNum(string id, long companyId)
+        {
+            long longId = Convert.ToInt64(id);
+            SerialNumber entity = this.Context.SerialNumbers.FirstOrDefault(x => x.Id == longId && x.CompanyId == companyId);
+            return entity;
+        }
+
         public IEnumerable<LotNumber> GetAll(long companyId)
         {
             IEnumerable<LotNumber> entityList = this.Context.LotNumbers.Where(x => x.CompanyId == companyId);
             return entityList;
         }
 
-        public bool CheckLotNumAvailability(long companyId, string lotNum, long itemId, long sobId)
+        public IEnumerable<LotNumber> CheckLotNumAvailability(long companyId, string lotNum, long itemId, long sobId)
         {
-            if (this.Context.LotNumbers.Where(x => x.CompanyId == companyId && x.LotNo == lotNum && x.SOBId == sobId && x.ItemId == itemId).Count() > 0)
-                return false;
-            else
-                return true;
+            return this.Context.LotNumbers.Where(rec => rec.CompanyId == companyId && rec.LotNo == lotNum && rec.ItemId == itemId && rec.SOBId == sobId);
         }
 
-        public bool CheckSerialNumAvailability(long companyId, string lotNum, string serialNum)
+        public IEnumerable<SerialNumber> CheckSerialNumAvailability(long companyId, string lotNum, string serialNum)
         {
-            if (this.Context.SerialNumbers.Where(x => x.LotNo == lotNum && x.CompanyId == companyId && x.SerialNo == serialNum).Count() > 0)
-                return false;
-            else
-                return true;
+            return this.Context.SerialNumbers.Where(rec => rec.CompanyId == companyId && rec.LotNo == lotNum && rec.SerialNo == serialNum);
         }
 
         public string Insert(LotNumber entity)
@@ -59,6 +60,28 @@ namespace _360Accounting.Data.Repositories
         public void Delete(string id, long companyId)
         {
             this.Context.LotNumbers.Remove(this.GetSingle(id, companyId));
+            this.Commit();
+        }
+
+        public string InsertSerialNum(SerialNumber entity)
+        {
+            this.Context.SerialNumbers.Add(entity);
+            this.Commit();
+            return entity.Id.ToString();
+        }
+
+        public string UpdateSerialNum(SerialNumber entity)
+        {
+            SerialNumber originalEntity = this.Context.SerialNumbers.Find(entity.Id);
+            this.Context.Entry(originalEntity).CurrentValues.SetValues(entity);
+            this.Context.Entry(originalEntity).State = EntityState.Modified;
+            this.Commit();
+            return entity.Id.ToString();
+        }
+
+        public void DeleteSerialNum(string id, long companyId)
+        {
+            this.Context.SerialNumbers.Remove(this.GetSingleSerialNum(id, companyId));
             this.Commit();
         }
 

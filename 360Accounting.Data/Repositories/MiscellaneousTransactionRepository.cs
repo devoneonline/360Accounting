@@ -17,9 +17,9 @@ namespace _360Accounting.Data.Repositories
             return list;
         }
 
-        public IEnumerable<MiscellaneousTransaction> GetAll(long companyId, long sobId, string type, long codeCombinationId)
+        public IEnumerable<MiscellaneousTransaction> GetAll(long companyId, long sobId, string type, long codeCombinationId, DateTime transDate)
         {
-            IEnumerable<MiscellaneousTransaction> list = this.Context.MiscellaneousTransactions.Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.TransactionType == type && x.CodeCombinationId == codeCombinationId);
+            IEnumerable<MiscellaneousTransaction> list = this.Context.MiscellaneousTransactions.Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.TransactionType == type && x.CodeCombinationId == codeCombinationId && x.TransactionDate == transDate);
             return list;
         }
 

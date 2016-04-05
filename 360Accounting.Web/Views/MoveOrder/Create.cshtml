@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.MoveOrderNo)
                     @Html.TextBoxFor(model => model.MoveOrderNo, new { @class = "form-control" })
@@ -42,9 +42,8 @@
                     @Html.EditorFor(model => model.DateRequired)
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
+
+            <div class="col-lg-4">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Description)
                     @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })

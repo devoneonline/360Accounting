@@ -125,14 +125,54 @@ namespace _360Accounting.Web
 
         #endregion
 
-        public static bool CheckLotNumAvailability(string lotNum, long itemId, long sobId)
+        public static IEnumerable<LotNumber> CheckLotNumAvailability(string lotNum, long itemId, long sobId)
         {
             return service.CheckLotNumAvailability(AuthenticationHelper.User.CompanyId, lotNum, itemId, sobId);
         }
 
-        public static bool CheckSerialNumAvailability(string lotNum, string serialNum)
+        public static IEnumerable<SerialNumber> CheckSerialNumAvailability(string lotNum, string serialNum)
         {
             return service.CheckSerialNumAvailability(AuthenticationHelper.User.CompanyId, lotNum, serialNum);
+        }
+
+        public static string Insert(MoveOrderDetailModel entity)
+        {
+            return service.Insert(GetLotEntityByMoveOrderModel(entity, 0));
+        }
+
+        public static string Insert(MiscellaneousTransactionDetailModel entity)
+        {
+            return service.Insert(GetLotEntityByMiscellaneousTransaction(entity, 0));
+        }
+
+        public static string Update(LotNumber entity)
+        {
+            return service.Update(entity);
+        }
+
+        public static void Delete(string id)
+        {
+            service.Delete(id, AuthenticationHelper.User.CompanyId);
+        }
+
+        public static string InsertSerialNumber(MoveOrderDetailModel entity)
+        {
+            return service.InsertSerialNum(GetSerialEntityByMoveOrderModel(entity, 0));
+        }
+
+        public static string InsertSerialNumber(MiscellaneousTransactionDetailModel entity)
+        {
+            return service.InsertSerialNum(GetSerialEntityByMiscellaneousTransaction(entity, 0));
+        }
+
+        public static string UpdateSerialNumber(SerialNumber entity)
+        {
+            return service.UpdateSerialNum(entity);
+        }
+
+        public static void DeleteSerialNumber(string id)
+        {
+            service.DeleteSerialNum(id, AuthenticationHelper.User.CompanyId);
         }
     }
 }
