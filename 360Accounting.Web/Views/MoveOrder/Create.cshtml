@@ -25,28 +25,28 @@
             <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.MoveOrderNo)
-                    @Html.TextBoxFor(model => model.MoveOrderNo, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.MoveOrderNo, new { @readonly = "readonly", @class = "form-control" })
                 </div>
             </div>
 
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.MoveOrderDate)
                     @Html.EditorFor(model => model.MoveOrderDate)
                 </div>
             </div>
 
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.DateRequired)
                     @Html.EditorFor(model => model.DateRequired)
                 </div>
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-lg-6">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Description)
-                    @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
                 </div>
             </div>
         </div>

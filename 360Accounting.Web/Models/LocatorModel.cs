@@ -14,7 +14,7 @@ namespace _360Accounting.Web.Models
         public long SOBId { get; set; }
         
         public List<SelectListItem> SetOfBooks { get; set; }
-        public List<LocatorModel> Items { get; set; }
+        public List<LocatorModel> Locators { get; set; }
     }
 
     public class LocatorModel : ModelBase

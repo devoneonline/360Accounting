@@ -62,24 +62,37 @@ namespace _360Accounting.Web.Controllers
             ReceiptListModel model = new ReceiptListModel();
             if (model.SetOfBooks == null)
             {
-                model.SetOfBooks = sobService.GetAll(AuthenticationHelper.User.CompanyId).Select(a => new SelectListItem
-                {
-                    Text = a.Name.ToString(),
-                    Value = a.Id.ToString()
-                }).ToList();
+                model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()
+                    .Select(x => new SelectListItem 
+                    { 
+                        Text = x.Name,
+                        Value = x.Id.ToString()
+                    }).ToList();
+                model.SOBId = model.SetOfBooks.Any() ?
+                    Convert.ToInt32(model.SetOfBooks.First().Value) : 0;
             }
-            model.SOBId = model.SetOfBooks.Count() > 0 ? Convert.ToInt64(model.SetOfBooks.FirstOrDefault().Value) : 0;
 
-            if (model.Periods == null)
+            if (model.Periods == null && model.SetOfBooks.Any())
             {
-                model.Periods = calendarService.GetAll(AuthenticationHelper.User.CompanyId).Select(a => new SelectListItem
-                {
-                    Text = a.PeriodName.ToString(),
-                    Value = a.Id.ToString()
-                }).ToList();
+                model.Periods = ReceivablePeriodHelper.GetPeriodList(Convert.ToInt64(model.SetOfBooks.First().Value));
+                model.PeriodId = model.Periods.Any() ?
+                    Convert.ToInt32(model.Periods.First().Value) : 0;
             }
-            model.PeriodId = model.Periods.Count() > 0 ? Convert.ToInt64(model.Periods.FirstOrDefault().Value) : 0;
-            SessionHelper.Calendar = CalendarHelper.GetCalendar(model.PeriodId.ToString());
+            else if (model.Periods == null)
+            {
+                model.Periods = new List<SelectListItem>();
+            }
+
+            CalendarViewModel calendar = CalendarHelper.GetCalendar(ReceivablePeriodHelper.GetReceivablePeriod(model.PeriodId.ToString()).CalendarId.ToString());
+            if (calendar == null)
+            {
+                SessionHelper.Calendar.StartDate = DateTime.Now;
+                SessionHelper.Calendar.EndDate = DateTime.Now;
+            }
+            else
+            {
+                SessionHelper.Calendar = CalendarHelper.GetCalendar(ReceivablePeriodHelper.GetReceivablePeriod(model.PeriodId.ToString()).CalendarId.ToString());
+            }
 
             if (model.Customers == null)
             {
@@ -92,15 +105,20 @@ namespace _360Accounting.Web.Controllers
             }
             model.CustomerId = model.Customers.Count() > 0 ? Convert.ToInt64(model.Customers.FirstOrDefault().Value) : 0;
 
-            if (model.Currency == null)
+            if (model.Currency == null && model.SetOfBooks.Any())
             {
-                model.Currency = currencyService.GetAll(AuthenticationHelper.User.CompanyId).Select(a => new SelectListItem
-                {
-                    Text = a.Name.ToString(),
-                    Value = a.Id.ToString()
-                }).ToList();
+                model.Currency = CurrencyHelper.GetCurrencies(Convert.ToInt32(model.SetOfBooks.First().Value))
+                    .Select(x => new SelectListItem
+                    {
+                        Text = x.Name,
+                        Value = x.Id.ToString()
+                    }).ToList();
+                model.CurrencyId = model.Currency.Any() ? Convert.ToInt32(model.Currency.First().Value) : 0;
             }
-            model.CurrencyId = model.Currency.Count() > 0 ? Convert.ToInt64(model.Currency.FirstOrDefault().Value) : 0;
+            else if (model.Currency == null)
+            {
+                model.Currency = new List<SelectListItem>();
+            }
 
             return View(model);
         }
@@ -137,6 +155,11 @@ namespace _360Accounting.Web.Controllers
         {
             service.Delete(id, AuthenticationHelper.User.CompanyId);
             return RedirectToAction("Index");
+        }
+
+        public ActionResult EmptyListPartial()
+        {
+             return PartialView("_List", new List<ReceiptViewModel>());
         }
 
         public ActionResult ListPartial(long periodId, long sobId, long customerId, long currencyId)
@@ -269,7 +292,7 @@ namespace _360Accounting.Web.Controllers
 
         public JsonResult CustomerList(long periodId)
         {
-            SessionHelper.Calendar = CalendarHelper.GetCalendar(PayablePeriodHelper.GetPayablePeriod(periodId.ToString()).CalendarId.ToString());
+            SessionHelper.Calendar = CalendarHelper.GetCalendar(ReceivablePeriodHelper.GetReceivablePeriod(periodId.ToString()).CalendarId.ToString());
             List<SelectListItem> customerList = CustomerHelper.GetCustomers(SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate).Select(x => new SelectListItem
             {
                 Text = x.CustomerName,

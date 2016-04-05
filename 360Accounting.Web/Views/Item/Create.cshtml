@@ -3,7 +3,18 @@
 
 @model _360Accounting.Web.Models.ItemModel
 
+@{
+    ViewBag.Title = "Item";
+}
+
 <div class="container">
+    <div class="clearfix">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
+        </div>
+    </div>
     @using (Html.BeginForm())
     {
         @Html.HiddenFor(m => m.Id)
@@ -122,7 +133,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $.noConflict();
+        //$.noConflict();
         $('#btnCancel').click(function () {
             if (confirm('Do you want to leave this page?')) {
                 window.location.href = '@Url.Content("~/Item")';

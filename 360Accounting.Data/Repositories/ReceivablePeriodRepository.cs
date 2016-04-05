@@ -19,8 +19,9 @@ namespace _360Accounting.Data.Repositories
 
         public ReceivablePeriod GetSingle(string id, long companyId)
         {
+            long longId = Convert.ToInt64(id);
             ReceivablePeriod receivablePeriod = this.Context.ReceivablePeriods
-                .FirstOrDefault(x => x.Id == Convert.ToInt64(id) && x.CompanyId == companyId);
+                .FirstOrDefault(x => x.Id == longId && x.CompanyId == companyId);
             return receivablePeriod;
         }
 

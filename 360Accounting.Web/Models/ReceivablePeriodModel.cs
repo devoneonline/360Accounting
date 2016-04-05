@@ -37,15 +37,18 @@ namespace _360Accounting.Web.Models
 
         public ReceivablePeriodModel(ReceivablePeriod entity)
         {
-            this.Id = entity.Id;
-            this.SOBId = entity.SOBId;
-            this.Status = entity.Status;
-            this.CalendarId = entity.CalendarId;
-            this.CompanyId = entity.CompanyId;
-            this.CreateBy = entity.CreateBy;
-            this.CreateDate = entity.CreateDate;
-            this.UpdateBy = entity.UpdateBy;
-            this.UpdateDate = entity.UpdateDate;
+            if (entity != null)
+            {
+                this.Id = entity.Id;
+                this.SOBId = entity.SOBId;
+                this.Status = entity.Status;
+                this.CalendarId = entity.CalendarId;
+                this.CompanyId = entity.CompanyId;
+                this.CreateBy = entity.CreateBy;
+                this.CreateDate = entity.CreateDate;
+                this.UpdateBy = entity.UpdateBy;
+                this.UpdateDate = entity.UpdateDate;
+            }            
         }
     }
 }

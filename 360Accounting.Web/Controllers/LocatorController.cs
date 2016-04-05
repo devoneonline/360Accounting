@@ -18,7 +18,7 @@ namespace _360Accounting.Web.Controllers
 {
     [Authorize]
     public class LocatorController : Controller
-    {   
+    {
         public ActionResult Delete(string id)
         {
             LocatorHelper.Delete(id);
@@ -57,7 +57,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult LocatorPartial(LocatorListModel model)
         {
             SessionHelper.SOBId = model.SOBId;
-            return PartialView("_List", LocatorHelper.GetLocators(model.SOBId));
+            return PartialView("_List", LocatorHelper.GetLocatorsCombo(model.SOBId));
         }
 
         public ActionResult Create(long sobId)

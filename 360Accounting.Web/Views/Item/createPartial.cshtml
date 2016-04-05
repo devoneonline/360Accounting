@@ -12,7 +12,7 @@
             settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Item", Action = "AddNewPartial" };
             settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Item", Action = "UpdatePartial" };
             settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Item", Action = "DeletePartial" };
-            settings.SettingsEditing.Mode = GridViewEditingMode.EditForm;
+            settings.SettingsEditing.Mode = GridViewEditingMode.Inline;
             settings.SettingsBehavior.ConfirmDelete = true;
             settings.SettingsPopup.EditForm.Width = 600;
             settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
@@ -41,7 +41,7 @@
             {
                 column.FieldName = "StartDate";
                 column.Caption = "Start Date";
-
+                column.Width = 200;
                 column.ColumnType = MVCxGridViewColumnType.DateEdit;
                 var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
                 //spinEditProperties.DisplayFormatString = "yyyy-MM-dd";
@@ -50,7 +50,7 @@
             {
                 column.FieldName = "EndDate";
                 column.Caption = "End Date";
-
+                column.Width = 200;
                 column.ColumnType = MVCxGridViewColumnType.DateEdit;
                 var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
                 //spinEditProperties.DisplayFormatString = "yyyy-MM-dd";

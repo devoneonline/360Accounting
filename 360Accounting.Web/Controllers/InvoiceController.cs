@@ -154,8 +154,13 @@ namespace _360Accounting.Web.Controllers
                     bool validated = false;
                     if (SessionHelper.Invoice != null)
                     {
-                        model.Id = SessionHelper.Invoice.InvoiceDetail.Last().Id + 1;
-                        validated = true;
+                        if (SessionHelper.Invoice.InvoiceDetail != null)
+                        {
+                            model.Id = SessionHelper.Invoice.InvoiceDetail.LastOrDefault().Id + 1;
+                            validated = true;
+                        }
+                        else
+                            model.Id = 1;
                     }
                     else
                         model.Id = 1;
@@ -196,7 +201,7 @@ namespace _360Accounting.Web.Controllers
         {
             SessionHelper.SOBId = sobId;
             
-            SessionHelper.Calendar = CalendarHelper.GetCalendar(periodId.ToString());
+            SessionHelper.Calendar = CalendarHelper.GetCalendar(ReceivablePeriodHelper.GetReceivablePeriod(periodId.ToString()).CalendarId.ToString());
             SessionHelper.PrecisionLimit = CurrencyHelper.GetCurrency(currencyId.ToString()).Precision;
 
             ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(sobId.ToString()).Name;
@@ -279,12 +284,7 @@ namespace _360Accounting.Web.Controllers
 
             if (model.Periods == null && model.SetOfBooks.Any())
             {
-                model.Periods = CalendarHelper.GetCalendars(Convert.ToInt32(model.SetOfBooks.First().Value))
-                    .Select(x => new SelectListItem
-                    { 
-                        Text = x.PeriodName,
-                        Value = x.Id.ToString()
-                    }).ToList();
+                model.Periods = ReceivablePeriodHelper.GetPeriodList(Convert.ToInt64(model.SetOfBooks.First().Value));
                 model.PeriodId = model.Periods.Any() ?
                     Convert.ToInt32(model.Periods.First().Value) : 0;
             }

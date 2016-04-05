@@ -19,8 +19,9 @@ namespace _360Accounting.Data.Repositories
 
         public InventoryPeriod GetSingle(string id, long companyId)
         {
+            long longId = Convert.ToInt64(id);
             InventoryPeriod inventoryPeriod = this.GetAll(companyId)
-                .FirstOrDefault(x => x.Id == Convert.ToInt32(id));
+                .FirstOrDefault(x => x.Id == longId);
             return inventoryPeriod;
         }
 

@@ -76,23 +76,36 @@
                 spinEditProperties.SpinButtons.ShowLargeIncrementButtons = true;
             });
 
-            settings.Columns.Add(column =>
+            //settings.Columns.Add(column =>
+            //    {
+            //        column.FieldName = "Amount";
+            //        column.Caption = "Amount";
+            //        column.PropertiesEdit.DisplayFormatString = "c";
+            //        column.UnboundType = DevExpress.Data.UnboundColumnType.Decimal;
+            //        settings.CustomUnboundColumnData = (sender, e) =>
+            //        {
+            //            if (e.Column.FieldName == "Amount")
+            //            {
+            //                decimal rate = (decimal)e.GetListSourceFieldValue("Rate");
+            //                int quantity = Convert.ToInt32(e.GetListSourceFieldValue("Quantity"));
+            //                e.Value = rate * quantity;
+            //            }
+            //        };
+            //    });
+
+            var amountColumn = settings.Columns.Add("Amount");
+            amountColumn.PropertiesEdit.DisplayFormatString = "c";
+            amountColumn.UnboundType = DevExpress.Data.UnboundColumnType.Decimal;
+
+            settings.CustomUnboundColumnData = (sender, e) => 
+            {
+                if (e.Column.FieldName == "Amount")
                 {
-                    column.FieldName = "Amount";
-                    column.Caption = "Amount";
-                    column.PropertiesEdit.DisplayFormatString = "c";
-                    column.UnboundType = DevExpress.Data.UnboundColumnType.Decimal;
-                    settings.CustomUnboundColumnData = (sender, e) =>
-                    {
-                        if (e.Column.FieldName == "Amount")
-                        {
-                            decimal rate = (decimal)e.GetListSourceFieldValue("Rate");
-                            int quantity = Convert.ToInt32(e.GetListSourceFieldValue("Quantity"));
-                            e.Value = rate * quantity;
-                        }
-                    };
-                });
-            
+                    decimal rate = (decimal)e.GetListSourceFieldValue("Rate");
+                    decimal quantity = (decimal)e.GetListSourceFieldValue("Quantity");
+                    e.Value = rate * quantity;
+                }
+            };
 
             settings.Columns.Add(column =>
             {

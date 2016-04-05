@@ -69,7 +69,7 @@ namespace _360Accounting.Service
         public string Update(Item entity)
         {
             if (entity.IsValid())
-                return this.repository.Insert(entity);
+                return this.repository.Update(entity);
             else
                 return "Entity is not in valid state";
         }

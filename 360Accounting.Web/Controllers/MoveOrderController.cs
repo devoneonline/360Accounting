@@ -77,7 +77,8 @@ namespace _360Accounting.Web.Controllers
                 {
                     SOBId = sobId,
                     DateRequired = DateTime.Now,
-                    MoveOrderDate = DateTime.Now
+                    MoveOrderDate = DateTime.Now,
+                    MoveOrderNo = "New"
                 };
                 model.CompanyId = AuthenticationHelper.User.CompanyId;
                 ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(sobId.ToString()).Name;

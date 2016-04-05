@@ -8,6 +8,14 @@
 }
 
 <div class="container">
+    <div class="clearfix">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
+        </div>
+    </div>
+
     @using (Html.BeginForm())
     {
         @Html.HiddenFor(model => model.Id)
@@ -88,7 +96,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         ////jQuery.ajaxSetup({ async: false });
-        $.noConflict();
+        //$.noConflict();
         $('#InvoiceDate').attr('class', 'form-control');
         
         $('#InvoiceDate').change(function () {

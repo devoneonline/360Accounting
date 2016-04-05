@@ -22,7 +22,7 @@ namespace _360Accounting.Data.Repositories
             var query = from a in this.Context.Warehouses
                         join b in this.Context.LocatorWarehouses on a.Id equals b.WarehouseId
                         join c in this.Context.ItemWarehouses on a.Id equals c.WarehouseId
-                        where a.CompanyId == companyId && a.SOBId == sobId
+                        where a.CompanyId == companyId && a.SOBId == sobId && a.Id == b.WarehouseId && a.Id == c.WarehouseId
                         select a;
 
             return query;

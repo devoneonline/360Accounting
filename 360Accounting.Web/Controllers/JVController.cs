@@ -425,6 +425,11 @@ namespace _360Accounting.Web.Controllers
                 .GetGLHeaders(sobId, periodId, currencyId));
         }
 
+        public ActionResult EmptyListPartial()
+        {
+            return PartialView("_List", new List<GLHeaderModel>());
+        }
+
         public ActionResult Create(long sobId, long periodId, long currencyId)
         {
             SessionHelper.SOBId = sobId;

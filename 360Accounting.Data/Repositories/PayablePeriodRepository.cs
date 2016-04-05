@@ -20,8 +20,9 @@ namespace _360Accounting.Data.Repositories
         
         public PayablePeriod GetSingle(string id, long companyId)
         {
+            long longId = Convert.ToInt64(id);
             PayablePeriod payablePeriod = this.GetAll(companyId)
-                .FirstOrDefault(x => x.Id == Convert.ToInt32(id));
+                .FirstOrDefault(x => x.Id == longId);
             return payablePeriod;
         }
 

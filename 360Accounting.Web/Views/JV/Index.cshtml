@@ -50,7 +50,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $.noConflict();
-        
+
         $('#btnCreate').click(function () {
             var continueCreate = true;
 
@@ -75,7 +75,10 @@
         jQuery.ajaxSetup({ async: false });
 
         function RefreshGrid() {
-            $('#dvList').html(GetData('@Url.Content("~/JV/ListPartial")', { sobId: $('#SOBId').val(), periodId: $('#PeriodId').val(), currencyId: $('#CurrencyId').val() }));
+            if ($('#SOBId').val() == null || $('#PeriodId').val() == null || $('#CurrencyId').val() == null)
+                $('#dvList').html(GetEmptyList('@Url.Content("~/JV/EmptyListPartial")'));
+            else
+                $('#dvList').html(GetData('@Url.Content("~/JV/ListPartial")', { sobId: $('#SOBId').val(), periodId: $('#PeriodId').val(), currencyId: $('#CurrencyId').val() }));
         }
 
         $('#PeriodId, #CurrencyId').change(function () {
@@ -89,8 +92,27 @@
         });
     });
 
-    function GetData(url, data)
-    {
+    function GetEmptyList(url) {
+        var returnedData = [];
+        $('#dvList').html("Please wait..");
+        $.ajax({
+            url: url,
+            data: {},
+            datatype: 'json',
+            type: 'get',
+            async: false,
+            error: function (data) {
+                alert(data);
+            },
+            success: function (rtnData) {
+                returnedData = rtnData;
+            }
+        });
+
+        return returnedData;
+    }
+
+    function GetData(url, data) {
         var returnedData = [];
         $('#dvList').html("Please wait..");
         $.ajax({

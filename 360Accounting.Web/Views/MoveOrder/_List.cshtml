@@ -35,7 +35,7 @@
             column.Width = 70;
         });
         settings.Columns.Add("MoveOrderNo", "Move Order No.");
-        settings.Columns.Add("MoveOrderDate", "Order Date");
+        settings.Columns.Add("MoveOrderDate", "Order Date").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;
         settings.Columns.Add("Description");
         settings.Columns.Add("DateRequired", "Date Required");
     });
