@@ -22,6 +22,7 @@ namespace _360Accounting.Web.Models
             this.Id = entity.Id;
             this.SOBId = entity.SOBId;
             this.StartDate = entity.StartDate;
+            this.CodeCombinitionName = entity.CodeCombinitionName;
         }
         #endregion
 

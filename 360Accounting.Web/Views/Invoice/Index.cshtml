@@ -73,12 +73,10 @@
         jQuery.ajaxSetup({ async: false });
 
         function RefreshGrid() {
-            var url = '@Url.Content("~/Invoice/ListPartial")';
-
-            $.get(url, { sobId: $('#SOBId').val(), periodId: $('#PeriodId').val(), currencyId: $('#CurrencyId').val() },
-                function (data) {
-                    $('#dvList').html(data);
-                });
+            if ($('#SOBId').val() == null || $('#PeriodId').val() == null || $('#CurrencyId').val() == null)
+                $('#dvList').html(GetEmptyList('@Url.Content("~/Invoice/EmptyListPartial")'));
+            else
+                $('#dvList').html(GetData('@Url.Content("~/Invoice/ListPartial")', { sobId: $('#SOBId').val(), periodId: $('#PeriodId').val(), currencyId: $('#CurrencyId').val() }));
         }
 
         $('#PeriodId, #CurrencyId').change(function () {
@@ -86,28 +84,47 @@
         });
 
         $('#SOBId').change(function () {
-            var url1 = '@Url.Content("~/Invoice/PeriodList")';                                                                          //Make AR
-            var url2 = '@Url.Content("~/Invoice/CurrencyList")';                                                                        //Make AR
-
-            $.get(url1, { sobId: $(this).val() },
-                function (data) {
-                    var periodDropdown = $('#PeriodId');
-                    periodDropdown.empty();
-                    for (var i = 0; i < data.length; i++) {
-                        periodDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
-                    }
-                });
-
-            $.get(url2, { sobId: $(this).val() },
-                function (data) {
-                    var currencyDropdown = $('#CurrencyId');
-                    currencyDropdown.empty();
-                    for (var i = 0; i < data.length; i++) {
-                        currencyDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
-                    }
-                });
-
+            SetMultiselect('PeriodId', GetData('@Url.Content("~/Invoice/PeriodList")', { sobId: $(this).val() }));
+            SetMultiselect('CurrencyId', GetData('@Url.Content("~/Invoice/CurrencyList")', { sobId: $(this).val() }));
             RefreshGrid();
         });
     });
+
+    function GetEmptyList(url) {
+        var returnedData = [];
+        $('#dvList').html("Please wait..");
+        $.ajax({
+            url: url,
+            data: {},
+            datatype: 'json',
+            type: 'get',
+            async: false,
+            error: function (data) {
+                alert(data);
+            },
+            success: function (rtnData) {
+                returnedData = rtnData;
+            }
+        });
+
+        return returnedData;
+    }
+
+    function GetData(url, data) {
+        var returnedData = [];
+        $('#dvList').html("Please wait..");
+        $.ajax({
+            url: url,
+            data: data,
+            datatype: 'json',
+            type: 'get',
+            async: false,
+            error: function (data) { alert(data); },
+            success: function (rtnData) {
+                returnedData = rtnData;
+            }
+        });
+
+        return returnedData;
+    }
 </script>

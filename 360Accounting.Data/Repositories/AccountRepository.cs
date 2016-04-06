@@ -35,7 +35,7 @@ namespace _360Accounting.Data.Repositories
 
         public IEnumerable<AccountView> GetAll(long companyId, string searchText, bool paging, int page, string sort, string sortDir)
         {
-            IEnumerable<Account> accountList = this.Context.Accounts;
+            IEnumerable<Account> accountList = this.Context.Accounts.Where(rec => rec.CompanyId == companyId);
             accountList = sortDir.ToUpper() == "ASC" ?
                 accountList.OrderBy(x => x.SOBId) :
                 accountList.OrderByDescending(x => x.SOBId);

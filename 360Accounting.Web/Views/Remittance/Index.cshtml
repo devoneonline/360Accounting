@@ -22,14 +22,14 @@
     </div>
 
     <div class="col-lg-4">
-        <div class="form-group">
+        <div class="form-group customDropDownWrapper">
             @Html.LabelFor(m => m.Banks)
             @Html.DropDownListFor(m => m.BankId, Model.Banks, new { @class = "form-control criteria" })
         </div>
     </div>
 
     <div class="col-lg-4">
-        <div class="form-group">
+        <div class="form-group customDropDownWrapper">
             @Html.LabelFor(m => m.BankAccounts)
             @Html.DropDownListFor(m => m.BankAccountId, Model.BankAccounts, new { @class = "form-control criteria" })
         </div>
@@ -49,6 +49,8 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $.noConflict();
+
         $('#btnCreate').click(function () {
             var continueCreate = true;
 

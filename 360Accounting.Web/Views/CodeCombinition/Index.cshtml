@@ -49,9 +49,11 @@
 
     function SaveValue() {
         var segmentValues = '';
-        $('.autoCombo').each(function (i, item) {
+
+        $('#dvInput select').each(function (i, item) {
             segmentValues += i + "|" + item.value + "±";
-        });
+        })
+
         var posting = false;
         if ($('#AllowedPosting').prop("checked") == true) {
             posting = true;

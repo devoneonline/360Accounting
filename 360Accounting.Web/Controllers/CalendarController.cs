@@ -18,11 +18,11 @@ namespace _360Accounting.Web.Controllers
     {
         public JsonResult GetPreviousCalendar(long sobId, int periodYear)
         {
-            if (CalendarHelper.GetPreviousCalendar(sobId, periodYear) != null)
-            {
-                return Json(SessionHelper.Calendar.SeqNumber, JsonRequestBehavior.AllowGet);
-            }
-            return Json(0, JsonRequestBehavior.AllowGet);
+            CalendarHelper.GetPreviousCalendar(sobId, periodYear);
+            if (SessionHelper.Calendar != null)
+                return Json(SessionHelper.Calendar.SeqNumber == null ? 0 : SessionHelper.Calendar.SeqNumber, JsonRequestBehavior.AllowGet);
+            else
+                return Json(0, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -115,7 +115,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Create(long sobId)
         {
             CalendarViewModel model = new CalendarViewModel();
-            SessionHelper.Calendar = model;
+            //SessionHelper.Calendar = model;
             model.SOBId = sobId;            
             return View(model);
         }

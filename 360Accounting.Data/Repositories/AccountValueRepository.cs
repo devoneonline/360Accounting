@@ -60,6 +60,13 @@ namespace _360Accounting.Data.Repositories
             return query.ToList();
         }
 
+        public List<AccountValue> GetAccountValuesBySegment(long chartId, long sobId, string segment)
+        {
+            var query = this.Context.AccountValues.Where(x => x.Segment == segment && x.ChartId == chartId);
+            
+            return query.ToList();
+        }
+
         public AccountValue GetSingle(string id, long companyId)
         {
             long longId=Convert.ToInt64(id);

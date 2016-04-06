@@ -272,6 +272,11 @@ namespace _360Accounting.Web.Controllers
                 .GetInvoices(sobId, periodId, currencyId));
         }
 
+        public ActionResult EmptyListPartial()
+        {
+            return PartialView("_List", new List<InvoiceModel>());
+        }
+
         public ActionResult Index(InvoiceListModel model)
         {
             SessionHelper.Invoice = null;

@@ -19,7 +19,7 @@ namespace _360Accounting.Web.Controllers
     {
         public ActionResult Index(long id, AccountValueListModel model)
         {
-            Session["sobid"] = id;   //TODO:: temporary
+            SessionHelper.SOBId = id;   //TODO:: temporary
             model.SOBId = id;
             model.Segments = AccountHelper.GetSegmentList(model.SOBId.ToString());
             model.Segment = model.Segments[0].Value;
@@ -68,7 +68,7 @@ namespace _360Accounting.Web.Controllers
                 try
                 {
                     string result = AccountValueHelper.SaveChartOfAccountValue(model);
-                    return RedirectToAction("Index", new { id = Session["sobid"] });
+                    return RedirectToAction("Index", new { id = SessionHelper.SOBId });
                 }
                 catch (Exception ex)
                 {
@@ -82,13 +82,12 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Delete(string id)
         {
             AccountValueHelper.Delete(id);
-            return RedirectToAction("Index", new { id = Session["sobid"] });
+            return RedirectToAction("Index", new { id = SessionHelper.SOBId });
         }
 
-        public ActionResult AccountValuesPartial(string sobId, string segment)
+        public ActionResult AccountValuesPartial(long sobId, string segment)
         {
-            //List<AccountValueViewModel> accountValuesList = AccountValueHelper.GetAccountValues(AccountHelper.GetAccountBySOBId(sobId).Id, segment);
-            List<AccountValueViewModel> accountValuesList = new List<AccountValueViewModel>();
+            List<AccountValueViewModel> accountValuesList = AccountValueHelper.GetAccountValues(AccountHelper.GetAccountBySOBId(sobId.ToString()).Id, sobId, segment);
             return PartialView("_List", accountValuesList);
         }
     }

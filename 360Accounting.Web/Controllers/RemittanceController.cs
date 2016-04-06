@@ -234,6 +234,8 @@ namespace _360Accounting.Web.Controllers
                     model.BankId = model.Banks.Any() ?
                         Convert.ToInt32(model.Banks.First().Value) : 0;
                 }
+                else
+                    model.Banks = new List<SelectListItem>();
 
                 if (model.BankAccounts == null && model.Banks.Any())
                 {
@@ -242,6 +244,8 @@ namespace _360Accounting.Web.Controllers
                     model.BankAccountId = model.BankAccounts.Any() ?
                         Convert.ToInt32(model.BankAccounts.First().Value) : 0;
                 }
+                else
+                    model.BankAccounts = new List<SelectListItem>();
 
                 return View(model);
             }
