@@ -451,7 +451,8 @@ namespace _360Accounting.Web.Controllers
                     CurrencyId = currencyId,
                     GlLines = new List<GLLinesModel>(),
                     DocumentNo = "New",
-                    GLDate = SessionHelper.Calendar.StartDate
+                    GLDate = SessionHelper.Calendar.StartDate,
+                    ConversionRate = 1
                 };
                 SessionHelper.JV = model;
             }
@@ -492,16 +493,21 @@ namespace _360Accounting.Web.Controllers
                         ViewData["EditError"] = "Both debit and credit can not be entered in one entry.";
                         return PartialView("createPartial", JVHelper.GetGLLines());
                     }
-                    if (SessionHelper.JV != null)
+                    if (SessionHelper.JV.GlLines.Count != 0)
                     {
-                        model.Id = SessionHelper.JV.GlLines.Last().Id + 1;
                         if (SessionHelper.JV.GlLines.Any(rec => rec.CodeCombinationId == model.CodeCombinationId))
                             ViewData["EditError"] = "Duplicate accounts can not be added.";
                         else
+                        {
                             validated = true;
+                            model.Id = SessionHelper.JV.GlLines.Last().Id + 1;
+                        }
                     }
                     else
-                        model.Id = 1;
+                    {
+                        model.Id = 1; 
+                        validated = true;
+                    }                        
 
                     if (validated)
                         JVHelper.Insert(model);

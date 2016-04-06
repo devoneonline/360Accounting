@@ -12,9 +12,8 @@ namespace _360Accounting.Web.Controllers
     {
         public JsonResult ValidateDate(DateTime startDate, DateTime endDate)
         {
-            SessionHelper.Tax.StartDate = startDate;
-            SessionHelper.Tax.EndDate = endDate;
-
+            SessionHelper.Tax.StartDate = new DateTime(startDate.Year, startDate.Month, startDate.Day);
+            SessionHelper.Tax.EndDate = new DateTime(endDate.Year, endDate.Month, endDate.Day);
             return new JsonResult();
         }
 
@@ -119,17 +118,20 @@ namespace _360Accounting.Web.Controllers
                 try
                 {
                     bool validInput = false;
-                    if (SessionHelper.Tax != null)
-                    {
-                        model.Id = SessionHelper.Tax.TaxDetails.Last().Id + 1;
+                    if (SessionHelper.Tax.TaxDetails.Count != 0)
+                    {   
                         if (SessionHelper.Tax.TaxDetails.Any(rec => rec.CodeCombinationId == model.CodeCombinationId))
                             ViewData["EditError"] = "Duplicate accounts can not be added.";
                         else
+                        {
                             validInput = true;
+                            model.Id = SessionHelper.Tax.TaxDetails.Last().Id + 1;
+                        }
                     }
                     else
                     {
                         model.Id = 1;
+                        validInput = true;
                     }
 
                     if (validInput)
@@ -153,11 +155,9 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Create(long sobId)
         {
             SessionHelper.SOBId = sobId;
-            TaxModel model = new TaxModel
-            {
-                SOBId = sobId,
-                TaxDetails = new List<TaxDetailModel>()
-            };
+            TaxModel model = new TaxModel();
+            model.SOBId = sobId;
+            model.TaxDetails = new List<TaxDetailModel>();
             SessionHelper.Tax = model;
             return View("Edit", model);
         }

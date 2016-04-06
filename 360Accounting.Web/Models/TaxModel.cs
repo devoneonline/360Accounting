@@ -24,15 +24,17 @@ namespace _360Accounting.Web.Models
         public long SOBId { get; set; }
         public long CompanyId { get; set; }
 
-
+        [Required]
         [Display(Name = "Tax Name")]
         public string TaxName { get; set; }
 
+        [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Effective Date From")]
         public DateTime StartDate { get; set; }
 
+        [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Effective Date From")]

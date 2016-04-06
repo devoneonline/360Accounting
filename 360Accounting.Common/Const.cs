@@ -12,10 +12,10 @@ namespace _360Accounting.Common
 
         public const string DATE_FORMAT_2 = "MMM-dd-yyyy";
         
-        public static DateTime CurrentDate = DateTime.Now;
+        public static DateTime CurrentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
 
-        public static DateTime StartDate = DateTime.Now.AddDays(-7);
+        public static DateTime StartDate = CurrentDate.AddDays(-7);
 
-        public static DateTime EndDate = DateTime.Now.AddDays(7);
+        public static DateTime EndDate = CurrentDate.AddDays(7);
     }
 }
