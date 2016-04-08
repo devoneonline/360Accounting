@@ -5,13 +5,17 @@
 @{
     ViewBag.Title = "Customer Sites";
 }
-
 <div class="container">
     <div class="clearfix">
         <div class="col-lg-12">
             <h3 class="page-header">
                 @ViewBag.Title
             </h3>
+        </div>
+    </div>
+    <div class="clearfix">
+        <div class="col-lg-12">
+            <input type="button" value="Back" title="Customer" onclick="window.location = '@Url.Content("~/Customer")'" />
         </div>
     </div>
     <div class="clearfix">
