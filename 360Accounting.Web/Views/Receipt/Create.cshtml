@@ -78,19 +78,19 @@
         </div>
         <div class="row">
             <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group customDropDownWrapper">
                     @Html.LabelFor(model => model.CustomerSiteId)
                     @Html.DropDownListFor(model => model.CustomerSiteId, Model.CustomerSites, new { @class = "form-control" })
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group customDropDownWrapper">
                     @Html.LabelFor(model => model.BankId)
                     @Html.DropDownListFor(model => model.BankId, Model.Banks, new { @class = "form-control" })
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group customDropDownWrapper">
                     @Html.LabelFor(model => model.BankAccountId)
                     @Html.DropDownListFor(model => model.BankAccountId, Model.BankAccounts, new { @class = "form-control" })
                 </div>
@@ -126,16 +126,7 @@
     });
 
     $('#BankId').change(function () {
-        var url1 = '@Url.Content("~/Receipt/BankAccountList")';
-
-        $.get(url1, { bankId: $(this).val() },
-            function (data) {
-                var bankAccountDropdown = $('#BankAccountId');
-                bankAccountDropdown.empty();
-                for (var i = 0; i < data.length; i++) {
-                    bankAccountDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
-                }
-            });
+        SetMultiselect('BankAccountId', GetData('@Url.Content("~/Receipt/BankAccountList")', { bankId: $(this).val() }));
     });
 
     $('#ReceiptDate').blur(function () {
@@ -161,4 +152,22 @@
         var url = '@Url.Content("~/Receipt/Index/")';
         window.location.href = url;
     });
+
+    function GetData(url, data) {
+        var returnedData = [];
+        $('#dvList').html("Please wait..");
+        $.ajax({
+            url: url,
+            data: data,
+            datatype: 'json',
+            type: 'get',
+            async: false,
+            error: function (data) { alert(data); },
+            success: function (rtnData) {
+                returnedData = rtnData;
+            }
+        });
+
+        return returnedData;
+    }
 </script>

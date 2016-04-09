@@ -211,6 +211,11 @@ namespace _360Accounting.Web.Controllers
                 .GetRemittances(sobId, bankId, bankAccountId));
         }
 
+        public ActionResult EmptyListPartial()
+        {
+            return PartialView("_List", new List<RemittanceModel>());
+        }
+
         public ActionResult Index(RemittanceListModel model)
         {
             try

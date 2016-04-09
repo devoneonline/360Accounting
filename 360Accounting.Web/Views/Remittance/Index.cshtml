@@ -15,7 +15,7 @@
     </div>
 
     <div class="col-lg-4">
-        <div class="form-group">
+        <div class="form-group customDropDownWrapper">
             @Html.LabelFor(m => m.SetOfBooks)
             @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control criteria" })
         </div>
@@ -74,12 +74,17 @@
         jQuery.ajaxSetup({ async: false });
 
         function RefreshGrid() {
-            var url = '@Url.Content("~/Remittance/ListPartial")';                                                                           ////Make AR
+            if ($('#SOBId').val() == null || $('#BankId').val() == null || $('#BankAccountId').val() == null)
+                $('#dvList').html(GetEmptyList('@Url.Content("~/Remittance/EmptyListPartial")'));
+            else
+                $('#dvList').html(GetData('@Url.Content("~/Remittance/ListPartial")', { sobId: $('#SOBId').val(), bankId: $('#BankId').val(), bankAccountId: $('#BankAccountId').val() }));
+
+            @*var url = '@Url.Content("~/Remittance/ListPartial")';                                                                           ////Make AR
 
             $.get(url, { sobId: $('#SOBId').val(), bankId: $('#BankId').val(), bankAccountId: $('#BankAccountId').val() },
                 function (data) {
                     $('#dvList').html(data);
-                });
+                });*@
         }
 
         $('#BankAccountId').change(function ()
@@ -89,40 +94,58 @@
 
         $('#BankId').change(function ()
         {
-            $.get('@Url.Content("~/Remittance/BankAccountList")', $(this).val(),                                                            ////Make AR
-                function (data) {
-                    var bankAccountDropdown = $('#BankAccountId');
-                    bankAccountDropdown.empty();
-                    for (var i = 0; i < data.length; i++) {
-                        bankAccountDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
-                    }
-                });
+            SetMultiselect('BankAccountId', GetData('@Url.Content("~/Remittance/BankAccountList")', { bankId: $(this).val() }));
 
             RefreshGrid();
         })
 
         $('#SOBId').change(function () {
-            $.get('@Url.Content("~/Remittance/BankList")', $(this).val(),                                                                   ////Make AR
-                function (data) {
-                    var bankDropdown = $('#BankId');
-                    bankDropdown.empty();
-                    for (var i = 0; i < data.length; i++) {
-                        bankDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
-                    }
-
-                    $.get('@Url.Content("~/Remittance/BankAccountList")', data[0].Value,
-                        function (data) {
-                            var bankAccountDropdown = $('#BankAccountId');
-                            bankAccountDropdown.empty();
-                            for (var i = 0; i < data.length; i++) {
-                                bankAccountDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
-                            }
-                        });
-
-
-                });
-
+            SetMultiselect('BankId', GetData('@Url.Content("~/Remittance/BankList")', { sobId: $(this).val() }));
+            if ($('#BankId').val() != null) {
+                SetMultiselect('BankAccountId', GetData('@Url.Content("~/Remittance/BankAccountList")', { bankId: $('#BankId').val() }));
+            }
+            else {
+                SetMultiselect('BankAccountId', GetData('@Url.Content("~/Remittance/BankAccountList")', { bankId: 0 }));
+            }
             RefreshGrid();
         });
     });
+
+    function GetEmptyList(url) {
+        var returnedData = [];
+        $('#dvList').html("Please wait..");
+        $.ajax({
+            url: url,
+            data: {},
+            datatype: 'json',
+            type: 'get',
+            async: false,
+            error: function (data) {
+                alert(data);
+            },
+            success: function (rtnData) {
+                returnedData = rtnData;
+            }
+        });
+
+        return returnedData;
+    }
+
+    function GetData(url, data) {
+        var returnedData = [];
+        $('#dvList').html("Please wait..");
+        $.ajax({
+            url: url,
+            data: data,
+            datatype: 'json',
+            type: 'get',
+            async: false,
+            error: function (data) { alert(data); },
+            success: function (rtnData) {
+                returnedData = rtnData;
+            }
+        });
+
+        return returnedData;
+    }
 </script>

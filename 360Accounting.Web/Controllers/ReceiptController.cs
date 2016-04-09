@@ -164,8 +164,9 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult ListPartial(long periodId, long sobId, long customerId, long currencyId)
         {
+            SessionHelper.Calendar = CalendarHelper.GetCalendar(ReceivablePeriodHelper.GetReceivablePeriod(periodId.ToString()).CalendarId.ToString());
             IEnumerable<ReceiptView> boList = service
-                .GetReceipts(sobId, periodId, customerId, currencyId, AuthenticationHelper.User.CompanyId).ToList();
+                .GetReceipts(sobId, SessionHelper.Calendar.Id, customerId, currencyId, AuthenticationHelper.User.CompanyId).ToList();
 
             List<ReceiptViewModel> modelList = boList.Select(a => new ReceiptViewModel(a)).ToList();
             return PartialView("_List", modelList);
@@ -178,9 +179,11 @@ namespace _360Accounting.Web.Controllers
             {
                 bool validated = false;
                 string result = "";
+                model.PeriodId = SessionHelper.Calendar.Id;
+                model.CompanyId = AuthenticationHelper.User.CompanyId;
                 //Validation..
-                CalendarViewModel period = CalendarHelper.GetCalendar(model.PeriodId.ToString());
-                if (model.ReceiptDate >= period.StartDate && model.ReceiptDate <= period.EndDate)
+
+                if (model.ReceiptDate >= SessionHelper.Calendar.StartDate && model.ReceiptDate <= SessionHelper.Calendar.EndDate)
                     validated = true;
 
                 if (validated)
@@ -199,13 +202,15 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Create(long periodId, long sobId, long customerId, long currencyId)
         {
             ReceiptViewModel receipt = new ReceiptViewModel();
-            receipt.PeriodId = periodId;
+
+            SessionHelper.Calendar = CalendarHelper.GetCalendar(ReceivablePeriodHelper.GetReceivablePeriod(periodId.ToString()).CalendarId.ToString());
+
+            receipt.PeriodId = SessionHelper.Calendar.Id;
             receipt.SOBId = sobId;
             receipt.CustomerId = customerId;
             receipt.CurrencyId = currencyId;
 
             SessionHelper.PrecisionLimit = CurrencyHelper.GetCurrency(currencyId.ToString()).Precision;
-            SessionHelper.Calendar = CalendarHelper.GetCalendar(periodId.ToString());
 
             if (receipt.CustomerSites == null)
             {
@@ -228,6 +233,7 @@ namespace _360Accounting.Web.Controllers
             {
                 receipt.Banks = new List<SelectListItem>();
             }
+            receipt.BankId = receipt.Banks.Count() > 0 ? Convert.ToInt64(receipt.Banks.FirstOrDefault().Value) : 0;
 
             if (receipt.BankAccounts == null)
             {
