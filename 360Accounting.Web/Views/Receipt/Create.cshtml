@@ -63,9 +63,9 @@
             </div>
 
             <div class="col-md-4">
-                <div class="form-group">
+                <div class="form-group customDropDownWrapper">
                     @Html.LabelFor(model => model.Status)
-                    @Html.TextBoxFor(model => model.Status, new { @class = "form-control" })
+                    @Html.DropDownListFor(model => model.Status, new List<SelectListItem> { new SelectListItem {Text = "Confirm", Value = "Confirm"}}, new { @class = "form-control" })
                 </div>
             </div>
 

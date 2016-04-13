@@ -38,5 +38,28 @@ namespace _360Accounting.Web
             return receiptList;
             
         }
+
+        public static string GetDocNo(long customerId, long periodId, long sobId, long currencyId)
+        {
+            var currentDocument = service.GetSingle(AuthenticationHelper.CompanyId.Value, sobId, periodId, currencyId, customerId);
+            string newDocNo = "";
+            if (currentDocument != null)
+            {
+                int outVal;
+                bool isNumeric = int.TryParse(currentDocument.ReceiptNumber, out outVal);
+                if (isNumeric && currentDocument.ReceiptNumber.Length == 8)
+                {
+                    newDocNo = (int.Parse(currentDocument.ReceiptNumber) + 1).ToString();
+                    return newDocNo;
+                }
+            }
+
+            //Create New DocNum..
+            string yearDigit = SessionHelper.JV.GLDate.ToString("yy");
+            string monthDigit = SessionHelper.JV.GLDate.ToString("MM");
+            string docNo = int.Parse("1").ToString().PadLeft(4, '0');
+
+            return yearDigit + monthDigit + docNo;
+        }
     }
 }
