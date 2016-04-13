@@ -139,5 +139,14 @@ namespace _360Accounting.Data.Repositories
         {
             return this.Context.SaveChanges();
         }
+
+        public Receipt GetSingle(long companyId, long sobId, long periodId, long currencyId, long customerId)
+        {
+            Receipt entity = this.GetAll(companyId)
+                .Where(x => x.PeriodId == periodId && x.SOBId == sobId &&
+                    x.CurrencyId == currencyId && x.CustomerId == customerId).
+                    OrderByDescending(rec => rec.Id).FirstOrDefault();
+            return entity;
+        }
     }
 }

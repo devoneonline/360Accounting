@@ -32,7 +32,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult LookupAccountCode(string sobId)
         {
-            IEnumerable<Segment> model = AccountHelper.GetSegmentListForCodeCombination(sobId,true);
+            IEnumerable<Segment> model = AccountHelper.GetSegmentListForCodeCombination(SessionHelper.SOBId.ToString(), true);
             return PartialView("_LookupAccountCode", model);
         }
 

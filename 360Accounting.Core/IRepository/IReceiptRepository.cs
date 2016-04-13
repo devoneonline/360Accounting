@@ -12,5 +12,7 @@ namespace _360Accounting.Core.Interfaces
         IEnumerable<ReceiptView> GetReceipts(long sobId, long periodId, long customerId, long currencyId, long companyId);
 
         IEnumerable<ReceiptView> GetReceipts(long sobId, long bankId, long bankAccountId, DateTime? date = null);
+
+        Receipt GetSingle(long companyId, long sobId, long periodId, long currencyId, long customerId);
     }
 }

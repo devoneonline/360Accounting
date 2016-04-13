@@ -191,7 +191,10 @@ namespace _360Accounting.Web.Controllers
                     if (model.Id > 0)
                         result = service.Update(mapModel(model));
                     else
+                    {
+                        //model.ReceiptNumber = ReceiptHelper.GetDocNo(model.CustomerId, model.PeriodId, model.SOBId, model.CurrencyId);
                         result = service.Insert(mapModel(model));
+                    }
                 }
 
                 return RedirectToAction("Index");
