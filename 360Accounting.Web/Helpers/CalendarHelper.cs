@@ -54,7 +54,7 @@ namespace _360Accounting.Web
 
         public static CalendarViewModel GetPreviousCalendar(long sobId, int periodYear)
         {
-            Calendar calendar = service.GetLastCalendarByYear(AuthenticationHelper.User.CompanyId, sobId, periodYear);
+            Calendar calendar = service.GetLastCalendarByYear(AuthenticationHelper.CompanyId.Value, sobId, periodYear);
             if (calendar != null)
             {
                 SessionHelper.Calendar = new CalendarViewModel(calendar);

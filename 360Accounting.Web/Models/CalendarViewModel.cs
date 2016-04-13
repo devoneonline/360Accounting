@@ -14,7 +14,7 @@ namespace _360Accounting.Web.Models
         #region Constructors
         public CalendarViewModel()
         {
-            this.StartDate = Const.CurrentDate;
+            this.StartDate = Const.StartDate;
             this.EndDate = Const.EndDate;
         }
 
@@ -63,13 +63,13 @@ namespace _360Accounting.Web.Models
         [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "From")]
+        [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "To")]
+        [Display(Name = "End Date")]
         public DateTime EndDate { get; set; }
 
         [Required]

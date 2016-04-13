@@ -31,10 +31,11 @@
                     @Html.TextBoxFor(m => m.PeriodName, new { @class = "form-control" })
                 </div>
             </div>
+
             <div class="col-md-2 col-md-offset-1">
                 <div class="form-group">
                     @Html.LabelFor(m => m.StartDate)
-                    @Html.EditorFor(m => m.StartDate, new { @class = "form-control" })
+                    @Html.EditorFor(m => m.StartDate, new { @readonly = "readonly", @class = "form-control" })
                 </div>
             </div>
 
@@ -62,6 +63,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="clearfix">
             <div class="col-md-2">
                 <div class="form-group">
@@ -85,6 +87,22 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('[type=date]').attr('class', 'form-control');
+        
+        @*$.ajax({
+            url: '@Url.Content("~/Calendar/GetNextStartDate")',
+            data: {
+                sobId: $('#SOBId').val(),
+                periodYear: $('#PeriodYear').val()
+            },
+            type: 'post',
+            datatype: 'json',
+            error: function (error) { alert("Error in Start Date fetch.") },
+            success: function (date) {
+                $('#StartDate').val();
+            }
+        });
+
+        $('#StartDate').attr('disabled', 'true');*@
 
         $('#btnCancel').click(function () {
             window.location.href = '@Url.Content("~/Calendar/Index")';
@@ -99,7 +117,7 @@
                 },
                 type: 'post',
                 datatype: 'json',
-                error: function (error) { alert("Error Sequence Number fetch.") },
+                error: function (error) { alert("Error in Sequence Number fetch.") },
                 success: function (seqNumber) {
                     $('#SeqNumber').val(seqNumber + 1);
                 }

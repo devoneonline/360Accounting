@@ -13,11 +13,6 @@
             </h3>
         </div>
     </div>
-    <div class="clearfix">
-        <div class="col-lg-12">
-            <input type="button" value="Back" title="Account" onclick="window.location = '@Url.Content("~/Account")'" />
-        </div>
-    </div>
     <div class="col-lg-6">
         <div class="form-group">
             @Html.HiddenFor(m => m.SOBId)
@@ -29,7 +24,8 @@
     </div>
     <div class="col-lg-12">
         <div class="form-group">
-            <input type="button" id="btnCreate" value="Create New" class="btn btn-default tstyCus-btn" />
+            <input type="button" id="btnCreate" value="Create New" class="navbar-left btn btn-default tstyCus-btn" />
+            <input type="button" class="navbar-right btn btn-default tstyCus-btn" value="Back" title="Account" onclick="window.location = '@Url.Content("~/Account")'" />
         </div>
     </div>
     <div class="col-lg-12 cusGridWrapper" id="ACPartial">

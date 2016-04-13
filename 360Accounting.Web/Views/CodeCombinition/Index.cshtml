@@ -16,16 +16,17 @@
 
         <div class="clearfix">
             <div class="col-lg-12">
-                <input type="button" value="Back" title="Account" onclick="window.location = '@Url.Content("~/Account")'" />
+                <div class="navbar-right">
+                    <input type="button" class="btn btn-default tstyCus-btn" value="Back" title="Account" onclick="window.location = '@Url.Content("~/Account")'" />
+                </div>
+                <div class="navbar-left">
+                    <input type="button" id="btnCreate" value="Create New" class="btn btn-default tstyCus-btn" />
+                </div>
             </div>
         </div>
 
         @Html.HiddenFor(m => m.SOBId)
-        <div class="col-lg-12">
-            <div class="form-group">
-                <input type="button" id="btnCreate" value="Create New" class="btn btn-default tstyCus-btn" />
-            </div>
-        </div>
+        
     </div>
     <div id="dvList" class="col-lg-12 cusGridWrapper">
         @Html.Partial("_List", Model)
@@ -35,6 +36,7 @@
 <div id="dvInput" class="mydialog">
 
 </div>
+
             @*//create: function (e, ui) { $(this).css("z-index", "-1"); },*@
 
 <script type="text/javascript">
