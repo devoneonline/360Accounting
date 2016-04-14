@@ -44,16 +44,16 @@ namespace _360Accounting.Web.Models
         public long SOBId { get; set; }
 
         [Required]
-        [Display(Name = "Period")]
+        [Display(Name = "Period *")]
         [StringLength(30, ErrorMessage = "Period Name should not exceed length of 30 characters")]
         public string PeriodName { get; set; }
 
         [Required]
-        [Display(Name = "Year")]
+        [Display(Name = "Year *")]
         public int? PeriodYear { get; set; }
 
         [Required]
-        [Display(Name = "Quarter")]
+        [Display(Name = "Quarter *")]
         public int? PeriodQuarter { get; set; }
 
         [Required]
@@ -63,19 +63,19 @@ namespace _360Accounting.Web.Models
         [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Start Date")]
+        [Display(Name = "Start Date *")]
         public DateTime StartDate { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "End Date")]
+        [Display(Name = "End Date *")]
         public DateTime EndDate { get; set; }
 
         [Required]
         public bool Adjusting { get; set; }
 
-        [Display(Name = "Status")]
+        [Display(Name = "Status *")]
         public string ClosingStatus { get; set; }
 
         public string StartDateFormatted { get { return this.StartDate.ToString(Const.DATE_FORMAT_2); } }

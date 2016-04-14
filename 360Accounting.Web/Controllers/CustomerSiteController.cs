@@ -65,9 +65,16 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
-                    string result = "";
-                    result = CustomerHelper.SaveCustomerSite(model);
-                    return RedirectToAction("Index", new { Id = model.CustomerId });
+                    if (model.StartDate != null && model.StartDate > model.EndDate)
+                    {
+                        ModelState.AddModelError("Error", "Start Date cannot be greater than End Date.");
+                    }
+                    else
+                    {
+                        string result = "";
+                        result = CustomerHelper.SaveCustomerSite(model);
+                        return RedirectToAction("Index", new { Id = model.CustomerId });
+                    }
                 }
                 catch (Exception ex)
                 {

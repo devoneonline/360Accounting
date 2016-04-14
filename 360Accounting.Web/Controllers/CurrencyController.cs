@@ -48,8 +48,16 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                string result = CurrencyHelper.SaveCurrency(model);
-                return RedirectToAction("Index");
+                if (CurrencyHelper.ValidateCurrency(model) != null)
+                {
+                    ModelState.AddModelError("Error", "Currency already exists.");
+                }
+                else
+                {
+                    string result = CurrencyHelper.SaveCurrency(model);
+                    return RedirectToAction("Index");
+                }
+                
             }
 
             return View(model);

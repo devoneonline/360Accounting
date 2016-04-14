@@ -35,7 +35,7 @@ namespace _360Accounting.Web.Models
 
         [Required]
         [MaxLength(30,ErrorMessage = "Customer name should not exceed 30 characters.")]
-        [Display(Name="Customer Name")]
+        [Display(Name="Customer Name *")]
         public string CustomerName { get; set; }
 
         [MaxLength(255)]

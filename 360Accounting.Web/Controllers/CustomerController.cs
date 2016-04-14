@@ -17,16 +17,16 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                //Customer duplicateRecord = service.GetSingle(model.Id.ToString(), AuthenticationHelper.User.CompanyId);
-                //if (duplicateRecord == null)
-                //{
-                string result = CustomerHelper.SaveCustomer(model);
-                return RedirectToAction("Index");
-                //}
-                //else
-                //{
-                //    ModelState.AddModelError("Error", "Customer Already exists.");
-                //}
+                if (model.StartDate != null && model.StartDate > model.EndDate)
+                {
+                    ModelState.AddModelError("Error", "Start Date cannot be greater than End Date.");
+                }
+                else
+                {
+                    string result = CustomerHelper.SaveCustomer(model);
+                    return RedirectToAction("Index");
+                }
+                
             }
             return View(model);
         }
@@ -46,32 +46,12 @@ namespace _360Accounting.Web.Controllers
         {
             return PartialView("_List", CustomerHelper.GetCustomers());
         }
-
-        //[HttpPost]
-        //public ActionResult Create(CustomerModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        //Customer duplicateRecord = service.GetSingle(model.Id.ToString(), AuthenticationHelper.User.CompanyId);
-        //        //if (duplicateRecord == null)
-        //        //{
-        //            string result = CustomerHelper.SaveCustomer(model);
-        //            return RedirectToAction("Index");
-        //        //}
-        //        //else
-        //        //{
-        //        //    ModelState.AddModelError("Error", "Customer Already exists.");
-        //        //}
-        //    }
-        //    return View(model);
-        //}
-
+        
         public ActionResult Create()
         {
             return View("Edit", new CustomerModel());
         }
 
-        // GET: Customer
         public ActionResult Index()
         {
             CustomerListModel model = new CustomerListModel();
