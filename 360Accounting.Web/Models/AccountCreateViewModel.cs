@@ -62,7 +62,8 @@ namespace _360Accounting.Web.Models
 
         public long CompanyId { get; set; }
 
-        [Display(Name = "1")]
+        [Required]
+        [Display(Name = "1 *")]
         [StringLength(30, ErrorMessage = "Segment1 should not exceed length of 30 characters!")]
         public string SegmentName1 { get; set; }
 
