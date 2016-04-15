@@ -10,9 +10,6 @@ namespace _360Accounting.Web.Models
 {
     public class PayableInvoiceListModel
     {
-        [Display(Name = "Set Of Book")]
-        public List<SelectListItem> SetOfBooks { get; set; }
-
         [Display(Name = "Period")]
         public List<SelectListItem> Periods { get; set; }
 

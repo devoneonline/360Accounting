@@ -26,16 +26,14 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Create()
         {
             AccountCreateViewModel model = new AccountCreateViewModel();
-            model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()
-                .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList(); ;
+            model.SOBId = SessionHelper.SOBId;
             return View("Edit", model);
         }
 
         public ActionResult Edit(string id)
         {
             AccountCreateViewModel model = AccountHelper.GetAccount(id);
-            model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()
-                .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
+            model.SOBId = SessionHelper.SOBId;
             return View(model);
         }
 
@@ -44,6 +42,7 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.SOBId = SessionHelper.SOBId;
                 if (model.Id > 0)
                 {
                     string result = AccountHelper.SaveChartOfAccount(model);
@@ -59,8 +58,6 @@ namespace _360Accounting.Web.Controllers
                     else
                     {
                         ModelState.AddModelError("Error", "Account Already exists.");
-                        model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()
-                            .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
                     }
                 }
             }

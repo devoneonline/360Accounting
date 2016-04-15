@@ -12,9 +12,6 @@ namespace _360Accounting.Web.Models
     {
         public long SOBId { get; set; }
 
-        [Display(Name = "Set Of Book")]
-        public List<SelectListItem> SetOfBooks { get; set; }
-
         public IList<MiscellaneousTransactionModel> MiscellaneousTransactions { get; set; }
     }
 

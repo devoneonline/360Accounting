@@ -23,7 +23,7 @@
                     <span class="navbar-brand"><img class="img-responsive" src='@Url.Content("~/Content/images/logo.png")' alt="" /></span>
                 </div>
                 <div class="navbar-collapse collapse">
-                    <div class="customClientLogo">@AuthenticationHelper.CompanyName <a href="#">(Ahsan Book)</a></div>
+                    <div class="customClientLogo">@AuthenticationHelper.CompanyName <a id="activeBook" href="#">(@SessionHelper.SOBName)</a></div>
                     @Html.Partial("_LoginPartial")
                     @Html.Partial("_Menu")
                 </div>
@@ -42,7 +42,66 @@
     <div id="dvAccountLookup">
 
     </div>
+    <div id="dvDefaultSOB">
+
+    </div>
     <script type="text/javascript">
+        //Default SOB
+        var zind = function () {
+            var z = 1000 - jQuery('.mydialog.ui-dialog-content').length;
+            return z;
+        };
+
+        $(function () {
+            //$.noConflict();
+            $('#dvDefaultSOB').dialog({
+                modal: true,
+                title: "Default Set of Book",
+                autoOpen: false,
+                height: 'auto',
+                width: 500,
+                height: 300,
+                zIndex: zind,
+            });
+        });
+
+        $('#activeBook').click(function () {
+            $.ajax({
+                url: '@Url.Content("~/UserSetofBook")',
+                data: {},
+                datatype: 'html',
+                type: 'get',
+                error: function (error) {
+                    alert('Error');
+                },
+                success: function (data) {
+                    $('#dvDefaultSOB').html(data);
+                    $('#dvDefaultSOB').dialog("open");
+                    return false;
+                }
+            });
+        });
+
+        function SaveDefaultSOB() {
+            var model = {
+                Id: $('#Id').val(),
+                SOBId: $('#SOBId').val()
+            }
+
+            $.ajax({
+                url: '@Url.Content("~/UserSetofBook/Save")',
+                data: model,
+                datatype: 'json',
+                type: 'post',
+                error: function (data) { },
+                success: function (data) {
+                    $('#dvDefaultSOB').dialog('close');
+                    window.location.reload();
+                }
+            });
+        }
+        //Default SOB
+
         var lookupTextField = '';
         var lookupValueField = '';
 

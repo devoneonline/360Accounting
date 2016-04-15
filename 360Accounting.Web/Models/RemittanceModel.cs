@@ -10,9 +10,6 @@ namespace _360Accounting.Web.Models
 {
     public class RemittanceListModel
     {
-        [Display(Name = "Set Of Book")]
-        public List<SelectListItem> SetOfBooks { get; set; }
-
         [Display(Name = "Bank")]
         public List<SelectListItem> Banks { get; set; }
 

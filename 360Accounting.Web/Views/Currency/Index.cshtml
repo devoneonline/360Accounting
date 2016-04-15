@@ -13,13 +13,7 @@
             </h3>
         </div>
     </div>
-    <div class="col-lg-6">
-        <div class="form-group customDropDownWrapper">
-            @Html.LabelFor(m => m.SetOfBooks)
-            @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control" })
-        </div>
-    </div>
-
+    
     <div class="col-lg-12">
         <div class="form-group">
             <input type="button" id="btnCreate" value="Create New" class="btn btn-default tstyCus-btn" />
@@ -27,7 +21,7 @@
     </div>
 
     <div id="dvList" class="col-lg-12 cusGridWrapper">
-        @Html.Action("CurrencyListPartial", new { sobId = Model.SOBId })
+        @Html.Action("CurrencyListPartial")
     </div>
 </div>
 
@@ -36,25 +30,8 @@
         $.noConflict();
 
         $('#btnCreate').click(function () {
-            var url = '@Url.Content("~/Currency/Create?sobId=")' + $('#SOBId').val();
+            var url = '@Url.Content("~/Currency/Create")';
             window.location.href = url;
-        });
-
-        $('#SOBId').change(function () {
-            $('#dvList').html("Please wait..");
-            $.ajax({
-                url: '@Url.Content("~/Currency/CurrencyListPartial")',
-                data: {
-                    sobId: $('#SOBId').val()
-                },
-                datatype: 'html',
-                type: 'post',
-                error: function (data) { alert(data); },
-                success: function (data) {
-                    $('#dvList').empty();
-                    $('#dvList').html(data);
-                }
-            });
         });
     });
 </script>

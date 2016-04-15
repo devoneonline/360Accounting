@@ -206,6 +206,18 @@ namespace _360Accounting.Web
             }
         }
 
+        public static string SOBName
+        {
+            get
+            {
+                return HttpContext.Current.Session["SOBName"].ToString();
+            }
+            set
+            {
+                HttpContext.Current.Session["SOBName"] = value;
+            }
+        }
+
         public static long PeriodId
         {
             get

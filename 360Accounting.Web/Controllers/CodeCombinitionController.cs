@@ -22,25 +22,25 @@ namespace _360Accounting.Web.Controllers
             return View(model);
         }
 
-        public ActionResult Create(string sobId)
+        public ActionResult Create()
         {
             CodeCombinitionCreateViewModel model =  new CodeCombinitionCreateViewModel();
-            model.SegmentList = AccountHelper.GetSegmentListForCodeCombination(sobId);
-            model.SOBId = Convert.ToInt64(sobId);
+            model.SegmentList = AccountHelper.GetSegmentListForCodeCombination(SessionHelper.SOBId.ToString());
+            model.SOBId = Convert.ToInt64(SessionHelper.SOBId.ToString());
             return PartialView("_Create", model);
         }
 
-        public ActionResult LookupAccountCode(string sobId)
+        public ActionResult LookupAccountCode()
         {
             IEnumerable<Segment> model = AccountHelper.GetSegmentListForCodeCombination(SessionHelper.SOBId.ToString(), true);
             return PartialView("_LookupAccountCode", model);
         }
 
-        public ActionResult Edit(string id, string sobId)
+        public ActionResult Edit(string id)
         {
             CodeCombinitionCreateViewModel model = CodeCombinationHelper.GetCodeCombination(id);
-            model.SegmentList = AccountHelper.GetSegmentListForCodeCombination(sobId);
-            model.SOBId = Convert.ToInt32(sobId);
+            model.SegmentList = AccountHelper.GetSegmentListForCodeCombination(SessionHelper.SOBId.ToString());
+            model.SOBId = Convert.ToInt32(SessionHelper.SOBId.ToString());
             return PartialView("_Edit", model);
         }
 
@@ -49,7 +49,7 @@ namespace _360Accounting.Web.Controllers
             return Json(AccountHelper.GetAccountIdBySegments(value));
         }
 
-        public ActionResult UpdateCodeCombinition(long id, long sobId, string segmentValues, bool allowPosting, string startDate, string endDate)
+        public ActionResult UpdateCodeCombinition(long id, string segmentValues, bool allowPosting, string startDate, string endDate)
         {
             var segmentList = segmentValues.Split(new char[] { '±' }).ToList<string>();
             CodeCombinitionCreateViewModel model = new CodeCombinitionCreateViewModel();
@@ -94,21 +94,22 @@ namespace _360Accounting.Web.Controllers
             model.EndDate = endDate == "" ? null : (DateTime?)Convert.ToDateTime(endDate);
             model.StartDate = startDate == "" ? null : (DateTime?)Convert.ToDateTime(startDate);
             model.Id = id;
-            model.SOBId = sobId;
+            model.SOBId = SessionHelper.SOBId;
 
             string result = CodeCombinationHelper.SaveCodeCombination(model);
             return Json("Success");
         }
 
-        public ActionResult Delete(string id, long sobId)
+        public ActionResult Delete(string id)
         {
             CodeCombinationHelper.Delete(id);
-            return RedirectToAction("Index", new { id = sobId });
+            return RedirectToAction("Index", new { id = SessionHelper.SOBId });
         }
 
-        public ActionResult GetCodeCombinitionList(long sobId)
+        public ActionResult GetCodeCombinitionList()
         {
             CodeCombinitionListModel model = new CodeCombinitionListModel();
+            model.SOBId = SessionHelper.SOBId;
             model.CodeCombinitions = CodeCombinationHelper.GetCodeCombinations(model);
             return PartialView("_List", model);
         }

@@ -17,13 +17,6 @@
 
     <div class="col-lg-4">
         <div class="form-group customDropDownWrapper">
-            @Html.LabelFor(m => m.SetOfBooks)
-            @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control criteria" })
-        </div>
-    </div>
-
-    <div class="col-lg-4">
-        <div class="form-group customDropDownWrapper">
             @Html.LabelFor(m => m.Periods)
             @Html.DropDownListFor(m => m.PeriodId, Model.Periods, new { @class = "form-control criteria" })
         </div>
@@ -43,7 +36,7 @@
     </div>
     
     <div id="dvList" class="col-lg-12 cusGridWrapper">
-        @Html.Action("ListPartial", new { sobId = Model.SOBId, periodId = Model.PeriodId, currencyId = Model.CurrencyId })
+        @Html.Action("ListPartial", new { periodId = Model.PeriodId, currencyId = Model.CurrencyId })
     </div>
 </div>
 
@@ -54,17 +47,15 @@
         $('#btnCreate').click(function () {
             var continueCreate = true;
 
-            var inValidInputs = $('#SOBId, #PeriodId, #CurrencyId').filter(function () { return $(this).val() == null; });
+            var inValidInputs = $('#PeriodId, #CurrencyId').filter(function () { return $(this).val() == null; });
             inValidInputs.each(function (index, item) {
                 $('#' + item.id).css('border', '1px solid #ff6600');
                 continueCreate = false;
             })
 
             if (continueCreate) {
-                var url = '@Url.Content("~/JV/Create?sobId=")' +
-                    $('#SOBId').val() +
-                    "&periodId=" + $('#PeriodId').val() +
-                    "&currencyId=" + $('#CurrencyId').val()
+                var url = '@Url.Content("~/JV/Create?periodId=")' + $('#PeriodId').val() +
+                    "&currencyId=" + $('#CurrencyId').val();
                 window.location.href = url;
             }
             else
@@ -75,19 +66,13 @@
         jQuery.ajaxSetup({ async: false });
 
         function RefreshGrid() {
-            if ($('#SOBId').val() == null || $('#PeriodId').val() == null || $('#CurrencyId').val() == null)
+            if ($('#PeriodId').val() == null || $('#CurrencyId').val() == null)
                 $('#dvList').html(GetEmptyList('@Url.Content("~/JV/EmptyListPartial")'));
             else
-                $('#dvList').html(GetData('@Url.Content("~/JV/ListPartial")', { sobId: $('#SOBId').val(), periodId: $('#PeriodId').val(), currencyId: $('#CurrencyId').val() }));
+                $('#dvList').html(GetData('@Url.Content("~/JV/ListPartial")', { periodId: $('#PeriodId').val(), currencyId: $('#CurrencyId').val() }));
         }
 
         $('#PeriodId, #CurrencyId').change(function () {
-            RefreshGrid();
-        });
-
-        $('#SOBId').change(function () {
-            SetMultiselect('PeriodId', GetData('@Url.Content("~/JV/PeriodList")', { sobId: $(this).val() }));
-            SetMultiselect('CurrencyId', GetData('@Url.Content("~/JV/CurrencyList")', { sobId: $(this).val() }));
             RefreshGrid();
         });
     });

@@ -41,7 +41,6 @@ namespace _360Accounting.Web.Models
         public string CodeCombinationIdString { get; set; }
 
         public IList<SelectListItem> CodeCombinations { get; set; }
-        //public List<SelectListItem> SetOfBooks { get; set; }
         
         public long CompanyId { get; set; }
 
@@ -64,8 +63,5 @@ namespace _360Accounting.Web.Models
     public class InvoiceSourceListModel
     {
         public long SOBId { get; set; }
-
-        [Display(Name = "Set Of Books")]
-        public List<SelectListItem> SetOfBooks { get; set; }
     }
 }

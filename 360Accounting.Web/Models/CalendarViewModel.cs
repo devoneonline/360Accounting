@@ -20,21 +20,24 @@ namespace _360Accounting.Web.Models
 
         public CalendarViewModel(Calendar entity)
         {
-            this.Adjusting = entity.Adjusting;
-            this.ClosingStatus = entity.ClosingStatus;
-            this.EndDate = entity.EndDate;
-            this.Id = entity.Id;
-            this.PeriodName = entity.PeriodName;
-            this.PeriodQuarter = entity.PeriodQuarter;
-            this.PeriodYear = entity.PeriodYear;
-            this.SeqNumber = entity.SeqNumber;
-            this.SOBId = entity.SOBId;
-            this.StartDate = entity.StartDate;
-            this.CompanyId = entity.CompanyId;
-            this.CreateBy = entity.CreateBy;
-            this.CreateDate = entity.CreateDate;
-            this.UpdateBy = entity.UpdateBy;
-            this.UpdateDate = entity.UpdateDate;
+            if (entity != null)
+            {
+                this.Adjusting = entity.Adjusting;
+                this.ClosingStatus = entity.ClosingStatus;
+                this.EndDate = entity.EndDate;
+                this.Id = entity.Id;
+                this.PeriodName = entity.PeriodName;
+                this.PeriodQuarter = entity.PeriodQuarter;
+                this.PeriodYear = entity.PeriodYear;
+                this.SeqNumber = entity.SeqNumber;
+                this.SOBId = entity.SOBId;
+                this.StartDate = entity.StartDate;
+                this.CompanyId = entity.CompanyId;
+                this.CreateBy = entity.CreateBy;
+                this.CreateDate = entity.CreateDate;
+                this.UpdateBy = entity.UpdateBy;
+                this.UpdateDate = entity.UpdateDate;
+            }
         }
         #endregion
 
@@ -93,8 +96,6 @@ namespace _360Accounting.Web.Models
                 return list;
             }
         }
-
-        public List<SelectListItem> SetOfBooks { get; set; }
         #endregion
     }
 }

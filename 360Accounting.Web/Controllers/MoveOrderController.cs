@@ -30,13 +30,12 @@ namespace _360Accounting.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Edit(string id, long sobId)
+        public ActionResult Edit(string id)
         {
             MoveOrderModel model = MoveOrderHelper.GetMoveOrder(id);
-            SessionHelper.SOBId = model.SOBId;
-
+            
             model.MoveOrderDetail = MoveOrderHelper.GetMoveOrderLines(id).ToList();
-            model.SOBId = sobId;
+            model.SOBId = SessionHelper.SOBId;
             model.CompanyId = AuthenticationHelper.User.CompanyId;
             SessionHelper.MoveOrder = model;
 
@@ -46,42 +45,29 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Index(MoveOrderListModel model)
         {
             SessionHelper.Item = null;
-            if (model.SetOfBooks == null)
-            {
-                model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.Name,
-                        Value = x.Id.ToString()
-                    }).ToList();
-                model.SOBId = model.SetOfBooks.Any() ?
-                    Convert.ToInt32(model.SetOfBooks.First().Value) : 0;
-            }
+            model.SOBId = SessionHelper.SOBId;
             return View(model);
         }
 
         public ActionResult MoveOrderPartial(MoveOrderListModel model)
         {
-            SessionHelper.SOBId = model.SOBId;
             return PartialView("_List", MoveOrderHelper.GetMoveOrders(model.SOBId));
         }
 
-        public ActionResult Create(long sobId)
+        public ActionResult Create()
         {
-            SessionHelper.SOBId = sobId;
-
             MoveOrderModel model = SessionHelper.MoveOrder;
             if (model == null)
             {
                 model = new MoveOrderModel
                 {
-                    SOBId = sobId,
+                    SOBId = SessionHelper.SOBId,
                     DateRequired = DateTime.Now,
                     MoveOrderDate = DateTime.Now,
                     MoveOrderNo = "New"
                 };
                 model.CompanyId = AuthenticationHelper.User.CompanyId;
-                ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(sobId.ToString()).Name;
+                ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
 
                 SessionHelper.MoveOrder = model;
                 if (SessionHelper.MoveOrder.MoveOrderDetail == null)

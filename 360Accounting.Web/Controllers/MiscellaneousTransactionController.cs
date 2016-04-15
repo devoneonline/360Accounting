@@ -47,14 +47,13 @@ namespace _360Accounting.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Edit(string id, long sobId)
+        public ActionResult Edit(string id)
         {
             MiscellaneousTransactionModel model = MiscellaneousTransactionHelper.GetMiscellaneousTransaction(id);
             SessionHelper.MiscellaneousTransaction = model;
-            SessionHelper.SOBId = model.SOBId;
 
+            model.SOBId = SessionHelper.SOBId;
             model.MiscellaneousTransactionDetail = MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(model.SOBId, model.TransactionType, model.CodeCombinationId, model.TransactionDate).ToList();
-            model.SOBId = sobId;
             model.CompanyId = AuthenticationHelper.User.CompanyId;
 
             model.CodeCombination = getCodeCombinationList(model.SOBId);
@@ -66,51 +65,38 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Index(MiscellaneousTransactionListModel model)
         {
             SessionHelper.MiscellaneousTransaction = null;
-            if (model.SetOfBooks == null)
-            {
-                model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.Name,
-                        Value = x.Id.ToString()
-                    }).ToList();
-                model.SOBId = model.SetOfBooks.Any() ?
-                    Convert.ToInt32(model.SetOfBooks.First().Value) : 0;
-            }
+            model.SOBId = SessionHelper.SOBId;
             return View(model);
         }
 
         public ActionResult MiscellaneousTransactionPartial(MiscellaneousTransactionListModel model)
         {
-            SessionHelper.SOBId = model.SOBId;
-            return PartialView("_List", MiscellaneousTransactionHelper.GetMiscellaneousTransactions(model.SOBId));
+            return PartialView("_List", MiscellaneousTransactionHelper.GetMiscellaneousTransactions(SessionHelper.SOBId));
         }
 
-        public ActionResult Create(long sobId)
+        public ActionResult Create()
         {
-            SessionHelper.SOBId = sobId;
-
             MiscellaneousTransactionModel model = SessionHelper.MiscellaneousTransaction;
             if (model == null)
             {
                 model = new MiscellaneousTransactionModel();
                 model = new MiscellaneousTransactionModel
                 {
-                    SOBId = sobId,
-                    CodeCombination = getCodeCombinationList(sobId),
+                    SOBId = SessionHelper.SOBId,
+                    CodeCombination = getCodeCombinationList(SessionHelper.SOBId),
                     CompanyId = AuthenticationHelper.User.CompanyId,
                     TransactionDate = DateTime.Now
                 };
                 model.CodeCombinationId = model.CodeCombination != null && model.CodeCombination.Count > 0 ? Convert.ToInt64(model.CodeCombination.FirstOrDefault().Value) : 0;
                 model.CodeCombinationString = model.CodeCombination != null && model.CodeCombination.Count > 0 ? model.CodeCombination.FirstOrDefault().Text : "";
-                ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(sobId.ToString()).Name;
+                ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
 
                 SessionHelper.MiscellaneousTransaction = model;
                 if (SessionHelper.MiscellaneousTransaction.MiscellaneousTransactionDetail == null)
                     SessionHelper.MiscellaneousTransaction.MiscellaneousTransactionDetail = new List<MiscellaneousTransactionDetailModel>();
             }
             else
-                model.CodeCombination = getCodeCombinationList(sobId);
+                model.CodeCombination = getCodeCombinationList(SessionHelper.SOBId);
             
             return View(model);
         }
@@ -132,6 +118,7 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
+                    model.SOBId = SessionHelper.SOBId;
                     bool validated = false;
                     if (SessionHelper.MiscellaneousTransaction != null)
                     {
@@ -186,6 +173,7 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
+                    model.SOBId = SessionHelper.SOBId;
                     if (SessionHelper.MiscellaneousTransaction != null)
                     {
                         if (SessionHelper.MiscellaneousTransaction.MiscellaneousTransactionDetail.Any(rec => rec.LotNo == model.LotNo && rec.ItemId == model.ItemId))
@@ -227,6 +215,7 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
+                    model.SOBId = SessionHelper.SOBId;
                     MiscellaneousTransactionModel MiscellaneousTransaction = SessionHelper.MiscellaneousTransaction;
                     MiscellaneousTransactionHelper.DeleteMiscellaneousTransactionDetail(model);
                     SessionHelper.MiscellaneousTransaction = MiscellaneousTransaction;
@@ -254,7 +243,7 @@ namespace _360Accounting.Web.Controllers
                     SessionHelper.MiscellaneousTransaction.CodeCombinationId = model.CodeCombinationId;
                     SessionHelper.MiscellaneousTransaction.CompanyId = model.CompanyId;
                     SessionHelper.MiscellaneousTransaction.Id = model.Id;
-                    SessionHelper.MiscellaneousTransaction.SOBId = model.SOBId;
+                    SessionHelper.MiscellaneousTransaction.SOBId = SessionHelper.SOBId;
                     SessionHelper.MiscellaneousTransaction.TransactionDate = model.TransactionDate;
                     SessionHelper.MiscellaneousTransaction.TransactionType = model.TransactionType;
 

@@ -11,12 +11,7 @@ namespace _360Accounting.Web.Controllers
     {
         public ActionResult Index(ReceivablePeriodListModel model)
         {
-            if (model.SetOfBooks == null)
-            {
-                model.SetOfBooks = SetOfBookHelper.GetSetOfBookList();
-            }
-            model.SOBId = model.SOBId > 0 ? model.SOBId : Convert.ToInt64(model.SetOfBooks[0].Value.ToString());
-            SessionHelper.SOBId = model.SOBId;
+            model.SOBId = SessionHelper.SOBId;
             return View(model);
         }
 
@@ -27,7 +22,6 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult GetReceivablePeriods(long sobId)
         {
-            SessionHelper.SOBId = sobId;
             return PartialView("_List", ReceivablePeriodHelper.GetReceivablePeriods(SessionHelper.SOBId));
         }
 

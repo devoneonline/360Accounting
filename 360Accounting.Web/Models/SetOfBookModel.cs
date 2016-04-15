@@ -15,9 +15,12 @@ namespace _360Accounting.Web.Models
 
         public SetOfBookModel(SetOfBook entity)
         {
-            this.Id = entity.Id;
-            this.CompanyId = entity.CompanyId;
-            this.Name = entity.Name;
+            if (entity != null)
+            {
+                this.Id = entity.Id;
+                this.CompanyId = entity.CompanyId;
+                this.Name = entity.Name;
+            }
         }
 
         public long Id { get; set; }

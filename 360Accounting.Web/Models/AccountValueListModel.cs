@@ -32,9 +32,6 @@ namespace _360Accounting.Web.Models
             set { this.sortDirection = value; }
         }
 
-        [Display(Name = "Set Of Books")]
-        public List<SelectListItem> SetOfBooks { get; set; }
-
         public long SOBId { get; set; }
 
         public List<SelectListItem> Segments { get; set; }

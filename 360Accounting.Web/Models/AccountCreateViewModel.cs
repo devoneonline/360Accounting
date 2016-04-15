@@ -57,9 +57,6 @@ namespace _360Accounting.Web.Models
         [Required]
         public long SOBId { get; set; }
 
-        [Display(Name = "Set of Book")]
-        public List<SelectListItem> SetOfBooks { get; set; }
-
         public long CompanyId { get; set; }
 
         [Display(Name = "1")]

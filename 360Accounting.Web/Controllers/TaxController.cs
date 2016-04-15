@@ -26,16 +26,14 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Edit(string id)
         {
             TaxModel model = TaxHelper.GetTax(id);
-            SessionHelper.SOBId = model.SOBId;
             model.TaxDetails = TaxHelper.GetTaxDetail(id);
             SessionHelper.Tax = model;
             return View(model);
         }
 
-        public ActionResult ListPartial(long sobId)
+        public ActionResult ListPartial()
         {
-            SessionHelper.SOBId = sobId;
-            return PartialView("_List", TaxHelper.GetTaxes(sobId));
+            return PartialView("_List", TaxHelper.GetTaxes(SessionHelper.SOBId));
         }
 
         public ActionResult SaveTax(string taxName, 
@@ -152,11 +150,10 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_TaxDetailPartial", TaxHelper.GetTaxDetail());
         }
 
-        public ActionResult Create(long sobId)
+        public ActionResult Create()
         {
-            SessionHelper.SOBId = sobId;
             TaxModel model = new TaxModel();
-            model.SOBId = sobId;
+            model.SOBId = SessionHelper.SOBId;
             model.TaxDetails = new List<TaxDetailModel>();
             SessionHelper.Tax = model;
             return View("Edit", model);
@@ -165,17 +162,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Index(TaxListModel model)
         {
             SessionHelper.Tax = null;
-            if (model.SetOfBooks == null)
-            {
-                model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()
-                    .Select(x => new SelectListItem 
-                    {
-                        Text = x.Name,
-                        Value = x.Id.ToString()
-                    }).ToList();
-                model.SOBId = model.SetOfBooks.Any() ? 
-                    Convert.ToInt32(model.SetOfBooks.First().Value) : 0;
-            }
+            model.SOBId = SessionHelper.SOBId;
 
             return View(model);
         }

@@ -58,34 +58,34 @@ namespace _360Accounting.Web.Controllers
         #endregion
 
         #region Reports
-        public ActionResult TrialBalancePartialExport(long sobId, long fromCodeCombinationId, long toCodeCombinationId, long periodId)
+        public ActionResult TrialBalancePartialExport(long fromCodeCombinationId, long toCodeCombinationId, long periodId)
         {
-            return DocumentViewerExtension.ExportTo(CreateTrialBalanceReport(sobId, fromCodeCombinationId, toCodeCombinationId, periodId));
+            return DocumentViewerExtension.ExportTo(CreateTrialBalanceReport(fromCodeCombinationId, toCodeCombinationId, periodId));
         }
 
-        public ActionResult LedgerPartialExport(long sobId, long fromCodeCombinationId, long toCodeCombinationId, DateTime fromDate, DateTime toDate)
+        public ActionResult LedgerPartialExport(long fromCodeCombinationId, long toCodeCombinationId, DateTime fromDate, DateTime toDate)
         {
-            return DocumentViewerExtension.ExportTo(CreateLedgerReport(sobId, fromCodeCombinationId, toCodeCombinationId, fromDate, toDate));
+            return DocumentViewerExtension.ExportTo(CreateLedgerReport(fromCodeCombinationId, toCodeCombinationId, fromDate, toDate));
         }
 
-        public ActionResult AuditTrailPartialExport(long sobId, DateTime fromDate, DateTime toDate)
+        public ActionResult AuditTrailPartialExport(DateTime fromDate, DateTime toDate)
         {
-            return DocumentViewerExtension.ExportTo(CreateAuditTrailReport(sobId, fromDate, toDate), Request);
+            return DocumentViewerExtension.ExportTo(CreateAuditTrailReport(fromDate, toDate), Request);
         }
 
-        public ActionResult UserwiseEntriesTrailPartialExport(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
+        public ActionResult UserwiseEntriesTrailPartialExport(DateTime fromDate, DateTime toDate, Guid userId)
         {
-            return DocumentViewerExtension.ExportTo(CreateUserwiseEntriesTrailReport(sobId, fromDate, toDate, userId), Request);
+            return DocumentViewerExtension.ExportTo(CreateUserwiseEntriesTrailReport(fromDate, toDate, userId), Request);
         }
 
-        private TrialBalanceReport CreateTrialBalanceReport(long sobId, long fromCodeCombinationId, long toCodeCombinationId, long periodId)
+        private TrialBalanceReport CreateTrialBalanceReport(long fromCodeCombinationId, long toCodeCombinationId, long periodId)
         {
-            List<TrialBalanceModel> modelList = mapTrialBalanceModel(service.TrialBalance(AuthenticationHelper.User.CompanyId, sobId, fromCodeCombinationId >= toCodeCombinationId ? toCodeCombinationId : fromCodeCombinationId, toCodeCombinationId <= fromCodeCombinationId ? fromCodeCombinationId : toCodeCombinationId, periodId));
+            List<TrialBalanceModel> modelList = mapTrialBalanceModel(service.TrialBalance(AuthenticationHelper.User.CompanyId, SessionHelper.SOBId, fromCodeCombinationId >= toCodeCombinationId ? toCodeCombinationId : fromCodeCombinationId, toCodeCombinationId <= fromCodeCombinationId ? fromCodeCombinationId : toCodeCombinationId, periodId));
             TrialBalanceReport report = new TrialBalanceReport();
             report.Parameters["CompanyName"].Value = companyService
                 .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
                 AuthenticationHelper.User.CompanyId).Name;
-            report.Parameters["SOBId"].Value = sobId;
+            report.Parameters["SOBId"].Value = SessionHelper.SOBId;
             report.Parameters["FromCodeCombinationId"].Value = fromCodeCombinationId;
             report.Parameters["ToCodeCombinationId"].Value = toCodeCombinationId;
             report.Parameters["PeriodId"].Value = periodId;
@@ -110,14 +110,14 @@ namespace _360Accounting.Web.Controllers
             return reportModel;
         }
 
-        private LedgerReport CreateLedgerReport(long sobId, long fromCodeCombinationId, long toCodeCombinationId, DateTime fromDate, DateTime toDate)
+        private LedgerReport CreateLedgerReport(long fromCodeCombinationId, long toCodeCombinationId, DateTime fromDate, DateTime toDate)
         {
-            List<LedgerModel> modelList = mapLedgerModel(service.Ledger(AuthenticationHelper.User.CompanyId, sobId, fromCodeCombinationId >= toCodeCombinationId ? toCodeCombinationId : fromCodeCombinationId, toCodeCombinationId <= fromCodeCombinationId ? fromCodeCombinationId : toCodeCombinationId, fromDate, toDate));
+            List<LedgerModel> modelList = mapLedgerModel(service.Ledger(AuthenticationHelper.User.CompanyId, SessionHelper.SOBId, fromCodeCombinationId >= toCodeCombinationId ? toCodeCombinationId : fromCodeCombinationId, toCodeCombinationId <= fromCodeCombinationId ? fromCodeCombinationId : toCodeCombinationId, fromDate, toDate));
             LedgerReport report = new LedgerReport();
             report.Parameters["CompanyName"].Value = companyService
                 .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
                 AuthenticationHelper.User.CompanyId).Name;
-            report.Parameters["SOBId"].Value = sobId;
+            report.Parameters["SOBId"].Value = SessionHelper.SOBId;
             report.Parameters["FromDate"].Value = fromDate;
             report.Parameters["ToDate"].Value = toDate;
             report.Parameters["FromCodeCombinationId"].Value = fromCodeCombinationId;
@@ -145,14 +145,14 @@ namespace _360Accounting.Web.Controllers
             return reportModel;
         }
 
-        private AuditTrailReport CreateAuditTrailReport(long sobId, DateTime fromDate, DateTime toDate)
+        private AuditTrailReport CreateAuditTrailReport(DateTime fromDate, DateTime toDate)
         {
-            List<AuditTrailModel> modelList = mapAuditTrialModel(service.AuditTrail(AuthenticationHelper.User.CompanyId, sobId, fromDate, toDate));
+            List<AuditTrailModel> modelList = mapAuditTrialModel(service.AuditTrail(AuthenticationHelper.User.CompanyId, SessionHelper.SOBId, fromDate, toDate));
             AuditTrailReport report = new AuditTrailReport();
             report.Parameters["CompanyName"].Value = companyService
                 .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
                 AuthenticationHelper.User.CompanyId).Name;
-            report.Parameters["SOBId"].Value = sobId;
+            report.Parameters["SOBId"].Value = SessionHelper.SOBId;
             report.Parameters["FromDate"].Value = fromDate;
             report.Parameters["ToDate"].Value = toDate;
             report.DataSource = modelList;
@@ -185,14 +185,14 @@ namespace _360Accounting.Web.Controllers
             return reportModel;
         }
 
-        private UserwiseEntriesTrailReport CreateUserwiseEntriesTrailReport(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
+        private UserwiseEntriesTrailReport CreateUserwiseEntriesTrailReport(DateTime fromDate, DateTime toDate, Guid userId)
         {
-            List<UserwiseEntriesTrailModel> modelList = mapReportModel(service.UserwiseEntriesTrail(AuthenticationHelper.User.CompanyId, sobId, fromDate, toDate, userId));
+            List<UserwiseEntriesTrailModel> modelList = mapReportModel(service.UserwiseEntriesTrail(AuthenticationHelper.User.CompanyId, SessionHelper.SOBId, fromDate, toDate, userId));
             UserwiseEntriesTrailReport report = new UserwiseEntriesTrailReport();
             report.Parameters["CompanyName"].Value = companyService
                 .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
                 AuthenticationHelper.User.CompanyId).Name;
-            report.Parameters["SOBId"].Value = sobId;
+            report.Parameters["SOBId"].Value = SessionHelper.SOBId;
             report.Parameters["FromDate"].Value = fromDate;
             report.Parameters["ToDate"].Value = toDate;
             report.Parameters["UserId"].Value = userId;
@@ -217,64 +217,58 @@ namespace _360Accounting.Web.Controllers
             return reportModel;
         }
 
-        public ActionResult TrialBalancePartial(long sobId, long fromCodeCombinationId, long toCodeCombinationId, long periodId)
+        public ActionResult TrialBalancePartial(long fromCodeCombinationId, long toCodeCombinationId, long periodId)
         {
-            return PartialView("_TrialBalancePartial", CreateTrialBalanceReport(sobId, fromCodeCombinationId, toCodeCombinationId, periodId));
+            return PartialView("_TrialBalancePartial", CreateTrialBalanceReport(fromCodeCombinationId, toCodeCombinationId, periodId));
         }
 
-        public ActionResult LedgerPartial(long sobId, long fromCodeCombinationId, long toCodeCombinationId, DateTime fromDate, DateTime toDate)
+        public ActionResult LedgerPartial(long fromCodeCombinationId, long toCodeCombinationId, DateTime fromDate, DateTime toDate)
         {
-            return PartialView("_LedgerPartial", CreateLedgerReport(sobId, fromCodeCombinationId, toCodeCombinationId, fromDate, toDate));
+            return PartialView("_LedgerPartial", CreateLedgerReport(fromCodeCombinationId, toCodeCombinationId, fromDate, toDate));
         }
 
-        public ActionResult AuditTrailPartial(long sobId, DateTime fromDate, DateTime toDate)
+        public ActionResult AuditTrailPartial(DateTime fromDate, DateTime toDate)
         {
-            return PartialView("_AuditTrailPartial", CreateAuditTrailReport(sobId, fromDate, toDate));
+            return PartialView("_AuditTrailPartial", CreateAuditTrailReport(fromDate, toDate));
         }
 
-        public ActionResult UserwiseEntriesTrailPartial(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
+        public ActionResult UserwiseEntriesTrailPartial(DateTime fromDate, DateTime toDate, Guid userId)
         {
-            return PartialView("_UserwiseEntriesTrailPartial", CreateUserwiseEntriesTrailReport(sobId, fromDate, toDate, userId));
+            return PartialView("_UserwiseEntriesTrailPartial", CreateUserwiseEntriesTrailReport(fromDate, toDate, userId));
         }
 
-        public ActionResult TrialBalanceReport(long sobId, long fromCodeCombinationId, long toCodeCombinationId, long periodId)
+        public ActionResult TrialBalanceReport(long fromCodeCombinationId, long toCodeCombinationId, long periodId)
         {
-            return View(CreateTrialBalanceReport(sobId, fromCodeCombinationId, toCodeCombinationId, periodId));
+            return View(CreateTrialBalanceReport(fromCodeCombinationId, toCodeCombinationId, periodId));
         }
 
-        public ActionResult LedgerReport(long sobId, long fromCodeCombinationId, long toCodeCombinationId, DateTime fromDate, DateTime toDate)
+        public ActionResult LedgerReport(long fromCodeCombinationId, long toCodeCombinationId, DateTime fromDate, DateTime toDate)
         {
-            return View(CreateLedgerReport(sobId, fromCodeCombinationId, toCodeCombinationId, fromDate, toDate));
+            return View(CreateLedgerReport(fromCodeCombinationId, toCodeCombinationId, fromDate, toDate));
         }
 
-        public ActionResult AuditTrailReport(long sobId, DateTime fromDate, DateTime toDate)
+        public ActionResult AuditTrailReport(DateTime fromDate, DateTime toDate)
         {
-            return View(CreateAuditTrailReport(sobId, fromDate, toDate));
+            return View(CreateAuditTrailReport(fromDate, toDate));
         }
 
-        public ActionResult UserwiseEntriesTrailReport(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
+        public ActionResult UserwiseEntriesTrailReport(DateTime fromDate, DateTime toDate, Guid userId)
         {
-            return View(CreateUserwiseEntriesTrailReport(sobId, fromDate, toDate, userId));
+            return View(CreateUserwiseEntriesTrailReport(fromDate, toDate, userId));
         }
 
-        public JsonResult CodeCombinationList(long sobId)
+        public JsonResult CodeCombinationList()
         {
-            return Json(getCodeCombinationList(sobId), JsonRequestBehavior.AllowGet);
+            return Json(getCodeCombinationList(SessionHelper.SOBId), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult TrialBalance()
         {
             TrialBalanceCriteriaModel model = new TrialBalanceCriteriaModel();
-            model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
-                .Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.Id.ToString()
-                }).ToList();
-            model.CodeCombinations = getCodeCombinationList(Convert.ToInt32(model.SetOfBooks.First().Value));
+            model.CodeCombinations = getCodeCombinationList(Convert.ToInt32(SessionHelper.SOBId));
             //model.Periods = getPeriodList(model.SetOfBooks.First().Value);
 
-            model.Periods = CalendarHelper.GetCalendars(Convert.ToInt32(model.SetOfBooks.First().Value))
+            model.Periods = CalendarHelper.GetCalendars(Convert.ToInt32(SessionHelper.SOBId))
                     .Select(x => new SelectListItem
                     {
                         Text = x.PeriodName,
@@ -287,14 +281,8 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Ledger()
         {
             LedgerCriteriaModel model = new LedgerCriteriaModel();
-            model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
-                .Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.Id.ToString()
-                }).ToList();
 
-            model.CodeCombinations = getCodeCombinationList(Convert.ToInt32(model.SetOfBooks.First().Value));
+            model.CodeCombinations = getCodeCombinationList(Convert.ToInt32(SessionHelper.SOBId));
             model.FromDate = Const.StartDate;
             model.ToDate = Const.EndDate;
             return View(model);
@@ -303,12 +291,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult AuditTrail()
         {
             AuditTrailCriteriaModel model = new AuditTrailCriteriaModel();
-            model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
-                .Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.Id.ToString()
-                }).ToList();
+            
             model.FromDate = Const.StartDate;
             model.ToDate = Const.EndDate;
             return View(model);
@@ -317,13 +300,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult UserwiseEntriesTrail()
         {
             UserwiseEntriesTrailCriteriaModel model = new UserwiseEntriesTrailCriteriaModel();
-            model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
-                .Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.Id.ToString()
-                }).ToList();
-
+           
             MembershipUserCollection memCollection = Membership.GetAllUsers();
             foreach (MembershipUser user in memCollection)
             {
@@ -351,20 +328,19 @@ namespace _360Accounting.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Edit(string id, long currencyId, long sobId, long periodId)
+        public ActionResult Edit(string id, long currencyId, long periodId)
         {
             GLHeaderModel model = JVHelper.GetGLHeaders(id);
-            SessionHelper.SOBId = model.SOBId;
             SessionHelper.Calendar = new CalendarViewModel(calendarService.GetSingle(periodId.ToString(), AuthenticationHelper.User.CompanyId));
             SessionHelper.PrecisionLimit = currencyService.GetSingle(currencyId.ToString(), AuthenticationHelper.User.CompanyId).Precision;
 
-            ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(sobId.ToString()).Name;
+            ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
             ViewBag.PeriodName = SessionHelper.Calendar.PeriodName;
             ViewBag.CurrencyName = CurrencyHelper.GetCurrency(currencyId.ToString()).Name;
 
             model.GlLines = JVHelper.GetGLLines(id);
             model.CurrencyId = currencyId;
-            model.SOBId = sobId;
+            model.SOBId = SessionHelper.SOBId;
             model.PeriodId = periodId;
             SessionHelper.JV = model;
             return View("Create", model);
@@ -373,21 +349,11 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Index(JournalVoucherListModel model)
         {
             SessionHelper.JV = null;
-            if (model.SetOfBooks == null)
-            {
-                model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()
-                    .Select(x => new SelectListItem 
-                    { 
-                        Text = x.Name,
-                        Value = x.Id.ToString()
-                    }).ToList();
-                model.SOBId = model.SetOfBooks.Any() ?
-                    Convert.ToInt32(model.SetOfBooks.First().Value) : 0;
-            }
+            model.SOBId = SessionHelper.SOBId;
 
-            if (model.Periods == null && model.SetOfBooks.Any())
+            if (model.Periods == null)
             {
-                model.Periods = CalendarHelper.GetCalendars(Convert.ToInt32(model.SetOfBooks.First().Value))
+                model.Periods = CalendarHelper.GetCalendars(SessionHelper.SOBId)
                     .Select(x => new SelectListItem
                     {
                         Text = x.PeriodName,
@@ -400,9 +366,9 @@ namespace _360Accounting.Web.Controllers
                 model.Periods = new List<SelectListItem>();
             }
 
-            if (model.Currencies == null && model.SetOfBooks.Any())
+            if (model.Currencies == null)
             {
-                model.Currencies = CurrencyHelper.GetCurrencies(Convert.ToInt32(model.SetOfBooks.First().Value))
+                model.Currencies = CurrencyHelper.GetCurrencies(SessionHelper.SOBId)
                     .Select(x => new SelectListItem
                     {
                         Text = x.Name,
@@ -418,11 +384,10 @@ namespace _360Accounting.Web.Controllers
             return View(model);
         }
 
-        public ActionResult ListPartial(long sobId, long periodId, long currencyId)
+        public ActionResult ListPartial(long periodId, long currencyId)
         {
-            SessionHelper.SOBId = sobId;
             return PartialView("_List", JVHelper
-                .GetGLHeaders(sobId, periodId, currencyId));
+                .GetGLHeaders(SessionHelper.SOBId, periodId, currencyId));
         }
 
         public ActionResult EmptyListPartial()
@@ -430,13 +395,12 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_List", new List<GLHeaderModel>());
         }
 
-        public ActionResult Create(long sobId, long periodId, long currencyId)
+        public ActionResult Create(long periodId, long currencyId)
         {
-            SessionHelper.SOBId = sobId;
             SessionHelper.Calendar = CalendarHelper.GetCalendar(periodId.ToString());
             SessionHelper.PrecisionLimit = CurrencyHelper.GetCurrency(currencyId.ToString()).Precision;
 
-            ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(sobId.ToString()).Name;
+            ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
             ViewBag.PeriodName = SessionHelper.Calendar.PeriodName;
             ViewBag.CurrencyName = CurrencyHelper.GetCurrency(currencyId.ToString()).Name;
 
@@ -446,7 +410,7 @@ namespace _360Accounting.Web.Controllers
                 model = new GLHeaderModel
                 {
                     CompanyId = AuthenticationHelper.User.CompanyId,
-                    SOBId = sobId,
+                    SOBId = SessionHelper.SOBId,
                     PeriodId = periodId,
                     CurrencyId = currencyId,
                     GlLines = new List<GLLinesModel>(),
@@ -600,9 +564,9 @@ namespace _360Accounting.Web.Controllers
             }
         }
 
-        public JsonResult CurrencyList(long sobId)
+        public JsonResult CurrencyList()
         {
-            List<SelectListItem> list = CurrencyHelper.GetCurrencies(sobId)
+            List<SelectListItem> list = CurrencyHelper.GetCurrencies(SessionHelper.SOBId)
                     .Select(x => new SelectListItem
                     {
                         Text = x.Name,
@@ -611,9 +575,9 @@ namespace _360Accounting.Web.Controllers
             return Json(list, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult PeriodList(long sobId)
+        public JsonResult PeriodList()
         {
-            List<SelectListItem> periodList = CalendarHelper.GetCalendars(sobId)
+            List<SelectListItem> periodList = CalendarHelper.GetCalendars(SessionHelper.SOBId)
                     .Select(x => new SelectListItem
                     {
                         Text = x.PeriodName,

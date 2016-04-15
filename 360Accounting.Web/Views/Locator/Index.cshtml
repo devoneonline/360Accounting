@@ -15,13 +15,6 @@
     </div>
 
     <div class="col-lg-12">
-        <div class="form-group customDropDownWrapper">
-            @Html.LabelFor(m => m.SOBId)
-            @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control criteria" })
-        </div>
-    </div>
-
-    <div class="col-lg-12">
         <div class="form-group">
             <input type="button" id="btnCreate" value="Create New" class="btn btn-default tstyCus-btn" />
         </div>
@@ -37,20 +30,8 @@
         $.noConflict();
 
         $('#btnCreate').click(function () {
-            var continueCreate = true;
-
-            var inValidInputs = $('#SOBId').filter(function () { return $(this).val() == null; });
-            inValidInputs.each(function (index, item) {
-                $('#' + item.id).css('border', '1px solid #ff6600');
-                continueCreate = false;
-            })
-
-            if (continueCreate) {
-                var url = '@Url.Content("~/Locator/Create?sobId=")' + $('#SOBId').val();
-                window.location.href = url;
-            }
-            else
-                alert('Please select the values.');
+            var url = '@Url.Content("~/Locator/Create")';
+            window.location.href = url;
         });
 
         jQuery.ajaxSetup({ async: false });
@@ -58,17 +39,10 @@
         function RefreshGrid() {
             var url3 = '@Url.Content("~/Locator/LocatorPartial")';
 
-            var model = {
-                SOBId: $('#SOBId').val()
-            };
-
-            $.get(url3, model,
+            $.get(url3, null,
                 function (data) {
                     $('#dvList').html(data);
                 });
         }
-        $('#SOBId').change(function () {
-            RefreshGrid();
-        });
     });
 </script>

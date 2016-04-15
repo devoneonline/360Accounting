@@ -30,10 +30,10 @@ namespace _360Accounting.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult InvoiceSourceListPartial(long sobId)
+        public ActionResult InvoiceSourceListPartial()
         {
             List<InvoiceSourceViewModel> invoiceSourceList =
-                InvoiceSourceHelper.InvoiceList(sobId);
+                InvoiceSourceHelper.InvoiceList(SessionHelper.SOBId);
             return PartialView("_List", invoiceSourceList);
         }
 
@@ -56,21 +56,18 @@ namespace _360Accounting.Web.Controllers
             return View(model);
         }
 
-        public ActionResult Create(long sobId)
+        public ActionResult Create()
         {
-            SessionHelper.SOBId = sobId;
             InvoiceSourceViewModel model = new InvoiceSourceViewModel();
-            model.SOBId = sobId;
-            model.CodeCombinations = CodeCombinationHelper.GetAccounts(sobId, model.StartDate, model.EndDate);
+            model.SOBId = SessionHelper.SOBId;
+            model.CodeCombinations = CodeCombinationHelper.GetAccounts(SessionHelper.SOBId, model.StartDate, model.EndDate);
             return View("Edit", model);
         }
 
         public ActionResult Index()
         {
             InvoiceSourceListModel model = new InvoiceSourceListModel();
-            model.SetOfBooks = SetOfBookHelper.GetSetOfBookList();
-
-            model.SOBId = model.SetOfBooks.Any() ? Convert.ToInt64(model.SetOfBooks.FirstOrDefault().Value) : 0;
+            model.SOBId = SessionHelper.SOBId;
             return View(model);
         }
     }

@@ -25,7 +25,7 @@ var grid = Html.DevExpress().GridView(settings =>
         column.SetDataItemTemplateContent(c =>
         {
             ViewContext.Writer.Write(
-                Html.Raw("<a href='" + Url.Content("~/JV/Edit?Id=") + DataBinder.Eval(c.DataItem, "Id") + "&currencyId=" + DataBinder.Eval(c.DataItem, "CurrencyId") + "&sobId=" + DataBinder.Eval(c.DataItem, "SOBId") + "&periodId=" + DataBinder.Eval(c.DataItem, "PeriodId") + "'><i class='fa fa-edit'></i></a>")
+                Html.Raw("<a href='" + Url.Content("~/JV/Edit?Id=") + DataBinder.Eval(c.DataItem, "Id") + "&currencyId=" + DataBinder.Eval(c.DataItem, "CurrencyId") + "&periodId=" + DataBinder.Eval(c.DataItem, "PeriodId") + "'><i class='fa fa-edit'></i></a>")
                     + "&nbsp;" +
                 Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/JV/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
             );

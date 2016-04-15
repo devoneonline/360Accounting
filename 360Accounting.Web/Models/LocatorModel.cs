@@ -13,7 +13,6 @@ namespace _360Accounting.Web.Models
         [Display(Name = "Set Of Book")]
         public long SOBId { get; set; }
         
-        public List<SelectListItem> SetOfBooks { get; set; }
         public List<LocatorModel> Locators { get; set; }
     }
 

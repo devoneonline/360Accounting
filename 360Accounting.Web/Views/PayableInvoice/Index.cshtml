@@ -14,12 +14,7 @@
     </div>
 
     <div class="clearfix">
-        <div class="col-lg-3">
-            <div class="form-group customDropDownWrapper">
-                @Html.LabelFor(m => m.SetOfBooks)
-                @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control criteria" })
-            </div>
-        </div>
+        
         <div class="col-lg-3">
             <div class="form-group customDropDownWrapper">
                 @Html.LabelFor(m => m.Periods)
@@ -37,7 +32,7 @@
     </div>
 
     <div id="dvList" class="col-lg-12 cusGridWrapper">
-        @Html.Action("ListPartial", new { sobId = Model.SOBId, periodId = Model.PeriodId })
+        @Html.Action("ListPartial", new { periodId = Model.PeriodId })
     </div>
 </div>
 
@@ -48,16 +43,14 @@
         $('#btnCreate').click(function () {
             var continueCreate = true;
 
-            var inValidInputs = $('#SOBId, #PeriodId').filter(function () { return $(this).val() == null; });
+            var inValidInputs = $('#PeriodId').filter(function () { return $(this).val() == null; });
             inValidInputs.each(function (index, item) {
                 $('#' + item.id).css('border', '1px solid #ff6600');
                 continueCreate = false;
             })
 
             if (continueCreate) {
-                var url = '@Url.Content("~/PayableInvoice/Create?sobId=")' +                                                                   //Make AR
-                    $('#SOBId').val() +
-                    "&periodId=" + $('#PeriodId').val()
+                var url = '@Url.Content("~/PayableInvoice/Create?periodId=")' + $('#PeriodId').val();
                 window.location.href = url;
             }
             else
@@ -69,7 +62,7 @@
         function RefreshGrid() {
             var url = '@Url.Content("~/PayableInvoice/ListPartial")';
 
-            $.get(url, { sobId: $('#SOBId').val(), periodId: $('#PeriodId').val() },
+            $.get(url, { periodId: $('#PeriodId').val() },
                 function (data) {
                     $('#dvList').html(data)
                 });
@@ -77,21 +70,6 @@
 
         $('#PeriodId').change(function () {
             RefreshGrid()
-        })
-
-        $('#SOBId').change(function () {
-            var url = '@Url.Content("~/PayableInvoice/PeriodList")';                                                                          //Make AR
-            debugger;
-            $.get(url, { sobId: $(this).val() },
-                function (data) {
-                    var periodDropdown = $('#PeriodId');
-                    periodDropdown.empty();
-                    for (var i = 0; i < data.length; i++) {
-                        periodDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
-                    }
-                })
-
-            RefreshGrid();
         })
     })
 </script>

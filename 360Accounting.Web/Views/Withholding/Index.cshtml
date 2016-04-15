@@ -16,13 +16,6 @@
         </div>
     </div>
 
-    <div class="col-lg-4">
-        <div class="form-group customDropDownWrapper">
-            @Html.LabelFor(m => m.SetOfBooks)
-            @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control" })
-        </div>
-    </div>
-
     <div class="col-md-4">
         @Html.LabelFor(m => m.CodeCombinition)
         <div class="form-group input-group">
@@ -49,12 +42,11 @@
     $(document).ready(function () {
         $.noConflict();
 
-        $('#SOBId, #CodeCombinitionId, #VendorId').change(function () {
+        $('#CodeCombinitionId, #VendorId').change(function () {
             $('#dvList').html("Please wait..");
             $.ajax({
                 url: '@Url.Content("~/Withholding/GetWithholdings")',
                 data: {
-                    sobId: $('#SOBId').val(),
                     codeCombinitionId: $('#CodeCombinitionId').val(),
                     vendorId: $('#VendorId').val()
                 },

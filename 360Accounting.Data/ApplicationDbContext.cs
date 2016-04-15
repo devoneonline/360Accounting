@@ -112,6 +112,8 @@ namespace _360Accounting.Data
 
         public DbSet<PaymentInvoiceLines> PaymentInvoiceLines { get; set; }
 
+        public DbSet<UserSetofBook> UserSetofBooks { get; set; }
+
         #endregion
 
         #region Binders
@@ -267,6 +269,9 @@ namespace _360Accounting.Data
 
             modelBuilder.Entity<PaymentInvoiceLines>().ToTable("tbPaymentInvoiceLines");
             modelBuilder.Entity<PaymentInvoiceLines>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<UserSetofBook>().ToTable("tbUserSetofBook");
+            modelBuilder.Entity<UserSetofBook>().HasKey(t => t.Id);
         }
 
         #endregion

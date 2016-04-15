@@ -18,19 +18,7 @@ namespace _360Accounting.Web.Controllers
     {
         public ActionResult Index(InvoiceTypeListModel model)
         {
-            if (model.SetOfBooks == null)
-            {
-                model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.Name,
-                        Value = x.Id.ToString()
-                    }).ToList();
-            }
-            model.SOBId = model.SOBId > 0 ? model.SOBId : model.SetOfBooks != null ? model.SetOfBooks.Count() > 0 ? Convert.ToInt64(model.SetOfBooks[0].Value.ToString()) : 0 : 0;
-
-            SessionHelper.SOBId = model.SOBId;
-            
+            model.SOBId = SessionHelper.SOBId;
             return View(model);
         }
 
@@ -39,9 +27,8 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_List", InvoiceTypeHelper.GetInvoiceTypes(SessionHelper.SOBId));
         }
 
-        public ActionResult GetInvoiceTypes(long sobId)
+        public ActionResult GetInvoiceTypes()
         {
-            SessionHelper.SOBId = sobId;
             return PartialView("_List", InvoiceTypeHelper.GetInvoiceTypes(SessionHelper.SOBId));
         }
 

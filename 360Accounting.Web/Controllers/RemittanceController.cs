@@ -16,15 +16,14 @@ namespace _360Accounting.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Edit(string remitNo, long sobId, long bankId, long bankAccountId)
+        public ActionResult Edit(string remitNo, long bankId, long bankAccountId)
         {
             RemittanceModel model = RemittanceHelper.GetRemittance(remitNo);
-            SessionHelper.SOBId = model.SOBId;
             SessionHelper.Bank = BankHelper.GetBank(bankId.ToString());
             SessionHelper.BankAccount = BankHelper.GetBankAccount(bankAccountId);
 
             model.Remittances = RemittanceHelper.GetRemittanceDetail(remitNo);
-            model.SOBId = sobId;
+            model.SOBId = SessionHelper.SOBId;
             model.BankId = bankId;
             model.BankAccountId = bankAccountId;
 
@@ -168,9 +167,8 @@ namespace _360Accounting.Web.Controllers
             return Json(result);
         }
 
-        public ActionResult Create(long sobId, long bankId, long bankAccountId)
+        public ActionResult Create(long bankId, long bankAccountId)
         {
-            SessionHelper.SOBId = sobId;
             SessionHelper.Bank = BankHelper.GetBank(bankId.ToString());
             SessionHelper.BankAccount = BankHelper.GetBankAccount(bankAccountId);
             RemittanceModel model = SessionHelper.Remittance;
@@ -181,7 +179,7 @@ namespace _360Accounting.Web.Controllers
                 {
                     BankAccountId = bankAccountId,
                     BankId = bankId,
-                    SOBId = sobId,
+                    SOBId = SessionHelper.SOBId,
                     RemitNo = "New",
                     RemitDate = Const.CurrentDate,
                     Remittances = new List<RemittanceDetailModel>()
@@ -192,9 +190,9 @@ namespace _360Accounting.Web.Controllers
             return View("Edit", model);
         }
 
-        public JsonResult BankList(long sobId)
+        public JsonResult BankList()
         {
-            List<SelectListItem> bankList = BankHelper.GetBankList(sobId);
+            List<SelectListItem> bankList = BankHelper.GetBankList(SessionHelper.SOBId);
             return Json(bankList, JsonRequestBehavior.AllowGet);
         }
 
@@ -204,11 +202,10 @@ namespace _360Accounting.Web.Controllers
             return Json(bankAccountList, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ListPartial(long sobId, long bankId, long bankAccountId)
+        public ActionResult ListPartial(long bankId, long bankAccountId)
         {
-            SessionHelper.SOBId = sobId;
             return PartialView("_List", RemittanceHelper
-                .GetRemittances(sobId, bankId, bankAccountId));
+                .GetRemittances(SessionHelper.SOBId, bankId, bankAccountId));
         }
 
         public ActionResult EmptyListPartial()
@@ -221,21 +218,11 @@ namespace _360Accounting.Web.Controllers
             try
             {
                 SessionHelper.Remittance = null;
-                if (model.SetOfBooks == null)
-                {
-                    model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()
-                        .Select(x => new SelectListItem
-                        {
-                            Text = x.Name,
-                            Value = x.Id.ToString()
-                        }).ToList();
-                    model.SOBId = model.SetOfBooks.Any() ?
-                        Convert.ToInt32(model.SetOfBooks.First().Value) : 0;
-                }
+                model.SOBId = SessionHelper.SOBId;
 
-                if (model.Banks == null && model.SetOfBooks.Any())
+                if (model.Banks == null)
                 {
-                    model.Banks = BankHelper.GetBankList(Convert.ToInt32(model.SetOfBooks.First().Value));
+                    model.Banks = BankHelper.GetBankList(SessionHelper.SOBId);
                     model.BankId = model.Banks.Any() ?
                         Convert.ToInt32(model.Banks.First().Value) : 0;
                 }

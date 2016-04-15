@@ -13,9 +13,6 @@ namespace _360Accounting.Web.Models
         private string sortDirection = "ASC";
 
         #region Properties
-        [Display(Name = "Set Of Book")]
-        public List<SelectListItem> SetOfBooks { get; set; }
-
         public long SOBId { get; set; }
 
         [Display(Name = "Period")]

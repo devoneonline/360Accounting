@@ -12,9 +12,6 @@ namespace _360Accounting.Web.Models
     {
         public long SOBId { get; set; }
 
-        [Display(Name = "Set Of Books")]
-        public List<SelectListItem> SetOfBooks { get; set; }
-
         public IEnumerable<ReceivablePeriodModel> ReceivablePeriods { get; set; }
     }
 

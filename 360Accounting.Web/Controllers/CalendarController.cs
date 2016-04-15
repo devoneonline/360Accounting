@@ -16,9 +16,9 @@ namespace _360Accounting.Web.Controllers
     [Authorize]
     public class CalendarController : Controller
     {
-        public JsonResult GetPreviousCalendar(long sobId, int periodYear)
+        public JsonResult GetPreviousCalendar(int periodYear)
         {
-            CalendarHelper.GetPreviousCalendar(sobId, periodYear);
+            CalendarHelper.GetPreviousCalendar(SessionHelper.SOBId, periodYear);
             if (SessionHelper.Calendar != null)
                 return Json(SessionHelper.Calendar.SeqNumber == null ? 0 : SessionHelper.Calendar.SeqNumber, JsonRequestBehavior.AllowGet);
             else
@@ -112,42 +112,33 @@ namespace _360Accounting.Web.Controllers
             return View(model);
         }
 
-        public ActionResult Create(long sobId)
+        public ActionResult Create()
         {
             CalendarViewModel model = new CalendarViewModel();
             //SessionHelper.Calendar = model;
-            model.SOBId = sobId;            
+            model.SOBId = SessionHelper.SOBId;            
             return View(model);
         }
 
-        public ActionResult GetCalendarList(long sobId)
+        public ActionResult GetCalendarList()
         {
             CalendarListModel model = new CalendarListModel();
-            model.SOBId = sobId;
-            model.Calendars = CalendarHelper.GetCalendars(sobId);
+            model.SOBId = SessionHelper.SOBId;
+            model.Calendars = CalendarHelper.GetCalendars(SessionHelper.SOBId);
             return PartialView("_List", model);
         }
 
         public ActionResult Index(CalendarListModel model)
         {
-            if (model.SetOfBooks == null)
-            {
-                model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.Name,
-                        Value = x.Id.ToString()
-                    }).ToList();
-            }
-            model.SOBId = model.SOBId > 0 ? model.SOBId : Convert.ToInt64(model.SetOfBooks[0].Value.ToString());
+            model.SOBId = SessionHelper.SOBId;
 
             return View(model);
         }
         
         [ValidateInput(false)]
-        public ActionResult CalendarListPartial(long sobId)
+        public ActionResult CalendarListPartial()
         {
-            return PartialView("_List", CalendarHelper.GetCalendars(sobId));
+            return PartialView("_List", CalendarHelper.GetCalendars(SessionHelper.SOBId));
         }
     }
 }

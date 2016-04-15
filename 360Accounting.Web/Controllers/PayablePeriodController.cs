@@ -18,13 +18,7 @@ namespace _360Accounting.Web.Controllers
     {
         public ActionResult Index(PayablePeriodListModel model)
         {
-            if (model.SetOfBooks == null)
-            {
-                model.SetOfBooks = SetOfBookHelper.GetSetOfBookList();
-                model.SOBId = model.SetOfBooks.Any() ? Convert.ToInt64(model.SetOfBooks[0].Value) : 0;
-            }
-            
-            SessionHelper.SOBId = model.SOBId;
+            model.SOBId = SessionHelper.SOBId;
             return View(model);
         }
 
@@ -33,9 +27,8 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_List", PayablePeriodHelper.GetPayablePeriods(SessionHelper.SOBId));
         }
 
-        public ActionResult GetPayablePeriods(long sobId)
+        public ActionResult GetPayablePeriods()
         {
-            SessionHelper.SOBId = sobId;
             return PartialView("_List", PayablePeriodHelper.GetPayablePeriods(SessionHelper.SOBId));
         }
 

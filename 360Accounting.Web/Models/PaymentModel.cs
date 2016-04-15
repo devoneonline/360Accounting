@@ -154,9 +154,6 @@ namespace _360Accounting.Web.Models
         [Display(Name = "Bank")]
         public List<SelectListItem> Bank { get; set; }
 
-        [Display(Name = "Set of Book")]
-        public List<SelectListItem> SetOfBook { get; set; }
-
         [Display(Name = "Period")]
         public List<SelectListItem> Period { get; set; }
 

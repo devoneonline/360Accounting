@@ -13,13 +13,6 @@
             </h3>
         </div>
     </div>
-    <div class="col-lg-4">
-        <div class="form-group customDropDownWrapper">
-            @Html.LabelFor(m => m.SetOfBooks)
-            @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control criteria" })
-        </div>
-    </div>
-    
     <div class="col-lg-12">
         <div class="form-group">
             <input type="button" id="btnCreate" value="Create New" class="btn btn-default tstyCus-btn" />
@@ -27,38 +20,16 @@
     </div>
 
     <div id="dvList" class="col-lg-12 cusGridWrapper">
-        @Html.Action("ListPartial", new { sobId = Model.SOBId })
+        @Html.Action("ListPartial")
     </div>
 </div>
 
 <script type="text/javascript">
     $(document).ready(function () {
         $.noConflict();
-
         $('#btnCreate').click(function () {
-            var continueCreate = true;
-            var isValidInputs = $('#SOBId').filter(function () { return $(this).val() == null; });
-            isValidInputs.each(function (index, item) {
-                $('#' + item.id).css('border', '1px solid #ff6600');
-                continueCreate = false;
-            })
-
-            if (continueCreate) {
-                var url = '@Url.Content("~/Tax/Create?sobId=")' +
-                    $('#SOBId').val()
-                window.location.href = url;
-            }
-            else
-                alert('Please select Set of Book.');
-        });
-
-        $('#SOBId').change(function () {
-            var url = '@Url.Content("~/Tax/ListPartial")';
-            $.get(url, { sobId: $(this).val() },
-                function (data)
-                {
-                    $('#dvList').html(data);
-                });
+            var url = '@Url.Content("~/Tax/Create")';
+            window.location.href = url;
         });
     });
 </script>

@@ -18,17 +18,7 @@ namespace _360Accounting.Web.Controllers
     {
         public ActionResult Index(InventoryPeriodListModel model)
         {
-            if (model.SetOfBooks == null)
-            {
-                model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.Name,
-                        Value = x.Id.ToString()
-                    }).ToList();
-            }
-            model.SOBId = model.SOBId > 0 ? model.SOBId : Convert.ToInt64(model.SetOfBooks[0].Value.ToString());
-            SessionHelper.SOBId = model.SOBId;
+            model.SOBId = SessionHelper.SOBId;
             return View(model);
         }
 
@@ -38,9 +28,8 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_List", model);
         }
 
-        public ActionResult GetInventoryPeriods(long sobId)
+        public ActionResult GetInventoryPeriods()
         {
-            SessionHelper.SOBId = sobId;
             return PartialView("_List", InventoryPeriodHelper.GetInventoryPeriods(SessionHelper.SOBId));
         }
 

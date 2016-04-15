@@ -24,7 +24,7 @@
             column.SetDataItemTemplateContent(c =>
             {
                 ViewContext.Writer.Write(
-                    Html.Raw("<a href='" + Url.Content("~/MiscellaneousTransaction/Edit?Id=") + DataBinder.Eval(c.DataItem, "Id") + "&sobId=" + DataBinder.Eval(c.DataItem, "SOBId") + "'><i class='fa fa-edit'></i></a>")
+                    Html.Raw("<a href='" + Url.Content("~/MiscellaneousTransaction/Edit?Id=") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
                         + "&nbsp;" +
                     Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/MiscellaneousTransaction/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
                 );

@@ -17,24 +17,14 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Index()
         {
             var model = new CurrencyListModel();
-            if (model.SetOfBooks == null)
-            {
-                model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.Name,
-                        Value = x.Id.ToString()
-                    }).ToList();
-            }
-
-            model.SOBId = Convert.ToInt64(model.SetOfBooks.FirstOrDefault().Value);
+            model.SOBId = SessionHelper.SOBId;
             return View(model);
         }
 
-        public ActionResult Create(long sobId)
+        public ActionResult Create()
         {
             CurrencyViewModel model = new CurrencyViewModel();
-            model.SOBId = sobId;
+            model.SOBId = SessionHelper.SOBId;
             return View("Edit", model);
         }
 
@@ -61,17 +51,17 @@ namespace _360Accounting.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult GetCurrencyList(long sobId)
+        public ActionResult GetCurrencyList()
         {
             CurrencyListModel model = new CurrencyListModel();
-            model.SOBId = sobId;
-            model.Currencies = CurrencyHelper.GetCurrencies(sobId);
+            model.SOBId = SessionHelper.SOBId;
+            model.Currencies = CurrencyHelper.GetCurrencies(SessionHelper.SOBId);
             return PartialView("_List", model);
         }
 
-        public ActionResult CurrencyListPartial(long sobId)
+        public ActionResult CurrencyListPartial()
         {
-            return PartialView("_List", CurrencyHelper.GetCurrencies(sobId));
+            return PartialView("_List", CurrencyHelper.GetCurrencies(SessionHelper.SOBId));
         }
     }
 }

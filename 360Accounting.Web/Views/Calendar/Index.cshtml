@@ -15,43 +15,21 @@
         </div>
     </div>
 
-    <div class="col-lg-6">
-        <div class="form-group customDropDownWrapper">
-            @Html.LabelFor(m => m.SetOfBooks)
-            @Html.DropDownListFor(m => m.SOBId, Model.SetOfBooks, new { @class = "form-control" })
-        </div>
-    </div>
-
     <div class="col-lg-12">
         <div class="form-group">
             <input type="button" id="btnCreate" value="Create New" class="btn btn-default tstyCus-btn" />
         </div>
     </div>
     <div id="dvList" class="col-lg-12 cusGridWrapper">
-        @Html.Action("CalendarListPartial", new { sobId = Model.SOBId})
+        @Html.Action("CalendarListPartial")
     </div>
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
         $.noConflict();
         $('#btnCreate').click(function () {
-            var url = '@Url.Content("~/Calendar/Create?sobId=")' + $('#SOBId').val();
+            var url = '@Url.Content("~/Calendar/Create")';
             window.location.href = url;
-        });
-
-        $('#SOBId').change(function () {
-            $.ajax({
-                url: '@Url.Content("~/Calendar/CalendarListPartial")',
-                data: {
-                    sobId: $('#SOBId').val()
-                },
-                datatype: 'html',
-                type: 'post',
-                error: function (data) { },
-                success: function (data) {
-                    $('#dvList').empty().html(data);
-                }
-            });
         });
     });
 </script>

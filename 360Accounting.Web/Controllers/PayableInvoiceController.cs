@@ -150,13 +150,12 @@ namespace _360Accounting.Web.Controllers
             return Json(result);
         }
 
-        public ActionResult Create(long sobId, long periodId)
+        public ActionResult Create(long periodId)
         {
-            SessionHelper.SOBId = sobId;
-
+            
             SessionHelper.Calendar = CalendarHelper.GetCalendar(PayablePeriodHelper.GetPayablePeriod(periodId.ToString()).CalendarId.ToString());
 
-            ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(sobId.ToString()).Name;
+            ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
             ViewBag.PeriodName = SessionHelper.Calendar.PeriodName;
             
             PayableInvoiceModel model = SessionHelper.PayableInvoice;
@@ -180,7 +179,7 @@ namespace _360Accounting.Web.Controllers
                 model.InvoiceTypes = invoiceTypes.Any() ? invoiceTypes : new List<SelectListItem>();
                 model.InvoiceTypeId = invoiceTypes.Any() ? Convert.ToInt64(invoiceTypes.First().Value) : 0;
                 model.PeriodId = periodId;
-                model.SOBId = sobId;
+                model.SOBId = SessionHelper.SOBId;
                 model.WHTaxes = whTaxes.Any() ? whTaxes : new List<SelectListItem>();
                 model.WHTaxId = whTaxes.Any() ? Convert.ToInt64(whTaxes.First().Value) : 0;
                 
@@ -189,9 +188,9 @@ namespace _360Accounting.Web.Controllers
             return View("Edit", model);
         }
 
-        public JsonResult PeriodList(long sobId)
+        public JsonResult PeriodList()
         {
-            List<SelectListItem> periodList = PayablePeriodHelper.GetPeriodList(sobId);
+            List<SelectListItem> periodList = PayablePeriodHelper.GetPeriodList(SessionHelper.SOBId);
             return Json(periodList, JsonRequestBehavior.AllowGet);
         }
 
@@ -201,17 +200,16 @@ namespace _360Accounting.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Edit(string id, long sobId, long periodId)
+        public ActionResult Edit(string id, long periodId)
         {
             PayableInvoiceModel model = PayableInvoiceHelper.GetInvoice(id);
-            SessionHelper.SOBId = model.SOBId;
-            SessionHelper.Calendar = CalendarHelper.GetCalendar(PayablePeriodHelper.GetPayablePeriod(periodId.ToString()).CalendarId.ToString()); 
-            
-            ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(sobId.ToString()).Name;
+            SessionHelper.Calendar = CalendarHelper.GetCalendar(PayablePeriodHelper.GetPayablePeriod(periodId.ToString()).CalendarId.ToString());
+
+            ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
             ViewBag.PeriodName = SessionHelper.Calendar.PeriodName;
             
             model.InvoiceDetail = PayableInvoiceHelper.GetInvoiceDetail(id);
-            model.SOBId = sobId;
+            model.SOBId = SessionHelper.SOBId;
             model.PeriodId = periodId;
 
             VendorModel vendors = VendorHelper.GetSingle(model.VendorId.ToString());
@@ -251,11 +249,10 @@ namespace _360Accounting.Web.Controllers
             return View(model);
         }
 
-        public ActionResult ListPartial(long sobId, long periodId)
+        public ActionResult ListPartial(long periodId)
         {
-            SessionHelper.SOBId = sobId;
             return PartialView("_List", PayableInvoiceHelper
-                .GetInvoices(sobId, periodId));
+                .GetInvoices(SessionHelper.SOBId, periodId));
         }
 
         public ActionResult Index(PayableInvoiceListModel model)
@@ -263,16 +260,11 @@ namespace _360Accounting.Web.Controllers
             try
             {
                 SessionHelper.PayableInvoice = null;
-                if (model.SetOfBooks == null)
-                {
-                    model.SetOfBooks = SetOfBookHelper.GetSetOfBookList();
-                    model.SOBId = model.SetOfBooks.Any() ?
-                        Convert.ToInt32(model.SetOfBooks.First().Value) : 0;
-                }
+                model.SOBId = SessionHelper.SOBId;
 
-                if (model.Periods == null && model.SetOfBooks.Any())
+                if (model.Periods == null)
                 {
-                    model.Periods = PayablePeriodHelper.GetPeriodList(Convert.ToInt64(model.SetOfBooks.First().Value));
+                    model.Periods = PayablePeriodHelper.GetPeriodList(SessionHelper.SOBId);
                     model.PeriodId = model.Periods.Any() ?
                         Convert.ToInt32(model.Periods.First().Value) : 0;
                 }

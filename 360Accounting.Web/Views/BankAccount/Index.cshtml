@@ -34,26 +34,10 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
+        $.noConflict();
         $('#btnNew').click(function () {
             var url = '@Url.Content("~/BankAccount/Create?bankId=")' + $('#BankId').val();
             window.location.href = url;
-        });
-
-        $('#SOBId').change(function () {
-            $('#dvList').html("Please wait..");
-            $.ajax({
-                url: '@Url.Content("~/BankAccount/BankAccountListPartial")',
-                data: {
-                    sobId: $('#BankId').val()
-                },
-                datatype: 'html',
-                type: 'post',
-                error: function (data) { alert(data); },
-                success: function (data) {
-                    $('#dvList').empty();
-                    $('#dvList').html(data);
-                }
-            });
         });
     });
 </script>

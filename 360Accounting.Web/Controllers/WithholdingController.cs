@@ -18,17 +18,7 @@ namespace _360Accounting.Web.Controllers
     {
         public ActionResult Index(WithholdingListModel model)
         {
-            if (model.SetOfBooks == null)
-            {
-                model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.Name,
-                        Value = x.Id.ToString()
-                    }).ToList();
-            }
-            model.SOBId = model.SOBId > 0 ? model.SOBId : model.SetOfBooks != null ? model.SetOfBooks.Count() > 0 ? Convert.ToInt64(model.SetOfBooks[0].Value.ToString()) : 0 : 0;
-
+            model.SOBId = SessionHelper.SOBId;
             if (model.CodeCombinition == null)
             {
                 model.CodeCombinition = CodeCombinationHelper.GetCodeCombinations(model.SOBId, AuthenticationHelper.User.CompanyId)
@@ -51,7 +41,6 @@ namespace _360Accounting.Web.Controllers
             }
             model.VendorId = model.VendorId > 0 ? model.VendorId : model.Vendor != null ? model.Vendor.Count() > 0 ? Convert.ToInt64(model.Vendor[0].Value.ToString()) : 0 : 0;
 
-            SessionHelper.SOBId = model.SOBId;
             SessionHelper.VendorId = model.VendorId;
             SessionHelper.CodeCombinitionId = model.CodeCombinitionId;
 
@@ -63,12 +52,11 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_List", WithholdingHelper.GetWithholdings(SessionHelper.SOBId, SessionHelper.CodeCombinitionId, SessionHelper.VendorId));
         }
 
-        public ActionResult GetWithholdings(long sobId, long codeCombinitionId, long vendorId)
+        public ActionResult GetWithholdings(long codeCombinitionId, long vendorId)
         {
-            SessionHelper.SOBId = sobId;
             SessionHelper.CodeCombinitionId = codeCombinitionId;
             SessionHelper.VendorId = vendorId;
-            return PartialView("_List", WithholdingHelper.GetWithholdings(sobId, codeCombinitionId, vendorId));
+            return PartialView("_List", WithholdingHelper.GetWithholdings(SessionHelper.SOBId, codeCombinitionId, vendorId));
         }
 
         [HttpPost, ValidateInput(false)]

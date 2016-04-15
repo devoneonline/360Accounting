@@ -12,8 +12,7 @@ namespace _360Accounting.Web.Models
     public class ItemListModel
     {
         public long SOBId { get; set; }
-        [Display(Name = "Set Of Books")]
-        public List<SelectListItem> SetOfBooks { get; set; }
+        
         public List<ItemModel> Items { get; set; }
     }
 

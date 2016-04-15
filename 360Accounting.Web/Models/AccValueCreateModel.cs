@@ -15,8 +15,7 @@ namespace _360Accounting.Web.Models
         #endregion
 
         #region Properties
-        public List<SelectListItem> SetOfBooks { get; set; }
-
+        
         public long SOBId { get; set; }
 
         public List<SelectListItem> Segments { get; set; }

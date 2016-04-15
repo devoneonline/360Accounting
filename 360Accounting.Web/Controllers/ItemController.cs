@@ -30,14 +30,13 @@ namespace _360Accounting.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Edit(string id, long sobId)
+        public ActionResult Edit(string id)
         {
             ItemModel model = ItemHelper.GetItem(id);
-            SessionHelper.SOBId = model.SOBId;
-
+            
             if (model.COGSCodeCombination == null)
             {
-                model.COGSCodeCombination = CodeCombinationHelper.GetCodeCombinations(sobId, AuthenticationHelper.User.CompanyId)
+                model.COGSCodeCombination = CodeCombinationHelper.GetCodeCombinations(SessionHelper.SOBId, AuthenticationHelper.User.CompanyId)
                     .Select(x => new SelectListItem
                     {
                         Text = Utility.Stringize(".", x.Segment1, x.Segment2, x.Segment3, x.Segment4, x.Segment5, x.Segment6, x.Segment7, x.Segment8),
@@ -49,7 +48,7 @@ namespace _360Accounting.Web.Controllers
 
             if (model.SalesCodeCombination == null)
             {
-                model.SalesCodeCombination = CodeCombinationHelper.GetCodeCombinations(sobId, AuthenticationHelper.User.CompanyId)
+                model.SalesCodeCombination = CodeCombinationHelper.GetCodeCombinations(SessionHelper.SOBId, AuthenticationHelper.User.CompanyId)
                     .Select(x => new SelectListItem
                     {
                         Text = Utility.Stringize(".", x.Segment1, x.Segment2, x.Segment3, x.Segment4, x.Segment5, x.Segment6, x.Segment7, x.Segment8),
@@ -60,7 +59,7 @@ namespace _360Accounting.Web.Controllers
             }
 
             model.ItemWarehouses = ItemHelper.GetItemWarehouses(id).ToList();
-            model.SOBId = sobId;
+            model.SOBId = SessionHelper.SOBId;
             model.CompanyId = AuthenticationHelper.User.CompanyId;
             SessionHelper.Item = model;
 
@@ -70,40 +69,27 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Index(ItemListModel model)
         {
             SessionHelper.Item = null;
-            if (model.SetOfBooks == null)
-            {
-                model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.Name,
-                        Value = x.Id.ToString()
-                    }).ToList();
-                model.SOBId = model.SetOfBooks.Any() ?
-                    Convert.ToInt32(model.SetOfBooks.First().Value) : 0;
-            }
+            model.SOBId = SessionHelper.SOBId;
             return View(model);
         }
 
         public ActionResult ItemPartial(ItemListModel model)
         {
-            SessionHelper.SOBId = model.SOBId;
-            return PartialView("_List", ItemHelper.GetItems(model.SOBId));
+            return PartialView("_List", ItemHelper.GetItems(SessionHelper.SOBId));
         }
 
-        public ActionResult Create(long sobId)
+        public ActionResult Create()
         {
-            SessionHelper.SOBId = sobId;
-
             ItemModel model = SessionHelper.Item;
             if (model == null)
             {
                 model = new ItemModel
                 {
-                    SOBId = sobId
+                    SOBId = SessionHelper.SOBId
                 };
                 if (model.COGSCodeCombination == null)
                 {
-                    model.COGSCodeCombination = CodeCombinationHelper.GetCodeCombinations(sobId, AuthenticationHelper.User.CompanyId)
+                    model.COGSCodeCombination = CodeCombinationHelper.GetCodeCombinations(SessionHelper.SOBId, AuthenticationHelper.User.CompanyId)
                         .Select(x => new SelectListItem
                         {
                             Text = Utility.Stringize(".", x.Segment1, x.Segment2, x.Segment3, x.Segment4, x.Segment5, x.Segment6, x.Segment7, x.Segment8),
@@ -115,7 +101,7 @@ namespace _360Accounting.Web.Controllers
 
                 if (model.SalesCodeCombination == null)
                 {
-                    model.SalesCodeCombination = CodeCombinationHelper.GetCodeCombinations(sobId, AuthenticationHelper.User.CompanyId)
+                    model.SalesCodeCombination = CodeCombinationHelper.GetCodeCombinations(SessionHelper.SOBId, AuthenticationHelper.User.CompanyId)
                         .Select(x => new SelectListItem
                         {
                             Text = Utility.Stringize(".", x.Segment1, x.Segment2, x.Segment3, x.Segment4, x.Segment5, x.Segment6, x.Segment7, x.Segment8),
@@ -125,7 +111,7 @@ namespace _360Accounting.Web.Controllers
                         Convert.ToInt32(model.SalesCodeCombination.First().Value) : 0;
                 }
                 model.CompanyId = AuthenticationHelper.User.CompanyId;
-                ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(sobId.ToString()).Name;
+                ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
 
                 SessionHelper.Item = model;
                 if (SessionHelper.Item.ItemWarehouses == null)
@@ -233,7 +219,7 @@ namespace _360Accounting.Web.Controllers
                     SessionHelper.Item.SalesCodeCombinationId = model.SalesCodeCombinationId;
                     SessionHelper.Item.SerialControl = model.SerialControl;
                     SessionHelper.Item.Shipable = model.Shipable;
-                    SessionHelper.Item.SOBId = model.SOBId;
+                    SessionHelper.Item.SOBId = SessionHelper.SOBId;
                     SessionHelper.Item.Status = model.Status;
 
                     ItemHelper.Save(SessionHelper.Item);

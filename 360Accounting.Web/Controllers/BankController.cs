@@ -16,12 +16,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Index()
         {
             BankListModel model = new BankListModel();
-            if (model.SetOfBooks == null)
-            {
-                model.SetOfBooks = SetOfBookHelper.GetSetOfBookList();
-            }
-
-            model.SOBId = Convert.ToInt64(model.SetOfBooks.FirstOrDefault().Value);
+            model.SOBId = SessionHelper.SOBId;
             return View(model);
         }
 
@@ -47,9 +42,9 @@ namespace _360Accounting.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult BankListPartial(long sobId)
+        public ActionResult BankListPartial()
         {
-            IEnumerable<BankModel> list = BankHelper.GetBanks(sobId);
+            IEnumerable<BankModel> list = BankHelper.GetBanks(SessionHelper.SOBId);
             return PartialView("_List", list);
         }
 
@@ -65,10 +60,10 @@ namespace _360Accounting.Web.Controllers
             return View(model);
         }
 
-        public ActionResult Create(long sobId)
+        public ActionResult Create()
         {
             BankModel bank = new BankModel();
-            bank.SOBId = sobId;
+            bank.SOBId = SessionHelper.SOBId;
             return View(bank);
         }
 

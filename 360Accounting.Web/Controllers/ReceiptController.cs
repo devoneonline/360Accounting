@@ -60,21 +60,11 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Index()
         {
             ReceiptListModel model = new ReceiptListModel();
-            if (model.SetOfBooks == null)
-            {
-                model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()
-                    .Select(x => new SelectListItem 
-                    { 
-                        Text = x.Name,
-                        Value = x.Id.ToString()
-                    }).ToList();
-                model.SOBId = model.SetOfBooks.Any() ?
-                    Convert.ToInt32(model.SetOfBooks.First().Value) : 0;
-            }
+            model.SOBId = SessionHelper.SOBId;
 
-            if (model.Periods == null && model.SetOfBooks.Any())
+            if (model.Periods == null)
             {
-                model.Periods = ReceivablePeriodHelper.GetPeriodList(Convert.ToInt64(model.SetOfBooks.First().Value));
+                model.Periods = ReceivablePeriodHelper.GetPeriodList(Convert.ToInt64(SessionHelper.SOBId));
                 model.PeriodId = model.Periods.Any() ?
                     Convert.ToInt32(model.Periods.First().Value) : 0;
             }
@@ -105,9 +95,9 @@ namespace _360Accounting.Web.Controllers
             }
             model.CustomerId = model.Customers.Count() > 0 ? Convert.ToInt64(model.Customers.FirstOrDefault().Value) : 0;
 
-            if (model.Currency == null && model.SetOfBooks.Any())
+            if (model.Currency == null)
             {
-                model.Currency = CurrencyHelper.GetCurrencies(Convert.ToInt32(model.SetOfBooks.First().Value))
+                model.Currency = CurrencyHelper.GetCurrencies(Convert.ToInt32(SessionHelper.SOBId))
                     .Select(x => new SelectListItem
                     {
                         Text = x.Name,
@@ -162,11 +152,11 @@ namespace _360Accounting.Web.Controllers
              return PartialView("_List", new List<ReceiptViewModel>());
         }
 
-        public ActionResult ListPartial(long periodId, long sobId, long customerId, long currencyId)
+        public ActionResult ListPartial(long periodId, long customerId, long currencyId)
         {
             SessionHelper.Calendar = CalendarHelper.GetCalendar(ReceivablePeriodHelper.GetReceivablePeriod(periodId.ToString()).CalendarId.ToString());
             IEnumerable<ReceiptView> boList = service
-                .GetReceipts(sobId, SessionHelper.Calendar.Id, customerId, currencyId, AuthenticationHelper.User.CompanyId).ToList();
+                .GetReceipts(SessionHelper.SOBId, SessionHelper.Calendar.Id, customerId, currencyId, AuthenticationHelper.User.CompanyId).ToList();
 
             List<ReceiptViewModel> modelList = boList.Select(a => new ReceiptViewModel(a)).ToList();
             return PartialView("_List", modelList);
@@ -202,14 +192,14 @@ namespace _360Accounting.Web.Controllers
             return View(model);
         }
 
-        public ActionResult Create(long periodId, long sobId, long customerId, long currencyId)
+        public ActionResult Create(long periodId, long customerId, long currencyId)
         {
             ReceiptViewModel receipt = new ReceiptViewModel();
 
             SessionHelper.Calendar = CalendarHelper.GetCalendar(ReceivablePeriodHelper.GetReceivablePeriod(periodId.ToString()).CalendarId.ToString());
 
             receipt.PeriodId = SessionHelper.Calendar.Id;
-            receipt.SOBId = sobId;
+            receipt.SOBId = SessionHelper.SOBId;
             receipt.CustomerId = customerId;
             receipt.CurrencyId = currencyId;
 
@@ -287,15 +277,15 @@ namespace _360Accounting.Web.Controllers
             return Json(returnData);
         }
 
-        public JsonResult CurrencyList(long sobId)
+        public JsonResult CurrencyList()
         {
-            List<SelectListItem> currencyList = CurrencyHelper.GetCurrencyList(sobId);
+            List<SelectListItem> currencyList = CurrencyHelper.GetCurrencyList(SessionHelper.SOBId);
             return Json(currencyList, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult PeriodList(long sobId)
+        public JsonResult PeriodList()
         {
-            List<SelectListItem> periodList = ReceivablePeriodHelper.GetPeriodList(sobId);
+            List<SelectListItem> periodList = ReceivablePeriodHelper.GetPeriodList(SessionHelper.SOBId);
             return Json(periodList, JsonRequestBehavior.AllowGet);
         }
 

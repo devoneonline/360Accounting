@@ -19,44 +19,40 @@ namespace _360Accounting.Web.Controllers
     {
         public ActionResult Index(long id, AccountValueListModel model)
         {
-            SessionHelper.SOBId = id;   //TODO:: temporary
-            model.SOBId = id;
+            model.SOBId = SessionHelper.SOBId;
             model.Segments = AccountHelper.GetSegmentList(model.SOBId.ToString());
             model.Segment = model.Segments[0].Value;
         
             return View(model);
         }
 
-        public ActionResult Create(string sobId, string segment)
+        public ActionResult Create(string segment)
         {
             AccountValueViewModel model = new AccountValueViewModel();
-            Account account = AccountHelper.GetAccountBySOBId(sobId);
+            Account account = AccountHelper.GetAccountBySOBId(SessionHelper.SOBId.ToString());
             if (account != null)
             {
                 model.ChartId = account.Id;
-                model.SetOfBook = SetOfBookHelper.GetSetOfBook(sobId.ToString()).Name;
+                model.SetOfBook = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
                 model.Segment = segment;
                 model.StartDate = Const.CurrentDate;
                 model.EndDate = Const.EndDate;
                 model.ValueChar = AccountHelper.GetSegmentCharacters(segment, account);
-                SessionHelper.SOBId = Convert.ToInt32(sobId);   //TODO:: temporary
                 return View("Edit", model);
             }
 
             return RedirectToAction("Index");
         }
 
-        public JsonResult SegmentList(string sobId)
+        public JsonResult SegmentList()
         {
-            return Json(AccountHelper.GetSegmentList(sobId), JsonRequestBehavior.AllowGet);
+            return Json(AccountHelper.GetSegmentList(SessionHelper.SOBId.ToString()), JsonRequestBehavior.AllowGet);
         }
         
         public ActionResult Edit(string id)
         {
             AccountValueViewModel model = AccountValueHelper.GetAccountValue(id);
-            model.SetOfBook = SetOfBookHelper.GetSetOfBook
-                (AccountHelper.GetAccount
-                (model.ChartId.ToString()).SOBId.ToString()).Name;
+            model.SetOfBook = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
             return View(model);
         }
 
@@ -85,9 +81,9 @@ namespace _360Accounting.Web.Controllers
             return RedirectToAction("Index", new { id = SessionHelper.SOBId });
         }
 
-        public ActionResult AccountValuesPartial(long sobId, string segment)
+        public ActionResult AccountValuesPartial(string segment)
         {
-            List<AccountValueViewModel> accountValuesList = AccountValueHelper.GetAccountValues(AccountHelper.GetAccountBySOBId(sobId.ToString()).Id, sobId, segment);
+            List<AccountValueViewModel> accountValuesList = AccountValueHelper.GetAccountValues(AccountHelper.GetAccountBySOBId(SessionHelper.SOBId.ToString()).Id, SessionHelper.SOBId, segment);
             return PartialView("_List", accountValuesList);
         }
     }

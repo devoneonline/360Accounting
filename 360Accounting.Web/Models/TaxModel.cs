@@ -11,9 +11,6 @@ namespace _360Accounting.Web.Models
 {
     public class TaxListModel
     {
-        [Display(Name = "Set Of Book")]
-        public List<SelectListItem> SetOfBooks { get; set; }
-
         public long SOBId { get; set; }
     }
 

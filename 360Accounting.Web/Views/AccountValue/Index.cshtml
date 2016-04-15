@@ -19,9 +19,6 @@
         </div>
     </div>
     <div class="col-lg-6">
-        <div class="form-group">
-            @Html.HiddenFor(m => m.SOBId)
-        </div>
         <div class="form-group customDropDownWrapper">
             @Html.LabelFor(m => m.Segments)
             @Html.DropDownListFor(m => m.Segment, Model.Segments, new { @class = "form-control" })
@@ -33,7 +30,7 @@
         </div>
     </div>
     <div class="col-lg-12 cusGridWrapper" id="ACPartial">
-        @Html.Action("AccountValuesPartial", new { sobId = Model.SOBId, segment = Model.Segment })
+        @Html.Action("AccountValuesPartial", new { segment = Model.Segment })
     </div>
 </div>
 
@@ -41,7 +38,7 @@
     $(document).ready(function () {
         $.noConflict();
         $('#btnCreate').click(function () {
-            var url = '@Url.Content("~/AccountValue/Create?sobId=")' + $('#SOBId').val() + "&segment=" + $('#Segment').val();
+            var url = '@Url.Content("~/AccountValue/Create?segment=")' + $('#Segment').val();
             window.location.href = url;
         });
 
@@ -52,7 +49,7 @@
                 $.ajax({
                     url: '@Url.Content("~/AccountValue/AccountValuesPartial")',
                     data: {
-                        sobId: $('#SOBId').val(), segment: $(this).val()
+                        segment: $(this).val()
                     },
                     datatype: 'html',
                     type: 'post',

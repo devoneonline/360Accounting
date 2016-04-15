@@ -25,12 +25,11 @@ namespace _360Accounting.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Edit(string id, long sobId)
+        public ActionResult Edit(string id)
         {
             LocatorModel model = LocatorHelper.GetLocator(id);
-            SessionHelper.SOBId = model.SOBId;
             model.LocatorWarehouses = LocatorHelper.GetLocatorWarehouses(id).ToList();
-            model.SOBId = sobId;
+            model.SOBId = SessionHelper.SOBId;
             model.CompanyId = AuthenticationHelper.User.CompanyId;
             SessionHelper.Locator = model;
 
@@ -40,38 +39,25 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Index(LocatorListModel model)
         {
             SessionHelper.Locator = null;
-            if (model.SetOfBooks == null)
-            {
-                model.SetOfBooks = SetOfBookHelper.GetSetOfBooks()
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.Name,
-                        Value = x.Id.ToString()
-                    }).ToList();
-                model.SOBId = model.SetOfBooks.Any() ?
-                    Convert.ToInt32(model.SetOfBooks.First().Value) : 0;
-            }
+            model.SOBId = SessionHelper.SOBId;
             return View(model);
         }
 
         public ActionResult LocatorPartial(LocatorListModel model)
         {
-            SessionHelper.SOBId = model.SOBId;
-            return PartialView("_List", LocatorHelper.GetLocatorsCombo(model.SOBId));
+            return PartialView("_List", LocatorHelper.GetLocatorsCombo(SessionHelper.SOBId));
         }
 
-        public ActionResult Create(long sobId)
+        public ActionResult Create()
         {
-            SessionHelper.SOBId = sobId;
-
             LocatorModel model = SessionHelper.Locator;
             if (model == null)
             {
                 model = new LocatorModel
                 {
-                    SOBId = sobId
+                    SOBId = SessionHelper.SOBId
                 };
-                ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(sobId.ToString()).Name;
+                ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
 
                 SessionHelper.Locator = model;
                 if (SessionHelper.Locator.LocatorWarehouses == null)
@@ -171,7 +157,7 @@ namespace _360Accounting.Web.Controllers
                     SessionHelper.Locator.CompanyId = model.CompanyId;
                     SessionHelper.Locator.Description = string.IsNullOrEmpty(model.Description) ? "" : model.Description;
                     SessionHelper.Locator.Id = model.Id;
-                    SessionHelper.Locator.SOBId = model.SOBId;
+                    SessionHelper.Locator.SOBId = SessionHelper.SOBId;
                     SessionHelper.Locator.Status = model.Status;
 
                     LocatorHelper.Save(SessionHelper.Locator);

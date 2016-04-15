@@ -70,32 +70,17 @@
         var url = '@Url.Content("~/Codecombinition/UpdateCodeCombinition")';
         $.post(url, { id: id, sobId: sobId, segmentValues: segmentValues, allowPosting: posting, startDate: $('#StartDate').val(), endDate: $('#EndDate').val() }, function (result) {
             $('#dvInput').dialog('close');
-            window.location.href = '@Url.Content("~/CodeCombinition/Index?Id=")' + sobId
+            window.location.href = '@Url.Content("~/CodeCombinition/Index")'
         });
     }
 
     $(document).ready(function () {
         $('#dvInput').css({ overflow: "hidden" });
 
-        $('#SOBId').change(function () {
-            $.ajax({
-                url: '@Url.Content("~/CodeCombinition/GetCodeCombinitionList")',
-                data: {
-                    sobId: $('#SOBId').val()
-                },
-                datatype: 'html',
-                type: 'post',
-                error: function (data) { },
-                success: function (data) {
-                    $('#dvList').html(data);
-                }
-            });
-        });
-
         $('#btnCreate').click(function () {
             $.ajax({
                 url: '@Url.Content("~/CodeCombinition/Create")',
-                data: { sobId: $('#SOBId').val() },
+                data: { },
                 datatype: 'html',
                 type: 'post',
                 error: function (error) { },

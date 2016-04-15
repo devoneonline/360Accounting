@@ -17,7 +17,6 @@
 FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     {
         @Html.ValidationSummary()
-        @Html.HiddenFor(m => m.SOBId)
         @Html.HiddenFor(m => m.ClosingStatus)
         @Html.HiddenFor(m => m.CompanyId)
         @Html.HiddenFor(m => m.CreateBy)

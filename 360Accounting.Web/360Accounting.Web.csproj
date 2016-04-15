@@ -185,6 +185,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Common\AuthenticationHelper.cs" />
+    <Compile Include="Controllers\UserSetofBookController.cs" />
     <Compile Include="Controllers\InventoryPeriodController.cs" />
     <Compile Include="Controllers\MiscellaneousTransactionController.cs" />
     <Compile Include="Controllers\MoveOrderController.cs" />
@@ -208,6 +209,7 @@
     <Compile Include="Helpers\AccountHelper.cs" />
     <Compile Include="Helpers\AccountValueHelper.cs" />
     <Compile Include="Helpers\BankHelper.cs" />
+    <Compile Include="Helpers\UserSetofBookHelper.cs" />
     <Compile Include="Helpers\InventoryPeriodHelper.cs" />
     <Compile Include="Helpers\ItemHelper.cs" />
     <Compile Include="Helpers\LocatorHelper.cs" />
@@ -262,6 +264,7 @@
     <Compile Include="Models\BankAccountViewModel.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\UserSetofBookModel.cs" />
     <Compile Include="Models\InventoryPeriodModel.cs" />
     <Compile Include="Models\InvoiceModel.cs" />
     <Compile Include="Models\ItemModel.cs" />
@@ -622,6 +625,7 @@
     <Content Include="Views\MiscellaneousTransaction\Create.cshtml" />
     <Content Include="Views\MiscellaneousTransaction\createPartial.cshtml" />
     <Content Include="Views\MiscellaneousTransaction\Index.cshtml" />
+    <Content Include="Views\UserSetofBook\_Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

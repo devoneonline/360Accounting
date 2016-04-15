@@ -29,6 +29,7 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
+        $.noConflict();
         $('#btnNew').click(function () {
             window.location.href = '@Url.Content("~/CustomerSite/Edit?customerId=")' + '@ViewBag.CustomerId';
         });

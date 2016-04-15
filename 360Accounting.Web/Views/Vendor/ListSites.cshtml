@@ -30,6 +30,7 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
+        $.noConflict();
         $('#btnNew').click(function () {
             window.location.href = '@Url.Content("~/Vendor/CreateSite/")' + '@ViewBag.VendorId';
         });
