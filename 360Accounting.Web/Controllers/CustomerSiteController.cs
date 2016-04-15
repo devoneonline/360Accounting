@@ -48,6 +48,7 @@ namespace _360Accounting.Web.Controllers
                     Text = x.TaxName,
                     Value = x.Id.ToString()
                 }).ToList();
+            model.TaxId = model.TaxCode.Any() ? Convert.ToInt64(model.TaxCode.First().Value) : 0;
 
             model.CodeCombination = codeCombinationService.GetAllCodeCombinitionView(AuthenticationHelper.User.CompanyId)
                     .Select(x => new SelectListItem
@@ -55,6 +56,8 @@ namespace _360Accounting.Web.Controllers
                         Text = x.CodeCombinitionCode,
                         Value = x.Id.ToString()
                     }).ToList();
+            model.CodeCombinationId = model.CodeCombination.Any() ? Convert.ToInt64(model.CodeCombination.First().Value) : 0;
+
             return View(model);
         }
 
