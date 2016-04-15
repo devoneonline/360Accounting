@@ -37,7 +37,7 @@ namespace _360Accounting.Web.Controllers
 
             model.MoveOrderDetail = MoveOrderHelper.GetMoveOrderLines(id).ToList();
             model.SOBId = sobId;
-            model.CompanyId = AuthenticationHelper.User.CompanyId;
+            model.CompanyId = AuthenticationHelper.CompanyId.Value;
             SessionHelper.MoveOrder = model;
 
             return View("Create", model);
@@ -80,7 +80,7 @@ namespace _360Accounting.Web.Controllers
                     MoveOrderDate = DateTime.Now,
                     MoveOrderNo = "New"
                 };
-                model.CompanyId = AuthenticationHelper.User.CompanyId;
+                model.CompanyId = AuthenticationHelper.CompanyId.Value;
                 ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(sobId.ToString()).Name;
 
                 SessionHelper.MoveOrder = model;

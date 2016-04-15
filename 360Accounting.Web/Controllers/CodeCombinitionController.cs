@@ -92,7 +92,7 @@ namespace _360Accounting.Web.Controllers
                 }
 
                 model.AllowedPosting = allowPosting;
-                model.CompanyId = AuthenticationHelper.User.CompanyId;
+                model.CompanyId = AuthenticationHelper.CompanyId.Value;
                 model.EndDate = endDate == "" ? null : (DateTime?)Convert.ToDateTime(endDate);
                 model.StartDate = startDate == "" ? null : (DateTime?)Convert.ToDateTime(startDate);
                 model.Id = id;

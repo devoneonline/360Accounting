@@ -63,7 +63,7 @@ namespace _360Accounting.Web
 
         public static PayablePeriodModel GetPayablePeriod(string id)
         {
-            return new PayablePeriodModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            return new PayablePeriodModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
         }
 
         public static string Save(PayablePeriodModel model)
@@ -80,12 +80,12 @@ namespace _360Accounting.Web
 
         public static void Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
 
         public static List<PayablePeriodModel> GetPayablePeriods(long sobId)
         {
-            return service.GetAll(AuthenticationHelper.User.CompanyId, sobId)
+            return service.GetAll(AuthenticationHelper.CompanyId.Value, sobId)
                 .Select(x => new PayablePeriodModel(x)).ToList();
         }
     }

@@ -82,7 +82,7 @@ namespace _360Accounting.Web.Controllers
                     SessionHelper.Invoice.CustomerSiteId = customerSiteId;
                     if (SessionHelper.Invoice.InvoiceNo == "New")
                     {
-                        SessionHelper.Invoice.InvoiceNo = InvoiceHelper.GetInvoiceNo(AuthenticationHelper.User.CompanyId, SessionHelper.Invoice.SOBId, SessionHelper.Invoice.PeriodId, SessionHelper.Invoice.CurrencyId);
+                        SessionHelper.Invoice.InvoiceNo = InvoiceHelper.GetInvoiceNo(AuthenticationHelper.CompanyId.Value, SessionHelper.Invoice.SOBId, SessionHelper.Invoice.PeriodId, SessionHelper.Invoice.CurrencyId);
                     }
                     
 
@@ -229,7 +229,7 @@ namespace _360Accounting.Web.Controllers
 
                 model = new InvoiceModel
                 {
-                    CompanyId = AuthenticationHelper.User.CompanyId,
+                    CompanyId = AuthenticationHelper.CompanyId.Value,
                     CurrencyId = currencyId,
                     Customers = customers.Any() ? customers : new List<SelectListItem>(),
                     CustomerId = customers.Any() ? 

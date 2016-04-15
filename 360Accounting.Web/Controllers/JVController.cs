@@ -39,7 +39,7 @@ namespace _360Accounting.Web.Controllers
         #region Private Methods
         private List<SelectListItem> getCodeCombinationList(long sobId)
         {
-            List<SelectListItem> list = codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, sobId)
+            List<SelectListItem> list = codeCombinitionService.GetAll(AuthenticationHelper.CompanyId.Value, sobId)
                 .Select(x => new SelectListItem
                 {
                     Text = Utility.Stringize(".", x.Segment1, x.Segment2, x.Segment3, x.Segment4, x.Segment5, x.Segment6, x.Segment7, x.Segment8),
@@ -80,11 +80,11 @@ namespace _360Accounting.Web.Controllers
 
         private TrialBalanceReport CreateTrialBalanceReport(long sobId, long fromCodeCombinationId, long toCodeCombinationId, long periodId)
         {
-            List<TrialBalanceModel> modelList = mapTrialBalanceModel(service.TrialBalance(AuthenticationHelper.User.CompanyId, sobId, fromCodeCombinationId >= toCodeCombinationId ? toCodeCombinationId : fromCodeCombinationId, toCodeCombinationId <= fromCodeCombinationId ? fromCodeCombinationId : toCodeCombinationId, periodId));
+            List<TrialBalanceModel> modelList = mapTrialBalanceModel(service.TrialBalance(AuthenticationHelper.CompanyId.Value, sobId, fromCodeCombinationId >= toCodeCombinationId ? toCodeCombinationId : fromCodeCombinationId, toCodeCombinationId <= fromCodeCombinationId ? fromCodeCombinationId : toCodeCombinationId, periodId));
             TrialBalanceReport report = new TrialBalanceReport();
             report.Parameters["CompanyName"].Value = companyService
-                .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
-                AuthenticationHelper.User.CompanyId).Name;
+                .GetSingle(AuthenticationHelper.CompanyId.Value.ToString(),
+                AuthenticationHelper.CompanyId.Value).Name;
             report.Parameters["SOBId"].Value = sobId;
             report.Parameters["FromCodeCombinationId"].Value = fromCodeCombinationId;
             report.Parameters["ToCodeCombinationId"].Value = toCodeCombinationId;
@@ -112,11 +112,11 @@ namespace _360Accounting.Web.Controllers
 
         private LedgerReport CreateLedgerReport(long sobId, long fromCodeCombinationId, long toCodeCombinationId, DateTime fromDate, DateTime toDate)
         {
-            List<LedgerModel> modelList = mapLedgerModel(service.Ledger(AuthenticationHelper.User.CompanyId, sobId, fromCodeCombinationId >= toCodeCombinationId ? toCodeCombinationId : fromCodeCombinationId, toCodeCombinationId <= fromCodeCombinationId ? fromCodeCombinationId : toCodeCombinationId, fromDate, toDate));
+            List<LedgerModel> modelList = mapLedgerModel(service.Ledger(AuthenticationHelper.CompanyId.Value, sobId, fromCodeCombinationId >= toCodeCombinationId ? toCodeCombinationId : fromCodeCombinationId, toCodeCombinationId <= fromCodeCombinationId ? fromCodeCombinationId : toCodeCombinationId, fromDate, toDate));
             LedgerReport report = new LedgerReport();
             report.Parameters["CompanyName"].Value = companyService
-                .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
-                AuthenticationHelper.User.CompanyId).Name;
+                .GetSingle(AuthenticationHelper.CompanyId.Value.ToString(),
+                AuthenticationHelper.CompanyId.Value).Name;
             report.Parameters["SOBId"].Value = sobId;
             report.Parameters["FromDate"].Value = fromDate;
             report.Parameters["ToDate"].Value = toDate;
@@ -147,11 +147,11 @@ namespace _360Accounting.Web.Controllers
 
         private AuditTrailReport CreateAuditTrailReport(long sobId, DateTime fromDate, DateTime toDate)
         {
-            List<AuditTrailModel> modelList = mapAuditTrialModel(service.AuditTrail(AuthenticationHelper.User.CompanyId, sobId, fromDate, toDate));
+            List<AuditTrailModel> modelList = mapAuditTrialModel(service.AuditTrail(AuthenticationHelper.CompanyId.Value, sobId, fromDate, toDate));
             AuditTrailReport report = new AuditTrailReport();
             report.Parameters["CompanyName"].Value = companyService
-                .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
-                AuthenticationHelper.User.CompanyId).Name;
+                .GetSingle(AuthenticationHelper.CompanyId.Value.ToString(),
+                AuthenticationHelper.CompanyId.Value).Name;
             report.Parameters["SOBId"].Value = sobId;
             report.Parameters["FromDate"].Value = fromDate;
             report.Parameters["ToDate"].Value = toDate;
@@ -187,11 +187,11 @@ namespace _360Accounting.Web.Controllers
 
         private UserwiseEntriesTrailReport CreateUserwiseEntriesTrailReport(long sobId, DateTime fromDate, DateTime toDate, Guid userId)
         {
-            List<UserwiseEntriesTrailModel> modelList = mapReportModel(service.UserwiseEntriesTrail(AuthenticationHelper.User.CompanyId, sobId, fromDate, toDate, userId));
+            List<UserwiseEntriesTrailModel> modelList = mapReportModel(service.UserwiseEntriesTrail(AuthenticationHelper.CompanyId.Value, sobId, fromDate, toDate, userId));
             UserwiseEntriesTrailReport report = new UserwiseEntriesTrailReport();
             report.Parameters["CompanyName"].Value = companyService
-                .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
-                AuthenticationHelper.User.CompanyId).Name;
+                .GetSingle(AuthenticationHelper.CompanyId.Value.ToString(),
+                AuthenticationHelper.CompanyId.Value).Name;
             report.Parameters["SOBId"].Value = sobId;
             report.Parameters["FromDate"].Value = fromDate;
             report.Parameters["ToDate"].Value = toDate;
@@ -265,7 +265,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult TrialBalance()
         {
             TrialBalanceCriteriaModel model = new TrialBalanceCriteriaModel();
-            model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
+            model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.CompanyId.Value)
                 .Select(x => new SelectListItem
                 {
                     Text = x.Name,
@@ -287,7 +287,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Ledger()
         {
             LedgerCriteriaModel model = new LedgerCriteriaModel();
-            model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
+            model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.CompanyId.Value)
                 .Select(x => new SelectListItem
                 {
                     Text = x.Name,
@@ -303,7 +303,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult AuditTrail()
         {
             AuditTrailCriteriaModel model = new AuditTrailCriteriaModel();
-            model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
+            model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.CompanyId.Value)
                 .Select(x => new SelectListItem
                 {
                     Text = x.Name,
@@ -317,7 +317,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult UserwiseEntriesTrail()
         {
             UserwiseEntriesTrailCriteriaModel model = new UserwiseEntriesTrailCriteriaModel();
-            model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.User.CompanyId)
+            model.SetOfBooks = sobService.GetByCompanyId(AuthenticationHelper.CompanyId.Value)
                 .Select(x => new SelectListItem
                 {
                     Text = x.Name,
@@ -355,8 +355,8 @@ namespace _360Accounting.Web.Controllers
         {
             GLHeaderModel model = JVHelper.GetGLHeaders(id);
             SessionHelper.SOBId = model.SOBId;
-            SessionHelper.Calendar = new CalendarViewModel(calendarService.GetSingle(periodId.ToString(), AuthenticationHelper.User.CompanyId));
-            SessionHelper.PrecisionLimit = currencyService.GetSingle(currencyId.ToString(), AuthenticationHelper.User.CompanyId).Precision;
+            SessionHelper.Calendar = new CalendarViewModel(calendarService.GetSingle(periodId.ToString(), AuthenticationHelper.CompanyId.Value));
+            SessionHelper.PrecisionLimit = currencyService.GetSingle(currencyId.ToString(), AuthenticationHelper.CompanyId.Value).Precision;
 
             ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(sobId.ToString()).Name;
             ViewBag.PeriodName = SessionHelper.Calendar.PeriodName;
@@ -445,7 +445,7 @@ namespace _360Accounting.Web.Controllers
             {
                 model = new GLHeaderModel
                 {
-                    CompanyId = AuthenticationHelper.User.CompanyId,
+                    CompanyId = AuthenticationHelper.CompanyId.Value,
                     SOBId = sobId,
                     PeriodId = periodId,
                     CurrencyId = currencyId,
@@ -571,7 +571,11 @@ namespace _360Accounting.Web.Controllers
                 bool saved = false;
                 if (SessionHelper.JV != null)
                 {
-                    if (SessionHelper.JV.GlLines.Sum(cri => cri.EnteredDr) == SessionHelper.JV.GlLines.Sum(cri => cri.EnteredCr))
+                    if (SessionHelper.JV.GlLines.Count == 0)
+                    {
+                        message = "No Voucher Detail information available!";
+                    }
+                    else if (SessionHelper.JV.GlLines.Sum(cri => cri.EnteredDr) == SessionHelper.JV.GlLines.Sum(cri => cri.EnteredCr))
                     {
                         SessionHelper.JV.JournalName = journalName;
                         SessionHelper.JV.GLDate = Convert.ToDateTime(glDate);
@@ -579,7 +583,7 @@ namespace _360Accounting.Web.Controllers
                         SessionHelper.JV.Description = descr;
                         if (SessionHelper.JV.DocumentNo == "New")
                         {
-                            SessionHelper.JV.DocumentNo = JVHelper.GetDocNo(AuthenticationHelper.User.CompanyId, SessionHelper.JV.PeriodId, SessionHelper.JV.SOBId, SessionHelper.JV.CurrencyId);
+                            SessionHelper.JV.DocumentNo = JVHelper.GetDocNo(AuthenticationHelper.CompanyId.Value, SessionHelper.JV.PeriodId, SessionHelper.JV.SOBId, SessionHelper.JV.CurrencyId);
                         }
 
                         JVHelper.Update(SessionHelper.JV);

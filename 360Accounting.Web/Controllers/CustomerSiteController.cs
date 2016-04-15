@@ -42,7 +42,7 @@ namespace _360Accounting.Web.Controllers
                 model.CustomerId = customerId;
             }
 
-            model.TaxCode = taxService.GetAll(AuthenticationHelper.User.CompanyId)
+            model.TaxCode = taxService.GetAll(AuthenticationHelper.CompanyId.Value)
                 .Select(x => new SelectListItem
                 {
                     Text = x.TaxName,
@@ -50,7 +50,7 @@ namespace _360Accounting.Web.Controllers
                 }).ToList();
             model.TaxId = model.TaxCode.Any() ? Convert.ToInt64(model.TaxCode.First().Value) : 0;
 
-            model.CodeCombination = codeCombinationService.GetAllCodeCombinitionView(AuthenticationHelper.User.CompanyId)
+            model.CodeCombination = codeCombinationService.GetAllCodeCombinitionView(AuthenticationHelper.CompanyId.Value)
                     .Select(x => new SelectListItem
                     {
                         Text = x.CodeCombinitionCode,

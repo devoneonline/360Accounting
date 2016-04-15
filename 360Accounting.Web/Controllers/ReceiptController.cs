@@ -96,7 +96,7 @@ namespace _360Accounting.Web.Controllers
 
             if (model.Customers == null)
             {
-                model.Customers = customerService.GetAll(AuthenticationHelper.User.CompanyId, SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate).
+                model.Customers = customerService.GetAll(AuthenticationHelper.CompanyId.Value, SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate).
                     Select(a => new SelectListItem
                 {
                     Text = a.CustomerName.ToString(),
@@ -125,7 +125,7 @@ namespace _360Accounting.Web.Controllers
         
         public ActionResult Edit(string id)
         {
-            ReceiptViewModel model = ReceiptViewtoReceipt(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            ReceiptViewModel model = ReceiptViewtoReceipt(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
             
             if (model.CustomerSites == null)
             {
@@ -153,7 +153,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
             return RedirectToAction("Index");
         }
 
@@ -166,7 +166,7 @@ namespace _360Accounting.Web.Controllers
         {
             SessionHelper.Calendar = CalendarHelper.GetCalendar(ReceivablePeriodHelper.GetReceivablePeriod(periodId.ToString()).CalendarId.ToString());
             IEnumerable<ReceiptView> boList = service
-                .GetReceipts(sobId, SessionHelper.Calendar.Id, customerId, currencyId, AuthenticationHelper.User.CompanyId).ToList();
+                .GetReceipts(sobId, SessionHelper.Calendar.Id, customerId, currencyId, AuthenticationHelper.CompanyId.Value).ToList();
 
             List<ReceiptViewModel> modelList = boList.Select(a => new ReceiptViewModel(a)).ToList();
             return PartialView("_List", modelList);

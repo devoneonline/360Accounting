@@ -31,13 +31,13 @@ namespace _360Accounting.Web.Models
         [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Effective Date From")]
+        [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Effective Date From")]
+        [Display(Name = "End Date")]
         public DateTime EndDate { get; set; }
 
         public IList<TaxDetailModel> TaxDetails { get; set; }
