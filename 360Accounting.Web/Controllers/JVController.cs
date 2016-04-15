@@ -39,7 +39,7 @@ namespace _360Accounting.Web.Controllers
         #region Private Methods
         private List<SelectListItem> getCodeCombinationList(long sobId)
         {
-            List<SelectListItem> list = codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, sobId)
+            List<SelectListItem> list = codeCombinitionService.GetAll(AuthenticationHelper.CompanyId.Value, sobId)
                 .Select(x => new SelectListItem
                 {
                     Text = Utility.Stringize(".", x.Segment1, x.Segment2, x.Segment3, x.Segment4, x.Segment5, x.Segment6, x.Segment7, x.Segment8),
@@ -83,8 +83,8 @@ namespace _360Accounting.Web.Controllers
             List<TrialBalanceModel> modelList = mapTrialBalanceModel(service.TrialBalance(AuthenticationHelper.User.CompanyId, SessionHelper.SOBId, fromCodeCombinationId >= toCodeCombinationId ? toCodeCombinationId : fromCodeCombinationId, toCodeCombinationId <= fromCodeCombinationId ? fromCodeCombinationId : toCodeCombinationId, periodId));
             TrialBalanceReport report = new TrialBalanceReport();
             report.Parameters["CompanyName"].Value = companyService
-                .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
-                AuthenticationHelper.User.CompanyId).Name;
+                .GetSingle(AuthenticationHelper.CompanyId.Value.ToString(),
+                AuthenticationHelper.CompanyId.Value).Name;
             report.Parameters["SOBId"].Value = SessionHelper.SOBId;
             report.Parameters["FromCodeCombinationId"].Value = fromCodeCombinationId;
             report.Parameters["ToCodeCombinationId"].Value = toCodeCombinationId;
@@ -115,8 +115,8 @@ namespace _360Accounting.Web.Controllers
             List<LedgerModel> modelList = mapLedgerModel(service.Ledger(AuthenticationHelper.User.CompanyId, SessionHelper.SOBId, fromCodeCombinationId >= toCodeCombinationId ? toCodeCombinationId : fromCodeCombinationId, toCodeCombinationId <= fromCodeCombinationId ? fromCodeCombinationId : toCodeCombinationId, fromDate, toDate));
             LedgerReport report = new LedgerReport();
             report.Parameters["CompanyName"].Value = companyService
-                .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
-                AuthenticationHelper.User.CompanyId).Name;
+                .GetSingle(AuthenticationHelper.CompanyId.Value.ToString(),
+                AuthenticationHelper.CompanyId.Value).Name;
             report.Parameters["SOBId"].Value = SessionHelper.SOBId;
             report.Parameters["FromDate"].Value = fromDate;
             report.Parameters["ToDate"].Value = toDate;
@@ -150,8 +150,8 @@ namespace _360Accounting.Web.Controllers
             List<AuditTrailModel> modelList = mapAuditTrialModel(service.AuditTrail(AuthenticationHelper.User.CompanyId, SessionHelper.SOBId, fromDate, toDate));
             AuditTrailReport report = new AuditTrailReport();
             report.Parameters["CompanyName"].Value = companyService
-                .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
-                AuthenticationHelper.User.CompanyId).Name;
+                .GetSingle(AuthenticationHelper.CompanyId.Value.ToString(),
+                AuthenticationHelper.CompanyId.Value).Name;
             report.Parameters["SOBId"].Value = SessionHelper.SOBId;
             report.Parameters["FromDate"].Value = fromDate;
             report.Parameters["ToDate"].Value = toDate;
@@ -190,8 +190,8 @@ namespace _360Accounting.Web.Controllers
             List<UserwiseEntriesTrailModel> modelList = mapReportModel(service.UserwiseEntriesTrail(AuthenticationHelper.User.CompanyId, SessionHelper.SOBId, fromDate, toDate, userId));
             UserwiseEntriesTrailReport report = new UserwiseEntriesTrailReport();
             report.Parameters["CompanyName"].Value = companyService
-                .GetSingle(AuthenticationHelper.User.CompanyId.ToString(),
-                AuthenticationHelper.User.CompanyId).Name;
+                .GetSingle(AuthenticationHelper.CompanyId.Value.ToString(),
+                AuthenticationHelper.CompanyId.Value).Name;
             report.Parameters["SOBId"].Value = SessionHelper.SOBId;
             report.Parameters["FromDate"].Value = fromDate;
             report.Parameters["ToDate"].Value = toDate;
@@ -331,8 +331,8 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Edit(string id, long currencyId, long periodId)
         {
             GLHeaderModel model = JVHelper.GetGLHeaders(id);
-            SessionHelper.Calendar = new CalendarViewModel(calendarService.GetSingle(periodId.ToString(), AuthenticationHelper.User.CompanyId));
-            SessionHelper.PrecisionLimit = currencyService.GetSingle(currencyId.ToString(), AuthenticationHelper.User.CompanyId).Precision;
+            SessionHelper.Calendar = new CalendarViewModel(calendarService.GetSingle(periodId.ToString(), AuthenticationHelper.CompanyId.Value));
+            SessionHelper.PrecisionLimit = currencyService.GetSingle(currencyId.ToString(), AuthenticationHelper.CompanyId.Value).Precision;
 
             ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
             ViewBag.PeriodName = SessionHelper.Calendar.PeriodName;
@@ -409,7 +409,7 @@ namespace _360Accounting.Web.Controllers
             {
                 model = new GLHeaderModel
                 {
-                    CompanyId = AuthenticationHelper.User.CompanyId,
+                    CompanyId = AuthenticationHelper.CompanyId.Value,
                     SOBId = SessionHelper.SOBId,
                     PeriodId = periodId,
                     CurrencyId = currencyId,
@@ -535,7 +535,11 @@ namespace _360Accounting.Web.Controllers
                 bool saved = false;
                 if (SessionHelper.JV != null)
                 {
-                    if (SessionHelper.JV.GlLines.Sum(cri => cri.EnteredDr) == SessionHelper.JV.GlLines.Sum(cri => cri.EnteredCr))
+                    if (SessionHelper.JV.GlLines.Count == 0)
+                    {
+                        message = "No Voucher Detail information available!";
+                    }
+                    else if (SessionHelper.JV.GlLines.Sum(cri => cri.EnteredDr) == SessionHelper.JV.GlLines.Sum(cri => cri.EnteredCr))
                     {
                         SessionHelper.JV.JournalName = journalName;
                         SessionHelper.JV.GLDate = Convert.ToDateTime(glDate);
@@ -543,7 +547,7 @@ namespace _360Accounting.Web.Controllers
                         SessionHelper.JV.Description = descr;
                         if (SessionHelper.JV.DocumentNo == "New")
                         {
-                            SessionHelper.JV.DocumentNo = JVHelper.GetDocNo(AuthenticationHelper.User.CompanyId, SessionHelper.JV.PeriodId, SessionHelper.JV.SOBId, SessionHelper.JV.CurrencyId);
+                            SessionHelper.JV.DocumentNo = JVHelper.GetDocNo(AuthenticationHelper.CompanyId.Value, SessionHelper.JV.PeriodId, SessionHelper.JV.SOBId, SessionHelper.JV.CurrencyId);
                         }
 
                         JVHelper.Update(SessionHelper.JV);

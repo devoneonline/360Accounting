@@ -30,7 +30,7 @@ namespace _360Accounting.Web.Controllers
 
         private List<SelectListItem> getCodeCombinationList(long sobId)
         {
-            List<SelectListItem> list = codeCombinitionService.GetAll(AuthenticationHelper.User.CompanyId, sobId)
+            List<SelectListItem> list = codeCombinitionService.GetAll(AuthenticationHelper.CompanyId.Value, sobId)
                 .Select(x => new SelectListItem
                 {
                     Text = Utility.Stringize(".", x.Segment1, x.Segment2, x.Segment3, x.Segment4, x.Segment5, x.Segment6, x.Segment7, x.Segment8),
@@ -54,7 +54,7 @@ namespace _360Accounting.Web.Controllers
 
             model.SOBId = SessionHelper.SOBId;
             model.MiscellaneousTransactionDetail = MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(model.SOBId, model.TransactionType, model.CodeCombinationId, model.TransactionDate).ToList();
-            model.CompanyId = AuthenticationHelper.User.CompanyId;
+            model.CompanyId = AuthenticationHelper.CompanyId.Value;
 
             model.CodeCombination = getCodeCombinationList(model.SOBId);
             SessionHelper.MiscellaneousTransaction = model;
@@ -84,7 +84,7 @@ namespace _360Accounting.Web.Controllers
                 {
                     SOBId = SessionHelper.SOBId,
                     CodeCombination = getCodeCombinationList(SessionHelper.SOBId),
-                    CompanyId = AuthenticationHelper.User.CompanyId,
+                    CompanyId = AuthenticationHelper.CompanyId.Value,
                     TransactionDate = DateTime.Now
                 };
                 model.CodeCombinationId = model.CodeCombination != null && model.CodeCombination.Count > 0 ? Convert.ToInt64(model.CodeCombination.FirstOrDefault().Value) : 0;
@@ -252,7 +252,7 @@ namespace _360Accounting.Web.Controllers
                     {
                         item.TransactionType = model.TransactionType;
                         item.CodeCombinationId = model.CodeCombinationId;
-                        item.CompanyId = AuthenticationHelper.User.CompanyId;
+                        item.CompanyId = AuthenticationHelper.CompanyId.Value;
                         item.SOBId = SessionHelper.SOBId;
                         item.TransactionDate = model.TransactionDate;
                     }

@@ -42,19 +42,22 @@ namespace _360Accounting.Web.Controllers
                 model.CustomerId = customerId;
             }
 
-            model.TaxCode = taxService.GetAll(AuthenticationHelper.User.CompanyId)
+            model.TaxCode = taxService.GetAll(AuthenticationHelper.CompanyId.Value)
                 .Select(x => new SelectListItem
                 {
                     Text = x.TaxName,
                     Value = x.Id.ToString()
                 }).ToList();
+            model.TaxId = model.TaxCode.Any() ? Convert.ToInt64(model.TaxCode.First().Value) : 0;
 
-            model.CodeCombination = codeCombinationService.GetAllCodeCombinitionView(AuthenticationHelper.User.CompanyId)
+            model.CodeCombination = codeCombinationService.GetAllCodeCombinitionView(AuthenticationHelper.CompanyId.Value)
                     .Select(x => new SelectListItem
                     {
                         Text = x.CodeCombinitionCode,
                         Value = x.Id.ToString()
                     }).ToList();
+            model.CodeCombinationId = model.CodeCombination.Any() ? Convert.ToInt64(model.CodeCombination.First().Value) : 0;
+
             return View(model);
         }
 
@@ -65,9 +68,16 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
-                    string result = "";
-                    result = CustomerHelper.SaveCustomerSite(model);
-                    return RedirectToAction("Index", new { Id = model.CustomerId });
+                    if (model.StartDate != null && model.StartDate > model.EndDate)
+                    {
+                        ModelState.AddModelError("Error", "Start Date cannot be greater than End Date.");
+                    }
+                    else
+                    {
+                        string result = "";
+                        result = CustomerHelper.SaveCustomerSite(model);
+                        return RedirectToAction("Index", new { Id = model.CustomerId });
+                    }
                 }
                 catch (Exception ex)
                 {

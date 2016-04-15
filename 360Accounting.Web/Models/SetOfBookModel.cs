@@ -29,6 +29,7 @@ namespace _360Accounting.Web.Models
 
         [Required]
         [StringLength(255, MinimumLength=1)]
+        [Display(Name = "Set of Book Name *")]
         public string Name { get; set; }
     }
 }

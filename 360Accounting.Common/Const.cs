@@ -14,8 +14,11 @@ namespace _360Accounting.Common
         
         public static DateTime CurrentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
 
-        public static DateTime StartDate = CurrentDate.AddDays(-7);
+        //public static DateTime StartDate = CurrentDate.AddYears(-1);
 
-        public static DateTime EndDate = CurrentDate.AddDays(7);
+        //public static DateTime EndDate = CurrentDate.AddDays(7);
+
+        public static DateTime StartDate = new DateTime(CurrentDate.Year, 1, 1);
+        public static DateTime EndDate = new DateTime(CurrentDate.Year, 12, 31);
     }
 }

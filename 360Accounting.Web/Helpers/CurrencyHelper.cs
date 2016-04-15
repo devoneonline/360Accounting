@@ -61,7 +61,7 @@ namespace _360Accounting.Web
 
         public static CurrencyViewModel GetCurrency(string id)
         {
-            return new CurrencyViewModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            return new CurrencyViewModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
         }
 
         public static void DeleteCurrency(string id)
@@ -71,7 +71,7 @@ namespace _360Accounting.Web
 
         public static List<CurrencyViewModel> GetCurrencies(long sobId)
         {
-            return service.GetAll(AuthenticationHelper.User.CompanyId, sobId)
+            return service.GetAll(AuthenticationHelper.CompanyId.Value, sobId)
                 .Select(x => new CurrencyViewModel(x)).ToList();
         }
 
@@ -83,6 +83,25 @@ namespace _360Accounting.Web
                 Value = x.Id.ToString()
             }).ToList();
             return currencyList;
+        }
+
+        public static CurrencyViewModel ValidateCurrency(CurrencyViewModel model)
+        {
+            //CurrencyViewModel currency = new CurrencyViewModel(service.GetAll(AuthenticationHelper.CompanyId.Value, model.SOBId)
+            //    .FirstOrDefault(x => x.CurrencyCode == model.CurrencyCode));
+            //return currency;
+
+            Currency boList = service.GetAll(AuthenticationHelper.CompanyId.Value, model.SOBId)
+                .FirstOrDefault(x => x.CurrencyCode == model.CurrencyCode);
+            
+            if (boList != null)
+            {
+                return new CurrencyViewModel(boList);
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

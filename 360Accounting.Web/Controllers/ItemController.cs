@@ -60,7 +60,7 @@ namespace _360Accounting.Web.Controllers
 
             model.ItemWarehouses = ItemHelper.GetItemWarehouses(id).ToList();
             model.SOBId = SessionHelper.SOBId;
-            model.CompanyId = AuthenticationHelper.User.CompanyId;
+            model.CompanyId = AuthenticationHelper.CompanyId.Value;
             SessionHelper.Item = model;
 
             return View("Create", model);
@@ -110,7 +110,7 @@ namespace _360Accounting.Web.Controllers
                     model.SalesCodeCombinationId = model.SalesCodeCombination.Any() ?
                         Convert.ToInt32(model.SalesCodeCombination.First().Value) : 0;
                 }
-                model.CompanyId = AuthenticationHelper.User.CompanyId;
+                model.CompanyId = AuthenticationHelper.CompanyId.Value;
                 ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
 
                 SessionHelper.Item = model;

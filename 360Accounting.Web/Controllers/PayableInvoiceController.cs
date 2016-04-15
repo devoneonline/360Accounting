@@ -29,7 +29,7 @@ namespace _360Accounting.Web.Controllers
                     SessionHelper.PayableInvoice.Status = status;
                     if (SessionHelper.PayableInvoice.InvoiceNo == "New")
                     {
-                        SessionHelper.PayableInvoice.InvoiceNo = PayableInvoiceHelper.GetInvoiceNo(AuthenticationHelper.User.CompanyId, SessionHelper.PayableInvoice.SOBId, SessionHelper.PayableInvoice.PeriodId);
+                        SessionHelper.PayableInvoice.InvoiceNo = PayableInvoiceHelper.GetInvoiceNo(AuthenticationHelper.CompanyId.Value, SessionHelper.PayableInvoice.SOBId, SessionHelper.PayableInvoice.PeriodId);
                     }                    
 
                     PayableInvoiceHelper.Update(SessionHelper.PayableInvoice);
@@ -168,7 +168,7 @@ namespace _360Accounting.Web.Controllers
                 List<SelectListItem> invoiceTypes = InvoiceTypeHelper.GetInvoiceTypes(SessionHelper.SOBId, SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
 
                 model = new PayableInvoiceModel();
-                model.CompanyId = AuthenticationHelper.User.CompanyId;
+                model.CompanyId = AuthenticationHelper.CompanyId.Value;
                 model.Vendors = vendors.Any() ? vendors : new List<SelectListItem>();
                 model.VendorId = vendors.Any() ? Convert.ToInt64(vendors.First().Value) : 0;
                 model.VendorSites = vendorSites.Any() ? vendorSites : new List<SelectListItem>();

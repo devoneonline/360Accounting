@@ -35,8 +35,8 @@ namespace _360Accounting.Web.Controllers
                 model.ChartId = account.Id;
                 model.SetOfBook = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
                 model.Segment = segment;
-                model.StartDate = Const.CurrentDate;
-                model.EndDate = Const.EndDate;
+                //model.StartDate = Const.CurrentDate;
+                //model.EndDate = Const.EndDate;
                 model.ValueChar = AccountHelper.GetSegmentCharacters(segment, account);
                 return View("Edit", model);
             }
@@ -63,8 +63,15 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
-                    string result = AccountValueHelper.SaveChartOfAccountValue(model);
-                    return RedirectToAction("Index", new { id = SessionHelper.SOBId });
+                    if (model.StartDate != null && model.StartDate > model.EndDate)
+                    {
+                        ModelState.AddModelError("Error", "End Date should be >= StartDate.");
+                    }
+                    else
+                    {
+                        string result = AccountValueHelper.SaveChartOfAccountValue(model);
+                        return RedirectToAction("Index", new { id = SessionHelper.SOBId });
+                    }
                 }
                 catch (Exception ex)
                 {

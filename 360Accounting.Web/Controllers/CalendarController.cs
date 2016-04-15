@@ -10,6 +10,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using DevExpress.Web.Mvc;
+using _360Accounting.Common;
 
 namespace _360Accounting.Web.Controllers
 {
@@ -63,8 +64,15 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                string result = CalendarHelper.SaveCalendar(model);
-                return RedirectToAction("Index");
+                if (model.StartDate != null && model.EndDate < model.StartDate)
+                {
+                    ModelState.AddModelError("Error", "Start date is less than End Date!");
+                }
+                else
+                {
+                    string result = CalendarHelper.SaveCalendar(model);
+                    return RedirectToAction("Index");
+                }
             }
 
             return View(model);
@@ -84,6 +92,10 @@ namespace _360Accounting.Web.Controllers
                 if (SessionHelper.Calendar != null && model.StartDate < SessionHelper.Calendar.EndDate)
                 {
                     ModelState.AddModelError("Error", "Start date is overlaping with previous period!");
+                }
+                else if (model.StartDate != null && model.EndDate < model.StartDate)
+                {
+                    ModelState.AddModelError("Error", "Start date is less than End Date!");
                 }
                 else if (model.StartDate > model.EndDate)
                 {
@@ -114,8 +126,16 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Create()
         {
+            CalendarViewModel previousCalendar = CalendarHelper.GetPreviousCalendar(SessionHelper.SOBId, Const.CurrentDate.Year);
+
             CalendarViewModel model = new CalendarViewModel();
-            //SessionHelper.Calendar = model;
+
+            if (previousCalendar != null)
+            {
+                model.StartDate = SessionHelper.Calendar.EndDate.AddDays(1);
+                model.EndDate = model.StartDate.AddDays(1);
+            }
+
             model.SOBId = SessionHelper.SOBId;            
             return View(model);
         }

@@ -86,7 +86,7 @@ namespace _360Accounting.Web.Controllers
 
             if (model.Customers == null)
             {
-                model.Customers = customerService.GetAll(AuthenticationHelper.User.CompanyId, SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate).
+                model.Customers = customerService.GetAll(AuthenticationHelper.CompanyId.Value, SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate).
                     Select(a => new SelectListItem
                 {
                     Text = a.CustomerName.ToString(),
@@ -115,7 +115,7 @@ namespace _360Accounting.Web.Controllers
         
         public ActionResult Edit(string id)
         {
-            ReceiptViewModel model = ReceiptViewtoReceipt(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            ReceiptViewModel model = ReceiptViewtoReceipt(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
             
             if (model.CustomerSites == null)
             {
@@ -143,7 +143,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
             return RedirectToAction("Index");
         }
 

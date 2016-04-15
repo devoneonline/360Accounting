@@ -128,7 +128,7 @@ namespace _360Accounting.Web.Controllers
                 item.PhoneNumber = profile.PhoneNumber;
                 item.Email = profile.Email;
                 item.CompanyId = profile.CompanyId;
-                item.CompanyName = companyService.GetSingle(profile.CompanyId.ToString(), AuthenticationHelper.User.CompanyId).Name;
+                item.CompanyName = companyService.GetSingle(profile.CompanyId.ToString(), AuthenticationHelper.CompanyId.Value).Name;
                 item.Role = Roles.GetRolesForUser(user.UserName)[0];
                 modelList.Add(item);
             }
@@ -139,7 +139,7 @@ namespace _360Accounting.Web.Controllers
             //Is this Correct need to verify Ahsan..
             if (AuthenticationHelper.UserRole != UserRoles.SuperAdmin.ToString())
             {
-                modelList = modelList.Where(x => x.CompanyId == AuthenticationHelper.User.CompanyId && x.Role != UserRoles.SuperAdmin.ToString()).ToList();
+                modelList = modelList.Where(x => x.CompanyId == AuthenticationHelper.CompanyId.Value && x.Role != UserRoles.SuperAdmin.ToString()).ToList();
             }
             return PartialView("_List", modelList);
         }

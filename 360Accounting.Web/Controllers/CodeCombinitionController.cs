@@ -51,53 +51,60 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult UpdateCodeCombinition(long id, string segmentValues, bool allowPosting, string startDate, string endDate)
         {
-            var segmentList = segmentValues.Split(new char[] { '±' }).ToList<string>();
-            CodeCombinitionCreateViewModel model = new CodeCombinitionCreateViewModel();
-            for (var i = 1; i <= segmentList.Count; i++)
+            try
             {
-                string segmentValue = segmentList[i - 1];
-                if (string.IsNullOrEmpty(segmentValue))
-                    continue;
-                else
-                    segmentValue = segmentValue.Substring(2);
-                switch (i)
+                var segmentList = segmentValues.Split(new char[] { '±' }).ToList<string>();
+                CodeCombinitionCreateViewModel model = new CodeCombinitionCreateViewModel();
+                for (var i = 1; i <= segmentList.Count; i++)
                 {
-                    case 1:
-                        model.Segment1 = segmentValue;
-                        break;
-                    case 2:
-                        model.Segment2 = segmentValue;
-                        break;
-                    case 3:
-                        model.Segment3 = segmentValue;
-                        break;
-                    case 4:
-                        model.Segment4 = segmentValue;
-                        break;
-                    case 5:
-                        model.Segment5 = segmentValue;
-                        break;
-                    case 6:
-                        model.Segment6 = segmentValue;
-                        break;
-                    case 7:
-                        model.Segment7 = segmentValue;
-                        break;
-                    case 8:
-                        model.Segment8 = segmentValue;
-                        break;
+                    string segmentValue = segmentList[i - 1];
+                    if (string.IsNullOrEmpty(segmentValue))
+                        continue;
+                    else
+                        segmentValue = segmentValue.Substring(2);
+                    switch (i)
+                    {
+                        case 1:
+                            model.Segment1 = segmentValue;
+                            break;
+                        case 2:
+                            model.Segment2 = segmentValue;
+                            break;
+                        case 3:
+                            model.Segment3 = segmentValue;
+                            break;
+                        case 4:
+                            model.Segment4 = segmentValue;
+                            break;
+                        case 5:
+                            model.Segment5 = segmentValue;
+                            break;
+                        case 6:
+                            model.Segment6 = segmentValue;
+                            break;
+                        case 7:
+                            model.Segment7 = segmentValue;
+                            break;
+                        case 8:
+                            model.Segment8 = segmentValue;
+                            break;
+                    }
                 }
+
+                model.AllowedPosting = allowPosting;
+                model.CompanyId = AuthenticationHelper.CompanyId.Value;
+                model.EndDate = endDate == "" ? null : (DateTime?)Convert.ToDateTime(endDate);
+                model.StartDate = startDate == "" ? null : (DateTime?)Convert.ToDateTime(startDate);
+                model.Id = id;
+                model.SOBId = SessionHelper.SOBId;
+
+                string result = CodeCombinationHelper.SaveCodeCombination(model);
+                return Json("Success");
             }
-
-            model.AllowedPosting = allowPosting;
-            model.CompanyId = AuthenticationHelper.User.CompanyId;
-            model.EndDate = endDate == "" ? null : (DateTime?)Convert.ToDateTime(endDate);
-            model.StartDate = startDate == "" ? null : (DateTime?)Convert.ToDateTime(startDate);
-            model.Id = id;
-            model.SOBId = SessionHelper.SOBId;
-
-            string result = CodeCombinationHelper.SaveCodeCombination(model);
-            return Json("Success");
+            catch (Exception ex)
+            {
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }
         }
 
         public ActionResult Delete(string id)

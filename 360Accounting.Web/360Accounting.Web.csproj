@@ -253,7 +253,6 @@
     <Compile Include="Helpers\TaxHelper.cs" />
     <Compile Include="Helpers\UserHelper.cs" />
     <Compile Include="Helpers\VendorHelper.cs" />
-    <Compile Include="Mappers\Mappers.cs" />
     <Compile Include="Models\AccountCreateViewModel.cs" />
     <Compile Include="Models\AccountListModel.cs" />
     <Compile Include="Models\AccountValueListModel.cs" />

@@ -66,7 +66,7 @@ namespace _360Accounting.Web
             //logic editted by uzair, previous one was incorrect.
             //plz check this one also.
             List<SelectListItem> list = service.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", false, null, "", "")
-                .Where(a => a.StartDate <= startDate && a.EndDate >= endDate)
+                .Where(a => a.StartDate <= startDate && a.EndDate >= endDate && a.AllowedPosting == true)
                 .Select(x => new SelectListItem
                 {
                     Text = x.CodeCombinitionCode,

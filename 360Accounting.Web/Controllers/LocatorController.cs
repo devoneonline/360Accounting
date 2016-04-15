@@ -30,7 +30,7 @@ namespace _360Accounting.Web.Controllers
             LocatorModel model = LocatorHelper.GetLocator(id);
             model.LocatorWarehouses = LocatorHelper.GetLocatorWarehouses(id).ToList();
             model.SOBId = SessionHelper.SOBId;
-            model.CompanyId = AuthenticationHelper.User.CompanyId;
+            model.CompanyId = AuthenticationHelper.CompanyId.Value;
             SessionHelper.Locator = model;
 
             return View("Create", model);
@@ -64,7 +64,7 @@ namespace _360Accounting.Web.Controllers
                     SessionHelper.Locator.LocatorWarehouses = new List<LocatorWarehouseModel>();
             }
 
-            model.CompanyId = AuthenticationHelper.User.CompanyId;
+            model.CompanyId = AuthenticationHelper.CompanyId.Value;
             
             return View(model);
         }

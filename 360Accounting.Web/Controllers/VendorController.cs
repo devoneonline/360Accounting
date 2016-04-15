@@ -85,13 +85,13 @@ namespace _360Accounting.Web.Controllers
         public ActionResult CreateSite(long id)
         {
             VendorSiteModel model = new VendorSiteModel(id);
-            model.CodeCombination = codeCombinationService.GetAllCodeCombinitionView(AuthenticationHelper.User.CompanyId)
+            model.CodeCombination = codeCombinationService.GetAllCodeCombinitionView(AuthenticationHelper.CompanyId.Value)
                     .Select(x => new SelectListItem
                     {
                         Text = x.CodeCombinitionCode,
                         Value = x.Id.ToString()
                     }).ToList();
-            //model.TaxCode = taxService.GetAll(AuthenticationHelper.User.CompanyId)
+            //model.TaxCode = taxService.GetAll(AuthenticationHelper.CompanyId.value)
             //    .Select(x => new SelectListItem
             //    {
             //        Text = x.TaxName,
@@ -114,7 +114,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult EditSite(long id)
         {
             var model = VendorHelper.GetSingle(id);
-            model.CodeCombination = codeCombinationService.GetAllCodeCombinitionView(AuthenticationHelper.User.CompanyId)
+            model.CodeCombination = codeCombinationService.GetAllCodeCombinitionView(AuthenticationHelper.CompanyId.Value)
                     .Select(x => new SelectListItem
                     {
                         Text = x.CodeCombinitionCode,

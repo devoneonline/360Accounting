@@ -40,7 +40,7 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
-                    model.CompanyId = AuthenticationHelper.User.CompanyId;
+                    model.CompanyId = AuthenticationHelper.CompanyId.Value;
                     model.SOBId = SessionHelper.SOBId;
                     InventoryPeriodHelper.Save(model);
                 }
@@ -61,7 +61,7 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
-                    model.CompanyId = AuthenticationHelper.User.CompanyId;
+                    model.CompanyId = AuthenticationHelper.CompanyId.Value;
                     model.SOBId = SessionHelper.SOBId;
                     InventoryPeriodHelper.Save(model);
                 }
@@ -81,7 +81,7 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
-                    model.CompanyId = AuthenticationHelper.User.CompanyId;
+                    model.CompanyId = AuthenticationHelper.CompanyId.Value;
                     InventoryPeriodHelper.Delete(model.Id.ToString());
                     return PartialView("_List", InventoryPeriodHelper.GetInventoryPeriods(SessionHelper.SOBId));
                 }
