@@ -49,6 +49,18 @@
 </div>
 
 <script type="text/javascript">
+    $(function () {
+        $('#dvDefaultSOB').dialog({
+            modal: true,
+            title: "Please select your Set of Book",
+            autoOpen: false,
+            height: 'auto',
+            width: 500,
+            height: 300,
+            zIndex: zind,
+        });
+    });
+
     $(document).ready(function () {
         $('#btnCancel').click(function () {
             if (confirm('Do you want to leave this page?')) {

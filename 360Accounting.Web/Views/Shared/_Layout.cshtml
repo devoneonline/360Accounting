@@ -52,20 +52,12 @@
             return z;
         };
 
-        $(function () {
-            //$.noConflict();
-            $('#dvDefaultSOB').dialog({
-                modal: true,
-                title: "Default Set of Book",
-                autoOpen: false,
-                height: 'auto',
-                width: 500,
-                height: 300,
-                zIndex: zind,
-            });
+        $('#activeBook').click(function () {
+            GetSOBs();
         });
 
-        $('#activeBook').click(function () {
+        function GetSOBs()
+        {
             $.ajax({
                 url: '@Url.Content("~/UserSetofBook")',
                 data: {},
@@ -80,7 +72,7 @@
                     return false;
                 }
             });
-        });
+        }
 
         function SaveDefaultSOB() {
             var model = {
@@ -151,6 +143,18 @@
                 });
             });
 
+            $.ajax({
+                url: '@Url.Content("~/UserSetofBook/CheckUserSOB")',
+                data: null,
+                datatype: 'json',
+                type: 'post',
+                error: function (rtn) {
+                },
+                success: function (rtn) {
+                    if (!rtn)
+                        GetSOBs();
+                }
+            });
         });
     </script>
 </body>

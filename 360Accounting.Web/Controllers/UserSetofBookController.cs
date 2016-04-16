@@ -37,6 +37,15 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_Create", model);
         }
 
+        public JsonResult CheckUserSOB()
+        {
+            if (SessionHelper.SOBId == null || SessionHelper.SOBId == 0)
+            {
+                return Json(false);
+            }
+            return Json(true);
+        }
+
         public JsonResult Save(UserSetofBookModel model)
         {
             model.UserId = AuthenticationHelper.UserId;

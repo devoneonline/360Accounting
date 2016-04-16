@@ -84,25 +84,21 @@
 </div>
 
 <script type="text/javascript">
+    $(function () {
+        $('#dvDefaultSOB').dialog({
+            modal: true,
+            title: "Please select your Set of Book",
+            autoOpen: false,
+            height: 'auto',
+            width: 500,
+            height: 300,
+            zIndex: zind,
+        });
+    });
+
     $(document).ready(function () {
         $('[type=date]').attr('class', 'form-control');
         
-        @*$.ajax({
-            url: '@Url.Content("~/Calendar/GetNextStartDate")',
-            data: {
-                sobId: $('#SOBId').val(),
-                periodYear: $('#PeriodYear').val()
-            },
-            type: 'post',
-            datatype: 'json',
-            error: function (error) { alert("Error in Start Date fetch.") },
-            success: function (date) {
-                $('#StartDate').val();
-            }
-        });
-
-        $('#StartDate').attr('disabled', 'true');*@
-
         $('#btnCancel').click(function () {
             window.location.href = '@Url.Content("~/Calendar/Index")';
         });
