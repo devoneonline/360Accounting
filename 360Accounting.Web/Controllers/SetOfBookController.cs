@@ -29,7 +29,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Create()
         {
             var model = new SetOfBookModel();
-            model.CompanyId = AuthenticationHelper.User.CompanyId;
+            model.CompanyId = AuthenticationHelper.CompanyId.Value;
             ViewBag.Title = "Create Book";
             return View("Edit", model);
         }

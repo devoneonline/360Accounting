@@ -40,7 +40,7 @@ namespace _360Accounting.Web
 
             if (model.Id == 0)
             {
-                entity.CompanyId = AuthenticationHelper.User.CompanyId;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
                 entity.CreateBy = AuthenticationHelper.UserId;
                 entity.CreateDate = DateTime.Now;
             }
@@ -65,7 +65,7 @@ namespace _360Accounting.Web
         {
             //logic editted by uzair, previous one was incorrect.
             //plz check this one also.
-            List<SelectListItem> list = service.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", false, null, "", "")
+            List<SelectListItem> list = service.GetAll(AuthenticationHelper.CompanyId.Value, sobId, "", false, null, "", "")
                 .Where(a => a.StartDate <= startDate && a.EndDate >= endDate && a.AllowedPosting == true)
                 .Select(x => new SelectListItem
                 {
@@ -80,7 +80,7 @@ namespace _360Accounting.Web
             
             //if (SessionHelper.Calendar != null)
             //{
-            //    return service.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", false, null, "", "")
+            //    return service.GetAll(AuthenticationHelper.CompanyId.Value, sobId, "", false, null, "", "")
             //        .Where(rec => rec.StartDate >= startDate && rec.EndDate <= endDate)
             //            .Select(x => new SelectListItem
             //            {
@@ -90,7 +90,7 @@ namespace _360Accounting.Web
             //}
             //else
             //{
-            //    return service.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", false, null, "", "")
+            //    return service.GetAll(AuthenticationHelper.CompanyId.Value, sobId, "", false, null, "", "")
             //            .Select(x => new SelectListItem
             //            {
             //                Text = x.CodeCombinitionCode,
@@ -114,7 +114,7 @@ namespace _360Accounting.Web
         public static List<CodeCombinitionViewModel> GetCodeCombinations(CodeCombinitionListModel model)
         {
             return
-                service.GetAll(AuthenticationHelper.User.CompanyId, model.SOBId, model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
+                service.GetAll(AuthenticationHelper.CompanyId.Value, model.SOBId, model.SearchText, true, model.Page, model.SortColumn, model.SortDirection)
                 .Select(x => new CodeCombinitionViewModel(x)).ToList();
         }
 
@@ -126,12 +126,12 @@ namespace _360Accounting.Web
 
         public static CodeCombinitionCreateViewModel GetCodeCombination(string id)
         {
-            return new CodeCombinitionCreateViewModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            return new CodeCombinitionCreateViewModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
         }
 
         public static void Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
     }
 }

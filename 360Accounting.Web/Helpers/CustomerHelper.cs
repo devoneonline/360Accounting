@@ -94,12 +94,12 @@ namespace _360Accounting.Web
 
         public static CustomerModel GetCustomer(string id)
         {
-            return new CustomerModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            return new CustomerModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
         }
 
         public static void DeleteCustomer(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
 
         public static void DeleteCustomerSite(string id)
@@ -109,13 +109,13 @@ namespace _360Accounting.Web
 
         public static List<CustomerModel> GetCustomers()
         {
-            return service.GetAll(AuthenticationHelper.User.CompanyId)
+            return service.GetAll(AuthenticationHelper.CompanyId.Value)
                 .Select(a => new CustomerModel(a)).ToList();
         }
 
         public static List<CustomerModel> GetCustomers(DateTime startDate, DateTime endDate)
         {
-            return service.GetAll(AuthenticationHelper.User.CompanyId, startDate, endDate)
+            return service.GetAll(AuthenticationHelper.CompanyId.Value, startDate, endDate)
                 .Select(a => new CustomerModel(a)).ToList();
         }
 
@@ -133,7 +133,7 @@ namespace _360Accounting.Web
 
         public static CustomerSiteModel GetCustomerSite(string customerSiteId)
         {
-            CustomerSiteModel customerSite = new CustomerSiteModel(siteService.GetSingle(customerSiteId, AuthenticationHelper.User.CompanyId));
+            CustomerSiteModel customerSite = new CustomerSiteModel(siteService.GetSingle(customerSiteId, AuthenticationHelper.CompanyId.Value));
             return customerSite;
         }
 

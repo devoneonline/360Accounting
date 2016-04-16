@@ -52,7 +52,7 @@ namespace _360Accounting.Web
             entity.SOBId = model.SOBId;
             if (model.Id == 0)
             {
-                entity.CompanyId = AuthenticationHelper.User.CompanyId;
+                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
                 entity.CreateBy = AuthenticationHelper.UserId;
                 entity.CreateDate = DateTime.Now;
             }
@@ -323,13 +323,13 @@ namespace _360Accounting.Web
         public static Account GetAccountBySOBId(string sobId)
         {
             return service.GetAccountBySOBId
-                (sobId.ToString(), AuthenticationHelper.User.CompanyId);
+                (sobId.ToString(), AuthenticationHelper.CompanyId.Value);
         }
 
         public static List<AccountViewModel> GetAccounts(string searchText, bool paging, int? page, string sort, string sortDir)
         {
             List<AccountViewModel> modelList = service
-                .GetAll(AuthenticationHelper.User.CompanyId, searchText, paging, page, sort, sortDir)
+                .GetAll(AuthenticationHelper.CompanyId.Value, searchText, paging, page, sort, sortDir)
                 .Select(x => new AccountViewModel(x)).ToList();
             return modelList;
         }
@@ -337,7 +337,7 @@ namespace _360Accounting.Web
         public static AccountCreateViewModel GetAccount(string id)
         {
             AccountCreateViewModel account = new AccountCreateViewModel
-                (service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+                (service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
             return account;
         }
 
@@ -355,7 +355,7 @@ namespace _360Accounting.Web
 
         public static void Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
 
         public static long GetAccountIdBySegments(string segments)

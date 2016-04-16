@@ -65,7 +65,7 @@ namespace _360Accounting.Web
 
         public static CalendarViewModel GetCalendar(string id)
         {
-            return new CalendarViewModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            return new CalendarViewModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
         }
 
         public static string SaveCalendar(CalendarViewModel model)
@@ -82,12 +82,12 @@ namespace _360Accounting.Web
 
         public static void Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
 
         public static List<CalendarViewModel> GetCalendars(long sobId)
         {
-            return service.GetAll(AuthenticationHelper.User.CompanyId, sobId, "", true, null, "", "")
+            return service.GetAll(AuthenticationHelper.CompanyId.Value, sobId, "", true, null, "", "")
                 .Select(x => new CalendarViewModel(x)).ToList();
         }
 

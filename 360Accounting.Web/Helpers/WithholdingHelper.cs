@@ -66,17 +66,17 @@ namespace _360Accounting.Web
 
         public static WithholdingModel GetWithholding(string id)
         {
-            return new WithholdingModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            return new WithholdingModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
         }
 
         public static void Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
 
         public static List<WithholdingModel> GetWithholdings(long sobId, long codeCombinitionId, long vendorId)
         {
-            return service.GetWithholdings(AuthenticationHelper.User.CompanyId, sobId, codeCombinitionId, vendorId)
+            return service.GetWithholdings(AuthenticationHelper.CompanyId.Value, sobId, codeCombinitionId, vendorId)
                 .Select(a => new WithholdingModel(a)).ToList();
         }
 

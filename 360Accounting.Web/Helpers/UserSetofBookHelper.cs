@@ -54,7 +54,7 @@ namespace _360Accounting.Web
 
         public static void DeleteCompany(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
     }
 }

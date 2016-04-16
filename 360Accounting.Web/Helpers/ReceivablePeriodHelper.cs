@@ -63,7 +63,7 @@ namespace _360Accounting.Web
 
         public static ReceivablePeriodModel GetReceivablePeriod(string id)
         {
-            return new ReceivablePeriodModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            return new ReceivablePeriodModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
         }
 
         public static string Save(ReceivablePeriodModel model)
@@ -80,12 +80,12 @@ namespace _360Accounting.Web
 
         public static void Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
 
         public static List<ReceivablePeriodModel> GetReceivablePeriods(long sobId)
         {
-            return service.GetAll(AuthenticationHelper.User.CompanyId, sobId)
+            return service.GetAll(AuthenticationHelper.CompanyId.Value, sobId)
                 .Select(x => new ReceivablePeriodModel(x)).ToList();
         }
     }

@@ -23,7 +23,7 @@ namespace _360Accounting.Web
 
         public static PaymentViewModel GetPayment(string id)
         {
-            PaymentModel payment = new PaymentModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            PaymentModel payment = new PaymentModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
 
             PaymentViewModel paymentView = new PaymentViewModel
             {
@@ -52,7 +52,7 @@ namespace _360Accounting.Web
         public static PaymentListViewModel GetPayments(long sobId, long bankId, long vendorId, long periodId)
         {
             PaymentListViewModel model = new PaymentListViewModel();
-            model.Payments = service.GetAll(AuthenticationHelper.User.CompanyId, vendorId, bankId, sobId, periodId).ToList()
+            model.Payments = service.GetAll(AuthenticationHelper.CompanyId.Value, vendorId, bankId, sobId, periodId).ToList()
                 .Select(x => new PaymentViewModel(x)).ToList();
 
             return model;
@@ -109,7 +109,7 @@ namespace _360Accounting.Web
                         var tobeDeleted = savedLines.Take(savedLines.Count() - payment.PaymentInvoiceLines.Count());
                         foreach (var item in tobeDeleted)
                         {
-                            service.DeleteLine(item.Id, AuthenticationHelper.User.CompanyId);
+                            service.DeleteLine(item.Id, AuthenticationHelper.CompanyId.Value);
                         }
                         savedLines = getpaymentLinesbyPaymentId(result);
                     }
@@ -156,7 +156,7 @@ namespace _360Accounting.Web
 
         public static void Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
 
         #region Private Methods
@@ -228,7 +228,7 @@ namespace _360Accounting.Web
 
         private static IList<PaymentInvoiceLinesModel> getpaymentLinesbyPaymentId(string headerId)
         {
-            List<PaymentInvoiceLinesModel> modelList = service.GetAllLines(Convert.ToInt64(headerId), AuthenticationHelper.User.CompanyId).
+            List<PaymentInvoiceLinesModel> modelList = service.GetAllLines(Convert.ToInt64(headerId), AuthenticationHelper.CompanyId.Value).
                 Select(x => new PaymentInvoiceLinesModel(x)).ToList();
             return modelList;
         }

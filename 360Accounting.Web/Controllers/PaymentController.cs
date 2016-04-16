@@ -59,7 +59,7 @@ namespace _360Accounting.Web.Controllers
             PaymentViewModel model = PaymentHelper.GetPayment(id);
             SessionHelper.PeriodId = periodId;
             SessionHelper.Calendar = CalendarHelper.GetCalendar(periodId.ToString());
-            //SessionHelper.PrecisionLimit = currencyService.GetSingle(currencyId.ToString(), AuthenticationHelper.User.CompanyId).Precision;
+            //SessionHelper.PrecisionLimit = currencyService.GetSingle(currencyId.ToString(), AuthenticationHelper.CompanyId.Value).Precision;
 
             if (model.BankAccount == null)
             {
@@ -296,7 +296,7 @@ namespace _360Accounting.Web.Controllers
                     SessionHelper.Payment.VendorSiteId = model.VendorSiteId;
 
                     if (SessionHelper.Payment.Id == 0)
-                        SessionHelper.Payment.PaymentNo = PaymentHelper.GetPaymentNo(AuthenticationHelper.User.CompanyId, model.VendorId, SessionHelper.SOBId, model.BankId, model.PeriodId);
+                        SessionHelper.Payment.PaymentNo = PaymentHelper.GetPaymentNo(AuthenticationHelper.CompanyId.Value, model.VendorId, SessionHelper.SOBId, model.BankId, model.PeriodId);
 
                     PaymentHelper.Update(SessionHelper.Payment);
                     SessionHelper.Payment = null;

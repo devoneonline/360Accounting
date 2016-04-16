@@ -100,14 +100,14 @@ namespace _360Accounting.Web
         public static IList<MoveOrderModel> GetMoveOrders(long sobId)
         {
             IList<MoveOrderModel> modelList = service
-                .GetAll(AuthenticationHelper.User.CompanyId, sobId)
+                .GetAll(AuthenticationHelper.CompanyId.Value, sobId)
                 .Select(x => new MoveOrderModel(x)).ToList();
             return modelList;
         }
 
         public static MoveOrderModel GetMoveOrder(string id)
         {
-            MoveOrderModel model = new MoveOrderModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            MoveOrderModel model = new MoveOrderModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
             return model;
         }
 
@@ -198,13 +198,13 @@ namespace _360Accounting.Web
                         foreach (var item in tobeDeleted)
                         {
                             service.Delete(item.Id);
-                            IEnumerable<LotNumber> lotNum = lotNumService.CheckLotNumAvailability(AuthenticationHelper.User.CompanyId, item.LotNo, item.ItemId, SessionHelper.SOBId);
+                            IEnumerable<LotNumber> lotNum = lotNumService.CheckLotNumAvailability(AuthenticationHelper.CompanyId.Value, item.LotNo, item.ItemId, SessionHelper.SOBId);
                             if (lotNum.Any())
                             {
                                 LotNumberHelper.Delete(lotNum.FirstOrDefault().Id.ToString());
                             }
 
-                            IEnumerable<SerialNumber> serialNum = lotNumService.CheckSerialNumAvailability(AuthenticationHelper.User.CompanyId, item.LotNo, item.SerialNo);
+                            IEnumerable<SerialNumber> serialNum = lotNumService.CheckSerialNumAvailability(AuthenticationHelper.CompanyId.Value, item.LotNo, item.SerialNo);
                             if (serialNum.Any())
                             {
                                 LotNumberHelper.DeleteSerialNumber(serialNum.FirstOrDefault().Id.ToString());
@@ -224,13 +224,13 @@ namespace _360Accounting.Web
                                 detailEntity.Id = savedDetail.FirstOrDefault().Id;
                                 savedDetail.Remove(savedDetail.FirstOrDefault(rec => rec.Id == detailEntity.Id));
                                 service.Update(detailEntity);
-                                IEnumerable<LotNumber> lotNum = lotNumService.CheckLotNumAvailability(AuthenticationHelper.User.CompanyId, detailEntity.LotNo, detailEntity.ItemId, SessionHelper.SOBId);
+                                IEnumerable<LotNumber> lotNum = lotNumService.CheckLotNumAvailability(AuthenticationHelper.CompanyId.Value, detailEntity.LotNo, detailEntity.ItemId, SessionHelper.SOBId);
                                 if (lotNum.Any())
                                 {
                                     LotNumberHelper.Update(lotNum.FirstOrDefault());
                                 }
 
-                                IEnumerable<SerialNumber> serialNum = lotNumService.CheckSerialNumAvailability(AuthenticationHelper.User.CompanyId, detailEntity.LotNo, detailEntity.SerialNo);
+                                IEnumerable<SerialNumber> serialNum = lotNumService.CheckSerialNumAvailability(AuthenticationHelper.CompanyId.Value, detailEntity.LotNo, detailEntity.SerialNo);
                                 if (serialNum.Any())
                                 {
                                     LotNumberHelper.UpdateSerialNumber(serialNum.FirstOrDefault());
@@ -239,13 +239,13 @@ namespace _360Accounting.Web
                             else
                             {
                                 service.Insert(detailEntity);
-                                IEnumerable<LotNumber> lotNum = lotNumService.CheckLotNumAvailability(AuthenticationHelper.User.CompanyId, detailEntity.LotNo, detailEntity.ItemId, SessionHelper.SOBId);
+                                IEnumerable<LotNumber> lotNum = lotNumService.CheckLotNumAvailability(AuthenticationHelper.CompanyId.Value, detailEntity.LotNo, detailEntity.ItemId, SessionHelper.SOBId);
                                 if (!lotNum.Any())
                                 {
                                     LotNumberHelper.Insert(new MoveOrderDetailModel(detailEntity));
                                 }
 
-                                IEnumerable<SerialNumber> serialNum = lotNumService.CheckSerialNumAvailability(AuthenticationHelper.User.CompanyId, detailEntity.LotNo, detailEntity.SerialNo);
+                                IEnumerable<SerialNumber> serialNum = lotNumService.CheckSerialNumAvailability(AuthenticationHelper.CompanyId.Value, detailEntity.LotNo, detailEntity.SerialNo);
                                 if (!serialNum.Any())
                                 {
                                     LotNumberHelper.InsertSerialNumber(new MoveOrderDetailModel(detailEntity));
@@ -259,7 +259,7 @@ namespace _360Accounting.Web
 
         public static void Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
     }
 }

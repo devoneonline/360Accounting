@@ -88,7 +88,7 @@ namespace _360Accounting.Web
         private static IList<PayableInvoiceDetailModel> getInvoiceDetailByInvoiceId(string invoiceId)
         {
             IList<PayableInvoiceDetailModel> modelList = detailService
-                .GetAll(AuthenticationHelper.User.CompanyId, Convert.ToInt32(invoiceId))
+                .GetAll(AuthenticationHelper.CompanyId.Value, Convert.ToInt32(invoiceId))
                 .Select(x => new PayableInvoiceDetailModel(x)).ToList();
             return modelList;
         }
@@ -101,7 +101,7 @@ namespace _360Accounting.Web
 
         public static IList<PayableInvoiceModel> GetInvoices(long sobId, long periodId)
         {
-            IList<PayableInvoiceModel> modelList = service.GetAll(AuthenticationHelper.User.CompanyId, sobId, periodId).Select(x => new PayableInvoiceModel(x)).ToList();
+            IList<PayableInvoiceModel> modelList = service.GetAll(AuthenticationHelper.CompanyId.Value, sobId, periodId).Select(x => new PayableInvoiceModel(x)).ToList();
             return modelList;
         }
 
@@ -179,7 +179,7 @@ namespace _360Accounting.Web
                         var tobeDeleted = savedDetail.Take(savedDetail.Count() - payableInvoiceModel.InvoiceDetail.Count());
                         foreach (var item in tobeDeleted)
                         {
-                            detailService.Delete(item.Id.ToString(), AuthenticationHelper.User.CompanyId);
+                            detailService.Delete(item.Id.ToString(), AuthenticationHelper.CompanyId.Value);
                         }
                         savedDetail = getInvoiceDetailByInvoiceId(result);
                     }
@@ -206,12 +206,12 @@ namespace _360Accounting.Web
 
         public static PayableInvoiceModel GetInvoice(string id)
         {
-            return new PayableInvoiceModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            return new PayableInvoiceModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
         }
         
         public static void Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
 
         

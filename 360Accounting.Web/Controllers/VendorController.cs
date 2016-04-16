@@ -120,7 +120,7 @@ namespace _360Accounting.Web.Controllers
                         Text = x.CodeCombinitionCode,
                         Value = x.Id.ToString()
                     }).ToList();
-            //model.TaxCode = taxService.GetAll(AuthenticationHelper.User.CompanyId)
+            //model.TaxCode = taxService.GetAll(AuthenticationHelper.CompanyId.Value)
             //    .Select(x => new SelectListItem
             //    {
             //        Text = x.TaxName,

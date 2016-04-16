@@ -95,13 +95,13 @@ namespace _360Accounting.Web
 
         public static List<BankAccountModel> GetBankAccounts(long bankId)
         {
-            return bankAccountService.GetBankAccounts(bankId, AuthenticationHelper.User.CompanyId)
+            return bankAccountService.GetBankAccounts(bankId, AuthenticationHelper.CompanyId.Value)
                 .Select(x => new BankAccountModel(x)).ToList();
         }
 
         public static List<BankAccountViewModel> GetBankAccounts(string bankId)
         {
-            return bankAccountService.GetBankAccounts(Convert.ToInt64(bankId), AuthenticationHelper.User.CompanyId)
+            return bankAccountService.GetBankAccounts(Convert.ToInt64(bankId), AuthenticationHelper.CompanyId.Value)
                 .Select(x => new BankAccountViewModel(x)).ToList();
         }
 
@@ -131,7 +131,7 @@ namespace _360Accounting.Web
         public static BankAccountModel GetBankAccount(long bankAccountId)
         {
             BankAccountModel bankAccount = new BankAccountModel(bankAccountService
-                .GetSingle(bankAccountId.ToString(), AuthenticationHelper.User.CompanyId));
+                .GetSingle(bankAccountId.ToString(), AuthenticationHelper.CompanyId.Value));
             return bankAccount;
         }
 
@@ -144,7 +144,7 @@ namespace _360Accounting.Web
         public static BankModel GetBank(string bankId)
         {
             BankModel bank = new BankModel(service
-                .GetSingle(bankId, AuthenticationHelper.User.CompanyId));
+                .GetSingle(bankId, AuthenticationHelper.CompanyId.Value));
             return bank;
         }
 

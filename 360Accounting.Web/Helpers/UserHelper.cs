@@ -50,7 +50,7 @@ namespace _360Accounting.Web.Helpers
                     up.PhoneNumber = model.PhoneNumber;
                     up.Email = model.Email;
                     if (AuthenticationHelper.UserRole != UserRoles.SuperAdmin.ToString())
-                        up.CompanyId = AuthenticationHelper.User.CompanyId;
+                        up.CompanyId = AuthenticationHelper.CompanyId.Value;
                     else
                         up.CompanyId = model.CompanyId ?? 0;
                     up.Save();

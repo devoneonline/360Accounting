@@ -50,7 +50,7 @@ namespace _360Accounting.Web
 
         public static WarehouseModel GetWarehouse(string id)
         {
-            return new WarehouseModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            return new WarehouseModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
         }
 
         public static string Save(WarehouseModel model)
@@ -67,18 +67,18 @@ namespace _360Accounting.Web
 
         public static void Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
 
         public static List<WarehouseModel> GetWarehouses(long sobId)
         {
-            return service.GetAll(AuthenticationHelper.User.CompanyId, sobId)
+            return service.GetAll(AuthenticationHelper.CompanyId.Value, sobId)
                 .Select(x => new WarehouseModel(x)).ToList();
         }
 
         public static List<SelectListItem> GetWarehousesCombo(long sobId)
         {
-            return service.GetAllforCombo(AuthenticationHelper.User.CompanyId, sobId)
+            return service.GetAllforCombo(AuthenticationHelper.CompanyId.Value, sobId)
                 .Select(x => new SelectListItem { Text = x.WarehouseName, Value = x.Id.ToString() }).ToList();
         }
     }

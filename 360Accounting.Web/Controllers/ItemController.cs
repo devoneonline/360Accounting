@@ -36,7 +36,7 @@ namespace _360Accounting.Web.Controllers
             
             if (model.COGSCodeCombination == null)
             {
-                model.COGSCodeCombination = CodeCombinationHelper.GetCodeCombinations(SessionHelper.SOBId, AuthenticationHelper.User.CompanyId)
+                model.COGSCodeCombination = CodeCombinationHelper.GetCodeCombinations(SessionHelper.SOBId, AuthenticationHelper.CompanyId.Value)
                     .Select(x => new SelectListItem
                     {
                         Text = Utility.Stringize(".", x.Segment1, x.Segment2, x.Segment3, x.Segment4, x.Segment5, x.Segment6, x.Segment7, x.Segment8),
@@ -48,7 +48,7 @@ namespace _360Accounting.Web.Controllers
 
             if (model.SalesCodeCombination == null)
             {
-                model.SalesCodeCombination = CodeCombinationHelper.GetCodeCombinations(SessionHelper.SOBId, AuthenticationHelper.User.CompanyId)
+                model.SalesCodeCombination = CodeCombinationHelper.GetCodeCombinations(SessionHelper.SOBId, AuthenticationHelper.CompanyId.Value)
                     .Select(x => new SelectListItem
                     {
                         Text = Utility.Stringize(".", x.Segment1, x.Segment2, x.Segment3, x.Segment4, x.Segment5, x.Segment6, x.Segment7, x.Segment8),
@@ -89,7 +89,7 @@ namespace _360Accounting.Web.Controllers
                 };
                 if (model.COGSCodeCombination == null)
                 {
-                    model.COGSCodeCombination = CodeCombinationHelper.GetCodeCombinations(SessionHelper.SOBId, AuthenticationHelper.User.CompanyId)
+                    model.COGSCodeCombination = CodeCombinationHelper.GetCodeCombinations(SessionHelper.SOBId, AuthenticationHelper.CompanyId.Value)
                         .Select(x => new SelectListItem
                         {
                             Text = Utility.Stringize(".", x.Segment1, x.Segment2, x.Segment3, x.Segment4, x.Segment5, x.Segment6, x.Segment7, x.Segment8),
@@ -101,7 +101,7 @@ namespace _360Accounting.Web.Controllers
 
                 if (model.SalesCodeCombination == null)
                 {
-                    model.SalesCodeCombination = CodeCombinationHelper.GetCodeCombinations(SessionHelper.SOBId, AuthenticationHelper.User.CompanyId)
+                    model.SalesCodeCombination = CodeCombinationHelper.GetCodeCombinations(SessionHelper.SOBId, AuthenticationHelper.CompanyId.Value)
                         .Select(x => new SelectListItem
                         {
                             Text = Utility.Stringize(".", x.Segment1, x.Segment2, x.Segment3, x.Segment4, x.Segment5, x.Segment6, x.Segment7, x.Segment8),

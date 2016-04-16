@@ -50,7 +50,7 @@ namespace _360Accounting.Web.Controllers
 
         //private List<SelectListItem> getCurrencyList(string sobId)
         //{
-        //    List<SelectListItem> list = currencyService.GetAll(AuthenticationHelper.User.CompanyId, Convert.ToInt32(sobId))
+        //    List<SelectListItem> list = currencyService.GetAll(AuthenticationHelper.CompanyId.Value, Convert.ToInt32(sobId))
         //            .Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
         //    return list;
 
@@ -80,7 +80,7 @@ namespace _360Accounting.Web.Controllers
 
         private TrialBalanceReport CreateTrialBalanceReport(long fromCodeCombinationId, long toCodeCombinationId, long periodId)
         {
-            List<TrialBalanceModel> modelList = mapTrialBalanceModel(service.TrialBalance(AuthenticationHelper.User.CompanyId, SessionHelper.SOBId, fromCodeCombinationId >= toCodeCombinationId ? toCodeCombinationId : fromCodeCombinationId, toCodeCombinationId <= fromCodeCombinationId ? fromCodeCombinationId : toCodeCombinationId, periodId));
+            List<TrialBalanceModel> modelList = mapTrialBalanceModel(service.TrialBalance(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, fromCodeCombinationId >= toCodeCombinationId ? toCodeCombinationId : fromCodeCombinationId, toCodeCombinationId <= fromCodeCombinationId ? fromCodeCombinationId : toCodeCombinationId, periodId));
             TrialBalanceReport report = new TrialBalanceReport();
             report.Parameters["CompanyName"].Value = companyService
                 .GetSingle(AuthenticationHelper.CompanyId.Value.ToString(),
@@ -112,7 +112,7 @@ namespace _360Accounting.Web.Controllers
 
         private LedgerReport CreateLedgerReport(long fromCodeCombinationId, long toCodeCombinationId, DateTime fromDate, DateTime toDate)
         {
-            List<LedgerModel> modelList = mapLedgerModel(service.Ledger(AuthenticationHelper.User.CompanyId, SessionHelper.SOBId, fromCodeCombinationId >= toCodeCombinationId ? toCodeCombinationId : fromCodeCombinationId, toCodeCombinationId <= fromCodeCombinationId ? fromCodeCombinationId : toCodeCombinationId, fromDate, toDate));
+            List<LedgerModel> modelList = mapLedgerModel(service.Ledger(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, fromCodeCombinationId >= toCodeCombinationId ? toCodeCombinationId : fromCodeCombinationId, toCodeCombinationId <= fromCodeCombinationId ? fromCodeCombinationId : toCodeCombinationId, fromDate, toDate));
             LedgerReport report = new LedgerReport();
             report.Parameters["CompanyName"].Value = companyService
                 .GetSingle(AuthenticationHelper.CompanyId.Value.ToString(),
@@ -147,7 +147,7 @@ namespace _360Accounting.Web.Controllers
 
         private AuditTrailReport CreateAuditTrailReport(DateTime fromDate, DateTime toDate)
         {
-            List<AuditTrailModel> modelList = mapAuditTrialModel(service.AuditTrail(AuthenticationHelper.User.CompanyId, SessionHelper.SOBId, fromDate, toDate));
+            List<AuditTrailModel> modelList = mapAuditTrialModel(service.AuditTrail(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, fromDate, toDate));
             AuditTrailReport report = new AuditTrailReport();
             report.Parameters["CompanyName"].Value = companyService
                 .GetSingle(AuthenticationHelper.CompanyId.Value.ToString(),
@@ -187,7 +187,7 @@ namespace _360Accounting.Web.Controllers
 
         private UserwiseEntriesTrailReport CreateUserwiseEntriesTrailReport(DateTime fromDate, DateTime toDate, Guid userId)
         {
-            List<UserwiseEntriesTrailModel> modelList = mapReportModel(service.UserwiseEntriesTrail(AuthenticationHelper.User.CompanyId, SessionHelper.SOBId, fromDate, toDate, userId));
+            List<UserwiseEntriesTrailModel> modelList = mapReportModel(service.UserwiseEntriesTrail(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, fromDate, toDate, userId));
             UserwiseEntriesTrailReport report = new UserwiseEntriesTrailReport();
             report.Parameters["CompanyName"].Value = companyService
                 .GetSingle(AuthenticationHelper.CompanyId.Value.ToString(),

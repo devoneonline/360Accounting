@@ -127,12 +127,12 @@ namespace _360Accounting.Web
 
         public static IEnumerable<LotNumber> CheckLotNumAvailability(string lotNum, long itemId, long sobId)
         {
-            return service.CheckLotNumAvailability(AuthenticationHelper.User.CompanyId, lotNum, itemId, sobId);
+            return service.CheckLotNumAvailability(AuthenticationHelper.CompanyId.Value, lotNum, itemId, sobId);
         }
 
         public static IEnumerable<SerialNumber> CheckSerialNumAvailability(string lotNum, string serialNum)
         {
-            return service.CheckSerialNumAvailability(AuthenticationHelper.User.CompanyId, lotNum, serialNum);
+            return service.CheckSerialNumAvailability(AuthenticationHelper.CompanyId.Value, lotNum, serialNum);
         }
 
         public static string Insert(MoveOrderDetailModel entity)
@@ -152,7 +152,7 @@ namespace _360Accounting.Web
 
         public static void Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
 
         public static string InsertSerialNumber(MoveOrderDetailModel entity)
@@ -172,7 +172,7 @@ namespace _360Accounting.Web
 
         public static void DeleteSerialNumber(string id)
         {
-            service.DeleteSerialNum(id, AuthenticationHelper.User.CompanyId);
+            service.DeleteSerialNum(id, AuthenticationHelper.CompanyId.Value);
         }
     }
 }
