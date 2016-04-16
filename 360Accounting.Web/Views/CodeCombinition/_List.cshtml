@@ -36,7 +36,7 @@
                         ViewContext.Writer.Write(
                             Html.Raw("<a href='#' onclick='EditCodeCombinition(" + DataBinder.Eval(c.DataItem, "Id") + ")'><i class='fa fa-edit'></i></a>")
                             + "&nbsp;" +
-                            Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/CodeCombinition/Delete?Id=") + DataBinder.Eval(c.DataItem, "Id")"'><i class='fa fa-trash-o'></i></a>")
+                            Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/CodeCombinition/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
                         );
                     });
                     column.Settings.AllowDragDrop = DefaultBoolean.False;

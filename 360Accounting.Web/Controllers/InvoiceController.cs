@@ -239,6 +239,7 @@ namespace _360Accounting.Web.Controllers
                     InvoiceNo = "New",
                     PeriodId = periodId,
                     SOBId = SessionHelper.SOBId,
+                    ConversionRate = 1
                 };
                 SessionHelper.Invoice = model;
             }

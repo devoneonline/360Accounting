@@ -67,6 +67,10 @@ namespace _360Accounting.Web.Controllers
                     {
                         ModelState.AddModelError("Error", "End Date should be >= StartDate.");
                     }
+                    ////else if (model.Id == 0 && model.EndDate != null && model.EndDate < new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day))
+                    ////{
+                    ////    ModelState.AddModelError("Error", "End Date cannot be a back date.");
+                    ////}
                     else
                     {
                         string result = AccountValueHelper.SaveChartOfAccountValue(model);

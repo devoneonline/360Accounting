@@ -20,9 +20,9 @@ namespace _360Accounting.Core.Entities
 
         public long SOBId { get; set; }
 
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         public long CompanyId { get; set; }
     }

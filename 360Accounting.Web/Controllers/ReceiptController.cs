@@ -202,6 +202,7 @@ namespace _360Accounting.Web.Controllers
             receipt.SOBId = SessionHelper.SOBId;
             receipt.CustomerId = customerId;
             receipt.CurrencyId = currencyId;
+            receipt.ConversionRate = 1;
 
             SessionHelper.PrecisionLimit = CurrencyHelper.GetCurrency(currencyId.ToString()).Precision;
 

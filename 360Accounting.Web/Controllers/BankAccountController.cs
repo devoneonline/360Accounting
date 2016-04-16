@@ -39,7 +39,7 @@ namespace _360Accounting.Web.Controllers
             if (model.CodeCombinition == null)
             {
                 BankModel bank = BankHelper.GetBank(model.BankId.ToString());
-                model.CodeCombinition = CodeCombinationHelper.GetAccounts(bank.SOBId, bank.StartDate, bank.EndDate).ToList();
+                model.CodeCombinition = CodeCombinationHelper.GetAccounts(bank.SOBId, bank.StartDate.Value, bank.EndDate.Value).ToList();
             }
             return View("Create", model);
         }
@@ -82,7 +82,7 @@ namespace _360Accounting.Web.Controllers
             if (bankAccount.CodeCombinition == null)
             {
                 BankModel bank = BankHelper.GetBank(bankId.ToString());
-                bankAccount.CodeCombinition = CodeCombinationHelper.GetAccounts(bank.SOBId, bank.StartDate, bank.EndDate).ToList();
+                bankAccount.CodeCombinition = CodeCombinationHelper.GetAccounts(bank.SOBId, bank.StartDate.Value, bank.EndDate.Value).ToList();
             }
             bankAccount.BankId = bankId;
             return View(bankAccount);

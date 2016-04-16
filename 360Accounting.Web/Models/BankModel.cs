@@ -14,8 +14,6 @@ namespace _360Accounting.Web.Models
         #region Constructors
         public BankModel()
         {
-            this.StartDate = Const.StartDate;
-            this.EndDate = Const.EndDate;
         }
 
         public BankModel(Bank entity)
@@ -51,12 +49,12 @@ namespace _360Accounting.Web.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Date From")]
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Date To")]
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         #endregion
     }
