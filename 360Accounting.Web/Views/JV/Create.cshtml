@@ -83,9 +83,19 @@
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        //$.noConflict();
+    $(function () {
+        $('#dvDefaultSOB').dialog({
+            modal: true,
+            title: "Please select your Set of Book",
+            autoOpen: false,
+            height: 'auto',
+            width: 500,
+            height: 300,
+            zIndex: zind,
+        });
+    });
 
+    $(document).ready(function () {
         $('#GLDate').attr('class', 'form-control');
         
         $('#GLDate').blur(function () {
