@@ -59,7 +59,7 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
-                    model.CompanyId = AuthenticationHelper.User.CompanyId;
+                    model.CompanyId = AuthenticationHelper.CompanyId.Value;
                     model.SOBId = SessionHelper.SOBId;
                     WarehouseHelper.Save(model);
                 }

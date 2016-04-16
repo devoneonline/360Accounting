@@ -25,7 +25,7 @@ namespace _360Accounting.Web
 
         public static GLHeaderModel GetVoucher(string id)
         {
-            GLHeaderModel jvHeader = new GLHeaderModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            GLHeaderModel jvHeader = new GLHeaderModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
             jvHeader.GlLines = getGLLinesByHeaderId(id);
 
             return jvHeader;
@@ -33,13 +33,13 @@ namespace _360Accounting.Web
 
         public static GLHeaderModel GetGLHeaders(string id)
         {
-            return new GLHeaderModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            return new GLHeaderModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
         }
 
         public static IList<GLHeaderModel> GetGLHeaders(long sobId, long periodId, long currencyId)
         {
             IList<GLHeaderModel> modelList = service
-                .GetAll(AuthenticationHelper.User.CompanyId, sobId, periodId, currencyId).ToList()
+                .GetAll(AuthenticationHelper.CompanyId.Value, sobId, periodId, currencyId).ToList()
                 .Select(x => new GLHeaderModel(x)).ToList();
             return modelList;
         }
@@ -95,7 +95,7 @@ namespace _360Accounting.Web
                         var tobeDeleted = savedLines.Take(savedLines.Count() - jv.GlLines.Count());
                         foreach (var item in tobeDeleted)
                         {
-                            lineService.Delete(item.Id.ToString(), AuthenticationHelper.User.CompanyId);
+                            lineService.Delete(item.Id.ToString(), AuthenticationHelper.CompanyId.Value);
                         }
                         savedLines = getGLLinesByHeaderId(result);
                     }
@@ -148,7 +148,7 @@ namespace _360Accounting.Web
 
         public static void Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
 
         #region Private Methods
@@ -221,7 +221,7 @@ namespace _360Accounting.Web
         private static IList<GLLinesModel> getGLLinesByHeaderId(string headerId)
         {
             IList<GLLinesModel> modelList = lineService.GetAll
-                (AuthenticationHelper.User.CompanyId, Convert.ToInt32(headerId)).
+                (AuthenticationHelper.CompanyId.Value, Convert.ToInt32(headerId)).
                 Select(x => new GLLinesModel(x)).ToList();
             return modelList;
         }

@@ -52,7 +52,7 @@ namespace _360Accounting.Web.Controllers
                 {
                     if (AccountHelper.GetAccountBySOBId(model.SOBId.ToString()) == null)
                     {
-                        string result = AccountHelper.SaveChartOfAccount(model);    ////TODO: mapper should be in service
+                        string result = AccountHelper.SaveChartOfAccount(model);
                         return RedirectToAction("Index");
                     }
                     else

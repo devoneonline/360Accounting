@@ -86,7 +86,7 @@ namespace _360Accounting.Web
         private static IList<TaxDetailModel> getTaxDetailByTaxId(string taxId)
         {
             IList<TaxDetailModel> modelList = detailService.GetAll
-                    (AuthenticationHelper.User.CompanyId, 
+                    (AuthenticationHelper.CompanyId.Value, 
                     Convert.ToInt32(taxId))
                     .Select(x => new TaxDetailModel(x)).ToList();
             return modelList;
@@ -95,7 +95,7 @@ namespace _360Accounting.Web
 
         public static List<SelectListItem> GetTaxes(long sobId, DateTime startDate, DateTime endDate)
         {
-            return service.GetAll(AuthenticationHelper.User.CompanyId, sobId)
+            return service.GetAll(AuthenticationHelper.CompanyId.Value, sobId)
                 .Where(a => a.StartDate <= startDate && a.EndDate >= endDate)
                 .Select(x => new SelectListItem
                 {
@@ -106,18 +106,18 @@ namespace _360Accounting.Web
         
         public static void Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
 
         public static TaxModel GetTax(string id)
         {
             return new TaxModel(service.GetSingle
-                (id, AuthenticationHelper.User.CompanyId));
+                (id, AuthenticationHelper.CompanyId.Value));
         }
 
         public static IList<TaxModel> GetTaxes(long sobId)
         {
-            IList<TaxModel> modelList = service.GetAll(AuthenticationHelper.User.CompanyId, sobId)
+            IList<TaxModel> modelList = service.GetAll(AuthenticationHelper.CompanyId.Value, sobId)
                 .Select(x => new TaxModel(x)).ToList();
             return modelList;
         }
@@ -153,7 +153,7 @@ namespace _360Accounting.Web
                         foreach (var item in toBeDeleted)
                         {
                             //ek ek kar k delete kia detail ko
-                            detailService.Delete(item.Id.ToString(), AuthenticationHelper.User.CompanyId);
+                            detailService.Delete(item.Id.ToString(), AuthenticationHelper.CompanyId.Value);
                         }
 
                         //delete karne k bd db se detail utha li.

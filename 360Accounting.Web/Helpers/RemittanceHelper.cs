@@ -55,7 +55,7 @@ namespace _360Accounting.Web
         {
 
             IList<RemittanceDetailModel> modelList = service
-                .GetByRemitNo(AuthenticationHelper.User.CompanyId, remitNo)
+                .GetByRemitNo(AuthenticationHelper.CompanyId.Value, remitNo)
                 .Select(x => new RemittanceDetailModel(x)).ToList();
             return modelList;
         }
@@ -68,7 +68,7 @@ namespace _360Accounting.Web
 
         public static void Delete(string remitNo)
         {
-            service.Delete(remitNo, AuthenticationHelper.User.CompanyId);
+            service.Delete(remitNo, AuthenticationHelper.CompanyId.Value);
         }
 
         public static RemittanceModel GetRemittance(string remitNo)
@@ -84,7 +84,7 @@ namespace _360Accounting.Web
                 var tobeDeleted = savedDetail.Take(savedDetail.Count() - remittanceModel.Remittances.Count());
                 foreach (var item in tobeDeleted)
                 {
-                    service.Delete(item.Id.ToString(), AuthenticationHelper.User.CompanyId);
+                    service.Delete(item.Id.ToString(), AuthenticationHelper.CompanyId.Value);
                 }
                 savedDetail = getRemittanceByRemitNo(remittanceModel.RemitNo);
             }
@@ -166,7 +166,7 @@ namespace _360Accounting.Web
         public static IList<RemittanceModel> GetRemittances(long sobId, long bankId, long bankAccountId)
         {
             IList<RemittanceModel> modelList = service
-                .GetAll(AuthenticationHelper.User.CompanyId, sobId, bankId, bankAccountId).ToList()
+                .GetAll(AuthenticationHelper.CompanyId.Value, sobId, bankId, bankAccountId).ToList()
                 .Select(x => new RemittanceModel(x)).ToList();
             return modelList;
         }

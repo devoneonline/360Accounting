@@ -106,7 +106,7 @@ namespace _360Accounting.Web.Controllers
                     ////Not sure about the validity of this code,
                     ////To be checked later.
                     //////////////////////////////////////////////////
-                    ////Calendar duplicateRecord = service.getCalendarByPeriod(AuthenticationHelper.User.CompanyId, model.SOBId, model.StartDate, model.EndDate);
+                    ////Calendar duplicateRecord = service.getCalendarByPeriod(AuthenticationHelper.CompanyId.Value, model.SOBId, model.StartDate, model.EndDate);
                     //////////////////////////////////////////////////
                     ////if (duplicateRecord == null)
                     ////{

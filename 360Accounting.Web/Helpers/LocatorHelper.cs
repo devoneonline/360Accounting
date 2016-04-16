@@ -90,21 +90,21 @@ namespace _360Accounting.Web
 
         public static IList<LocatorModel> GetLocatorsCombo(long sobId)
         {
-            IList<LocatorModel> modelList = service.GetAll(AuthenticationHelper.User.CompanyId, sobId)
+            IList<LocatorModel> modelList = service.GetAll(AuthenticationHelper.CompanyId.Value, sobId)
                 .Select(x => new LocatorModel(x)).ToList();
             return modelList;
         }
 
         public static IList<SelectListItem> GetLocators(long sobId)
         {
-            IList<SelectListItem> modelList = service.GetAll(AuthenticationHelper.User.CompanyId, sobId).Where(x => x.Status == "Active")
+            IList<SelectListItem> modelList = service.GetAll(AuthenticationHelper.CompanyId.Value, sobId).Where(x => x.Status == "Active")
                 .Select(x => new SelectListItem { Text = x.Id.ToString(), Value = x.Id.ToString() }).ToList();
             return modelList;
         }
 
         public static LocatorModel GetLocator(string id)
         {
-            LocatorModel model = new LocatorModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            LocatorModel model = new LocatorModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
             return model;
         }
 
@@ -187,7 +187,7 @@ namespace _360Accounting.Web
 
         public static void Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
     }
 }

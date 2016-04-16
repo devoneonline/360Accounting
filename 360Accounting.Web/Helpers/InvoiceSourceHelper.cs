@@ -62,27 +62,27 @@ namespace _360Accounting.Web
         public static List<InvoiceSourceViewModel> InvoiceList(long sobId)
         {
             List<InvoiceSourceViewModel> modelList = service
-                .GetAll(AuthenticationHelper.User.CompanyId, sobId)
+                .GetAll(AuthenticationHelper.CompanyId.Value, sobId)
                 .Select(x => new InvoiceSourceViewModel(x)).ToList();
             return modelList;
         }
 
         public static void Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
 
         public static InvoiceSourceViewModel GetInvoiceSource(string id)
         {
             InvoiceSourceViewModel invoiceSource = new InvoiceSourceViewModel
-                (service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+                (service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
             return invoiceSource;
         }
 
         public static List<SelectListItem> GetInvoiceSources(long sobId, DateTime startDate, DateTime endDate)
         {
             ///TODO: Plz audit the code.
-            return service.GetAll(AuthenticationHelper.User.CompanyId, sobId)
+            return service.GetAll(AuthenticationHelper.CompanyId.Value, sobId)
                 .Where(a => a.StartDate <= startDate && a.EndDate >= endDate)
                 .Select(x => new SelectListItem
                 {

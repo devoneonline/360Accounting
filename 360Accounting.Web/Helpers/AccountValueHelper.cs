@@ -62,7 +62,7 @@ namespace _360Accounting.Web
         public static AccountValueViewModel GetAccountValue(string id)
         {
             return new AccountValueViewModel
-                (service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+                (service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
         }
 
         public static string SaveChartOfAccountValue(AccountValueViewModel model)
@@ -79,7 +79,7 @@ namespace _360Accounting.Web
 
         public static void Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
 
         

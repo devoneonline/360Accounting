@@ -53,7 +53,7 @@ namespace _360Accounting.Web.Controllers
                 try
                 {
                     model.SOBId = SessionHelper.SOBId;
-                    model.CompanyId = AuthenticationHelper.User.CompanyId;
+                    model.CompanyId = AuthenticationHelper.CompanyId.Value;
                     ReceivablePeriodHelper.Save(model);
                 }
                 catch (Exception e)

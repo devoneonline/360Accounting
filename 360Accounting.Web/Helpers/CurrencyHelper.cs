@@ -66,7 +66,7 @@ namespace _360Accounting.Web
 
         public static void DeleteCurrency(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
 
         public static List<CurrencyViewModel> GetCurrencies(long sobId)

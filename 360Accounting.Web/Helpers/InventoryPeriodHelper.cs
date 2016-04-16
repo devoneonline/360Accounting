@@ -65,7 +65,7 @@ namespace _360Accounting.Web
 
         public static InventoryPeriodModel GetInventoryPeriod(string id)
         {
-            return new InventoryPeriodModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            return new InventoryPeriodModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
         }
 
         public static string Save(InventoryPeriodModel model)
@@ -82,12 +82,12 @@ namespace _360Accounting.Web
 
         public static void Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
 
         public static List<InventoryPeriodModel> GetInventoryPeriods(long sobId)
         {
-            return service.GetAll(AuthenticationHelper.User.CompanyId, sobId)
+            return service.GetAll(AuthenticationHelper.CompanyId.Value, sobId)
                 .Select(x => new InventoryPeriodModel(x)).ToList();
         }
     }

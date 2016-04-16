@@ -105,14 +105,14 @@ namespace _360Accounting.Web.Helpers
         public static IList<ItemModel> GetItems(long sobId)
         {
             IList<ItemModel> modelList = service
-                .GetAll(AuthenticationHelper.User.CompanyId, sobId)
+                .GetAll(AuthenticationHelper.CompanyId.Value, sobId)
                 .Select(x => new ItemModel(x)).ToList();
             return modelList;
         }
 
         public static ItemModel GetItem(string id)
         {
-            ItemModel model = new ItemModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            ItemModel model = new ItemModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
             return model;
         }
 
@@ -200,7 +200,7 @@ namespace _360Accounting.Web.Helpers
 
         public static void Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
     }
 }

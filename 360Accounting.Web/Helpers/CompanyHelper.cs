@@ -30,7 +30,7 @@ namespace _360Accounting.Web
 
         public static IEnumerable<CompanyModel> GetCompanies()
         {
-            return service.GetAll(AuthenticationHelper.User.CompanyId)
+            return service.GetAll(AuthenticationHelper.CompanyId.Value)
                 .Select(x => new CompanyModel(x)).ToList();
         }
 
@@ -48,12 +48,12 @@ namespace _360Accounting.Web
 
         public static CompanyModel GetCompany(string id)
         {
-            return new CompanyModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            return new CompanyModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
         }
 
         public static void DeleteCompany(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
     }
 }

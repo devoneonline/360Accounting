@@ -73,17 +73,17 @@ namespace _360Accounting.Web
 
         public static InvoiceTypeModel GetInvoiceType(string id)
         {
-            return new InvoiceTypeModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            return new InvoiceTypeModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
         }
 
         public static void Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
 
         public static List<InvoiceTypeModel> GetInvoiceTypes(long sobId)
         {
-            return service.GetInvoiceTypes(sobId, AuthenticationHelper.User.CompanyId)
+            return service.GetInvoiceTypes(sobId, AuthenticationHelper.CompanyId.Value)
                 .Select(a => new InvoiceTypeModel(a)).ToList();
         }
     }

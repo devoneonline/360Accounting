@@ -24,7 +24,7 @@ namespace _360Accounting.Web
 
             return new SetOfBook
             {
-                CompanyId = AuthenticationHelper.User.CompanyId,
+                CompanyId = AuthenticationHelper.CompanyId.Value,
                 Id = model.Id,
                 Name = model.Name
             };
@@ -32,19 +32,19 @@ namespace _360Accounting.Web
 
         public static List<SetOfBookModel> GetSetOfBooks()
         {
-            return service.GetByCompanyId(AuthenticationHelper.User.CompanyId)
+            return service.GetByCompanyId(AuthenticationHelper.CompanyId.Value)
                 .Select(x => new SetOfBookModel(x)).ToList();                
         }
 
         public static SetOfBookModel GetSetOfBook(string id)
         {
-            SetOfBookModel model = new SetOfBookModel(service.GetSingle(id, AuthenticationHelper.User.CompanyId));
+            SetOfBookModel model = new SetOfBookModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
             return model;                
         }
 
         public static SetOfBook GetSetOfBookByName(string sobName)
         {
-            return service.GetSetOfBook(AuthenticationHelper.User.CompanyId, sobName);                
+            return service.GetSetOfBook(AuthenticationHelper.CompanyId.Value, sobName);                
         }
 
         public static string Insert(SetOfBookModel model)
@@ -59,7 +59,7 @@ namespace _360Accounting.Web
 
         public static void Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
 
         public static List<SelectListItem> GetSetOfBookList()

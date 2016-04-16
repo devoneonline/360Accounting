@@ -321,12 +321,12 @@ namespace _360Accounting.Web.Controllers
         {
             CreateCompanyFeatureListModel model = new CreateCompanyFeatureListModel();
 
-            FeatureSet featureSet = featureSetService.GetSingle(id, AuthenticationHelper.User.CompanyId);            
-            Company company = companyService.GetSingle(AuthenticationHelper.User.CompanyId.ToString(), AuthenticationHelper.User.CompanyId);
+            FeatureSet featureSet = featureSetService.GetSingle(id, AuthenticationHelper.CompanyId.Value);            
+            Company company = companyService.GetSingle(AuthenticationHelper.CompanyId.Value.ToString(), AuthenticationHelper.CompanyId.Value);
             model.CompanyId = company.Id;
             model.CompanyList = new List<SelectListItem>();     //This line is added because without initializing it was giving error.
             model.CompanyList.Add(new SelectListItem { Text = company.Name, Value = company.Id.ToString() });
-            IEnumerable<Feature> featureList = service.GetAll(AuthenticationHelper.User.CompanyId).ToList();
+            IEnumerable<Feature> featureList = service.GetAll(AuthenticationHelper.CompanyId.Value).ToList();
             model.FeatureList = featureList.Select(x => new FeatureViewModel(x)).ToList();
             model.Id = featureSet.Id;
             model.Name = featureSet.Name;
@@ -336,7 +336,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult DeleteFeatureSet(string id)
         {
-            featureSetService.Delete(id, AuthenticationHelper.User.CompanyId);
+            featureSetService.Delete(id, AuthenticationHelper.CompanyId.Value);
             return RedirectToAction("FeatureSet");
         }
 
@@ -354,13 +354,13 @@ namespace _360Accounting.Web.Controllers
                 item.UserId = Guid.Parse(user.ProviderUserKey.ToString());
                 item.UserName = user.UserName;
                 item.CompanyId = profile.CompanyId;
-                item.Selected = featureSetAccessService.GetSingle(AuthenticationHelper.User.CompanyId, user.ProviderUserKey.ToString()) == null ? false : true;
+                item.Selected = featureSetAccessService.GetSingle(AuthenticationHelper.CompanyId.Value, user.ProviderUserKey.ToString()) == null ? false : true;
                 item.Role = Roles.GetRolesForUser(user.UserName)[0];
                 modelList.Add(item);
             }
             if (AuthenticationHelper.UserRole != UserRoles.SuperAdmin.ToString())
             {
-                modelList = modelList.Where(x => x.CompanyId == AuthenticationHelper.User.CompanyId && x.Role != UserRoles.SuperAdmin.ToString()).ToList();
+                modelList = modelList.Where(x => x.CompanyId == AuthenticationHelper.CompanyId.Value && x.Role != UserRoles.SuperAdmin.ToString()).ToList();
             }
 
             return View("CheckUsersPartial", modelList);
@@ -371,7 +371,7 @@ namespace _360Accounting.Web.Controllers
             List<string> UserList = userList.Split(new char[] { '±' }).ToList();
 
             //Delete
-            List<FeatureSetAccess> tobeRemoved = featureSetAccessService.GetAll(AuthenticationHelper.User.CompanyId).Where(rec => rec.UserId != null).ToList();
+            List<FeatureSetAccess> tobeRemoved = featureSetAccessService.GetAll(AuthenticationHelper.CompanyId.Value).Where(rec => rec.UserId != null).ToList();
             if (tobeRemoved.Count() > 0)
             {
                 foreach (var item in tobeRemoved)
@@ -386,7 +386,7 @@ namespace _360Accounting.Web.Controllers
                 {
                     featureSetAccessService.Insert(new FeatureSetAccess
                     {
-                        CompanyId = AuthenticationHelper.User.CompanyId,
+                        CompanyId = AuthenticationHelper.CompanyId.Value,
                         FeatureSetId = Convert.ToInt64(featureSetId),
                         UserId = Guid.Parse(item),
                         CreateDate = DateTime.Now

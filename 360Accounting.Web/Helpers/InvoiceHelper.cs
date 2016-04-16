@@ -86,7 +86,7 @@ namespace _360Accounting.Web
         private static IList<InvoiceDetailModel> getInvoiceDetailByInvoiceId(string invoiceId)
         {
             IList<InvoiceDetailModel> modelList = detailService
-                .GetAll(AuthenticationHelper.User.CompanyId, Convert.ToInt32(invoiceId))
+                .GetAll(AuthenticationHelper.CompanyId.Value, Convert.ToInt32(invoiceId))
                 .Select(x => new InvoiceDetailModel(x)).ToList();
             return modelList;
         }
@@ -100,7 +100,7 @@ namespace _360Accounting.Web
         public static IList<InvoiceModel> GetInvoices(long sobId, long periodId, long currencyId)
         {
             IList<InvoiceModel> modelList = service
-                .GetAll(AuthenticationHelper.User.CompanyId, sobId, periodId, currencyId)
+                .GetAll(AuthenticationHelper.CompanyId.Value, sobId, periodId, currencyId)
                 .Select(x => new InvoiceModel(x)).ToList();
             return modelList;
         }
@@ -108,7 +108,7 @@ namespace _360Accounting.Web
         public static List<SelectListItem> GetInvoices(long sobId, long periodId)
         {
             List<SelectListItem> modelList = service
-                .GetInvoices(AuthenticationHelper.User.CompanyId, sobId, periodId)
+                .GetInvoices(AuthenticationHelper.CompanyId.Value, sobId, periodId)
                 .Select(x => new SelectListItem { Text = x.InvoiceNo, Value = x.Id.ToString() }).ToList();
             return modelList;
         }
@@ -188,7 +188,7 @@ namespace _360Accounting.Web
                         var tobeDeleted = savedDetail.Take(savedDetail.Count() - invoiceModel.InvoiceDetail.Count());
                         foreach (var item in tobeDeleted)
                         {
-                            detailService.Delete(item.Id.ToString(), AuthenticationHelper.User.CompanyId);
+                            detailService.Delete(item.Id.ToString(), AuthenticationHelper.CompanyId.Value);
                         }
                         savedDetail = getInvoiceDetailByInvoiceId(result);
                     }
@@ -216,12 +216,12 @@ namespace _360Accounting.Web
         public static InvoiceModel GetInvoice(string id)
         {
             return new InvoiceModel(service.GetSingle
-                (id, AuthenticationHelper.User.CompanyId));
+                (id, AuthenticationHelper.CompanyId.Value));
         }
 
         public static void Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.User.CompanyId);
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
     }
 }

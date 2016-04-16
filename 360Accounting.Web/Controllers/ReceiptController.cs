@@ -156,7 +156,7 @@ namespace _360Accounting.Web.Controllers
         {
             SessionHelper.Calendar = CalendarHelper.GetCalendar(ReceivablePeriodHelper.GetReceivablePeriod(periodId.ToString()).CalendarId.ToString());
             IEnumerable<ReceiptView> boList = service
-                .GetReceipts(SessionHelper.SOBId, SessionHelper.Calendar.Id, customerId, currencyId, AuthenticationHelper.User.CompanyId).ToList();
+                .GetReceipts(SessionHelper.SOBId, SessionHelper.Calendar.Id, customerId, currencyId, AuthenticationHelper.CompanyId.Value).ToList();
 
             List<ReceiptViewModel> modelList = boList.Select(a => new ReceiptViewModel(a)).ToList();
             return PartialView("_List", modelList);
@@ -170,7 +170,7 @@ namespace _360Accounting.Web.Controllers
                 bool validated = false;
                 string result = "";
                 model.PeriodId = SessionHelper.Calendar.Id;
-                model.CompanyId = AuthenticationHelper.User.CompanyId;
+                model.CompanyId = AuthenticationHelper.CompanyId.Value;
                 //Validation..
 
                 if (model.ReceiptDate >= SessionHelper.Calendar.StartDate && model.ReceiptDate <= SessionHelper.Calendar.EndDate)
