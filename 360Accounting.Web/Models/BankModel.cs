@@ -14,6 +14,8 @@ namespace _360Accounting.Web.Models
         #region Constructors
         public BankModel()
         {
+            this.StartDate = Const.StartDate;
+            this.EndDate = Const.EndDate;
         }
 
         public BankModel(Bank entity)
