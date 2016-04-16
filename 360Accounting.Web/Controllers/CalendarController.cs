@@ -64,6 +64,7 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.SOBId = SessionHelper.SOBId;
                 if (model.StartDate != null && model.EndDate < model.StartDate)
                 {
                     ModelState.AddModelError("Error", "Start date is less than End Date!");
@@ -89,6 +90,7 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.SOBId = SessionHelper.SOBId;
                 if (SessionHelper.Calendar != null && model.StartDate < SessionHelper.Calendar.EndDate)
                 {
                     ModelState.AddModelError("Error", "Start date is overlaping with previous period!");

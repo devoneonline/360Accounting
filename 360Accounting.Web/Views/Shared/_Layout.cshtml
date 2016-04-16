@@ -127,10 +127,10 @@
             $('.AccountLookup').click(function () {
                 lookupValueField = (this.id).replace('String', '');
                 lookupTextField = this.id;
-                var sobId = 6;
+                //var sobId = 6;
                 $.ajax({
                     url: '@Url.Content("~/CodeCombinition/LookupAccountCode")',
-                    data: { sobId: sobId },
+                    data: { },
                     datatype: 'html',
                     type: 'post',
                     error: function (error) { },
