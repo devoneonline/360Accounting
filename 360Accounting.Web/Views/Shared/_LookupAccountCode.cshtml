@@ -45,6 +45,9 @@
             $.post(url, { value: value }, function (result) {
                 $('#' + lookupTextField).val(value);
                 $('#' + lookupValueField).val(result);
+
+                //Temporary..
+                $('#CodeCombinationId').val(result);
                 $('#dvAccountLookup').dialog('close');
             });
         });
