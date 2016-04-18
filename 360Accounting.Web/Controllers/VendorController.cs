@@ -105,8 +105,24 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                VendorHelper.Save(model);
-                return RedirectToAction("ListSites", new { Id = model.VendorId });
+                try
+                {
+                    if (model.StartDate != null && model.StartDate > model.EndDate)
+                    {
+                        ModelState.AddModelError("Error", "Start Date cannot be greater than End Date.");
+                    }
+                    else
+                    {
+                        VendorHelper.Save(model);
+                        return RedirectToAction("Index", new { Id = model.VendorId });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Error", ex.Message);
+                }
+                //VendorHelper.Save(model);
+                //return RedirectToAction("ListSites", new { Id = model.VendorId });
             }
             return View(model);
         }

@@ -17,7 +17,8 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Index()
         {
             UserSetofBookModel model = new UserSetofBookModel();
-            if(SessionHelper.SOBId != null && SessionHelper.SOBId != 0)
+            //if(SessionHelper.SOBId != null && SessionHelper.SOBId != 0)
+            if (SessionHelper.SOBId != 0)
             {
                 model = UserSetofBookHelper.GetDefaultSOB();
                 if(model != null)
@@ -39,7 +40,8 @@ namespace _360Accounting.Web.Controllers
 
         public JsonResult CheckUserSOB()
         {
-            if (SessionHelper.SOBId == null || SessionHelper.SOBId == 0)
+            //if (SessionHelper.SOBId == null || SessionHelper.SOBId == 0)
+            if (SessionHelper.SOBId == 0)
             {
                 return Json(false);
             }

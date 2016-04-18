@@ -22,9 +22,9 @@ namespace _360Accounting.Core.Entities
 
         public string AdditionalInformation { get; set; }
 
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         public long Cash_CCID { get; set; }
         
