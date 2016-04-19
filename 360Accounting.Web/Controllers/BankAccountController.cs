@@ -36,11 +36,17 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Edit(string id)
         {
             BankAccountViewModel model = BankHelper.GetBankAccount(id);
-            if (model.CodeCombinition == null)
-            {
-                BankModel bank = BankHelper.GetBank(model.BankId.ToString());
-                model.CodeCombinition = CodeCombinationHelper.GetAccounts(SessionHelper.SOBId, bank.StartDate, bank.EndDate).ToList();
-            }
+            CodeCombinitionCreateViewModel cashCode = CodeCombinationHelper.GetCodeCombination(model.Cash_CCID.ToString());
+            CodeCombinitionCreateViewModel remitCode = CodeCombinationHelper.GetCodeCombination(model.RemitCash_CCID.ToString());
+            CodeCombinitionCreateViewModel confirmCode = CodeCombinationHelper.GetCodeCombination(model.Confirm_CCID.ToString());
+            model.Cash_CCIDString = Utility.Stringize(".", cashCode.Segment1, cashCode.Segment2, cashCode.Segment3, cashCode.Segment4, cashCode.Segment5, cashCode.Segment6, cashCode.Segment7, cashCode.Segment8);
+            model.RemitCash_CCIDString = Utility.Stringize(".", remitCode.Segment1, remitCode.Segment2, remitCode.Segment3, remitCode.Segment4, remitCode.Segment5, remitCode.Segment6, remitCode.Segment7, remitCode.Segment8);
+            model.Confirm_CCIDString = Utility.Stringize(".", confirmCode.Segment1, confirmCode.Segment2, confirmCode.Segment3, confirmCode.Segment4, confirmCode.Segment5, confirmCode.Segment6, confirmCode.Segment7, confirmCode.Segment8);
+            //if (model.CodeCombinition == null)
+            //{
+            //    BankModel bank = BankHelper.GetBank(model.BankId.ToString());
+            //    model.CodeCombinition = CodeCombinationHelper.GetAccounts(SessionHelper.SOBId, bank.StartDate, bank.EndDate).ToList();
+            //}
             return View("Create", model);
         }
 
