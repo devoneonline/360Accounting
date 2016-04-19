@@ -39,7 +39,7 @@ namespace _360Accounting.Web.Controllers
             if (model.CodeCombinition == null)
             {
                 BankModel bank = BankHelper.GetBank(model.BankId.ToString());
-                model.CodeCombinition = CodeCombinationHelper.GetAccounts(bank.SOBId, bank.StartDate.Value, bank.EndDate.Value).ToList();
+                model.CodeCombinition = CodeCombinationHelper.GetAccounts(SessionHelper.SOBId, bank.StartDate, bank.EndDate).ToList();
             }
             return View("Create", model);
         }
@@ -61,17 +61,18 @@ namespace _360Accounting.Web.Controllers
             if (ModelState.IsValid)
             {
                 string result = "";
-                bool validated = false;
                 BankModel bank = BankHelper.GetBank(model.BankId.ToString());
-                if (model.StartDate >= bank.StartDate && model.EndDate <= bank.EndDate)
-                    validated = true;
-
-                if (validated)
+                if ((model.StartDate >= bank.StartDate && model.EndDate <= bank.EndDate) ||
+                    (model.StartDate == null && bank.StartDate == null ||
+                    model.EndDate == null && bank.EndDate == null))
                 {
                     result = BankHelper.SaveBankAccount(model);
+                    return RedirectToAction("Index", new { Id = model.BankId });
                 }
-
-                return RedirectToAction("Index", new { Id = model.BankId });
+                else
+                {
+                    ModelState.AddModelError("Error", "Bank Account Dates should be within the range of Bank Dates.");
+                }
             }
             return View(model);
         }
@@ -82,7 +83,7 @@ namespace _360Accounting.Web.Controllers
             if (bankAccount.CodeCombinition == null)
             {
                 BankModel bank = BankHelper.GetBank(bankId.ToString());
-                bankAccount.CodeCombinition = CodeCombinationHelper.GetAccounts(bank.SOBId, bank.StartDate.Value, bank.EndDate.Value).ToList();
+                bankAccount.CodeCombinition = CodeCombinationHelper.GetAccounts(SessionHelper.SOBId, bank.StartDate, bank.EndDate).ToList();
             }
             bankAccount.BankId = bankId;
             return View(bankAccount);

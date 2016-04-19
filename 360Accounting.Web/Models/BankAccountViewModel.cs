@@ -14,8 +14,8 @@ namespace _360Accounting.Web.Models
         #region Constructors
         public BankAccountViewModel()
         {
-            this.StartDate = Const.StartDate;
-            this.EndDate = Const.EndDate;
+            //this.StartDate = Const.StartDate;
+            //this.EndDate = Const.EndDate;
         }
 
         public BankAccountViewModel(BankAccount entity)
@@ -45,7 +45,7 @@ namespace _360Accounting.Web.Models
         public long BankId { get; set; }
 
         [Required]
-        [Display(Name = "Bank Account")]
+        [Display(Name = "Bank Account *")]
         public string AccountName { get; set; }
 
         [Display(Name = "Information")]
@@ -54,12 +54,12 @@ namespace _360Accounting.Web.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Date From")]
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Date To")]
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         [Display(Name = "Cash Combinition")]
         public long Cash_CCID { get; set; }

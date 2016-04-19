@@ -14,8 +14,8 @@ namespace _360Accounting.Web.Models
         #region Constructors
         public BankModel()
         {
-            this.StartDate = Const.StartDate;
-            this.EndDate = Const.EndDate;
+            //this.StartDate = Const.StartDate;
+            //this.EndDate = Const.EndDate;
         }
 
         public BankModel(Bank entity)
@@ -41,7 +41,7 @@ namespace _360Accounting.Web.Models
 
         [Required]
         [StringLength(50, MinimumLength = 5, ErrorMessage = "Bank name should be atleast 5 & maximum 50 characters long.")]
-        [Display(Name = "Bank Name")]
+        [Display(Name = "Bank Name *")]
         public string BankName { get; set; }
 
         public string Remarks { get; set; }

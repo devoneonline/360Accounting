@@ -82,8 +82,7 @@ namespace _360Accounting.Web.Controllers
                 catch (Exception ex)
                 {
                     ModelState.AddModelError("Error", ex.Message);
-                }
-                
+                }                
             }
             return View(model);
         }

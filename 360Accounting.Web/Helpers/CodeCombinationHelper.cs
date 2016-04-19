@@ -61,13 +61,23 @@ namespace _360Accounting.Web
             return new CodeCombinitionViewModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
         }
 
-        public static IList<SelectListItem> GetAccounts(long sobId, DateTime startDate, DateTime endDate)
+        public static IList<SelectListItem> GetAccounts(long sobId, DateTime? startDate, DateTime? endDate)
         {
             //logic editted by uzair, previous one was incorrect.
             //plz check this one also.
-            List<SelectListItem> list = service.GetAll(AuthenticationHelper.CompanyId.Value, sobId, "", false, null, "", "")
-                .Where(a => a.StartDate <= startDate && a.EndDate >= endDate && a.AllowedPosting == true)
-                .Select(x => new SelectListItem
+            List<CodeCombinitionView> codeCombinationList = service.GetAll(AuthenticationHelper.CompanyId.Value, sobId, "", false, null, "", "")
+                .Where(x => x.AllowedPosting == true).ToList();
+            if (startDate != null)
+            {
+                codeCombinationList = codeCombinationList.Where(a => a.StartDate <= startDate).ToList();
+            }
+
+            if (endDate != null)
+            {
+                codeCombinationList = codeCombinationList.Where(a => a.EndDate >= endDate).ToList();
+            }
+
+            List<SelectListItem> list = codeCombinationList.Select(x => new SelectListItem
                 {
                     Text = x.CodeCombinitionCode,
                     Value = x.Id.ToString()

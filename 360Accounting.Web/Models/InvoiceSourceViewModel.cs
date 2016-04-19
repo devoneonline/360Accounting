@@ -13,8 +13,8 @@ namespace _360Accounting.Web.Models
     {
         public InvoiceSourceViewModel()
         {
-            this.StartDate = Const.StartDate;
-            this.EndDate = Const.EndDate;
+            //this.StartDate = Const.StartDate;
+            //this.EndDate = Const.EndDate;
         }
 
         public InvoiceSourceViewModel(InvoiceSource entity)
@@ -35,7 +35,8 @@ namespace _360Accounting.Web.Models
         public long Id { get; set; }
         public long SOBId { get; set; }
 
-        [Display(Name = "Account Code")]
+        [Required]
+        [Display(Name = "Account Code *")]
         public long CodeCombinationId { get; set; }
 
         public string CodeCombinationIdString { get; set; }
@@ -45,19 +46,19 @@ namespace _360Accounting.Web.Models
         public long CompanyId { get; set; }
 
         [Required]
-        [Display(Name = "Source Name")]
+        [Display(Name = "Source Name *")]
         [StringLength(50, MinimumLength = 1)]
         public string Description { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Start Date")]
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "End Date")]
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
     }
 
     public class InvoiceSourceListModel

@@ -46,7 +46,7 @@ namespace _360Accounting.Web.Models
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Start Date")]
+        [Display(Name = "Receipt Date")]
         public DateTime ReceiptDate { get; set; }
         
         public string ReceiptNumber { get; set; }
