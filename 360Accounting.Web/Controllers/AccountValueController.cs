@@ -17,7 +17,7 @@ namespace _360Accounting.Web.Controllers
     [Authorize]
     public class AccountValueController : Controller
     {
-        public ActionResult Index(long id, AccountValueListModel model)
+        public ActionResult Index(AccountValueListModel model)
         {
             model.SOBId = SessionHelper.SOBId;
             model.Segments = AccountHelper.GetSegmentList(model.SOBId.ToString());
@@ -53,6 +53,8 @@ namespace _360Accounting.Web.Controllers
         {
             AccountValueViewModel model = AccountValueHelper.GetAccountValue(id);
             model.SetOfBook = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
+            model.ValueChar = AccountHelper.GetSegmentCharacters(model.Segment, AccountHelper.GetAccountBySOBId(SessionHelper.SOBId.ToString()));
+
             return View(model);
         }
 
@@ -63,10 +65,11 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
-                    if (model.StartDate != null && model.StartDate > model.EndDate)
-                    {
-                        ModelState.AddModelError("Error", "End Date should be >= StartDate.");
-                    }
+                    if (model.Value.Length != model.ValueChar)
+                        ModelState.AddModelError("Error", "Invalid Value character length.");
+                    else if (model.StartDate != null && model.StartDate > model.EndDate)
+                        ModelState.AddModelError("Error", "End Date should be greater than StartDate.");
+
                     ////else if (model.Id == 0 && model.EndDate != null && model.EndDate < new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day))
                     ////{
                     ////    ModelState.AddModelError("Error", "End Date cannot be a back date.");
