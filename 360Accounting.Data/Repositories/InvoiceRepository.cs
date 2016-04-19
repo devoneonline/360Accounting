@@ -13,19 +13,8 @@ namespace _360Accounting.Data.Repositories
     {
         public Invoice GetSingle(long companyId, long sobId, long periodId, long currencyId)
         {
-
-
-            IEnumerable<Invoice> entityList = this.GetAll(companyId);
-            if (entityList.Count() > 0)
-            {
-                Invoice entity = entityList.Where(x => x.SOBId == sobId && x.PeriodId == periodId &&
-                x.CurrencyId == currencyId).OrderByDescending(rec => rec.Id).First();
-                return entity;
-            }
-            else
-            {
-                return null;
-            }
+            Invoice invoice =  this.GetAll(companyId).Where(rec => rec.SOBId == sobId && rec.PeriodId == periodId && rec.CurrencyId == currencyId).OrderByDescending(rec => rec.Id).FirstOrDefault();
+            return invoice;
         }
 
         public IEnumerable<Invoice> GetAll(long companyId, long sobId, long periodId, long currencyId)

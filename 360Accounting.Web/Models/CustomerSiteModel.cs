@@ -40,7 +40,7 @@ namespace _360Accounting.Web.Models
         public long CustomerId { get; set; }
 
         [Required]
-        [Display(Name="Site Name")]
+        [Display(Name="Site Name *")]
         [StringLength(30, MinimumLength = 1)]
         public string SiteName { get; set; }
 
@@ -55,9 +55,11 @@ namespace _360Accounting.Web.Models
         [Display(Name = "Tax")]
         public long? TaxId { get; set; }
 
-        [Display(Name = "Code Combination")]
+        [Required]
+        [Display(Name = "Code Combination *")]
         public long CodeCombinationId { get; set; }
 
+        [Required]
         [Display(Name = "Code Combination")]
         public string CodeCombinationString { get; set; }
 

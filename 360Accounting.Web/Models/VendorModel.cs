@@ -42,7 +42,7 @@ namespace _360Accounting.Web.Models
 
         [Required]
         [MaxLength(30, ErrorMessage = "Vendor name should not exceed 30 characters.")]
-        [Display(Name = "Vendor Name")]
+        [Display(Name = "Vendor Name *")]
         public string Name { get; set; }
 
         [MaxLength(255)]
@@ -101,7 +101,7 @@ namespace _360Accounting.Web.Models
         public long VendorId { get; set; }
 
         [Required]
-        [Display(Name = "Site Name")]
+        [Display(Name = "Site Name *")]
         [StringLength(30, MinimumLength = 1)]
         public string Name { get; set; }
 
@@ -120,7 +120,8 @@ namespace _360Accounting.Web.Models
         [Display(Name = "Code Combination")]
         public long CodeCombinationId { get; set; }
 
-        [Display(Name = "Code Combination")]
+        [Required]
+        [Display(Name = "Code Combination *")]
         public string CodeCombinationString { get; set; }
 
         //public List<SelectListItem> TaxCode { get; set; }

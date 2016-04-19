@@ -35,7 +35,14 @@ namespace _360Accounting.Web.Controllers
         {
             CustomerSiteModel model;
             if (id != null)
+            {
                 model = CustomerHelper.GetCustomerSite(id.Value.ToString());
+                CodeCombinitionCreateViewModel codeCombination = CodeCombinationHelper.GetCodeCombination(model.CodeCombinationId.ToString());
+
+                model.CodeCombinationString = Utility.Stringize(".", codeCombination.Segment1, codeCombination.Segment2, codeCombination.Segment3,
+                    codeCombination.Segment4, codeCombination.Segment5, codeCombination.Segment6, codeCombination.Segment7, codeCombination.Segment8);
+            }
+
             else
             {
                 model = new CustomerSiteModel();
@@ -50,13 +57,13 @@ namespace _360Accounting.Web.Controllers
                 }).ToList();
             model.TaxId = model.TaxCode.Any() ? Convert.ToInt64(model.TaxCode.First().Value) : 0;
 
-            model.CodeCombination = codeCombinationService.GetAllCodeCombinitionView(AuthenticationHelper.CompanyId.Value)
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.CodeCombinitionCode,
-                        Value = x.Id.ToString()
-                    }).ToList();
-            model.CodeCombinationId = model.CodeCombination.Any() ? Convert.ToInt64(model.CodeCombination.First().Value) : 0;
+            //model.CodeCombination = codeCombinationService.GetAllCodeCombinitionView(AuthenticationHelper.CompanyId.Value)
+            //        .Select(x => new SelectListItem
+            //        {
+            //            Text = x.CodeCombinitionCode,
+            //            Value = x.Id.ToString()
+            //        }).ToList();
+            //model.CodeCombinationId = model.CodeCombination.Any() ? Convert.ToInt64(model.CodeCombination.First().Value) : 0;
 
             return View(model);
         }
@@ -68,22 +75,34 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
-                    if (model.StartDate != null && model.StartDate > model.EndDate)
+                    string result = "";
+                    CustomerModel customer = CustomerHelper.GetCustomer(model.CustomerId.ToString());
+                    if ((model.StartDate >= customer.StartDate && model.EndDate <= customer.EndDate) ||
+                        (model.StartDate == null && customer.StartDate == null ||
+                        model.EndDate == null && customer.EndDate == null))
                     {
-                        ModelState.AddModelError("Error", "Start Date cannot be greater than End Date.");
+                        result = CustomerHelper.SaveCustomerSite(model);
+                        return RedirectToAction("Index", new { Id = model.CustomerId });
                     }
                     else
                     {
-                        string result = "";
-                        result = CustomerHelper.SaveCustomerSite(model);
-                        return RedirectToAction("Index", new { Id = model.CustomerId });
+                        ModelState.AddModelError("Error", "Site Dates should be within the range of Customer Dates.");
                     }
                 }
                 catch (Exception ex)
                 {
                     ModelState.AddModelError("Error", ex.Message);
-                }                
+                }
             }
+
+            model.TaxCode = taxService.GetAll(AuthenticationHelper.CompanyId.Value)
+                .Select(x => new SelectListItem
+                {
+                    Text = x.TaxName,
+                    Value = x.Id.ToString()
+                }).ToList();
+            model.TaxId = model.TaxCode.Any() ? Convert.ToInt64(model.TaxCode.First().Value) : 0;
+
             return View(model);
         }
 

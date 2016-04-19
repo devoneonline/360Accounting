@@ -82,8 +82,7 @@ namespace _360Accounting.Web.Controllers
                     if (SessionHelper.Invoice.InvoiceNo == "New")
                     {
                         SessionHelper.Invoice.InvoiceNo = InvoiceHelper.GetInvoiceNo(AuthenticationHelper.CompanyId.Value, SessionHelper.Invoice.SOBId, SessionHelper.Invoice.PeriodId, SessionHelper.Invoice.CurrencyId);
-                    }
-                    
+                    }                    
 
                     InvoiceHelper.Update(SessionHelper.Invoice);
                     SessionHelper.Invoice = null;

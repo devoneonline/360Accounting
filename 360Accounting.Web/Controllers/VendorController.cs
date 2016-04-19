@@ -107,14 +107,17 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
-                    if (model.StartDate != null && model.StartDate > model.EndDate)
-                    {
-                        ModelState.AddModelError("Error", "Start Date cannot be greater than End Date.");
-                    }
-                    else
+                    VendorModel vendor = VendorHelper.GetSingle(model.VendorId.ToString());
+                    if ((model.StartDate >= vendor.StartDate && model.EndDate <= vendor.EndDate) ||
+                        (model.StartDate == null && vendor.StartDate == null ||
+                        model.EndDate == null && vendor.EndDate == null))
                     {
                         VendorHelper.Save(model);
                         return RedirectToAction("Index", new { Id = model.VendorId });
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Error", "Site Dates must be within the range of Vendor Dates.");
                     }
                 }
                 catch (Exception ex)
@@ -130,12 +133,19 @@ namespace _360Accounting.Web.Controllers
         public ActionResult EditSite(long id)
         {
             var model = VendorHelper.GetSingle(id);
-            model.CodeCombination = codeCombinationService.GetAllCodeCombinitionView(AuthenticationHelper.CompanyId.Value)
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.CodeCombinitionCode,
-                        Value = x.Id.ToString()
-                    }).ToList();
+
+            CodeCombinitionCreateViewModel codeCombination = CodeCombinationHelper.GetCodeCombination(model.CodeCombinationId.ToString());
+
+            model.CodeCombinationString = Utility.Stringize(".", codeCombination.Segment1, codeCombination.Segment2, codeCombination.Segment3,
+                codeCombination.Segment4, codeCombination.Segment5, codeCombination.Segment6, codeCombination.Segment7, codeCombination.Segment8);
+
+
+            //model.CodeCombination = codeCombinationService.GetAllCodeCombinitionView(AuthenticationHelper.CompanyId.Value)
+            //        .Select(x => new SelectListItem
+            //        {
+            //            Text = x.CodeCombinitionCode,
+            //            Value = x.Id.ToString()
+            //        }).ToList();
             //model.TaxCode = taxService.GetAll(AuthenticationHelper.CompanyId.Value)
             //    .Select(x => new SelectListItem
             //    {

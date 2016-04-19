@@ -35,10 +35,10 @@ namespace _360Accounting.Web.Models
         public long Id { get; set; }
         public long SOBId { get; set; }
 
-        [Required]
         [Display(Name = "Account Code *")]
         public long CodeCombinationId { get; set; }
-
+        
+        [Required(ErrorMessage = "Account Code is required")]
         public string CodeCombinationIdString { get; set; }
 
         public IList<SelectListItem> CodeCombinations { get; set; }

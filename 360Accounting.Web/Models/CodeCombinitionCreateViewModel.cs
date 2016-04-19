@@ -30,23 +30,26 @@ namespace _360Accounting.Web.Models
 
         public CodeCombinitionCreateViewModel(CodeCombinition entity)
         {
-            this.AllowedPosting = entity.AllowedPosting;
-            this.CompanyId = entity.CompanyId;
-            this.StartDate = entity.StartDate;
-            this.EndDate = entity.EndDate;
-            this.Id = entity.Id;
-            this.Segment1 = entity.Segment1;
-            this.Segment2 = entity.Segment2;
-            this.Segment3 = entity.Segment3;
-            this.Segment4 = entity.Segment4;
-            this.Segment5 = entity.Segment5;
-            this.Segment6 = entity.Segment6;
-            this.Segment7 = entity.Segment7;
-            this.Segment8 = entity.Segment8;
-            this.CreateBy = entity.CreateBy;
-            this.CreateDate = entity.CreateDate;
-            this.UpdateBy = entity.UpdateBy;
-            this.UpdateDate = entity.UpdateDate;
+            if (entity != null)
+            {
+                this.AllowedPosting = entity.AllowedPosting;
+                this.CompanyId = entity.CompanyId;
+                this.StartDate = entity.StartDate;
+                this.EndDate = entity.EndDate;
+                this.Id = entity.Id;
+                this.Segment1 = entity.Segment1;
+                this.Segment2 = entity.Segment2;
+                this.Segment3 = entity.Segment3;
+                this.Segment4 = entity.Segment4;
+                this.Segment5 = entity.Segment5;
+                this.Segment6 = entity.Segment6;
+                this.Segment7 = entity.Segment7;
+                this.Segment8 = entity.Segment8;
+                this.CreateBy = entity.CreateBy;
+                this.CreateDate = entity.CreateDate;
+                this.UpdateBy = entity.UpdateBy;
+                this.UpdateDate = entity.UpdateDate;
+            }
         }
         #endregion
 

@@ -1,4 +1,5 @@
-﻿using _360Accounting.Web.Models;
+﻿using _360Accounting.Core;
+using _360Accounting.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,13 +14,9 @@ namespace _360Accounting.Web.Controllers
         {
             InvoiceSourceViewModel model = InvoiceSourceHelper.GetInvoiceSource(id);
 
-            CodeCombinitionViewModel codeCombination = CodeCombinationHelper.GetSingle(model.CodeCombinationId);
-            model.CodeCombinations = new List<SelectListItem>();
-            model.CodeCombinations.Add(new SelectListItem
-                {
-                    Text = codeCombination.CodeCombinitionCode,
-                    Value = codeCombination.Id.ToString()
-                });
+            CodeCombinitionCreateViewModel codeCombination = CodeCombinationHelper.GetCodeCombination(model.CodeCombinationId.ToString());
+            model.CodeCombinationIdString = Utility.Stringize(".", codeCombination.Segment1, codeCombination.Segment2, codeCombination.Segment3,
+                codeCombination.Segment4, codeCombination.Segment5, codeCombination.Segment6, codeCombination.Segment7, codeCombination.Segment8);
 
             return View(model);
         }
