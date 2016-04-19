@@ -151,13 +151,11 @@ namespace _360Accounting.Web.Controllers
                 try
                 {
                     bool validated = false;
+                    validated = true;
                     if (SessionHelper.Invoice != null)
                     {
-                        if (SessionHelper.Invoice.InvoiceDetail != null)
-                        {
+                        if (SessionHelper.Invoice.InvoiceDetail != null && SessionHelper.Invoice.InvoiceDetail.Count() > 0)
                             model.Id = SessionHelper.Invoice.InvoiceDetail.LastOrDefault().Id + 1;
-                            validated = true;
-                        }
                         else
                             model.Id = 1;
                     }

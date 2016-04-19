@@ -59,13 +59,13 @@ namespace _360Accounting.Web
             {
                 entity.CreateBy = AuthenticationHelper.UserId;
                 entity.CreateDate = DateTime.Now;
-                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+                //entity.CompanyId = AuthenticationHelper.CompanyId.Value;
             }
             else
             {
                 entity.CreateBy = model.CreateBy;
                 entity.CreateDate = model.CreateDate;
-                entity.CompanyId = model.CompanyId;
+                //entity.CompanyId = model.CompanyId;
             }
 
             entity.Amount = model.Amount;

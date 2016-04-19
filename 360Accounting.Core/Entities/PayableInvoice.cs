@@ -11,7 +11,7 @@ namespace _360Accounting.Core.Entities
     {
         [Key]
         public long Id { get; set; }
-        public long CompanyId { get; set; }
+        //public long CompanyId { get; set; }
         public long SOBId { get; set; }
         public long VendorId { get; set; }
         public long VendorSiteId { get; set; }

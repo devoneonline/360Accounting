@@ -79,7 +79,7 @@ namespace _360Accounting.Web.Models
         public PayableInvoiceModel(PayableInvoice entity)
         {
             this.Amount = entity.Amount;
-            this.CompanyId = entity.CompanyId;
+            this.CompanyId = AuthenticationHelper.CompanyId.Value; // entity.CompanyId;
             this.CreateBy = entity.CreateBy;
             this.CreateDate = entity.CreateDate;
             this.Id = entity.Id;
