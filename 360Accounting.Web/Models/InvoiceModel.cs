@@ -112,6 +112,7 @@ namespace _360Accounting.Web.Models
             this.Id = entity.Id;
             this.InvoiceId = entity.InvoiceId;
             this.InvoiceSourceId = entity.InvoiceSourceId;
+            this.ItemId = entity.ItemId;
             this.Quantity = entity.Quantity;
             this.Rate = entity.Rate;
             this.TaxId = entity.TaxId;
@@ -121,7 +122,8 @@ namespace _360Accounting.Web.Models
         #region Properties
         public long Id { get; set; }
         public long InvoiceId { get; set; }
-        public long InvoiceSourceId { get; set; }
+        public long? InvoiceSourceId { get; set; }
+        public long? ItemId { get; set; }
         public long TaxId { get; set; }
         public decimal Quantity { get; set; }
         public decimal Rate { get; set; }

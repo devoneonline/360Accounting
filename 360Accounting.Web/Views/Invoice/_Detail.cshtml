@@ -30,7 +30,8 @@
             {
                 column.FieldName = "InvoiceSourceId";
                 column.Caption = "Invoice Source";
-
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(25);
+                
                 column.ColumnType = MVCxGridViewColumnType.ComboBox;
                 var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
                 comboBoxProperties.DataSource = InvoiceSourceHelper.GetInvoiceSources(_360Accounting.Web.SessionHelper.SOBId,
@@ -43,8 +44,23 @@
 
             settings.Columns.Add(column =>
             {
+                column.FieldName = "ItemId";
+                column.Caption = "Item";
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(25);
+
+                column.ColumnType = MVCxGridViewColumnType.ComboBox;
+                var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+                comboBoxProperties.DataSource = ItemHelper.GetItems(_360Accounting.Web.SessionHelper.SOBId);
+                comboBoxProperties.TextField = "ItemName";
+                comboBoxProperties.ValueField = "Id";
+                comboBoxProperties.ValueType = typeof(int);
+            });
+
+            settings.Columns.Add(column =>
+            {
                 column.FieldName = "Quantity";
                 column.Caption = "Quantity";
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(5);
 
                 column.ColumnType = MVCxGridViewColumnType.SpinEdit;
                 var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
@@ -61,6 +77,8 @@
             {
                 column.FieldName = "Rate";
                 column.Caption = "Price";
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(5);
+                
                 column.ColumnType = MVCxGridViewColumnType.SpinEdit;
                 var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
                 spinEditProperties.NumberType = SpinEditNumberType.Float;
@@ -96,7 +114,8 @@
             var amountColumn = settings.Columns.Add("Amount");
             amountColumn.PropertiesEdit.DisplayFormatString = "c";
             amountColumn.UnboundType = DevExpress.Data.UnboundColumnType.Decimal;
-
+            amountColumn.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+            
             settings.CustomUnboundColumnData = (sender, e) => 
             {
                 if (e.Column.FieldName == "Amount")
@@ -111,6 +130,7 @@
             {
                 column.FieldName = "TaxId";
                 column.Caption = "Tax";
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(20);
 
                 column.ColumnType = MVCxGridViewColumnType.ComboBox;
                 var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;

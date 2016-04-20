@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Mvc;
 
-namespace _360Accounting.Web.Helpers
+namespace _360Accounting.Web
 {
     public static class ItemHelper
     {

@@ -31,7 +31,8 @@ namespace _360Accounting.Core.Entities
         [Key]
         public long Id { get; set; }
         public long InvoiceId { get; set; }
-        public long InvoiceSourceId { get; set; }
+        public long? InvoiceSourceId { get; set; }
+        public long? ItemId { get; set; }
         public long TaxId { get; set; }
         public decimal Quantity { get; set; }
         public decimal Rate { get; set; }

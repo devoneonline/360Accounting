@@ -30,7 +30,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Edit(string id, long currencyId, long periodId)
         {
             InvoiceModel model = InvoiceHelper.GetInvoice(id);
-            SessionHelper.Calendar = CalendarHelper.GetCalendar(periodId.ToString());
+            SessionHelper.Calendar = CalendarHelper.GetCalendar(ReceivablePeriodHelper.GetReceivablePeriod(periodId.ToString()).CalendarId.ToString());
             SessionHelper.PrecisionLimit = CurrencyHelper.GetCurrency(currencyId.ToString()).Precision;
 
             ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
@@ -45,7 +45,7 @@ namespace _360Accounting.Web.Controllers
             CustomerModel customer = CustomerHelper.GetCustomer(model.CustomerId.ToString());
             CustomerSiteModel customerSite = CustomerHelper.GetCustomerSite(model.CustomerSiteId.ToString());
 
-            ///TODO: Plz do the code audit.
+            ///TODO: Plz check the code.
             model.Customers = new List<SelectListItem>();
             model.Customers.Add(new SelectListItem 
             {
@@ -82,7 +82,7 @@ namespace _360Accounting.Web.Controllers
                     if (SessionHelper.Invoice.InvoiceNo == "New")
                     {
                         SessionHelper.Invoice.InvoiceNo = InvoiceHelper.GetInvoiceNo(AuthenticationHelper.CompanyId.Value, SessionHelper.Invoice.SOBId, SessionHelper.Invoice.PeriodId, SessionHelper.Invoice.CurrencyId);
-                    }                    
+                    }
 
                     InvoiceHelper.Update(SessionHelper.Invoice);
                     SessionHelper.Invoice = null;
@@ -149,8 +149,6 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
-                    bool validated = false;
-                    validated = true;
                     if (SessionHelper.Invoice != null)
                     {
                         if (SessionHelper.Invoice.InvoiceDetail != null && SessionHelper.Invoice.InvoiceDetail.Count() > 0)
@@ -161,8 +159,14 @@ namespace _360Accounting.Web.Controllers
                     else
                         model.Id = 1;
 
-                    if (validated)
+                    if (model.ItemId == null && model.InvoiceSourceId == null)
+                    {
+                        ViewData["EditError"] = "Either Invoice Source or Item is required.";
+                    }
+                    else
+                    {
                         InvoiceHelper.Insert(model);
+                    }
                 }
                 catch (Exception e)
                 {

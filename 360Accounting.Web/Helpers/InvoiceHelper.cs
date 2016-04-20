@@ -132,6 +132,7 @@ namespace _360Accounting.Web
             InvoiceModel invoice = SessionHelper.Invoice;
 
             invoice.InvoiceDetail.FirstOrDefault(x => x.Id == model.Id).InvoiceSourceId = model.InvoiceSourceId;
+            invoice.InvoiceDetail.FirstOrDefault(x => x.Id == model.Id).ItemId = model.ItemId;
             invoice.InvoiceDetail.FirstOrDefault(x => x.Id == model.Id).Quantity = model.Quantity;
             invoice.InvoiceDetail.FirstOrDefault(x => x.Id == model.Id).Rate = model.Rate;
             invoice.InvoiceDetail.FirstOrDefault(x => x.Id == model.Id).TaxId = model.TaxId;
