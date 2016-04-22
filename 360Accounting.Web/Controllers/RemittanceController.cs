@@ -1,4 +1,6 @@
 ﻿using _360Accounting.Common;
+using _360Accounting.Core;
+using _360Accounting.Core.Entities;
 using _360Accounting.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -10,6 +12,13 @@ namespace _360Accounting.Web.Controllers
 {
     public class RemittanceController : Controller
     {
+        private IReceiptService receiptService;
+
+        public RemittanceController() 
+        {
+            receiptService = IoC.Resolve<IReceiptService>("ReceiptService");
+        }
+
         public ActionResult Delete(string remitNo)
         {
             RemittanceHelper.Delete(remitNo);
@@ -47,7 +56,11 @@ namespace _360Accounting.Web.Controllers
                     }
 
                     RemittanceHelper.Update(SessionHelper.Remittance);
+                    //Receipt receipt = receiptService.GetSingle(SessionHelper.Remittance.ReceiptId.ToString(), AuthenticationHelper.CompanyId.Value);
+                    //receipt.Status = "Remit";
+                    //receiptService.Update(receipt);
                     SessionHelper.Remittance = null;
+                    
                     saved = true;
                     message = "Saved successfully";
                 }
@@ -111,17 +124,29 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
-                    bool validated = false;
+                    //bool validated = false;
+                    //if (SessionHelper.Remittance != null)
+                    //{
+                    //    model.Id = SessionHelper.Remittance.Remittances.Last().Id + 1;
+                    //    validated = true;
+                    //}
+                    //else
+                    //    model.Id = 1;
+
+                    //if (validated)
+                    //    RemittanceHelper.Insert(model);
+
                     if (SessionHelper.Remittance != null)
                     {
-                        model.Id = SessionHelper.Remittance.Remittances.Last().Id + 1;
-                        validated = true;
+                        if (SessionHelper.Remittance.Remittances != null && SessionHelper.Remittance.Remittances.Count() > 0)
+                            model.Id = SessionHelper.Remittance.Remittances.LastOrDefault().Id + 1;
+                        else
+                            model.Id = 1;
                     }
                     else
                         model.Id = 1;
 
-                    if (validated)
-                        RemittanceHelper.Insert(model);
+                    RemittanceHelper.Insert(model);
                 }
                 catch (Exception e)
                 {

@@ -73,24 +73,32 @@ namespace _360Accounting.Web.Controllers
                 bool saved = false;
                 if (SessionHelper.Invoice != null)
                 {
-                    SessionHelper.Invoice.InvoiceType = invoiceType;
-                    SessionHelper.Invoice.InvoiceDate = Convert.ToDateTime(invoiceDate);
-                    SessionHelper.Invoice.ConversionRate = Convert.ToDecimal(conversionRate);
-                    SessionHelper.Invoice.Remarks = remarks;
-                    SessionHelper.Invoice.CustomerId = customerId;
-                    SessionHelper.Invoice.CustomerSiteId = customerSiteId;
-                    if (SessionHelper.Invoice.InvoiceNo == "New")
+                    if (SessionHelper.Invoice.InvoiceDetail.Count == 0)
                     {
-                        SessionHelper.Invoice.InvoiceNo = InvoiceHelper.GetInvoiceNo(AuthenticationHelper.CompanyId.Value, SessionHelper.Invoice.SOBId, SessionHelper.Invoice.PeriodId, SessionHelper.Invoice.CurrencyId);
+                        message = "No Tax detail information available to save!";
                     }
+                    else
+                    {
+                        SessionHelper.Invoice.InvoiceType = invoiceType;
+                        SessionHelper.Invoice.InvoiceDate = Convert.ToDateTime(invoiceDate);
+                        SessionHelper.Invoice.ConversionRate = Convert.ToDecimal(conversionRate);
+                        SessionHelper.Invoice.Remarks = remarks;
+                        SessionHelper.Invoice.CustomerId = customerId;
+                        SessionHelper.Invoice.CustomerSiteId = customerSiteId;
+                        if (SessionHelper.Invoice.InvoiceNo == "New")
+                        {
+                            SessionHelper.Invoice.InvoiceNo = InvoiceHelper.GetInvoiceNo(AuthenticationHelper.CompanyId.Value, SessionHelper.Invoice.SOBId, SessionHelper.Invoice.PeriodId, SessionHelper.Invoice.CurrencyId);
+                        }
 
-                    InvoiceHelper.Update(SessionHelper.Invoice);
-                    SessionHelper.Invoice = null;
-                    saved = true;
-                    message = "Saved successfully";
+                        InvoiceHelper.Update(SessionHelper.Invoice);
+                        SessionHelper.Invoice = null;
+                        saved = true;
+                        message = "Saved successfully";
+                    }
+                    
                 }
                 else
-                    message = "No voucher information available!";
+                    message = "No information available to save!";
                 return Json(new { success = saved, message = message });
             }
             catch (Exception e)

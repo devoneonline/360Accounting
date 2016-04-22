@@ -50,15 +50,18 @@ namespace _360Accounting.Web.Models
 
         public long CompanyId { get; set; }
 
+        [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Receipt Date")]
+        [Display(Name = "Receipt Date *")]
         public DateTime ReceiptDate { get; set; }
 
-        [Display(Name = "Receipt Number")]
+        [Required]
+        [Display(Name = "Receipt Number *")]
         public string ReceiptNumber { get; set; }
 
-        [Display(Name = "Receipt Amount")]
+        [Required]
+        [Display(Name = "Receipt Amount *")]
         public decimal ReceiptAmount { get; set; }
         
         [Display(Name = "Conversion Rate")]
@@ -70,7 +73,8 @@ namespace _360Accounting.Web.Models
 
         public long CustomerId { get; set; }
 
-        [Display(Name = "Customer Site")]
+        [Required]
+        [Display(Name = "Customer Site *")]
         public long CustomerSiteId { get; set; }
 
         public string CustomerSiteName { get; set; }
@@ -79,14 +83,16 @@ namespace _360Accounting.Web.Models
 
         public List<SelectListItem> CustomerSites { get; set; }
 
-        [Display(Name = "Bank")]
+        [Required]
+        [Display(Name = "Bank *")]
         public long BankId { get; set; }
 
         public string BankName { get; set; }
 
         public List<SelectListItem> Banks { get; set; }
 
-        [Display(Name = "Bank Account")]
+        [Required]
+        [Display(Name = "Bank Account *")]
         public long BankAccountId { get; set; }
 
         public string BankAccountName { get; set; }
