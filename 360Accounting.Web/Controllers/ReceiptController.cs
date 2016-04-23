@@ -63,7 +63,8 @@ namespace _360Accounting.Web.Controllers
 
             if (model.Customers == null)
             {
-                model.Customers = customerService.GetAll(AuthenticationHelper.CompanyId.Value, SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate).
+                model.Customers = customerService.GetAll(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, 
+                    SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate).
                     Select(a => new SelectListItem
                 {
                     Text = a.CustomerName.ToString(),

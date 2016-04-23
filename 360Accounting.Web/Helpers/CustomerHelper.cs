@@ -42,6 +42,7 @@ namespace _360Accounting.Web
             entity.CustomerName = model.CustomerName;
             entity.EndDate = model.EndDate;
             entity.Id = model.Id;
+            entity.SOBId = SessionHelper.SOBId;
             entity.StartDate = model.StartDate;
             entity.UpdateBy = AuthenticationHelper.UserId;
             entity.UpdateDate = DateTime.Now;
@@ -109,13 +110,13 @@ namespace _360Accounting.Web
 
         public static List<CustomerModel> GetCustomers()
         {
-            return service.GetAll(AuthenticationHelper.CompanyId.Value)
+            return service.GetAll(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId)
                 .Select(a => new CustomerModel(a)).ToList();
         }
 
         public static List<CustomerModel> GetCustomers(DateTime startDate, DateTime endDate)
         {
-            return service.GetAll(AuthenticationHelper.CompanyId.Value, startDate, endDate)
+            return service.GetAll(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, startDate, endDate)
                 .Select(a => new CustomerModel(a)).ToList();
         }
 
