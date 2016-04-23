@@ -29,8 +29,8 @@ namespace _360Accounting.Data.Repositories
             IEnumerable<Remittance> list = this.Context.Remittances
                 .Where(x => x.SOBId == sobId &&
                     x.BankId == bankId &&
-                    x.BankAccountId == bankAccountId).ToList();
-            return list;
+                    x.BankAccountId == bankAccountId).Distinct().ToList();
+            return list.Distinct();
         }
         
         public Remittance GetSingle(string id, long companyId)
@@ -62,9 +62,15 @@ namespace _360Accounting.Data.Repositories
             return entity.Id.ToString();
         }
 
-        public void Delete(string id, long companyId)
+        public void Delete(string remitNo, long companyId)
         {
-            this.Context.Remittances.Remove(this.GetByRemitNo(id));
+            this.Context.Remittances.Remove(this.GetByRemitNo(remitNo));
+            this.Commit();
+        }
+
+        public void DeleteRemittanceDetail(string id, long companyId)
+        {
+            this.Context.Remittances.Remove(this.GetSingle(id, companyId));
             this.Commit();
         }
 

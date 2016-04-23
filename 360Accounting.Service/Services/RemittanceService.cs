@@ -18,6 +18,12 @@ namespace _360Accounting.Service
             this.repository = remittanceRepository;
         }
 
+
+        public void DeleteRemittanceDetail(string id, long companyId)
+        {
+            this.repository.DeleteRemittanceDetail(id, companyId);
+        }
+        
         public Remittance GetByRemitNo(string remitNo)
         {
             return this.repository.GetByRemitNo(remitNo);

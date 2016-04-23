@@ -12,13 +12,6 @@ namespace _360Accounting.Web.Controllers
 {
     public class RemittanceController : Controller
     {
-        private IReceiptService receiptService;
-
-        public RemittanceController() 
-        {
-            receiptService = IoC.Resolve<IReceiptService>("ReceiptService");
-        }
-
         public ActionResult Delete(string remitNo)
         {
             RemittanceHelper.Delete(remitNo);
@@ -56,9 +49,6 @@ namespace _360Accounting.Web.Controllers
                     }
 
                     RemittanceHelper.Update(SessionHelper.Remittance);
-                    //Receipt receipt = receiptService.GetSingle(SessionHelper.Remittance.ReceiptId.ToString(), AuthenticationHelper.CompanyId.Value);
-                    //receipt.Status = "Remit";
-                    //receiptService.Update(receipt);
                     SessionHelper.Remittance = null;
                     
                     saved = true;

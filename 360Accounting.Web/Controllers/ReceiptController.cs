@@ -14,7 +14,7 @@ namespace _360Accounting.Web.Controllers
     public class ReceiptController : Controller
     {
         private ICalendarService calendarService;
-        private IReceiptService service;
+        //private IReceiptService service;
         private ISetOfBookService sobService;
         private ICustomerService customerService;
         private ICustomerSiteService customerSiteService;
@@ -22,32 +22,9 @@ namespace _360Accounting.Web.Controllers
         private IBankAccountService bankAccountService;
         private ICurrencyService currencyService;
 
-        #region Private Methods
-        private Receipt mapModel(ReceiptViewModel model)
-        {
-            return new Receipt
-            {
-                BankAccountId = model.BankAccountId,
-                ReceiptDate = model.ReceiptDate,
-                ReceiptNumber = model.ReceiptNumber,
-                Remarks = model.Remarks,
-                ReceiptAmount = model.ReceiptAmount,
-                BankId = model.BankId,
-                ConversionRate = model.ConversionRate,
-                CustomerId = model.CustomerId,
-                CustomerSiteId = model.CustomerSiteId,
-                Id = model.Id,
-                PeriodId = model.PeriodId,
-                SOBId = model.SOBId,
-                Status = model.Status,
-                CurrencyId = model.CurrencyId
-            };
-        }
-        #endregion
-
         public ReceiptController()
         {
-            service = IoC.Resolve<IReceiptService>("ReceiptService");
+            //service = IoC.Resolve<IReceiptService>("ReceiptService");
             calendarService = IoC.Resolve<ICalendarService>("CalendarService");
             sobService = IoC.Resolve<ISetOfBookService>("SetOfBookService");
             customerService = IoC.Resolve<ICustomerService>("CustomerService");
@@ -115,7 +92,7 @@ namespace _360Accounting.Web.Controllers
         
         public ActionResult Edit(string id)
         {
-            ReceiptViewModel model = ReceiptViewtoReceipt(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
+            ReceiptViewModel model = ReceiptHelper.GetReceipt(id);
             
             if (model.CustomerSites == null)
             {
@@ -143,7 +120,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            service.Delete(id, AuthenticationHelper.CompanyId.Value);
+            ReceiptHelper.DeleteReceipt(id);
             return RedirectToAction("Index");
         }
 
@@ -155,11 +132,7 @@ namespace _360Accounting.Web.Controllers
         public ActionResult ListPartial(long periodId, long customerId, long currencyId)
         {
             SessionHelper.Calendar = CalendarHelper.GetCalendar(ReceivablePeriodHelper.GetReceivablePeriod(periodId.ToString()).CalendarId.ToString());
-            IEnumerable<ReceiptView> boList = service
-                .GetReceipts(SessionHelper.SOBId, SessionHelper.Calendar.Id, customerId, currencyId, AuthenticationHelper.CompanyId.Value).ToList();
-
-            List<ReceiptViewModel> modelList = boList.Select(a => new ReceiptViewModel(a)).ToList();
-            return PartialView("_List", modelList);
+            return PartialView("_List", ReceiptHelper.GetReceipts(SessionHelper.SOBId, SessionHelper.Calendar.Id, customerId, currencyId));
         }
 
         [HttpPost]
@@ -178,13 +151,7 @@ namespace _360Accounting.Web.Controllers
 
                 if (validated)
                 {
-                    if (model.Id > 0)
-                        result = service.Update(mapModel(model));
-                    else
-                    {
-                        //model.ReceiptNumber = ReceiptHelper.GetDocNo(model.CustomerId, model.PeriodId, model.SOBId, model.CurrencyId);
-                        result = service.Insert(mapModel(model));
-                    }
+                    result = ReceiptHelper.SaveReceipt(model);
                 }
 
                 return RedirectToAction("Index");
@@ -241,26 +208,26 @@ namespace _360Accounting.Web.Controllers
             return View(receipt);
         }
 
-        private ReceiptViewModel ReceiptViewtoReceipt(Receipt receipt)
-        {
-            return new ReceiptViewModel
-            {
-                BankAccountId = receipt.BankAccountId,
-                ReceiptAmount = receipt.ReceiptAmount,
-                ReceiptDate = receipt.ReceiptDate,
-                ReceiptNumber = receipt.ReceiptNumber,
-                PeriodId = receipt.PeriodId,
-                CustomerSiteId = receipt.CustomerSiteId,
-                CustomerId = receipt.CustomerId,
-                Id = receipt.Id,
-                CurrencyId = receipt.CurrencyId,
-                ConversionRate = receipt.ConversionRate,
-                BankId = receipt.BankId,
-                Remarks = receipt.Remarks,
-                SOBId = receipt.SOBId,
-                Status = receipt.Status
-            };
-        }
+        //private ReceiptViewModel ReceiptViewtoReceipt(Receipt receipt)
+        //{
+        //    return new ReceiptViewModel
+        //    {
+        //        BankAccountId = receipt.BankAccountId,
+        //        ReceiptAmount = receipt.ReceiptAmount,
+        //        ReceiptDate = receipt.ReceiptDate,
+        //        ReceiptNumber = receipt.ReceiptNumber,
+        //        PeriodId = receipt.PeriodId,
+        //        CustomerSiteId = receipt.CustomerSiteId,
+        //        CustomerId = receipt.CustomerId,
+        //        Id = receipt.Id,
+        //        CurrencyId = receipt.CurrencyId,
+        //        ConversionRate = receipt.ConversionRate,
+        //        BankId = receipt.BankId,
+        //        Remarks = receipt.Remarks,
+        //        SOBId = receipt.SOBId,
+        //        Status = receipt.Status
+        //    };
+        //}
 
         public JsonResult CheckReceiptDate(DateTime receiptDate, long periodId)
         {

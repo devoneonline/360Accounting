@@ -15,6 +15,11 @@
         @Html.HiddenFor(m => m.UpdateDate)
         <div class="row">
             <div class="col-lg-12">
+                <h3 class="page-header">
+                    Create Locator
+                </h3>
+            </div>
+            <div class="col-lg-12">
                 <div class="navbar-right">
                     <input type="button" value="Save" id="btnSave" class="btn btn-default tstyCus-btn" />
                     <input type="button" value="Cancel" id="btnCancel" class="btn btn-default tstyCus-btn" />
@@ -39,7 +44,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="row">
             <div class="col-lg-12">
                 @Html.Partial("CreatePartial", Model.LocatorWarehouses)

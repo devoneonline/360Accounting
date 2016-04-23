@@ -109,10 +109,10 @@
     $(document).ready(function () {
         $('#InvoiceDate').attr('class', 'form-control');
         
-        $('#InvoiceDate').change(function () {
+        $('#InvoiceDate').blur(function () {
             $.ajax({
                 url: '@Url.Content("~/Invoice/CheckDate")',
-                data: { invoiceDate: $(this).val(), periodId: $('#PeriodId').val() },
+                data: { invoiceDate: $(this).val(), periodId: $('#PeriodId').val(), customerId: $('#CustomerId').val(), customerSiteId: $('#CustomerSiteId').val() },
                 type: 'post',
                 datatype: 'json',
                 success: function (data)
@@ -121,7 +121,7 @@
                         $('#btnSave').attr('disabled', false);
                     else
                     {
-                        alert('Date must lie in the range of current period.');
+                        alert('Date must lie in the range of current period, Customer & Customer Site.');
                         $('#InvoiceDate').focus();
                         $('#btnSave').attr('disabled', true);
                     }

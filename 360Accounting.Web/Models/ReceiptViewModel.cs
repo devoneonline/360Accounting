@@ -43,6 +43,25 @@ namespace _360Accounting.Web.Models
             this.UpdateBy = entity.UpdateBy;
             this.UpdateDate = entity.UpdateDate;
         }
+
+        public ReceiptViewModel(Receipt receipt)
+        {
+            this.BankAccountId = receipt.BankAccountId;
+            this.ReceiptAmount = receipt.ReceiptAmount;
+            this.ReceiptDate = receipt.ReceiptDate;
+            this.ReceiptNumber = receipt.ReceiptNumber;
+            this.PeriodId = receipt.PeriodId;
+            this.CustomerSiteId = receipt.CustomerSiteId;
+            this.CustomerId = receipt.CustomerId;
+            this.Id = receipt.Id;
+            this.CurrencyId = receipt.CurrencyId;
+            this.ConversionRate = receipt.ConversionRate;
+            this.BankId = receipt.BankId;
+            this.Remarks = receipt.Remarks;
+            this.SOBId = receipt.SOBId;
+            this.Status = receipt.Status;
+        }
+
         #endregion
 
         #region Properties

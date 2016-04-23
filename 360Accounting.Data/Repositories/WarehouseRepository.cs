@@ -13,7 +13,7 @@ namespace _360Accounting.Data.Repositories
     {
         public IEnumerable<Warehouse> GetAll(long companyId, long sobId)
         {
-            IEnumerable<Warehouse> list = this.GetAll(companyId).Where(x => x.SOBId == sobId && x.Status == "Active");
+            IEnumerable<Warehouse> list = this.GetAll(companyId).Where(x => x.SOBId == sobId);
             return list;
         }
 

@@ -191,17 +191,36 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_Detail", InvoiceHelper.GetInvoiceDetail());
         }
 
-        public JsonResult CheckDate(DateTime invoiceDate, long periodId)
+        public JsonResult CheckDate(DateTime invoiceDate, long periodId, long customerId, long customerSiteId)
         {
             bool result = false;
             if (periodId > 0)
             {
                 if (SessionHelper.Calendar != null)
                 {
-                    if (invoiceDate >= SessionHelper.Calendar.StartDate || invoiceDate <= SessionHelper.Calendar.EndDate)
+                    if (invoiceDate >= SessionHelper.Calendar.StartDate && invoiceDate <= SessionHelper.Calendar.EndDate)
                         result = true;
                 }
             }
+
+            if (customerId > 0)
+            {
+                CustomerModel customer = CustomerHelper.GetCustomer(customerId.ToString());
+                if (invoiceDate >= customer.StartDate && invoiceDate <= customer.EndDate)
+                    result = true;
+                else
+                    result = false;
+            }
+
+            if (customerSiteId > 0)
+            {
+                CustomerSiteModel customerSite = CustomerHelper.GetCustomerSite(customerSiteId.ToString());
+                if (invoiceDate >= customerSite.StartDate && invoiceDate <= customerSite.EndDate)
+                    result = true;
+                else
+                    result = false;
+            }
+
             return Json(result);
         }
 

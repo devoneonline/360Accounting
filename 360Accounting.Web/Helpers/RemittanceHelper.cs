@@ -66,8 +66,38 @@ namespace _360Accounting.Web
         }
         #endregion
 
+        //public static void Delete(string remitNo)
+        //{
+        //    RemittanceModel remittance = new RemittanceModel(service.GetByRemitNo(remitNo));
+        //    foreach (RemittanceDetailModel remittanceDetail in remittance.Remittances)
+        //    {
+        //        ////Change status to 'Confirm' of the receipt to be deleted.
+        //        ReceiptViewModel receipt = ReceiptHelper.GetReceipt(remittanceDetail.ReceiptId.ToString());
+        //        receipt.Status = "Confirm";
+        //        ReceiptHelper.SaveReceipt(receipt);
+        //    }
+
+        //    service.Delete(remitNo, AuthenticationHelper.CompanyId.Value);
+        //}
+
         public static void Delete(string remitNo)
         {
+            RemittanceModel remittance = new RemittanceModel(service.GetByRemitNo(remitNo));
+            if (remittance != null)
+            {
+                remittance.Remittances = GetRemittanceDetail(remittance.RemitNo).ToList();
+                if (remittance.Remittances != null && remittance.Remittances.Count() > 0)
+                {
+                    foreach (RemittanceDetailModel item in remittance.Remittances)
+                    {
+                        ////Change status to 'Confirm' of the receipt to be deleted.
+                        ReceiptViewModel receipt = ReceiptHelper.GetReceipt(item.ReceiptId.ToString());
+                        receipt.Status = "Confirm";
+                        ReceiptHelper.SaveReceipt(receipt);
+                    }
+                }
+            }
+
             service.Delete(remitNo, AuthenticationHelper.CompanyId.Value);
         }
 
@@ -84,7 +114,13 @@ namespace _360Accounting.Web
                 var tobeDeleted = savedDetail.Take(savedDetail.Count() - remittanceModel.Remittances.Count());
                 foreach (var item in tobeDeleted)
                 {
-                    service.Delete(item.Id.ToString(), AuthenticationHelper.CompanyId.Value);
+                    ////Change status to 'Confirm' of the receipt to be deleted.
+                    ReceiptViewModel receipt = ReceiptHelper.GetReceipt(item.ReceiptId.ToString());
+                    receipt.Status = "Confirm";
+                    ReceiptHelper.SaveReceipt(receipt);
+
+                    ////Delete receipt to be remitted.
+                    service.DeleteRemittanceDetail(item.Id.ToString(), AuthenticationHelper.CompanyId.Value);
                 }
                 savedDetail = getRemittanceByRemitNo(remittanceModel.RemitNo);
             }
@@ -110,7 +146,10 @@ namespace _360Accounting.Web
                         service.Insert(entity);
                 }
 
-
+                ////Change status to Remit of the receipt.
+                ReceiptViewModel receipt = ReceiptHelper.GetReceipt(detail.ReceiptId.ToString());
+                receipt.Status = "Remit";
+                ReceiptHelper.SaveReceipt(receipt);
             }
         }
 
@@ -162,9 +201,9 @@ namespace _360Accounting.Web
             if (remitNo == null)
                 return getRemittanceDetail();
             else
-                return getRemittanceByRemitNo(remitNo);   
+                return getRemittanceByRemitNo(remitNo);
         }
-        
+
         public static IList<RemittanceModel> GetRemittances(long sobId, long bankId, long bankAccountId)
         {
             IList<RemittanceModel> modelList = service

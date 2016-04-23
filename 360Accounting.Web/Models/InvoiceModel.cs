@@ -25,7 +25,7 @@ namespace _360Accounting.Web.Models
     public class InvoiceModel : ModelBase
     {
         #region Properties
-        [Display(Name = "Customer")]
+        
         public List<SelectListItem> Customers { get; set; }
 
         [Display(Name = "Site")]
@@ -49,7 +49,11 @@ namespace _360Accounting.Web.Models
         public long PeriodId { get; set; }
         public long CurrencyId { get; set; }
         public long CompanyId { get; set; }
+
+        [Display(Name = "Customer")]
         public long CustomerId { get; set; }
+        
+        [Display(Name = "Site")]
         public long CustomerSiteId { get; set; }
         
         [DataType(DataType.Date)]

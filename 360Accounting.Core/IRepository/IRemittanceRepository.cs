@@ -14,5 +14,7 @@ namespace _360Accounting.Core.Interfaces
         IEnumerable<Remittance> GetByRemitNo(long companyId, string remitNo);
 
         Remittance GetByRemitNo(string remitNo);
+
+        void DeleteRemittanceDetail(string id, long companyId);
     }
 }
