@@ -18,6 +18,11 @@ namespace _360Accounting.Service
             this.repository = repo;
         }
 
+        public List<AccountValue> GetAccountValuesByChartId(long chartId, long sobId)
+        {
+            return this.repository.GetAccountValuesByChartId(chartId, sobId);
+        }
+
         public AccountValue GetAccountValueBySegment(long chartId, string segment)
         {
             return this.repository.GetAccountValueBySegment(chartId, segment);

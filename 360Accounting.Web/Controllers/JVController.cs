@@ -324,8 +324,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            JVHelper.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                JVHelper.Delete(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { message = ex.Message });
+            }
         }
 
         public ActionResult Edit(string id, long currencyId, long periodId)
@@ -346,8 +353,9 @@ namespace _360Accounting.Web.Controllers
             return View("Create", model);
         }
 
-        public ActionResult Index(JournalVoucherListModel model)
+        public ActionResult Index(JournalVoucherListModel model, string message="")
         {
+            ViewBag.ErrorMessage = message;
             SessionHelper.JV = null;
             model.SOBId = SessionHelper.SOBId;
 

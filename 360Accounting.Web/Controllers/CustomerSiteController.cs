@@ -23,8 +23,9 @@ namespace _360Accounting.Web.Controllers
             taxService = IoC.Resolve<ITaxService>("TaxService");
         }
 
-        public ActionResult Index(long Id)//CustomerId
+        public ActionResult Index(long Id, string message="")//CustomerId
         {
+            ViewBag.ErrorMessage = message;
             ViewBag.CustomerId = Id;
             List<CustomerSiteViewModel> model = new List<CustomerSiteViewModel>();
             model = CustomerHelper.GetCustomerSites(Id);
@@ -108,8 +109,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id, long CustomerId)
         {
-            CustomerHelper.DeleteCustomerSite(id);
-            return RedirectToAction("Index", new { Id = CustomerId });
+            try
+            {
+                CustomerHelper.DeleteCustomerSite(id);
+                return RedirectToAction("Index", new { Id = CustomerId });
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { Id = CustomerId, message=ex.Message });
+            }
         }
 
         public ActionResult CustomerSiteListPartial()

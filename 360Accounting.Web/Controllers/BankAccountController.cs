@@ -13,8 +13,9 @@ namespace _360Accounting.Web.Controllers
     [Authorize]
     public class BankAccountController : Controller
     {
-        public ActionResult Index(long Id)
+        public ActionResult Index(long Id, string message = "")
         {
+            ViewBag.ErrorMessage = message;
             BankAccountListModel model = new BankAccountListModel();
             model.BankId = Id;
 
@@ -65,8 +66,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id, long bankId)
         {
-            BankHelper.DeleteBankAccount(id);
-            return RedirectToAction("Index", new { Id = bankId });
+            try
+            {
+                BankHelper.DeleteBankAccount(id);
+                return RedirectToAction("Index", new { Id = bankId });
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { Id = bankId, message = ex.Message });
+            }
         }
 
         public ActionResult BankAccountListPartial(string bankId)

@@ -23,8 +23,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            InvoiceHelper.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                InvoiceHelper.Delete(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { message = ex.Message });
+            }
         }
 
         public ActionResult Edit(string id, long currencyId, long periodId)
@@ -302,8 +309,9 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_List", new List<InvoiceModel>());
         }
 
-        public ActionResult Index(InvoiceListModel model)
+        public ActionResult Index(InvoiceListModel model, string message="")
         {
+            ViewBag.ErrorMessage = message;
             SessionHelper.Invoice = null;
             model.SOBId = SessionHelper.SOBId;
             if (model.Periods == null)

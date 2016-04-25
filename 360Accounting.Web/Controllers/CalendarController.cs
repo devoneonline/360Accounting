@@ -55,8 +55,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            CalendarHelper.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                CalendarHelper.Delete(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { message = ex.Message });
+            }
         }
 
         [HttpPost]
@@ -150,8 +157,9 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_List", model);
         }
 
-        public ActionResult Index(CalendarListModel model)
+        public ActionResult Index(CalendarListModel model, string message="")
         {
+            ViewBag.ErrorMessage = message;
             model.SOBId = SessionHelper.SOBId;
 
             return View(model);

@@ -23,8 +23,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            InvoiceSourceHelper.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                InvoiceSourceHelper.Delete(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { message = ex.Message });
+            }
         }
 
         public ActionResult InvoiceSourceListPartial()
@@ -61,8 +68,9 @@ namespace _360Accounting.Web.Controllers
             return View("Edit", model);
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string message="")
         {
+            ViewBag.ErrorMessage = message;
             InvoiceSourceListModel model = new InvoiceSourceListModel();
             model.SOBId = SessionHelper.SOBId;
             return View(model);

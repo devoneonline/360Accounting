@@ -16,8 +16,9 @@ namespace _360Accounting.Web.Controllers
     [Authorize]
     public class WithholdingController : Controller
     {
-        public ActionResult Index(WithholdingListModel model)
+        public ActionResult Index(WithholdingListModel model, string message="")
         {
+            ViewBag.ErrorMessage = message;
             model.SOBId = SessionHelper.SOBId;
             if (model.CodeCombinition == null)
             {

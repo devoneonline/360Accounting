@@ -3,6 +3,7 @@ using _360Accounting.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -272,6 +273,43 @@ namespace _360Accounting.Data
 
             modelBuilder.Entity<UserSetofBook>().ToTable("tbUserSetofBook");
             modelBuilder.Entity<UserSetofBook>().HasKey(t => t.Id);
+        }
+
+        #endregion
+
+        #region Overriding
+
+        public override int SaveChanges()
+        {
+            try
+            {
+                return base.SaveChanges();
+            }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException ex)
+            {
+                //Undoing the change in context..
+                foreach (DbEntityEntry entry in this.ChangeTracker.Entries())
+                {
+                    switch (entry.State)
+                    { 
+                        case EntityState.Modified:
+                            entry.State = EntityState.Unchanged;
+                            break;
+                        case EntityState.Added:
+                            entry.State = EntityState.Detached;
+                            break;
+                        case EntityState.Deleted:
+                            entry.Reload();
+                            break;
+                        default: break;
+                    }
+                } 
+                if (ex.GetBaseException().HResult == -2146232060)
+                {
+                    throw new Exception("Can not delete the record that is being used.");
+                }
+                throw ex;
+            }
         }
 
         #endregion

@@ -196,8 +196,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            PayableInvoiceHelper.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                PayableInvoiceHelper.Delete(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { message = ex.Message });
+            }
         }
 
         public ActionResult Edit(string id, long periodId)
@@ -255,10 +262,11 @@ namespace _360Accounting.Web.Controllers
                 .GetInvoices(SessionHelper.SOBId, periodId));
         }
 
-        public ActionResult Index(PayableInvoiceListModel model)
+        public ActionResult Index(PayableInvoiceListModel model, string message="")
         {
             try
             {
+                ViewBag.ErrorMessage = message;
                 SessionHelper.PayableInvoice = null;
                 model.SOBId = SessionHelper.SOBId;
 

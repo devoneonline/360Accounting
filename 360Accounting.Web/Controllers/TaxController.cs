@@ -19,8 +19,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            TaxHelper.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                TaxHelper.Delete(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { message = ex.Message });
+            }
         }
 
         public ActionResult Edit(string id)
@@ -166,7 +173,7 @@ namespace _360Accounting.Web.Controllers
             return View("Edit", model);
         }
         
-        public ActionResult Index(TaxListModel model)
+        public ActionResult Index(TaxListModel model, string message="")
         {
             SessionHelper.Tax = null;
             model.SOBId = SessionHelper.SOBId;

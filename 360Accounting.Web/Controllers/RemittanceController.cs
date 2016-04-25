@@ -14,8 +14,15 @@ namespace _360Accounting.Web.Controllers
     {
         public ActionResult Delete(string remitNo)
         {
-            RemittanceHelper.Delete(remitNo);
-            return RedirectToAction("Index");
+            try
+            {
+                RemittanceHelper.Delete(remitNo);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { message=ex.Message});
+            }
         }
 
         public ActionResult Edit(string remitNo, long bankId, long bankAccountId)
@@ -228,10 +235,11 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_List", new List<RemittanceModel>());
         }
 
-        public ActionResult Index(RemittanceListModel model)
+        public ActionResult Index(RemittanceListModel model, string message="")
         {
             try
             {
+                ViewBag.ErrorMessage = message;
                 SessionHelper.Remittance = null;
                 model.SOBId = SessionHelper.SOBId;
 

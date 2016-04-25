@@ -34,8 +34,9 @@ namespace _360Accounting.Web.Controllers
             currencyService = IoC.Resolve<ICurrencyService>("CurrencyService");
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string message = "")
         {
+            ViewBag.ErrorMessage = message;
             ReceiptListModel model = new ReceiptListModel();
             model.SOBId = SessionHelper.SOBId;
 
@@ -121,8 +122,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            ReceiptHelper.DeleteReceipt(id);
-            return RedirectToAction("Index");
+            try
+            {
+                ReceiptHelper.DeleteReceipt(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { message = ex.Message });
+            }
         }
 
         public ActionResult EmptyListPartial()

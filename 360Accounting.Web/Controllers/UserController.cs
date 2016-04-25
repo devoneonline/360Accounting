@@ -107,8 +107,9 @@ namespace _360Accounting.Web.Controllers
 
         #region ActionResult
 
-        public ActionResult Index(long? Id)
+        public ActionResult Index(long? Id, string message="")
         {
+            ViewBag.ErrorMessage = message;
             ViewBag.CompanyId = Id;
             return View();
         }
@@ -260,9 +261,16 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(Guid id)
         {
-            var memUser = Membership.GetUser(id);
-            Membership.DeleteUser(memUser.UserName);
-            return RedirectToAction("Index");
+            try
+            {
+                var memUser = Membership.GetUser(id);
+                Membership.DeleteUser(memUser.UserName);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { message = ex.Message });
+            }
         }
 
         public ActionResult CreateCompanyFeatureList()
@@ -304,8 +312,9 @@ namespace _360Accounting.Web.Controllers
             return Json("Success");
         }
 
-        public ActionResult FeatureSet(long? Id)
+        public ActionResult FeatureSet(long? Id, string message="")
         {
+            ViewBag.ErrorMessage = message;
             int totalRecords = 0;
             FeatureSetListModel model = new FeatureSetListModel();
             if (Id != null)
@@ -336,8 +345,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult DeleteFeatureSet(string id)
         {
-            featureSetService.Delete(id, AuthenticationHelper.CompanyId.Value);
-            return RedirectToAction("FeatureSet");
+            try
+            {
+                featureSetService.Delete(id, AuthenticationHelper.CompanyId.Value);
+                return RedirectToAction("FeatureSet");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("FeatureSet", new { message=ex.Message });
+            }
         }
 
         public ActionResult UserFeatureSet(string featureSetId)

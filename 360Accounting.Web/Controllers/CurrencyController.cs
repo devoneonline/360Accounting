@@ -14,8 +14,9 @@ namespace _360Accounting.Web.Controllers
     [Authorize]
     public class CurrencyController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(string message="")
         {
+            ViewBag.ErrorMessage = message;
             var model = new CurrencyListModel();
             model.SOBId = SessionHelper.SOBId;
             return View(model);
@@ -55,8 +56,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            CurrencyHelper.DeleteCurrency(id);
-            return RedirectToAction("Index");
+            try
+            {
+                CurrencyHelper.DeleteCurrency(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { message = ex.Message });
+            }
         }
 
         public ActionResult GetCurrencyList()

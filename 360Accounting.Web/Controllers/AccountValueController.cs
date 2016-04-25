@@ -17,8 +17,9 @@ namespace _360Accounting.Web.Controllers
     [Authorize]
     public class AccountValueController : Controller
     {
-        public ActionResult Index(AccountValueListModel model)
+        public ActionResult Index(AccountValueListModel model, string message="")
         {
+            ViewBag.ErrorMessage = message;
             model.SOBId = SessionHelper.SOBId;
             model.Segments = AccountHelper.GetSegmentList(model.SOBId.ToString());
             model.Segment = model.Segments[0].Value;
@@ -91,8 +92,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            AccountValueHelper.Delete(id);
-            return RedirectToAction("Index", new { id = SessionHelper.SOBId });
+            try
+            {
+                AccountValueHelper.Delete(id);
+                return RedirectToAction("Index", new { id = SessionHelper.SOBId });
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { id = SessionHelper.SOBId, message = ex.Message });
+            }
         }
 
         public ActionResult AccountValuesPartial(string segment)

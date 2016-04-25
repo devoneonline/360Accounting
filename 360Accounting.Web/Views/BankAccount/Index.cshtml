@@ -28,6 +28,12 @@
             <input type="button" value="Create New" class="btn btn-default tstyCus-btn" id="btnNew" />
             <input type="button" value="Back" title="Bank" class="navbar-right btn btn-default tstyCus-btn" onclick="window.location = '@Url.Content("~/Bank")'" />
         </div>
+        @if (ViewBag.ErrorMessage != "")
+        {
+            <div class="form-group col-lg-12">
+                @ViewBag.ErrorMessage
+            </div>
+        }
         <div id="dvList" class="col-lg-12 cusGridWrapper">
             @Html.Action("BankAccountListPartial", new { bankId = Model.BankId })
         </div>

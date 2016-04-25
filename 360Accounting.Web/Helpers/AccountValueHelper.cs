@@ -59,6 +59,11 @@ namespace _360Accounting.Web
             return service.GetAccountValuesBySegment(chartId, sobId, segment).Select(x => new AccountValueViewModel(x)).ToList();
         }
 
+        public static List<AccountValueViewModel> GetAccountValuesbyChartId(long chartId, long sobId)
+        {
+            return service.GetAccountValuesByChartId(chartId, sobId).Select(x => new AccountValueViewModel(x)).ToList();
+        }
+
         public static AccountValueViewModel GetAccountValue(string id)
         {
             return new AccountValueViewModel

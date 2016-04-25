@@ -17,8 +17,9 @@ namespace _360Accounting.Web.Controllers
             codeCombinationService = IoC.Resolve<ICodeCombinitionService>("CodeCombinitionService");
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string message = "")
         {
+            ViewBag.ErrorMessage = message;
             IEnumerable<VendorModel> modelList = VendorHelper.GetAll();
             return View(modelList);
         }
@@ -60,8 +61,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            VendorHelper.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                VendorHelper.Delete(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { message = ex.Message });
+            }
         }
 
         public ActionResult VendorListPartial()
@@ -69,8 +77,9 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_List", VendorHelper.GetAll());
         }
 
-        public ActionResult ListSites(long id)
+        public ActionResult ListSites(long id, string message = "")
         {
+            ViewBag.ErrorMessage = message;
             ViewBag.VendorId = id;
             var modelList = VendorHelper.GetAllSites(id);
             return View(modelList);
@@ -158,8 +167,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult DeleteSite(long id, long vendorId)
         {
-            VendorHelper.Delete(id);
-            return RedirectToAction("ListSites", new { Id = vendorId });
+            try
+            {
+                VendorHelper.Delete(id);
+                return RedirectToAction("ListSites", new { Id = vendorId });
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("ListSites", new { Id = vendorId, message = ex.Message });
+            }
         }
 	}
 }

@@ -6,6 +6,7 @@ using _360Accounting.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Mvc;
 
@@ -19,8 +20,9 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_List", SetOfBookHelper.GetSetOfBooks());
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string message = "")
         {
+            ViewBag.ErrorMessage = message;
             SetOfBookListModel model = new SetOfBookListModel();
             model.SetOfBooks = SetOfBookHelper.GetSetOfBooks();
             return View(model);
@@ -69,8 +71,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            SetOfBookHelper.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                SetOfBookHelper.Delete(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { message = ex.GetBaseException().Message });
+            }
         }
     }
 }
