@@ -9,8 +9,9 @@ namespace _360Accounting.Core.Interfaces
 {
     public interface IGLHeaderRepository : IRepository<GLHeader>
     {
+        IEnumerable<GLHeaderView> GetAll(long companyId, long sobId);
+
         GLHeader GetSingle(long CompanyId, long PeriodId, long SOBId, long CurrencyId);
-        IEnumerable<GLHeader> GetAll(long companyId, long sobId, long periodId, long currencyId);
 
         List<UserwiseEntriesTrail> UserwiseEntriesTrail(long companyId, long sobId, DateTime fromDate, DateTime toDate, Guid? UserId);
 

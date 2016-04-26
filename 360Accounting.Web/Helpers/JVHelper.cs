@@ -36,11 +36,29 @@ namespace _360Accounting.Web
             return new GLHeaderModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
         }
 
-        public static IList<GLHeaderModel> GetGLHeaders(long sobId, long periodId, long currencyId)
+        public static IList<GLHeaderModel> GetGLHeaders(long sobId)
         {
             IList<GLHeaderModel> modelList = service
-                .GetAll(AuthenticationHelper.CompanyId.Value, sobId, periodId, currencyId).ToList()
-                .Select(x => new GLHeaderModel(x)).ToList();
+                .GetAll(AuthenticationHelper.CompanyId.Value, sobId).ToList()
+                .Select(x => new GLHeaderModel
+                {
+                    CompanyId = x.CompanyId,
+                    CurrencyName = x.CurrencyName,
+                    PeriodName = x.PeriodName,
+                    ConversionRate = x.ConversionRate,
+                    CreateBy = x.CreateBy,
+                    CreateDate = x.CreateDate,
+                    CurrencyId = x.CurrencyId,
+                    Description = x.Description,
+                    DocumentNo = x.DocumentNo,
+                    GLDate = x.GLDate,
+                    Id = x.Id,
+                    JournalName = x.JournalName,
+                    PeriodId = x.PeriodId,
+                    SOBId = x.SOBId,
+                    UpdateBy = x.UpdateBy,
+                    UpdateDate = x.UpdateDate
+                }).ToList();
             return modelList;
         }
 

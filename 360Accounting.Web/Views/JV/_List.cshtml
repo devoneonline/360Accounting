@@ -39,6 +39,8 @@ var grid = Html.DevExpress().GridView(settings =>
     settings.Columns.Add("DocumentNo", "Document #");
     settings.Columns.Add("GLDate", "Effective Date").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;
     settings.Columns.Add("Description");
+    settings.Columns.Add("PeriodName", "Period");
+    settings.Columns.Add("CurrencyName", "Currency");
 });
 if (ViewData["EditError"] != null)
 {

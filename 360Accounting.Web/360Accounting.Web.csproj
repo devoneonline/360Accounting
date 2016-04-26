@@ -308,7 +308,6 @@
     <Compile Include="Models\CustomerModel.cs" />
     <Compile Include="Models\FeatureViewModel.cs" />
     <Compile Include="Models\InvoiceSourceViewModel.cs" />
-    <Compile Include="Models\JournalVoucherListModel.cs" />
     <Compile Include="Models\JournalVoucherViewModel.cs" />
     <Compile Include="Models\JVModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />

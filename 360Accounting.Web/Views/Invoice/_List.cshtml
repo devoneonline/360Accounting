@@ -40,6 +40,8 @@
         settings.Columns.Add("InvoiceDate", "Document Date").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;
         settings.Columns.Add("InvoiceType", "Document Type");
         settings.Columns.Add("Remarks", "Description");
+        settings.Columns.Add("PeriodName", "Period");
+        settings.Columns.Add("CurrencyName", "Currency");
     });
     if (ViewData["EditError"] != null)
     {

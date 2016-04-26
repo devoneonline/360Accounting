@@ -10,8 +10,9 @@ namespace _360Accounting.Core
 {
     public interface IGLHeaderService : IService<GLHeader>
     {
-        GLHeader GetSingle(long CompanyId, long PeriodId, long SOBId, long CurrencyId);
-        IEnumerable<GLHeader> GetAll(long companyId, long sobId, long periodId, long currencyId);
+        GLHeader GetSingle(long companyId, long periodId, long sobId, long currencyId);
+
+        IEnumerable<GLHeaderView> GetAll(long companyId, long sobId);
 
         List<TrialBalance> TrialBalance(long companyId, long sobId, long fromCodeCombinationId, long toCodeCombinationId, long periodId);
 

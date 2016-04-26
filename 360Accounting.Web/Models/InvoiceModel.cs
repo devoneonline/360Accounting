@@ -9,19 +9,6 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
-    public class InvoiceListModel
-    {
-        [Display(Name = "Period")]
-        public List<SelectListItem> Periods { get; set; }
-
-        [Display(Name = "Currency")]
-        public List<SelectListItem> Currencies { get; set; }
-
-        public long SOBId { get; set; }
-        public long PeriodId { get; set; }
-        public long CurrencyId { get; set; }
-    }
-
     public class InvoiceModel : ModelBase
     {
         #region Properties
@@ -46,7 +33,10 @@ namespace _360Accounting.Web.Models
 
         public long Id { get; set; }
         public long SOBId { get; set; }
+        [Display(Name="Period")]
         public long PeriodId { get; set; }
+
+        [Display(Name = "Currency")]
         public long CurrencyId { get; set; }
         public long CompanyId { get; set; }
 
@@ -72,6 +62,12 @@ namespace _360Accounting.Web.Models
         public decimal? ConversionRate { get; set; }
         public string Remarks { get; set; }
 
+        public string CurrencyName { get; set; }
+        public string PeriodName { get; set; }
+
+        public List<SelectListItem> Currencies { get; set; }
+        public List<SelectListItem> Periods { get; set; }
+
         ////Experimating with singular detail property...
         public IList<InvoiceDetailModel> InvoiceDetail { get; set; }
         #endregion
@@ -80,6 +76,10 @@ namespace _360Accounting.Web.Models
         public InvoiceModel()
         {
             this.InvoiceDate = Const.CurrentDate;
+            this.Customers = new List<SelectListItem>();
+            this.CustomerSites = new List<SelectListItem>();
+            this.Periods = new List<SelectListItem>();
+            this.Currencies = new List<SelectListItem>();
         }
 
         public InvoiceModel(Invoice entity)
@@ -100,6 +100,12 @@ namespace _360Accounting.Web.Models
             this.CreateDate = entity.CreateDate;
             this.UpdateBy = entity.UpdateBy;
             this.UpdateDate = entity.UpdateDate;
+            this.CurrencyName = "";
+            this.PeriodName = "";
+            this.Customers = new List<SelectListItem>();
+            this.CustomerSites = new List<SelectListItem>();
+            this.Periods = new List<SelectListItem>();
+            this.Currencies = new List<SelectListItem>();
         }
         #endregion
     }

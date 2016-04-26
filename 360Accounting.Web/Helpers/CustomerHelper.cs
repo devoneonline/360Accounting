@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace _360Accounting.Web
 {
@@ -118,6 +119,20 @@ namespace _360Accounting.Web
         {
             return service.GetAll(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, startDate, endDate)
                 .Select(a => new CustomerModel(a)).ToList();
+        }
+
+        public static List<SelectListItem> GetCustomersCombo(DateTime startDate, DateTime endDate) 
+        {
+            List<SelectListItem> customerList = GetCustomers(startDate, endDate).Select(x => new SelectListItem { Text = x.CustomerName, Value = x.Id.ToString() }).ToList();
+
+            return customerList;
+        }
+
+        public static List<SelectListItem> GetCustomerSitesCombo(long customerId)
+        {
+            List<SelectListItem> CustomerSiteList = GetCustomerSites(customerId).Select(x => new SelectListItem { Text = x.SiteName, Value = x.Id.ToString() }).ToList();
+
+            return CustomerSiteList;
         }
 
         public static List<CustomerSiteViewModel> GetCustomerSites(long customerId)
