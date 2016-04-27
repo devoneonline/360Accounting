@@ -11,7 +11,7 @@ using System.Web.Mvc;
 namespace _360Accounting.Web.Controllers
 {
     [Authorize]
-    public class ReceiptController : Controller
+    public class ReceiptController : BaseController
     {
         private ICalendarService calendarService;
         //private IReceiptService service;

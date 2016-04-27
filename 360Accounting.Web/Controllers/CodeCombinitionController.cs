@@ -13,7 +13,7 @@ using System.Web.Mvc;
 namespace _360Accounting.Web.Controllers
 {
     [Authorize]
-    public class CodeCombinitionController : Controller
+    public class CodeCombinitionController : BaseController
     {
         public ActionResult Index(long id, CodeCombinitionListModel model, string message="")
         {

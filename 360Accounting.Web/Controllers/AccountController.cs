@@ -9,7 +9,7 @@ using System.Web.Mvc;
 namespace _360Accounting.Web.Controllers
 {
     [Authorize]
-    public class AccountController : AsyncController
+    public class AccountController : BaseController //Inheritance change from AsyncController to BaseController
     {
         public ActionResult AccountListPartial()
         {

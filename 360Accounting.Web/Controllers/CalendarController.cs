@@ -15,7 +15,7 @@ using _360Accounting.Common;
 namespace _360Accounting.Web.Controllers
 {
     [Authorize]
-    public class CalendarController : Controller
+    public class CalendarController : BaseController
     {
         public JsonResult GetPreviousCalendar(int periodYear)
         {

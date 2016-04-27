@@ -15,7 +15,7 @@ using System.Web.Mvc;
 namespace _360Accounting.Web.Controllers
 {
     [Authorize]
-    public class AccountValueController : Controller
+    public class AccountValueController : BaseController
     {
         public ActionResult Index(AccountValueListModel model, string message="")
         {

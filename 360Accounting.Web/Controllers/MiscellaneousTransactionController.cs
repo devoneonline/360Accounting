@@ -17,7 +17,7 @@ using _360Accounting.Web.Helpers;
 namespace _360Accounting.Web.Controllers
 {
     [Authorize]
-    public class MiscellaneousTransactionController : Controller
+    public class MiscellaneousTransactionController : BaseController
     {
         private ICodeCombinitionService codeCombinitionService;
 

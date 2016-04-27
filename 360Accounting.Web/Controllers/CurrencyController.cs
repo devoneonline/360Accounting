@@ -12,7 +12,7 @@ using _360Accounting.Core.Entities;
 namespace _360Accounting.Web.Controllers
 {
     [Authorize]
-    public class CurrencyController : Controller
+    public class CurrencyController : BaseController
     {
         public ActionResult Index(string message="")
         {

@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Controllers
 {
-    public class ReceivablePeriodController : Controller
+    public class ReceivablePeriodController : BaseController
     {
         public ActionResult Index(ReceivablePeriodListModel model)
         {

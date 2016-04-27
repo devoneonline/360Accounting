@@ -14,7 +14,7 @@ using DevExpress.Web.Mvc;
 namespace _360Accounting.Web.Controllers
 {
     [Authorize]
-    public class InventoryPeriodController : Controller
+    public class InventoryPeriodController : BaseController
     {
         public ActionResult Index(InventoryPeriodListModel model)
         {

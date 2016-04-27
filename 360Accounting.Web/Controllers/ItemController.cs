@@ -17,7 +17,7 @@ using _360Accounting.Web.Helpers;
 namespace _360Accounting.Web.Controllers
 {
     [Authorize]
-    public class ItemController : Controller
+    public class ItemController : BaseController
     {
         public ItemController()
         {

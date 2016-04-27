@@ -14,7 +14,7 @@ using DevExpress.Web.Mvc;
 namespace _360Accounting.Web.Controllers
 {
     [Authorize]
-    public class PayablePeriodController : Controller
+    public class PayablePeriodController : BaseController
     {
         public ActionResult Index(PayablePeriodListModel model)
         {

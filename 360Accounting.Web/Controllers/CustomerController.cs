@@ -10,7 +10,7 @@ using System.Web.Mvc;
 namespace _360Accounting.Web.Controllers
 {
     [Authorize]
-    public class CustomerController : Controller
+    public class CustomerController : BaseController
     {
         [HttpPost]
         public ActionResult Edit(CustomerModel model)

@@ -14,7 +14,7 @@ using DevExpress.Web.Mvc;
 namespace _360Accounting.Web.Controllers
 {
     [Authorize]
-    public class WarehouseController : Controller
+    public class WarehouseController : BaseController
     {
         public ActionResult Index(WarehouseListModel model)
         {

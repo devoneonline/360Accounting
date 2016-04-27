@@ -17,7 +17,7 @@ using _360Accounting.Web.Helpers;
 namespace _360Accounting.Web.Controllers
 {
     [Authorize]
-    public class LocatorController : Controller
+    public class LocatorController : BaseController
     {
         public ActionResult Delete(string id)
         {

@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Controllers
 {
-    public class RemittanceController : Controller
+    public class RemittanceController : BaseController
     {
         public ActionResult Delete(string remitNo)
         {

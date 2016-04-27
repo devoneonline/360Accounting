@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Controllers
 {
-    public class InvoiceSourceController : Controller
+    public class InvoiceSourceController : BaseController
     {
         public ActionResult Edit(string id)
         {

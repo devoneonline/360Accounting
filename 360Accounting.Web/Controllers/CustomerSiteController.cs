@@ -10,7 +10,7 @@ using System.Web.Mvc;
 namespace _360Accounting.Web.Controllers
 {
     [Authorize]
-    public class CustomerSiteController : Controller
+    public class CustomerSiteController : BaseController
     {
         //private ICustomerSiteService service;
         private ICodeCombinitionService codeCombinationService;

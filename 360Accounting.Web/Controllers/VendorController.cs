@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Controllers
 {
-    public class VendorController : Controller
+    public class VendorController : BaseController
     {
         private ICodeCombinitionService codeCombinationService;
         

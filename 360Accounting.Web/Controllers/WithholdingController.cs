@@ -14,7 +14,7 @@ using DevExpress.Web.Mvc;
 namespace _360Accounting.Web.Controllers
 {
     [Authorize]
-    public class WithholdingController : Controller
+    public class WithholdingController : BaseController
     {
         public ActionResult Index(WithholdingListModel model, string message="")
         {
