@@ -122,7 +122,7 @@ namespace _360Accounting.Web.Controllers
                         model.EndDate == null && vendor.EndDate == null))
                     {
                         VendorHelper.Save(model);
-                        return RedirectToAction("Index", new { Id = model.VendorId });
+                        return RedirectToAction("ListSites", new { Id = model.VendorId });
                     }
                     else
                     {

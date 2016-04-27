@@ -113,6 +113,12 @@
     $(document).ready(function () {
         $('#InvoiceDate').attr('class', 'form-control');
 
+        $('#btnCancel').click(function () {
+            if (confirm('Do you want to leave this page?')) {
+                window.location.href = '@Url.Content("~/PayableInvoice")';
+            }
+        });
+
         $('#InvoiceDate').change(function () {
             $.ajax({
                 url: '@Url.Content("~/PayableInvoice/CheckDate")',
@@ -168,12 +174,6 @@
                         whTaxDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
                     }
                 });
-        });
-
-        $('#btnCancel').click(function () {
-            if (confirm('Do you want to leave this page?')) {
-                window.location.href = '@Url.Content("~/PayableInvoice")';
-            }
         });
 
         $('#btnSave').click(function () {
