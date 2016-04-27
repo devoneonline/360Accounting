@@ -33,10 +33,13 @@ namespace _360Accounting.Web.Models
 
         public long Id { get; set; }
         public long SOBId { get; set; }
-        [Display(Name="Period")]
+
+        [Required(ErrorMessage = "Period is Required.")]
+        [Display(Name="Period *")]
         public long PeriodId { get; set; }
 
-        [Display(Name = "Currency")]
+        [Required(ErrorMessage = "Currency is Required.")]
+        [Display(Name = "Currency *")]
         public long CurrencyId { get; set; }
         public long CompanyId { get; set; }
 
