@@ -26,8 +26,15 @@ namespace _360Accounting.Web.Controllers
         
         public ActionResult Delete(string id)
         {
-            MoveOrderHelper.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                MoveOrderHelper.Delete(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { message = ex.Message });
+            }
         }
 
         public ActionResult Edit(string id)
@@ -42,8 +49,9 @@ namespace _360Accounting.Web.Controllers
             return View("Create", model);
         }
 
-        public ActionResult Index(MoveOrderListModel model)
+        public ActionResult Index(MoveOrderListModel model, string message="")
         {
+            ViewBag.ErrorMessage = message;
             SessionHelper.Item = null;
             model.SOBId = SessionHelper.SOBId;
             return View(model);

@@ -324,8 +324,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            JVHelper.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                JVHelper.Delete(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { message = ex.Message });
+            }
         }
 
         public ActionResult Edit(string id, long currencyId, long periodId)
@@ -334,60 +341,30 @@ namespace _360Accounting.Web.Controllers
             SessionHelper.Calendar = new CalendarViewModel(calendarService.GetSingle(periodId.ToString(), AuthenticationHelper.CompanyId.Value));
             SessionHelper.PrecisionLimit = currencyService.GetSingle(currencyId.ToString(), AuthenticationHelper.CompanyId.Value).Precision;
 
-            ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
-            ViewBag.PeriodName = SessionHelper.Calendar.PeriodName;
-            ViewBag.CurrencyName = CurrencyHelper.GetCurrency(currencyId.ToString()).Name;
-
             model.GlLines = JVHelper.GetGLLines(id);
             model.CurrencyId = currencyId;
             model.SOBId = SessionHelper.SOBId;
             model.PeriodId = periodId;
             SessionHelper.JV = model;
+
+            model.Currencies = CurrencyHelper.GetCurrencyList(SessionHelper.SOBId);
+            model.Periods = CalendarHelper.GetCalendarsList(SessionHelper.SOBId);
+
             return View("Create", model);
         }
 
-        public ActionResult Index(JournalVoucherListModel model)
+        public ActionResult Index(string message="")
         {
+            ViewBag.ErrorMessage = message;
             SessionHelper.JV = null;
-            model.SOBId = SessionHelper.SOBId;
-
-            if (model.Periods == null)
-            {
-                model.Periods = CalendarHelper.GetCalendars(SessionHelper.SOBId)
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.PeriodName,
-                        Value = x.Id.ToString()
-                    }).ToList();
-                model.PeriodId = model.Periods.Any() ? Convert.ToInt32(model.Periods.First().Value) : 0;
-            }
-            else if (model.Periods == null)
-            {
-                model.Periods = new List<SelectListItem>();
-            }
-
-            if (model.Currencies == null)
-            {
-                model.Currencies = CurrencyHelper.GetCurrencies(SessionHelper.SOBId)
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.Name,
-                        Value = x.Id.ToString()
-                    }).ToList();
-                model.CurrencyId = model.Currencies.Any() ? Convert.ToInt32(model.Currencies.First().Value) : 0;                
-            }
-            else if (model.Currencies == null)
-            {
-                model.Currencies = new List<SelectListItem>();
-            }
-
-            return View(model);
+            
+            return View();
         }
 
-        public ActionResult ListPartial(long periodId, long currencyId)
+        public ActionResult ListPartial()
         {
             return PartialView("_List", JVHelper
-                .GetGLHeaders(SessionHelper.SOBId, periodId, currencyId));
+                .GetGLHeaders(SessionHelper.SOBId));
         }
 
         public ActionResult EmptyListPartial()
@@ -395,31 +372,37 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_List", new List<GLHeaderModel>());
         }
 
-        public ActionResult Create(long periodId, long currencyId)
+        public ActionResult Create()
         {
-            SessionHelper.Calendar = CalendarHelper.GetCalendar(periodId.ToString());
-            SessionHelper.PrecisionLimit = CurrencyHelper.GetCurrency(currencyId.ToString()).Precision;
-
-            ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
-            ViewBag.PeriodName = SessionHelper.Calendar.PeriodName;
-            ViewBag.CurrencyName = CurrencyHelper.GetCurrency(currencyId.ToString()).Name;
-
             GLHeaderModel model = SessionHelper.JV;
             if (model == null)
             {
+                model = new GLHeaderModel();
                 model = new GLHeaderModel
                 {
                     CompanyId = AuthenticationHelper.CompanyId.Value,
                     SOBId = SessionHelper.SOBId,
-                    PeriodId = periodId,
-                    CurrencyId = currencyId,
                     GlLines = new List<GLLinesModel>(),
                     DocumentNo = "New",
-                    GLDate = SessionHelper.Calendar.StartDate,
                     ConversionRate = 1
                 };
                 SessionHelper.JV = model;
             }
+            model.Currencies = CurrencyHelper.GetCurrencyList(SessionHelper.SOBId);
+            model.Periods = CalendarHelper.GetCalendarsList(SessionHelper.SOBId);
+
+            if (model.Currencies != null && model.Currencies.Count() > 0)
+            {
+                model.CurrencyId = Convert.ToInt64(model.Currencies.FirstOrDefault().Value);
+                SessionHelper.PrecisionLimit = CurrencyHelper.GetCurrency(model.CurrencyId.ToString()).Precision;
+            }
+            if (model.Periods != null && model.Periods.Count() > 0)
+            {
+                model.PeriodId = Convert.ToInt64(model.Periods.FirstOrDefault().Value);
+                SessionHelper.Calendar = CalendarHelper.GetCalendar(model.PeriodId.ToString());
+                model.GLDate = SessionHelper.Calendar.StartDate;
+            }
+
             return View(model);
         }
 
@@ -527,7 +510,7 @@ namespace _360Accounting.Web.Controllers
             return PartialView("createPartial");
         }
         
-        public ActionResult SaveVoucher(string journalName, string glDate, string cRate, string descr)
+        public ActionResult SaveVoucher(string journalName, string glDate, string cRate, string descr, long periodId, long currencyId)
         {
             string message = "";
             try
@@ -541,18 +524,27 @@ namespace _360Accounting.Web.Controllers
                     }
                     else if (SessionHelper.JV.GlLines.Sum(cri => cri.EnteredDr) == SessionHelper.JV.GlLines.Sum(cri => cri.EnteredCr))
                     {
+                        SessionHelper.PrecisionLimit = CurrencyHelper.GetCurrency(currencyId.ToString()).Precision;
+
                         SessionHelper.JV.JournalName = journalName;
                         SessionHelper.JV.GLDate = Convert.ToDateTime(glDate);
                         SessionHelper.JV.ConversionRate = Convert.ToDecimal(cRate);
                         SessionHelper.JV.Description = descr;
-                        if (SessionHelper.JV.DocumentNo == "New")
+                        SessionHelper.JV.PeriodId = periodId;
+                        SessionHelper.JV.CurrencyId = currencyId;
+                        if (SessionHelper.JV.GLDate >= SessionHelper.Calendar.StartDate && SessionHelper.JV.GLDate <= SessionHelper.Calendar.EndDate)
                         {
-                            SessionHelper.JV.DocumentNo = JVHelper.GetDocNo(AuthenticationHelper.CompanyId.Value, SessionHelper.JV.PeriodId, SessionHelper.JV.SOBId, SessionHelper.JV.CurrencyId);
-                        }
+                            if (SessionHelper.JV.DocumentNo == "New")
+                            {
+                                SessionHelper.JV.DocumentNo = JVHelper.GetDocNo(AuthenticationHelper.CompanyId.Value, SessionHelper.JV.PeriodId, SessionHelper.JV.SOBId, SessionHelper.JV.CurrencyId);
+                            }
 
-                        JVHelper.Update(SessionHelper.JV);
-                        SessionHelper.JV = null;
-                        saved = true;
+                            JVHelper.Update(SessionHelper.JV);
+                            SessionHelper.JV = null;
+                            saved = true;
+                        }
+                        else
+                            message = "GL Date must lie in the range of the selected period";
                     }
                     else
                         message = "The sum of Debit and Credit should be equal.";
@@ -568,26 +560,9 @@ namespace _360Accounting.Web.Controllers
             }
         }
 
-        public JsonResult CurrencyList()
+        public void AddCalendarinSession(long periodId)
         {
-            List<SelectListItem> list = CurrencyHelper.GetCurrencies(SessionHelper.SOBId)
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.Name,
-                        Value = x.Id.ToString()
-                    }).ToList();
-            return Json(list, JsonRequestBehavior.AllowGet);
-        }
-
-        public JsonResult PeriodList()
-        {
-            List<SelectListItem> periodList = CalendarHelper.GetCalendars(SessionHelper.SOBId)
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.PeriodName,
-                        Value = x.Id.ToString()
-                    }).ToList();
-            return Json(periodList, JsonRequestBehavior.AllowGet);
+            SessionHelper.Calendar = CalendarHelper.GetCalendar(periodId.ToString());
         }
     }
 }

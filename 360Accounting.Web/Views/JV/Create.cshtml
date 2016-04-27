@@ -20,7 +20,6 @@
     {
         @Html.HiddenFor(m=> m.Id)
         @Html.HiddenFor(m=> m.SOBId)
-        @Html.HiddenFor(m=> m.PeriodId)
         @Html.HiddenFor(m=> m.CompanyId)
         @Html.HiddenFor(m => m.CreateBy)
         @Html.HiddenFor(m => m.CreateDate)
@@ -29,10 +28,6 @@
         
         <div class="row">
             <div class="col-lg-12">
-                <div class="navbar-left">
-                    SOB: @ViewBag.SOBName / Period: @ViewBag.PeriodName / Currency : @ViewBag.CurrencyName
-                </div>
-
                 <div class="navbar-right">
                     <input type="button" value="Save" id="btnSave" class="btn btn-default tstyCus-btn" />
                     <input type="button" value="Cancel" id="btnCancel" class="btn btn-default tstyCus-btn" /> 
@@ -67,7 +62,19 @@
             
         </div>
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-2">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CurrencyId)
+                    @Html.DropDownListFor(model => model.CurrencyId, Model.Currencies, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PeriodId)
+                    @Html.DropDownListFor(model => model.PeriodId, Model.Periods, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-7 col-lg-offset-1">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Description)
                     @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
@@ -114,8 +121,19 @@
                         $('#btnSave').attr('disabled', false)
                 },
                 error: function () { }
-            })
-        })
+            });
+        });
+
+        $('#PeriodId').change(function () {
+            $.ajax({
+                url: '@Url.Content("~/JV/AddCalendarinSession")',
+                data: { periodId: $(this).val() },
+                type: 'post',
+                datatype: 'json',
+                success: function (data) { },
+                error: function () { }
+            });
+        });
 
         $('#btnCancel').click(function () {
             if (confirm('Do you want to leave this page?')) {
@@ -128,9 +146,11 @@
             var glDate = $('#GLDate').val();
             var cRate = $('#ConversionRate').val();
             var descr = $('#Description').val();
+            var periodId = $('#PeriodId').val();
+            var currencyId = $('#CurrencyId').val();
 
             var url = '@Url.Content("~/JV/SaveVoucher")';
-            $.post(url, { journalName: journalName, glDate: glDate, cRate: cRate, descr: descr },
+            $.post(url, { journalName: journalName, glDate: glDate, cRate: cRate, descr: descr, periodId:periodId, currencyId:currencyId },
                 function (result) {
                     if (result.success)
                         window.location.href = '@Url.Content("~/JV")';

@@ -17,12 +17,38 @@ namespace _360Accounting.Data.Repositories
             return invoice;
         }
 
-        public IEnumerable<Invoice> GetAll(long companyId, long sobId, long periodId, long currencyId)
+        public IEnumerable<InvoiceView> GetAll(long companyId, long sobId)
         {
-            IEnumerable<Invoice> list = this.Context.Invoices.Where(x => x.SOBId == sobId && 
-                    x.PeriodId == periodId &&
-                    x.CurrencyId == currencyId).ToList();
-            return list;
+            var query = (from a in this.Context.Invoices
+                        join b in this.Context.Calendars on a.PeriodId equals b.Id
+                        join c in this.Context.Currencies on a.CurrencyId equals c.Id
+                        where a.CompanyId == companyId && a.SOBId == sobId
+
+                        select new InvoiceView
+                        {
+                            CompanyId = a.CompanyId,
+                            ConversionRate = a.ConversionRate,
+                            CreateBy = a.CreateBy,
+                            CreateDate = a.CreateDate,
+                            CurrencyId = a.CurrencyId,
+                            CurrencyName = c.Name,
+                            CustomerId = a.CustomerId,
+                            CustomerSiteId = a.CustomerSiteId,
+                            Id = a.Id,
+                            InvoiceDate = a.InvoiceDate,
+                            InvoiceNo = a.InvoiceNo,
+                            InvoiceType = a.InvoiceType,
+                            PeriodId = a.PeriodId,
+                            PeriodName = b.PeriodName,
+                            Remarks = a.Remarks,
+                            SOBId = a.SOBId,
+                            UpdateBy = a.UpdateBy,
+                            UpdateDate = a.UpdateDate
+                        }).ToList();
+            //IEnumerable<Invoice> list = this.Context.Invoices.Where(x => x.SOBId == sobId && 
+            //        x.PeriodId == periodId &&
+            //        x.CurrencyId == currencyId).ToList();
+            return query;
         }
 
         public IEnumerable<Invoice> GetInvoices(long companyId, long sobId, long periodId)

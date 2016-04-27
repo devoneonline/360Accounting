@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
@@ -14,7 +15,9 @@ namespace _360Accounting.Web.Models
         
         public long SOBId { get; set; }
         public long CompanyId { get; set; }
+        [Display(Name="Period")]
         public long PeriodId { get; set; }
+        [Display(Name = "Currency")]
         public long CurrencyId { get; set; }
         
         [Display(Name = "Journal Name")]
@@ -32,7 +35,15 @@ namespace _360Accounting.Web.Models
         [Display(Name = "Conversion Rate")]
         public decimal ConversionRate { get; set; }
 
+        public string PeriodName { get; set; }
+
+        public string CurrencyName { get; set; }
+
         public IList<GLLinesModel> GlLines { get; set; }
+
+        public List<SelectListItem> Currencies { get; set; }
+
+        public List<SelectListItem> Periods { get; set; }
 
         public GLHeaderModel()
         {
@@ -55,6 +66,8 @@ namespace _360Accounting.Web.Models
             this.CreateDate = entity.CreateDate;
             this.UpdateBy = entity.UpdateBy;
             this.UpdateDate = entity.UpdateDate;
+            this.PeriodName = "";
+            this.CurrencyName = "";
         }
     }
 

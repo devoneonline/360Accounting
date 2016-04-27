@@ -1,5 +1,4 @@
 ﻿@Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
-@model _360Accounting.Web.Models.InvoiceListModel
 
 @{
     ViewBag.Title = "Customer Invoice";
@@ -13,29 +12,19 @@
             </h3>
         </div>
     </div>
-
-    <div class="col-lg-2">
-        <div class="form-group customDropDownWrapper">
-            @Html.LabelFor(m => m.Periods)
-            @Html.DropDownListFor(m => m.PeriodId, Model.Periods, new { @class = "form-control criteria" })
-        </div>
-    </div>
-
-    <div class="col-lg-2">
-        <div class="form-group customDropDownWrapper">
-            @Html.LabelFor(m => m.Currencies)
-            @Html.DropDownListFor(m => m.CurrencyId, Model.Currencies, new { @class = "form-control criteria" })
-        </div>
-    </div>
-
     <div class="col-lg-12">
         <div class="form-group">
             <input type="button" id="btnCreate" value="Create New" class="btn btn-default tstyCus-btn" />
         </div>
     </div>
-
+    @if (ViewBag.ErrorMessage != "")
+    {
+        <div class="form-group col-lg-12">
+            @ViewBag.ErrorMessage
+        </div>
+    }
     <div id="dvList" class="col-lg-12 cusGridWrapper">
-        @Html.Action("ListPartial", new { periodId = Model.PeriodId, currencyId = Model.CurrencyId })
+        @Html.Action("ListPartial")
     </div>
 </div>
 
@@ -55,78 +44,8 @@
 
     $(document).ready(function () {
         $('#btnCreate').click(function () {
-            var continueCreate = true;
-
-            var inValidInputs = $('#SOBId, #PeriodId, #CurrencyId').filter(function () { return $(this).val() == null; });
-            inValidInputs.each(function (index, item) {
-                $('#' + item.id).css('border', '1px solid #ff6600');
-                continueCreate = false;
-            })
-
-            if (continueCreate) {
-                var url = '@Url.Content("~/Invoice/Create?periodId=")' + $('#PeriodId').val() +
-                    "&currencyId=" + $('#CurrencyId').val();
-                window.location.href = url;
-            }
-            else
-                alert('Please select the values.');
-        });
-
-        jQuery.ajaxSetup({ async: false });
-
-        function RefreshGrid() {
-            if ($('#PeriodId').val() == null || $('#CurrencyId').val() == null)
-                $('#dvList').html(GetEmptyList('@Url.Content("~/Invoice/EmptyListPartial")'));
-            else
-                $('#dvList').html(GetData('@Url.Content("~/Invoice/ListPartial")', { periodId: $('#PeriodId').val(), currencyId: $('#CurrencyId').val() }));
-        }
-
-        $('#PeriodId, #CurrencyId').change(function () {
-            RefreshGrid();
-        });
-
-        $('#SOBId').change(function () {
-            SetMultiselect('PeriodId', GetData('@Url.Content("~/Invoice/PeriodList")', { }));
-            SetMultiselect('CurrencyId', GetData('@Url.Content("~/Invoice/CurrencyList")', { }));
-            RefreshGrid();
+            var url = '@Url.Content("~/Invoice/Create")';
+            window.location.href = url;
         });
     });
-
-    function GetEmptyList(url) {
-        var returnedData = [];
-        $('#dvList').html("Please wait..");
-        $.ajax({
-            url: url,
-            data: {},
-            datatype: 'json',
-            type: 'get',
-            async: false,
-            error: function (data) {
-                alert(data);
-            },
-            success: function (rtnData) {
-                returnedData = rtnData;
-            }
-        });
-
-        return returnedData;
-    }
-
-    function GetData(url, data) {
-        var returnedData = [];
-        $('#dvList').html("Please wait..");
-        $.ajax({
-            url: url,
-            data: data,
-            datatype: 'json',
-            type: 'get',
-            async: false,
-            error: function (data) { alert(data); },
-            success: function (rtnData) {
-                returnedData = rtnData;
-            }
-        });
-
-        return returnedData;
-    }
 </script>

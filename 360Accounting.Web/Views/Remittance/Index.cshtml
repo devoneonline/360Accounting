@@ -33,7 +33,12 @@
             <input type="button" id="btnCreate" value="Create New" class="btn btn-default tstyCus-btn" />
         </div>
     </div>
-
+    @if (ViewBag.ErrorMessage != "")
+    {
+        <div class="form-group col-lg-12">
+            @ViewBag.ErrorMessage
+        </div>
+    }
     <div id="dvList" class="col-lg-12 cusGridWrapper">
         @*@Html.Partial("_List", Model.Remittances)*@
         @Html.Action("ListPartial", new { bankId = Model.BankId, bankAccountId = Model.BankAccountId })                                                                                           @*Make AR*@

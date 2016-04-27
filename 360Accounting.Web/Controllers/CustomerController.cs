@@ -38,8 +38,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            CustomerHelper.DeleteCustomer(id);
-            return RedirectToAction("Index");
+            try
+            {
+                CustomerHelper.DeleteCustomer(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { message = ex.Message });
+            }
         }
 
         public ActionResult CustomerListPartial()
@@ -52,8 +59,9 @@ namespace _360Accounting.Web.Controllers
             return View("Edit", new CustomerModel());
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string message = "")
         {
+            ViewBag.ErrorMessage = message;
             CustomerListModel model = new CustomerListModel();
             model.Customers = CustomerHelper.GetCustomers();
             return View(model);

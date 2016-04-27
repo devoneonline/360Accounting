@@ -13,8 +13,9 @@ namespace _360Accounting.Web.Controllers
     [Authorize]
     public class BankController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(string message = "")
         {
+            ViewBag.ErrorMessage = message;
             BankListModel model = new BankListModel();
             model.SOBId = SessionHelper.SOBId;
             return View(model);
@@ -38,8 +39,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            BankHelper.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                BankHelper.Delete(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { message = ex.Message });
+            }
         }
 
         public ActionResult BankListPartial()

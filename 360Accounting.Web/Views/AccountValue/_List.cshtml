@@ -34,7 +34,6 @@ var grid = Html.DevExpress().GridView(settings =>
         column.Settings.AllowSort = DefaultBoolean.False;
         column.Width = 70;
     });
-    settings.Columns.Add("Segment");
     settings.Columns.Add("ValueName", "Detail");
     settings.Columns.Add("Value");
     settings.Columns.Add("StartDate").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;

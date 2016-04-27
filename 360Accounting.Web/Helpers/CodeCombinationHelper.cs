@@ -69,12 +69,12 @@ namespace _360Accounting.Web
                 .Where(x => x.AllowedPosting == true).ToList();
             if (startDate != null)
             {
-                codeCombinationList = codeCombinationList.Where(a => a.StartDate <= startDate).ToList();
+                codeCombinationList = codeCombinationList.Where(a => a.StartDate <= startDate || a.StartDate == null).ToList();
             }
 
             if (endDate != null)
             {
-                codeCombinationList = codeCombinationList.Where(a => a.EndDate >= endDate).ToList();
+                codeCombinationList = codeCombinationList.Where(a => a.EndDate >= endDate || a.EndDate == null).ToList();
             }
 
             List<SelectListItem> list = codeCombinationList.Select(x => new SelectListItem

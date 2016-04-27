@@ -17,8 +17,9 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_List", accountsList);
         }
 
-        public ActionResult Index(AccountListModel model)
+        public ActionResult Index(AccountListModel model, string message="")
         {
+            ViewBag.ErrorMessage = message;
             model.Accounts = AccountHelper.GetAccounts(model.SearchText, true, model.Page, model.SortColumn, model.SortDirection);
             return View(model);
         }
@@ -46,7 +47,12 @@ namespace _360Accounting.Web.Controllers
                 if (model.Id > 0)
                 {
                     string result = AccountHelper.SaveChartOfAccount(model);
-                    return RedirectToAction("Index");
+                    if (result.Contains("can not be marked as disabled"))
+                    {
+                        ModelState.AddModelError("Error", result);
+                    }
+                    else
+                        return RedirectToAction("Index");
                 }
                 else
                 {
@@ -67,8 +73,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            AccountHelper.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                AccountHelper.Delete(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { message = ex.Message });
+            }
         }
     }
 }

@@ -18,6 +18,12 @@
         <div class="form-group col-lg-12 ">
             <input type="button" value="Create New" class="btn btn-default tstyCus-btn" id="btnNew" />
         </div>
+        @if (ViewBag.ErrorMessage != "")
+        {
+            <div class="form-group col-lg-12">
+                @ViewBag.ErrorMessage
+            </div>
+        }
         <div class="col-lg-12 cusGridWrapper">
             @Html.Action("CustomerListPartial")
         </div>

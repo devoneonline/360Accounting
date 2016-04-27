@@ -15,7 +15,7 @@ namespace _360Accounting.Web.Controllers
     [Authorize]
     public class CodeCombinitionController : Controller
     {
-        public ActionResult Index(long id, CodeCombinitionListModel model)
+        public ActionResult Index(long id, CodeCombinitionListModel model, string message="")
         {
             model.SOBId = id;
             model.CodeCombinitions = CodeCombinationHelper.GetCodeCombinations(model);
@@ -109,8 +109,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            CodeCombinationHelper.Delete(id);
-            return RedirectToAction("Index", new { id = SessionHelper.SOBId });
+            try
+            {
+                CodeCombinationHelper.Delete(id);
+                return RedirectToAction("Index", new { id = SessionHelper.SOBId });
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { id = SessionHelper.SOBId, message=ex.Message });
+            }
         }
 
         public ActionResult GetCodeCombinitionList()

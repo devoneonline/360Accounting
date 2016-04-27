@@ -345,6 +345,54 @@ namespace _360Accounting.Web
         {
             if (model.Id > 0)
             {
+                if (!string.IsNullOrEmpty(model.SegmentName1) && !model.SegmentEnabled1)
+                {
+                    List<AccountValueViewModel> accountValues = AccountValueHelper.GetAccountValues(model.Id, SessionHelper.SOBId, model.SegmentName1);
+                    if (accountValues.Any())
+                        return "Segment 1 can not be marked as disabled";
+                }
+                else if (!string.IsNullOrEmpty(model.SegmentName2) && !model.SegmentEnabled2)
+                {
+                    List<AccountValueViewModel> accountValues = AccountValueHelper.GetAccountValues(model.Id, SessionHelper.SOBId, model.SegmentName2);
+                    if (accountValues.Any())
+                        return "Segment 2 can not be marked as disabled";
+                }
+                else if (!string.IsNullOrEmpty(model.SegmentName3) && !model.SegmentEnabled3)
+                {
+                    List<AccountValueViewModel> accountValues = AccountValueHelper.GetAccountValues(model.Id, SessionHelper.SOBId, model.SegmentName3);
+                    if (accountValues.Any())
+                        return "Segment 3 can not be marked as disabled";
+                }
+                else if (!string.IsNullOrEmpty(model.SegmentName4) && !model.SegmentEnabled4)
+                {
+                    List<AccountValueViewModel> accountValues = AccountValueHelper.GetAccountValues(model.Id, SessionHelper.SOBId, model.SegmentName4);
+                    if (accountValues.Any())
+                        return "Segment 4 can not be marked as disabled";
+                }
+                else if (!string.IsNullOrEmpty(model.SegmentName5) && !model.SegmentEnabled5)
+                {
+                    List<AccountValueViewModel> accountValues = AccountValueHelper.GetAccountValues(model.Id, SessionHelper.SOBId, model.SegmentName5);
+                    if (accountValues.Any())
+                        return "Segment 5 can not be marked as disabled";
+                }
+                else if (!string.IsNullOrEmpty(model.SegmentName6) && !model.SegmentEnabled6)
+                {
+                    List<AccountValueViewModel> accountValues = AccountValueHelper.GetAccountValues(model.Id, SessionHelper.SOBId, model.SegmentName6);
+                    if (accountValues.Any())
+                        return "Segment 6 can not be marked as disabled";
+                }
+                else if (!string.IsNullOrEmpty(model.SegmentName7) && !model.SegmentEnabled7)
+                {
+                    List<AccountValueViewModel> accountValues = AccountValueHelper.GetAccountValues(model.Id, SessionHelper.SOBId, model.SegmentName7);
+                    if (accountValues.Any())
+                        return "Segment 7 can not be marked as disabled";
+                }
+                else if (!string.IsNullOrEmpty(model.SegmentName8) && !model.SegmentEnabled8)
+                {
+                    List<AccountValueViewModel> accountValues = AccountValueHelper.GetAccountValues(model.Id, SessionHelper.SOBId, model.SegmentName8);
+                    if (accountValues.Any())
+                        return "Segment 8 can not be marked as disabled";
+                }
                 return service.Update(getEntityByModel(model));
             }
             else
@@ -355,6 +403,10 @@ namespace _360Accounting.Web
 
         public static void Delete(string id)
         {
+            List<AccountValueViewModel> accountValues = AccountValueHelper.GetAccountValuesbyChartId(Convert.ToInt64(id), SessionHelper.SOBId);
+            if (accountValues.Any())
+                throw new Exception("The account having values, cannot be deleted");
+
             service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
 

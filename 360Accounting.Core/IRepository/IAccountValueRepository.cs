@@ -14,5 +14,7 @@ namespace _360Accounting.Core.Interfaces
         List<AccountValue> GetAccountValuesBySegment(long chartId, long sobId, string segment, int segmentNo, bool fetchSaved);
         
         List<AccountValue> GetAccountValuesBySegment(long chartId, long sobId, string segment);
+
+        List<AccountValue> GetAccountValuesByChartId(long chartId, long sobId);
     }
 }

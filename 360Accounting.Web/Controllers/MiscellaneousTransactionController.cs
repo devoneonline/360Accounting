@@ -43,8 +43,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            MiscellaneousTransactionHelper.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                MiscellaneousTransactionHelper.Delete(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { message = ex.Message });
+            }
         }
 
         public ActionResult Edit(string id)
@@ -62,8 +69,9 @@ namespace _360Accounting.Web.Controllers
             return View("Create", model);
         }
 
-        public ActionResult Index(MiscellaneousTransactionListModel model)
+        public ActionResult Index(MiscellaneousTransactionListModel model, string message="")
         {
+            ViewBag.ErrorMessage = message;
             SessionHelper.MiscellaneousTransaction = null;
             model.SOBId = SessionHelper.SOBId;
             return View(model);

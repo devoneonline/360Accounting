@@ -23,8 +23,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            InvoiceHelper.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                InvoiceHelper.Delete(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { message = ex.Message });
+            }
         }
 
         public ActionResult Edit(string id, long currencyId, long periodId)
@@ -32,10 +39,6 @@ namespace _360Accounting.Web.Controllers
             InvoiceModel model = InvoiceHelper.GetInvoice(id);
             SessionHelper.Calendar = CalendarHelper.GetCalendar(ReceivablePeriodHelper.GetReceivablePeriod(periodId.ToString()).CalendarId.ToString());
             SessionHelper.PrecisionLimit = CurrencyHelper.GetCurrency(currencyId.ToString()).Precision;
-
-            ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
-            ViewBag.PeriodName = SessionHelper.Calendar.PeriodName;
-            ViewBag.CurrencyName = CurrencyHelper.GetCurrency(currencyId.ToString()).Name;
 
             model.InvoiceDetail = InvoiceHelper.GetInvoiceDetail(id);
             model.CurrencyId = currencyId;
@@ -60,12 +63,14 @@ namespace _360Accounting.Web.Controllers
                 Text = customerSite.SiteName
             });
 
+            model.Currencies = CurrencyHelper.GetCurrencyList(SessionHelper.SOBId);
+            model.Periods = CalendarHelper.GetCalendarsList(SessionHelper.SOBId);
+
             SessionHelper.Invoice = model;
             return View(model);
         }
 
-        public ActionResult SaveInvoice(string invoiceType, string invoiceDate, 
-            string conversionRate, string remarks, long customerId, long customerSiteId)
+        public ActionResult SaveInvoice(string invoiceType, string invoiceDate, string conversionRate, string remarks, long customerId, long customerSiteId, long periodId, long currencyId)
         {
             string message = "";
             try
@@ -85,6 +90,8 @@ namespace _360Accounting.Web.Controllers
                         SessionHelper.Invoice.Remarks = remarks;
                         SessionHelper.Invoice.CustomerId = customerId;
                         SessionHelper.Invoice.CustomerSiteId = customerSiteId;
+                        SessionHelper.Invoice.PeriodId = periodId;
+                        SessionHelper.Invoice.CurrencyId = currencyId;
                         if (SessionHelper.Invoice.InvoiceNo == "New")
                         {
                             SessionHelper.Invoice.InvoiceNo = InvoiceHelper.GetInvoiceNo(AuthenticationHelper.CompanyId.Value, SessionHelper.Invoice.SOBId, SessionHelper.Invoice.PeriodId, SessionHelper.Invoice.CurrencyId);
@@ -224,53 +231,47 @@ namespace _360Accounting.Web.Controllers
             return Json(result);
         }
 
-        public ActionResult Create(long periodId, long currencyId)
+        public ActionResult Create()
         {
-            SessionHelper.Calendar = CalendarHelper.GetCalendar(ReceivablePeriodHelper.GetReceivablePeriod(periodId.ToString()).CalendarId.ToString());
-            SessionHelper.PrecisionLimit = CurrencyHelper.GetCurrency(currencyId.ToString()).Precision;
-
-            ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
-            ViewBag.PeriodName = SessionHelper.Calendar.PeriodName;
-            ViewBag.CurrencyName = CurrencyHelper.GetCurrency(currencyId.ToString()).Name;
-
             InvoiceModel model = SessionHelper.Invoice;
             if (model == null)
             {
-                List<SelectListItem> customers = CustomerHelper.GetCustomers(SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate)
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.CustomerName,
-                        Value = x.Id.ToString()
-                    }).ToList();
-
-                List<SelectListItem> customerSites = 
-                    CustomerHelper.GetCustomerSites
-                    (customers.Any() ? Convert.ToInt32(customers.First().Value) : 0)
-                    .Select(x => new SelectListItem
-                    {
-                        Text = x.SiteName,
-                        Value = x.Id.ToString()
-                    }).ToList();
-
                 model = new InvoiceModel
                 {
                     CompanyId = AuthenticationHelper.CompanyId.Value,
-                    CurrencyId = currencyId,
-                    Customers = customers.Any() ? customers : new List<SelectListItem>(),
-                    CustomerId = customers.Any() ? 
-                    Convert.ToInt32(customers.First().Value) : 0,
-                    CustomerSites = customerSites.Any() ? customerSites : new List<SelectListItem>(),
-                    CustomerSiteId = customerSites.Any() ?
-                    Convert.ToInt32(customerSites.First().Value) : 0,
-                    InvoiceDate = SessionHelper.Calendar.StartDate,
                     InvoiceDetail = new List<InvoiceDetailModel>(),
                     InvoiceNo = "New",
-                    PeriodId = periodId,
                     SOBId = SessionHelper.SOBId,
                     ConversionRate = 1
                 };
                 SessionHelper.Invoice = model;
             }
+            model.Currencies = CurrencyHelper.GetCurrencyList(SessionHelper.SOBId);
+            model.Periods = CalendarHelper.GetCalendarsList(SessionHelper.SOBId);
+
+            if (model.Currencies != null && model.Currencies.Count() > 0)
+            {
+                model.CurrencyId = Convert.ToInt64(model.Currencies.FirstOrDefault().Value);
+                SessionHelper.PrecisionLimit = CurrencyHelper.GetCurrency(model.CurrencyId.ToString()).Precision;
+            }
+            if (model.Periods != null && model.Periods.Count() > 0)
+            {
+                model.PeriodId = Convert.ToInt64(model.Periods.FirstOrDefault().Value);
+                SessionHelper.Calendar = CalendarHelper.GetCalendar(model.PeriodId.ToString());
+                model.InvoiceDate = SessionHelper.Calendar.StartDate;
+                
+                model.Customers = CustomerHelper.GetCustomersCombo(SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
+                if (model.Customers != null && model.Customers.Count() > 0)
+                {
+                    model.CustomerId = Convert.ToInt64(model.Customers.FirstOrDefault().Value);
+                    model.CustomerSites = CustomerHelper.GetCustomerSitesCombo(model.CustomerId);
+                    if (model.CustomerSites != null && model.CustomerSites.Count() > 0)
+                    {
+                        model.CustomerSiteId = Convert.ToInt64(model.CustomerSites.FirstOrDefault().Value);
+                    }
+                }
+            }
+
             return View("Edit", model);
         }
 
@@ -291,10 +292,10 @@ namespace _360Accounting.Web.Controllers
             return Json(periodList, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ListPartial(long periodId, long currencyId)
+        public ActionResult ListPartial()
         {
             return PartialView("_List", InvoiceHelper
-                .GetInvoices(SessionHelper.SOBId, periodId, currencyId));
+                .GetInvoices(SessionHelper.SOBId));
         }
 
         public ActionResult EmptyListPartial()
@@ -302,39 +303,17 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_List", new List<InvoiceModel>());
         }
 
-        public ActionResult Index(InvoiceListModel model)
+        public ActionResult Index(string message="")
         {
+            ViewBag.ErrorMessage = message;
             SessionHelper.Invoice = null;
-            model.SOBId = SessionHelper.SOBId;
-            if (model.Periods == null)
-            {
-                model.Periods = ReceivablePeriodHelper.GetPeriodList(SessionHelper.SOBId);
-                model.PeriodId = model.Periods.Any() ?
-                    Convert.ToInt32(model.Periods.First().Value) : 0;
-            }
-            else if (model.Periods == null)
-            {
-                model.Periods = new List<SelectListItem>();
-            }
-
-            if (model.Currencies == null)
-            {
-                model.Currencies = CurrencyHelper.GetCurrencies(SessionHelper.SOBId)
-                    .Select(x => new SelectListItem 
-                    {
-                        Text = x.Name,
-                        Value = x.Id.ToString()
-                    }).ToList();
-                model.CurrencyId = model.Currencies.Any() ?
-                    Convert.ToInt32(model.Currencies.First().Value) : 0;
-            }
-            else if (model.Currencies == null)
-            {
-                model.Currencies = new List<SelectListItem>();
-            }
-
-            return View(model);
+            
+            return View();
         }
- 
+
+        public void AddCalendarinSession(long periodId)
+        {
+            SessionHelper.Calendar = CalendarHelper.GetCalendar(periodId.ToString());
+        }
     }
 }

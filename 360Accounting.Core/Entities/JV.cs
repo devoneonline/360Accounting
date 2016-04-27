@@ -20,6 +20,23 @@ namespace _360Accounting.Core.Entities
         public decimal ConversionRate { get; set; }
     }
 
+    public class GLHeaderView : EntityBase
+    {
+        public long Id { get; set; }
+        public long SOBId { get; set; }
+        public long CompanyId { get; set; }
+        public long PeriodId { get; set; }
+        public long CurrencyId { get; set; }
+        public string JournalName { get; set; }
+        public string Description { get; set; }
+        public DateTime GLDate { get; set; }
+        public string DocumentNo { get; set; }
+        public decimal ConversionRate { get; set; }
+
+        public string PeriodName { get; set; }
+        public string CurrencyName { get; set; }
+    }
+
 
     public class GLLines : EntityBase
     {

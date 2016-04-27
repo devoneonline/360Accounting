@@ -14,8 +14,9 @@ namespace _360Accounting.Web.Controllers
     [Authorize]
     public class CompanyController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(string message = "")
         {
+            ViewBag.ErrorMessage = message;
             CompanyListModel model = new CompanyListModel();
             model.Companies = CompanyHelper.GetCompanies();
             return View(model);
@@ -52,8 +53,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            CompanyHelper.DeleteCompany(id);
-            return RedirectToAction("Index");
+            try
+            {
+                CompanyHelper.DeleteCompany(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { message = ex.Message });
+            }
         }
 
         public ActionResult CompanyListPartial()

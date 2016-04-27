@@ -28,10 +28,34 @@ namespace _360Accounting.Data.Repositories
                     OrderByDescending(rec => rec.Id).FirstOrDefault();
             return entity;
         }
-        public IEnumerable<GLHeader> GetAll(long companyId, long sobId, long periodId, long currencyId)
+
+        public IEnumerable<GLHeaderView> GetAll(long companyId, long sobId)
         {
-            IEnumerable<GLHeader> entityList = this.Context.GLHeaders.Where(x => x.CompanyId == companyId && x.CurrencyId == currencyId & x.PeriodId == periodId && x.SOBId == sobId);
-            return entityList;
+            var query = (from a in this.Context.GLHeaders
+                        join b in this.Context.Calendars on a.PeriodId equals b.Id
+                        join c in this.Context.Currencies on a.CurrencyId equals c.Id
+                        where a.CompanyId == companyId && a.SOBId == sobId
+                        select new GLHeaderView
+                        {
+                            CompanyId = a.CompanyId,
+                            CurrencyId = a.CurrencyId,
+                            PeriodId = a.PeriodId,
+                            ConversionRate = a.ConversionRate,
+                            CreateBy = a.CreateBy,
+                            CreateDate = a.CreateDate,
+                            CurrencyName = c.Name,
+                            Description = a.Description,
+                            DocumentNo = a.DocumentNo,
+                            GLDate = a.GLDate,
+                            Id = a.Id,
+                            JournalName = a.JournalName,
+                            PeriodName = b.PeriodName,
+                            SOBId = a.SOBId,
+                            UpdateBy = a.UpdateBy,
+                            UpdateDate = a.UpdateDate
+                        }).ToList();
+            //IEnumerable<GLHeader> entityList = this.Context.GLHeaders.Where(x => x.CompanyId == companyId && x.CurrencyId == currencyId & x.PeriodId == periodId && x.SOBId == sobId);
+            return query;
         }
 
         public IEnumerable<GLHeader> GetAll(long companyId)

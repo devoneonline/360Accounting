@@ -97,11 +97,31 @@ namespace _360Accounting.Web
         }
         #endregion
 
-        public static IList<InvoiceModel> GetInvoices(long sobId, long periodId, long currencyId)
+        public static IList<InvoiceModel> GetInvoices(long sobId)
         {
             IList<InvoiceModel> modelList = service
-                .GetAll(AuthenticationHelper.CompanyId.Value, sobId, periodId, currencyId)
-                .Select(x => new InvoiceModel(x)).ToList();
+                .GetAll(AuthenticationHelper.CompanyId.Value, sobId)
+                .Select(x => new InvoiceModel
+                {
+                    CompanyId = x.CompanyId,
+                    PeriodId = x.PeriodId,
+                    Id = x.Id,
+                    CustomerSiteId = x.CustomerSiteId,
+                    InvoiceDate = x.InvoiceDate,
+                    ConversionRate = x.ConversionRate,
+                    CurrencyId = x.CurrencyId,
+                    CreateBy = x.CreateBy,
+                    CreateDate = x.CreateDate,
+                    InvoiceNo = x.InvoiceNo,
+                    InvoiceType = x.InvoiceType,
+                    PeriodName = x.PeriodName,
+                    Remarks = x.Remarks,
+                    SOBId = x.SOBId,
+                    CurrencyName = x.CurrencyName,
+                    CustomerId = x.CustomerId,
+                    UpdateBy = x.UpdateBy,
+                    UpdateDate = x.UpdateDate
+                }).ToList();
             return modelList;
         }
 
@@ -125,7 +145,8 @@ namespace _360Accounting.Web
         {
             InvoiceModel invoice = SessionHelper.Invoice;
             invoice.InvoiceDetail.Add(model);
-        }
+        } 
+         
 
         public static void UpdateInvoiceDetail(InvoiceDetailModel model)
         {

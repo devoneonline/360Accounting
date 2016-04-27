@@ -50,8 +50,15 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            PaymentHelper.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                PaymentHelper.Delete(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { message = ex.Message });
+            }
         }
 
         public ActionResult Edit(string id, long vendorId, long bankId, long periodId)
@@ -89,8 +96,9 @@ namespace _360Accounting.Web.Controllers
             return View("Create", model);
         }
 
-        public ActionResult Index(PaymentListViewModel model)
+        public ActionResult Index(PaymentListViewModel model, string message = "")
         {
+            ViewBag.ErrorMessage = message;
             SessionHelper.Payment = null;
             model.SOBId = SessionHelper.SOBId;
             if (model.Period == null)
