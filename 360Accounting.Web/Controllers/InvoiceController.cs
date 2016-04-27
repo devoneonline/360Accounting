@@ -10,15 +10,26 @@ namespace _360Accounting.Web.Controllers
 {
     public class InvoiceController : BaseController
     {
+        public JsonResult CustomerList()
+        {
+            List<SelectListItem> customerList = CustomerHelper.GetCustomers(SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate)
+                .Select(x => new SelectListItem
+                {
+                    Text = x.CustomerName,
+                    Value = x.Id.ToString()
+                }).ToList();
+            return Json(customerList, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult CustomerSiteList(long customerId)
         {
-            List<SelectListItem> customerList = CustomerHelper.GetCustomerSites(customerId)
+            List<SelectListItem> customerSiteList = CustomerHelper.GetCustomerSites(customerId)
                     .Select(x => new SelectListItem
                     {
                         Text = x.SiteName,
                         Value = x.Id.ToString()
                     }).ToList();
-            return Json(customerList, JsonRequestBehavior.AllowGet);
+            return Json(customerSiteList, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Delete(string id)
@@ -80,7 +91,7 @@ namespace _360Accounting.Web.Controllers
                 {
                     if (SessionHelper.Invoice.InvoiceDetail.Count == 0)
                     {
-                        message = "No Tax detail information available to save!";
+                        message = "No detail information available to save!";
                     }
                     else
                     {
@@ -92,15 +103,22 @@ namespace _360Accounting.Web.Controllers
                         SessionHelper.Invoice.CustomerSiteId = customerSiteId;
                         SessionHelper.Invoice.PeriodId = periodId;
                         SessionHelper.Invoice.CurrencyId = currencyId;
-                        if (SessionHelper.Invoice.InvoiceNo == "New")
-                        {
-                            SessionHelper.Invoice.InvoiceNo = InvoiceHelper.GetInvoiceNo(AuthenticationHelper.CompanyId.Value, SessionHelper.Invoice.SOBId, SessionHelper.Invoice.PeriodId, SessionHelper.Invoice.CurrencyId);
-                        }
 
-                        InvoiceHelper.Update(SessionHelper.Invoice);
-                        SessionHelper.Invoice = null;
-                        saved = true;
-                        message = "Saved successfully";
+
+                        if (SessionHelper.Invoice.InvoiceDate >= SessionHelper.Calendar.StartDate && SessionHelper.Invoice.InvoiceDate <= SessionHelper.Calendar.EndDate)
+                        {
+                            if (SessionHelper.Invoice.InvoiceNo == "New")
+                            {
+                                SessionHelper.Invoice.InvoiceNo = InvoiceHelper.GetInvoiceNo(AuthenticationHelper.CompanyId.Value, SessionHelper.Invoice.SOBId, SessionHelper.Invoice.PeriodId, SessionHelper.Invoice.CurrencyId);
+                            }
+
+                            InvoiceHelper.Update(SessionHelper.Invoice);
+                            SessionHelper.Invoice = null;
+                            saved = true;
+                            message = "Saved successfully";
+                        }
+                        else
+                            message = "GL Date must lie in the range of the selected period";
                     }
                     
                 }

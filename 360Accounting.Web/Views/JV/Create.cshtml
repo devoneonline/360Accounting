@@ -37,6 +37,19 @@
         <div class="row">
             <div class="col-lg-2">
                 <div class="form-group">
+                    @Html.LabelFor(model => model.CurrencyId)
+                    @Html.DropDownListFor(model => model.CurrencyId, Model.Currencies, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PeriodId)
+                    @Html.DropDownListFor(model => model.PeriodId, Model.Periods, new { @class = "form-control" })
+                </div>
+                
+            </div>
+            <div class="col-lg-2 col-lg-offset-1">
+                <div class="form-group">
                     @Html.LabelFor(model => model.DocumentNo)
                     @Html.TextBoxFor(model => model.DocumentNo, new { @readonly = "readonly", @class = "form-control" })
                 </div>
@@ -47,31 +60,18 @@
                     @Html.EditorFor(model => model.GLDate)
                 </div>
             </div>
-            <div class="col-lg-5 col-lg-offset-1">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.JournalName)
-                    @Html.TextBoxFor(model => model.JournalName, new { @class = "form-control" })
-                </div>
-            </div>
             <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.ConversionRate)
                     @Html.TextBoxFor(model => model.ConversionRate, new { @class = "form-control" })
                 </div>
             </div>
-            
         </div>
         <div class="row">
-            <div class="col-lg-2">
+            <div class="col-lg-4">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.CurrencyId)
-                    @Html.DropDownListFor(model => model.CurrencyId, Model.Currencies, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.PeriodId)
-                    @Html.DropDownListFor(model => model.PeriodId, Model.Periods, new { @class = "form-control" })
+                    @Html.LabelFor(model => model.JournalName)
+                    @Html.TextBoxFor(model => model.JournalName, new { @class = "form-control" })
                 </div>
             </div>
             <div class="col-lg-7 col-lg-offset-1">
