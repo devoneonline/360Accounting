@@ -21,21 +21,18 @@ namespace _360Accounting.Web.Models
         public long SOBId { get; set; }
         public long CompanyId { get; set; }
 
-        [Required]
-        [Display(Name = "Tax Name")]
+        [Display(Name = "Tax Name *")]
         public string TaxName { get; set; }
 
-        [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Start Date")]
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
-        [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "End Date")]
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         public IList<TaxDetailModel> TaxDetails { get; set; }
         #endregion
@@ -43,8 +40,6 @@ namespace _360Accounting.Web.Models
         #region Constructors
         public TaxModel()
         {
-            this.StartDate = Const.StartDate;
-            this.EndDate = Const.EndDate;
         }
 
         public TaxModel(Tax entity)
@@ -69,8 +64,8 @@ namespace _360Accounting.Web.Models
         public long TaxId { get; set; }
         public long CodeCombinationId { get; set; }
         public decimal Rate { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         #endregion
 
         #region Constructors

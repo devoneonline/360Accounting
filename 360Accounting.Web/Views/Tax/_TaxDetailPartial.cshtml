@@ -71,8 +71,10 @@
                 dateEditProperties.EditFormatString = "MM/dd/yyyy";
                 dateEditProperties.NullText = "MM/dd/yyyy";
                 dateEditProperties.TimeSectionProperties.Visible = false;
-                dateEditProperties.MinDate = SessionHelper.Tax.StartDate;
-                dateEditProperties.MaxDate = SessionHelper.Tax.EndDate;
+                if (SessionHelper.Tax.StartDate != null)
+                    dateEditProperties.MinDate = SessionHelper.Tax.StartDate.Value;
+                if (SessionHelper.Tax.EndDate != null)
+                    dateEditProperties.MaxDate = SessionHelper.Tax.EndDate.Value;
                 //spinEditProperties.ClientSideEvents.ValueChanged = String.Format("function(s, e) {{ CheckVal(s, e); }}");
             });
 
@@ -86,8 +88,10 @@
                 dateEditProperties.EditFormatString = "MM/dd/yyyy";
                 dateEditProperties.NullText = "MM/dd/yyyy";
                 dateEditProperties.TimeSectionProperties.Visible = false;
-                dateEditProperties.MinDate = SessionHelper.Tax.StartDate;
-                dateEditProperties.MaxDate = SessionHelper.Tax.EndDate;
+                if (SessionHelper.Tax.StartDate != null)
+                    dateEditProperties.MinDate = SessionHelper.Tax.StartDate.Value;
+                if (SessionHelper.Tax.EndDate != null)
+                    dateEditProperties.MaxDate = SessionHelper.Tax.EndDate.Value;
                 //spinEditProperties.ClientSideEvents.ValueChanged = String.Format("function(s, e) {{ CheckVal(s, e); }}");
             });
         });

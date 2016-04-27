@@ -14,7 +14,6 @@ namespace _360Accounting.Web.Models
         #region Constructors
         public ReceiptViewModel()
         {
-            this.ReceiptDate = Const.CurrentDate;
         }
 
         public ReceiptViewModel(ReceiptView entity)

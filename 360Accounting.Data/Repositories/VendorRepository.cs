@@ -11,9 +11,9 @@ namespace _360Accounting.Data.Repositories
 {
     public class VendorRepository : Repository, IVendorRepository
     {
-        public IEnumerable<Vendor> GetAll(long companyId, DateTime startDate, DateTime endDate)
+        public IEnumerable<Vendor> GetAll(long companyId, long sobId, DateTime startDate, DateTime endDate)
         {
-            return this.Context.Vendors.Where(x => x.CompanyId == companyId && x.StartDate <= startDate && x.EndDate >= endDate);
+            return this.Context.Vendors.Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.StartDate <= startDate && x.EndDate >= endDate);
         }
         
         public Vendor GetSingle(string id, long companyId)
@@ -25,6 +25,11 @@ namespace _360Accounting.Data.Repositories
         public IEnumerable<Vendor> GetAll(long companyId)
         {
             return this.Context.Vendors.Where(x => x.CompanyId == companyId);
+        }
+
+        public IEnumerable<Vendor> GetAll(long companyId, long sobId)
+        {
+            return this.Context.Vendors.Where(x => x.CompanyId == companyId && x.SOBId == sobId);
         }
 
         public string Insert(Vendor entity)

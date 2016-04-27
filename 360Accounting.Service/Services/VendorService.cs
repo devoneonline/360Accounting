@@ -28,9 +28,14 @@ namespace _360Accounting.Service
 
         #region Methods
 
-        public IEnumerable<Vendor> GetAll(long companyId, DateTime startDate, DateTime endDate)
+        public IEnumerable<Vendor> GetAll(long companyId, long sobId)
         {
-            return this.repository.GetAll(companyId, startDate, endDate);
+            return this.repository.GetAll(companyId, sobId);
+        }
+
+        public IEnumerable<Vendor> GetAll(long companyId, long sobId, DateTime startDate, DateTime endDate)
+        {
+            return this.repository.GetAll(companyId, sobId, startDate, endDate);
         }
 
         public Vendor GetSingle(string id, long companyId)

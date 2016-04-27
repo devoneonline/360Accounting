@@ -16,6 +16,7 @@ namespace _360Accounting.Core
         void DeleteSite(long id, long companyId);
         IEnumerable<VendorSiteView> GetAllSites(long vendorId, long companyId);
 
-        IEnumerable<Vendor> GetAll(long companyId, DateTime startDate, DateTime endDate);
+        IEnumerable<Vendor> GetAll(long companyId, long sobId, DateTime startDate, DateTime endDate);
+        IEnumerable<Vendor> GetAll(long companyId, long sobId);
     }
 }

@@ -18,9 +18,9 @@ namespace _360Accounting.Core.Entities
         
         public string TaxName { get; set; }
         
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
         
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
     }
 
     public class TaxDetail : EntityBase
@@ -34,9 +34,9 @@ namespace _360Accounting.Core.Entities
         
         public decimal Rate { get; set; }
         
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
         
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
     }
 
     //public class TaxDum : EntityBase

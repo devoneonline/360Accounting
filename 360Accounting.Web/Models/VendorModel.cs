@@ -100,7 +100,7 @@ namespace _360Accounting.Web.Models
 
         public long VendorId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Site Name is required.")]
         [Display(Name = "Site Name *")]
         [StringLength(30, MinimumLength = 1)]
         public string Name { get; set; }
@@ -120,7 +120,7 @@ namespace _360Accounting.Web.Models
         [Display(Name = "Code Combination")]
         public long CodeCombinationId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Code Combination is required.")]
         [Display(Name = "Code Combination *")]
         public string CodeCombinationString { get; set; }
 

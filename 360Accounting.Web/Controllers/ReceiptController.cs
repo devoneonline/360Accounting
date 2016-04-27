@@ -171,6 +171,7 @@ namespace _360Accounting.Web.Controllers
             receipt.CustomerId = customerId;
             receipt.CurrencyId = currencyId;
             receipt.ConversionRate = 1;
+            receipt.ReceiptDate = SessionHelper.Calendar.StartDate;
 
             SessionHelper.PrecisionLimit = CurrencyHelper.GetCurrency(currencyId.ToString()).Precision;
 

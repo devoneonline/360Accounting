@@ -51,14 +51,38 @@ namespace _360Accounting.Web.Controllers
                     }
                     else
                     {
-                        SessionHelper.Tax.EndDate = Convert.ToDateTime(endDate);
-                        SessionHelper.Tax.StartDate = Convert.ToDateTime(startDate);
-                        SessionHelper.Tax.TaxName = taxName;
+                        if (taxName == "")
+                        {
+                            message = "Tax Name is required!";
+                        }
+                        else
+                        {
+                            if (endDate == "")
+                            {
+                                SessionHelper.Tax.EndDate = null;
+                            }
+                            else
+                            {
+                                SessionHelper.Tax.EndDate = Convert.ToDateTime(endDate);
+                            }
 
-                        TaxHelper.Update(SessionHelper.Tax);
-                        SessionHelper.Tax = null;
-                        result = true;
-                        message = "Saved successfully";
+                            if (endDate == "")
+                            {
+                                SessionHelper.Tax.StartDate = null;
+                            }
+                            else
+                            {
+                                SessionHelper.Tax.StartDate = Convert.ToDateTime(startDate);
+                            }
+                            
+                            SessionHelper.Tax.TaxName = taxName;
+
+                            TaxHelper.Update(SessionHelper.Tax);
+                            SessionHelper.Tax = null;
+                            result = true;
+                            message = "Saved successfully";
+                        }
+                        
                     }                    
                 }
                 else

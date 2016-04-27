@@ -56,7 +56,7 @@ namespace _360Accounting.Web
 
         public static List<VendorModel> GetAll(DateTime startDate, DateTime endDate)
         {
-            var entityList = service.GetAll(AuthenticationHelper.CompanyId.Value, startDate, endDate);
+            var entityList = service.GetAll(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, startDate, endDate);
             return entityList.Select(x => new VendorModel(x)).ToList();
         }
 
@@ -82,7 +82,7 @@ namespace _360Accounting.Web
 
         public static List<VendorModel> GetAll()
         {
-            var entityList = service.GetAll(AuthenticationHelper.CompanyId.Value);
+            var entityList = service.GetAll(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId);
             return entityList.Select(x => new VendorModel(x)).ToList();
         }
 
@@ -115,6 +115,7 @@ namespace _360Accounting.Web
             entity.Name = model.Name;
             entity.Address = model.Address;
             entity.ContactNo = model.ContactNo;
+            entity.SOBId = SessionHelper.SOBId;
             entity.StartDate = model.StartDate;
             entity.EndDate = model.EndDate;
             if (model.Id == 0)

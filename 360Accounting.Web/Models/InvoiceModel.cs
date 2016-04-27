@@ -50,16 +50,19 @@ namespace _360Accounting.Web.Models
         public long CurrencyId { get; set; }
         public long CompanyId { get; set; }
 
-        [Display(Name = "Customer")]
+        [Required(ErrorMessage = "Customer is required")]
+        [Display(Name = "Customer *")]
         public long CustomerId { get; set; }
-        
-        [Display(Name = "Site")]
+
+        [Required(ErrorMessage = "Customer site is required")]
+        [Display(Name = "Site *")]
         public long CustomerSiteId { get; set; }
-        
+
+        [Required(ErrorMessage = "Date is required")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}",
             ApplyFormatInEditMode = true)]
-        [Display(Name = "Document Date")]
+        [Display(Name = "Document Date *")]
         public DateTime InvoiceDate { get; set; }
 
         [Display(Name = "Document Type")]
@@ -128,7 +131,7 @@ namespace _360Accounting.Web.Models
         public long InvoiceId { get; set; }
         public long? InvoiceSourceId { get; set; }
         public long? ItemId { get; set; }
-        public long TaxId { get; set; }
+        public long? TaxId { get; set; }
         public decimal Quantity { get; set; }
         public decimal Rate { get; set; }
         public decimal Amount { get; set; }
