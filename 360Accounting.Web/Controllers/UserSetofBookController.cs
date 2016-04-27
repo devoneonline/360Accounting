@@ -12,7 +12,7 @@ using System.Web.Mvc;
 namespace _360Accounting.Web.Controllers
 {
     [Authorize]
-    public class UserSetofBookController : Controller
+    public class UserSetofBookController : AsyncController
     {
         public ActionResult Index()
         {
@@ -57,5 +57,11 @@ namespace _360Accounting.Web.Controllers
             SessionHelper.SOBName = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
             return Json(UserSetofBookHelper.Save(model));
         }
+
+        public ActionResult SelectSOB()
+        {
+            return View("_SelectSOB");
+        }
+
     }
 }

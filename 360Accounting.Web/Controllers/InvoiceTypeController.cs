@@ -14,7 +14,7 @@ using DevExpress.Web.Mvc;
 namespace _360Accounting.Web.Controllers
 {
     [Authorize]
-    public class InvoiceTypeController : Controller
+    public class InvoiceTypeController : BaseController
     {
         public ActionResult Index(InvoiceTypeListModel model)
         {

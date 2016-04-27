@@ -17,7 +17,7 @@ using _360Accounting.Web.Helpers;
 namespace _360Accounting.Web.Controllers
 {
     [Authorize]
-    public class MoveOrderController : Controller
+    public class MoveOrderController : BaseController
     {
         public MoveOrderController()
         {

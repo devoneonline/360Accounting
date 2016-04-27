@@ -16,7 +16,7 @@ using _360Accounting.Core.IService;
 namespace _360Accounting.Web.Controllers
 {
     [Authorize]
-    public class PaymentController : Controller
+    public class PaymentController : BaseController
     {
         private ISetOfBookService sobService;
         private ICalendarService calendarService;

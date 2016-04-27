@@ -35,7 +35,7 @@
                     @Html.LabelFor(m => m.StartDate)
                     @Html.EditorFor(m => m.StartDate, new { @class = "form-control" })
                 </div>
-            </div> 
+            </div>
             <div class="form-group col-md-2">
                 @Html.LabelFor(m => m.EndDate)
                 @Html.EditorFor(m => m.EndDate, new { @class = "form-control" })
@@ -59,30 +59,19 @@
         </div>
 
 
-            @section Scripts {
-                @Scripts.Render("~/bundles/jqueryval")
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
 
-                <script type="text/javascript">
-                    $(document).ready(function () {
-                        $(function () {
-                            $('#dvDefaultSOB').dialog({
-                                modal: true,
-                                title: "Please select your Set of Book",
-                                autoOpen: false,
-                                height: 'auto',
-                                width: 500,
-                                height: 300,
-                                zIndex: zind,
-                            });
-                        });
+            <script type="text/javascript">
+                $(document).ready(function () {
                     $('[type=date]').attr('class', 'form-control');
 
                     $('#btnCancel').click(function () {
-                        window.location='@Url.Content("~/InvoiceSource")'
+                        window.location = '@Url.Content("~/InvoiceSource")'
                     });
                 });
-                </script>
+            </script>
 
-            }
+        }
     }
 </div>

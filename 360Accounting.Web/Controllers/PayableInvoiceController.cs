@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Controllers
 {
-    public class PayableInvoiceController : Controller
+    public class PayableInvoiceController : BaseController
     {
         public ActionResult SaveInvoice(long invoiceTypeId, string invoiceDate,
             string remarks, long vendorId, long vendorSiteId, long whTaxId,

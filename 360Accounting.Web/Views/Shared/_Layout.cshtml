@@ -53,6 +53,18 @@
         };
 
         $('#activeBook').click(function () {
+            $(function () {
+                $('#dvDefaultSOB').dialog({
+                    modal: true,
+                    title: "Please select your Set of Book",
+                    autoOpen: false,
+                    height: 'auto',
+                    width: 500,
+                    height: 300,
+                    zIndex: zind,
+                });
+            });
+
             GetSOBs();
         });
 
@@ -143,7 +155,7 @@
                 });
             });
 
-            $.ajax({
+            @*$.ajax({
                 url: '@Url.Content("~/UserSetofBook/CheckUserSOB")',
                 data: null,
                 datatype: 'json',
@@ -154,7 +166,7 @@
                     if (!rtn)
                         GetSOBs();
                 }
-            });
+            });*@
         });
     </script>
 </body>

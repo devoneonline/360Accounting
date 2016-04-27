@@ -8,7 +8,7 @@ using System.Web.Mvc;
 namespace _360Accounting.Web.Controllers
 {
     [Authorize]
-    public class TaxController : Controller
+    public class TaxController : BaseController
     {
         public JsonResult ValidateDate(DateTime startDate, DateTime endDate)
         {

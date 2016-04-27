@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Controllers
 {
-    public class InvoiceController : Controller
+    public class InvoiceController : BaseController
     {
         public JsonResult CustomerList()
         {

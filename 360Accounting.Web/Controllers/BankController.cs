@@ -11,7 +11,7 @@ using System.Web.Mvc;
 namespace _360Accounting.Web.Controllers
 {
     [Authorize]
-    public class BankController : Controller
+    public class BankController : BaseController
     {
         public ActionResult Index(string message = "")
         {
