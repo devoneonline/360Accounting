@@ -12,7 +12,7 @@
 </div>
 
     <div class="col-lg-6">
-        <div class="form-group">
+        <div class="form-group customDropDownWrapper">
             @Html.LabelFor(model => model.CompanyId)
             @Html.DropDownListFor(model => model.CompanyId, Model.CompanyList, "--select--", new { @class = "form-control" })
             <span class="field-validation-error" id="CompanyValidation"></span>
