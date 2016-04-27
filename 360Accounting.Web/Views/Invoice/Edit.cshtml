@@ -148,6 +148,8 @@
             }
         });
 
+        jQuery.ajaxSetup({ async: false });
+
         $('#PeriodId').change(function () {
             $.ajax({
                 url: '@Url.Content("~/Invoice/AddCalendarinSession")',
