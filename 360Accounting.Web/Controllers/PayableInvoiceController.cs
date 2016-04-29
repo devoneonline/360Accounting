@@ -124,6 +124,12 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_Detail", PayableInvoiceHelper.GetInvoiceDetail());
         }
 
+        public JsonResult VendorList()
+        {
+            List<SelectListItem> vendorList = VendorHelper.GetVendorList(SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
+            return Json(vendorList, JsonRequestBehavior.AllowGet);
+        }
+        
         public JsonResult InvoiceTypeList()
         {
             List<SelectListItem> invoiceTypeList = InvoiceTypeHelper.GetInvoiceTypes(SessionHelper.SOBId, SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);

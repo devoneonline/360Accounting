@@ -20,7 +20,6 @@
     {
         @Html.HiddenFor(model => model.Id)
         @Html.HiddenFor(model => model.SOBId)
-        @Html.HiddenFor(model => model.PeriodId)
         @Html.HiddenFor(model => model.CompanyId)
         @Html.HiddenFor(model => model.CreateBy)
         @Html.HiddenFor(model => model.CreateDate)
@@ -29,9 +28,9 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <div class="navbar-left">
-                    SOB: @ViewBag.SOBName / Period: @ViewBag.PeriodName
-                </div>
+                @*<div class="navbar-left">
+                    SOB: @ViewBag.SOBName
+                </div>*@
                 <div class="navbar-right">
                     <input type="button" value="Save" id="btnSave" class="btn btn-default tstyCus-btn" />
                     <input type="button" value="Cancel" id="btnCancel" class="btn btn-default tstyCus-btn" />
@@ -46,7 +45,7 @@
                 </div>
             </div>
             <div class="col-lg-2">
-                <div class="form-group customDropDownWrapper">
+                <div class="form-group">
                     @Html.LabelFor(m => m.Periods)
                     @Html.DropDownListFor(m => m.PeriodId, Model.Periods, new { @class = "form-control criteria" })
                 </div>
@@ -142,6 +141,43 @@
             })
         })
 
+        function GetWHTaxes(vendorId, vendordSiteId) {
+            var url = '@Url.Content("~/PayableInvoice/WHTaxList")';
+            $.get(url, { vendorId: vendorId, vendorSiteId: vendordSiteId },
+                function (data) {
+                    var whTaxDropdown = $('#WHTaxId');
+                    whTaxDropdown.empty();
+                    for (var i = 0; i < data.length; i++) {
+                        whTaxDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
+                    }
+                });
+        }
+
+        function GetVendorSites(vendorId) {
+            var url = '@Url.Content("~/PayableInvoice/VendorSiteList")';
+            $.get(url, { vendorId: vendorId },
+                function (data) {
+                    var vendorSiteDropdown = $('#VendorSiteId');
+                    var whTaxDropdown = $('#WHTaxId');
+                    vendorSiteDropdown.empty();
+                    whTaxDropdown.empty();
+                    if (data.length > 0){
+                        for (var i = 0; i < data.length; i++) {
+                            vendorSiteDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
+                        }
+                        GetWHTaxes(vendorId, data[0].Value)
+                    }
+                });
+        }
+
+        $('#VendorId').change(function () {
+            GetVendorSites($(this).val())
+        });
+
+        $('#VendorSiteId').change(function () {
+            GetWHTaxes($('#VendorId').val(), $(this).val());
+        });
+
         jQuery.ajaxSetup({ async: false });
 
         $('#PeriodId').change(function () {
@@ -154,7 +190,7 @@
                 error: function () { }
             });
 
-            $.get('@Url.Content("~/PayableInvoice/InvoiceTypeList")', { },
+            $.get('@Url.Content("~/PayableInvoice/InvoiceTypeList")', {},
                 function (data) {
                     var invoiceTypeDropdown = $('#InvoiceTypeId')
                     invoiceTypeDropdown.empty();
@@ -164,43 +200,21 @@
                         }
                     }
                 });
-        })
 
-        $('#VendorId').change(function () {
-            var url = '@Url.Content("~/PayableInvoice/VendorSiteList")';
-            var url2 = '@Url.Content("~/PayableInvoice/WHTaxList")';
-
-            $.get(url, { vendorId: $(this).val() },
+            $.get('@Url.Content("~/PayableInvoice/VendorList")', {},
                 function (data) {
-                    var vendorSiteDropdown = $('#VendorSiteId');
+                    var vendorSiteDropdown = $('#VendorSiteId')
+                    var vendorDropdown = $('#VendorId');
+                    vendorDropdown.empty();
                     vendorSiteDropdown.empty();
-                    for (var i = 0; i < data.length; i++) {
-                        vendorSiteDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
-                    }
-
-                    $.get(url2, { vendorId: $(this).val(), vendorSiteId: data[0].value },
-                        function (data) {
-                            var whTaxDropdown = $('#WHTaxId');
-                            whTaxDropdown.empty();
-                            for (var i = 0; i < data.length; i++) {
-                                whTaxDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
-                            }
-                        });
-                });
-        });
-
-        $('#VendorSiteId').change(function () {
-            var url = '@Url.Content("~/PayableInvoice/WithHoldingTaxList")';
-
-            $.get(url, { vendorId: $('#VendorId').val(), vendorSiteId: $(this).val() },
-                function (data) {
-                    var whTaxDropdown = $('#WHTaxId');
-                    whTaxDropdown.empty();
-                    for (var i = 0; i < data.length; i++) {
-                        whTaxDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
+                    if (data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            vendorDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
+                        }
+                        GetVendorSites(data[0].Value)
                     }
                 });
-        });
+        })
 
         $('#btnSave').click(function () {
 
