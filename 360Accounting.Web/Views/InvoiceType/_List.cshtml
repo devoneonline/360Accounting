@@ -21,19 +21,34 @@
             settings.CommandColumn.ShowNewButton = true;
             settings.CommandColumn.ShowDeleteButton = true;
             settings.CommandColumn.ShowEditButton = true;
+            settings.CommandColumn.Width = System.Web.UI.WebControls.Unit.Percentage(15);
 
             settings.Columns.Add(column =>
             {
                 column.FieldName = "InvoiceType";
                 column.Caption = "Invoice Type";
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(15);
             });
-            settings.Columns.Add("Meaning");
-            settings.Columns.Add("Description");
+            //settings.Columns.Add("Meaning");
+            //settings.Columns.Add("Description");
+
+            settings.Columns.Add(column =>
+                {
+                    column.FieldName = "Meaning";
+                    column.Width = System.Web.UI.WebControls.Unit.Percentage(20);
+                });
+
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "Description";
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(25);
+            });
             
             settings.Columns.Add(column =>
             {
                 column.FieldName = "DateFrom";
-                column.Caption = "Date Start From";
+                column.Caption = "Date From";
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(12.5);
 
                 column.ColumnType = MVCxGridViewColumnType.DateEdit;
                 var dateEditProperties = column.PropertiesEdit as DateEditProperties;
@@ -45,7 +60,8 @@
             settings.Columns.Add(column =>
             {
                 column.FieldName = "DateTo";
-                column.Caption = "Date End To";
+                column.Caption = "Date To";
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(12.5);
 
                 column.ColumnType = MVCxGridViewColumnType.DateEdit;
                 var dateEditProperties = column.PropertiesEdit as DateEditProperties;

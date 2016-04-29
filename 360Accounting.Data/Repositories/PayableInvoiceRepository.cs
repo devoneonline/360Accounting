@@ -26,12 +26,12 @@ namespace _360Accounting.Data.Repositories
             }
         }
 
-        public IEnumerable<PayableInvoice> GetAll(long companyId, long sobId, long periodId)
+        public IEnumerable<PayableInvoice> GetAll(long companyId, long sobId)
         {
-            IEnumerable<PayableInvoice> list = this.GetAll(companyId).Where(x => x.SOBId == sobId && x.PeriodId == periodId);
+            IEnumerable<PayableInvoice> list = this.GetAll(companyId).Where(x => x.SOBId == sobId);
             return list;
-
         }
+
         public PayableInvoice GetSingle(string id, long companyId)
         {
             PayableInvoice invoice = this.GetAll(companyId)

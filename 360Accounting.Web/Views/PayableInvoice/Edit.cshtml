@@ -8,6 +8,14 @@
 }
 
 <div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
+        </div>
+    </div>
+
     @using (Html.BeginForm())
     {
         @Html.HiddenFor(model => model.Id)
@@ -38,6 +46,13 @@
                 </div>
             </div>
             <div class="col-lg-2">
+                <div class="form-group customDropDownWrapper">
+                    @Html.LabelFor(m => m.Periods)
+                    @Html.DropDownListFor(m => m.PeriodId, Model.Periods, new { @class = "form-control criteria" })
+                </div>
+            </div>
+
+            <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.InvoiceTypes)
                     @Html.DropDownListFor(model => model.InvoiceTypeId, Model.InvoiceTypes, new { @class = "form-control" })
@@ -49,26 +64,20 @@
                     @Html.EditorFor(model => model.InvoiceDate)
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Remarks)
-                    @Html.TextAreaFor(model => model.Remarks, new { @class = "form-control" })
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Vendors)
                     @Html.DropDownListFor(model => model.VendorId, Model.Vendors, new { @class = "form-control" })
                 </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.VendorSites)
                     @Html.DropDownListFor(model => model.VendorSiteId, Model.VendorSites, new { @class = "form-control" })
                 </div>
             </div>
+        </div>
+        <div class="row">
             <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.WHTaxes)
@@ -87,6 +96,13 @@
                     @Html.TextBoxFor(model => model.Amount, new { @readonly = "readonly", @class = "form-control" })
                 </div>
             </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Remarks)
+                    @Html.TextAreaFor(model => model.Remarks, new { @class = "form-control" })
+                </div>
+            </div>
+            
         </div>
         
         <div class="row">
@@ -128,6 +144,28 @@
 
         jQuery.ajaxSetup({ async: false });
 
+        $('#PeriodId').change(function () {
+            $.ajax({
+                url: '@Url.Content("~/PayableInvoice/AddCalendarInSession")',
+                data: { periodId: $(this).val() },
+                type: 'post',
+                datatype: 'json',
+                success: function (data) { },
+                error: function () { }
+            });
+
+            $.get('@Url.Content("~/PayableInvoice/InvoiceTypeList")', { },
+                function (data) {
+                    var invoiceTypeDropdown = $('#InvoiceTypeId')
+                    invoiceTypeDropdown.empty();
+                    if (data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            invoiceTypeDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
+                        }
+                    }
+                });
+        })
+
         $('#VendorId').change(function () {
             var url = '@Url.Content("~/PayableInvoice/VendorSiteList")';
             var url2 = '@Url.Content("~/PayableInvoice/WHTaxList")';
@@ -148,7 +186,7 @@
                                 whTaxDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
                             }
                         });
-                });  
+                });
         });
 
         $('#VendorSiteId').change(function () {

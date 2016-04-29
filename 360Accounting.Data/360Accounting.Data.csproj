@@ -97,7 +97,6 @@
     <Compile Include="Repositories\FeatureSetRepository.cs" />
     <Compile Include="Repositories\GLHeaderRepository.cs" />
     <Compile Include="Repositories\GLLineRepository.cs" />
-    <Compile Include="Repositories\JournalVoucherRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />
     <Compile Include="Repositories\SetOfBookRepository.cs" />
     <Compile Include="Repositories\VendorRepository.cs" />

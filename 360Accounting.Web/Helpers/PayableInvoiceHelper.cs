@@ -99,9 +99,9 @@ namespace _360Accounting.Web
         }
         #endregion
 
-        public static IList<PayableInvoiceModel> GetInvoices(long sobId, long periodId)
+        public static IList<PayableInvoiceModel> GetInvoices(long sobId)
         {
-            IList<PayableInvoiceModel> modelList = service.GetAll(AuthenticationHelper.CompanyId.Value, sobId, periodId).Select(x => new PayableInvoiceModel(x)).ToList();
+            IList<PayableInvoiceModel> modelList = service.GetAll(AuthenticationHelper.CompanyId.Value, sobId).Select(x => new PayableInvoiceModel(x)).ToList();
             return modelList;
         }
 

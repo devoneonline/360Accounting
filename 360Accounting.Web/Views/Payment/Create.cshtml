@@ -3,6 +3,10 @@
 
 @model _360Accounting.Web.Models.PaymentViewModel
 
+@{
+    ViewBag.Title = "Payment";
+}
+
 <div class="container">
     @using (Html.BeginForm())
     {
@@ -15,6 +19,15 @@
         @Html.HiddenFor(m => m.CreateDate)
         @Html.HiddenFor(m => m.UpdateBy)
         @Html.HiddenFor(m => m.UpdateDate)
+
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="page-header">
+                    @ViewBag.Title
+                </h3>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-lg-12">
                 <div class="navbar-left">

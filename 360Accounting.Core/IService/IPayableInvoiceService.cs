@@ -10,8 +10,7 @@ namespace _360Accounting.Core
 {
     public interface IPayableInvoiceService : IService<PayableInvoice>
     {
-        IEnumerable<PayableInvoice> GetAll(long companyId, long sobId,
-            long periodId);
+        IEnumerable<PayableInvoice> GetAll(long companyId, long sobId);
 
         PayableInvoice GetSingle(long companyId, long sobId, long periodId);
     }

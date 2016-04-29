@@ -15,7 +15,7 @@ namespace _360Accounting.Data.Repositories
         public IEnumerable<Withholding> GetAll(long companyId, long sobId, long vendorId, long vendorSiteId, DateTime startDate, DateTime endDate)
         {
             return this.GetAll(companyId).Where(x => x.SOBId == sobId && x.VendorId == vendorId && x.VendorSiteId == vendorSiteId &&
-                x.DateFrom <= startDate && x.DateTo >= endDate);
+                (x.DateFrom <= startDate || x.DateFrom == null) && (x.DateTo >= endDate || x.DateTo == null));
         }
 
         public Withholding GetSingle(string id, long companyId)
