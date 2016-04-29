@@ -16,6 +16,9 @@ namespace _360Accounting.Web.Controllers
     {
         public ActionResult Index()
         {
+            if (TempData["LastURL"] == null)
+                TempData["LastURL"] = Request.UrlReferrer.AbsolutePath;
+
             UserSetofBookModel model = new UserSetofBookModel();
             //if(SessionHelper.SOBId != null && SessionHelper.SOBId != 0)
             if (SessionHelper.SOBId != 0)
@@ -40,7 +43,6 @@ namespace _360Accounting.Web.Controllers
 
         public JsonResult CheckUserSOB()
         {
-            //if (SessionHelper.SOBId == null || SessionHelper.SOBId == 0)
             if (SessionHelper.SOBId == 0)
             {
                 return Json(false);

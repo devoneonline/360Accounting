@@ -32,4 +32,26 @@
             enableFiltering: true
         });
     });
+
+    function SaveDefaultSOB() {
+        var model = {
+            Id: $('#Id').val(),
+            SOBId: $('#SOBId').val()
+        }
+
+        $.ajax({
+            url: '@Url.Content("~/UserSetofBook/Save")',
+            data: model,
+            datatype: 'json',
+            type: 'post',
+            error: function (data) { },
+            success: function (data) {
+                $('#dvDefaultSOB').dialog('close');
+                var redirectionAllowed = '@TempData["LastURL"]';
+                if (redirectionAllowed != null)
+                    window.location.href = '@Url.Content(TempData["LastURL"].ToString())';
+            }
+        });
+    }
+
 </script>

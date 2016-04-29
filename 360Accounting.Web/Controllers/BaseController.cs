@@ -35,6 +35,8 @@ namespace _360Accounting.Web.Controllers
                     base.OnActionExecuting(filterContext);
                 else
                 {
+                    TempData["LastURL"] = Request.Url.PathAndQuery;
+
                     filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "UserSetofBook", action = "SelectSOB" }));
                     filterContext.Result.ExecuteResult(filterContext.Controller.ControllerContext);
                 }

@@ -85,25 +85,6 @@
                 }
             });
         }
-
-        function SaveDefaultSOB() {
-            var model = {
-                Id: $('#Id').val(),
-                SOBId: $('#SOBId').val()
-            }
-
-            $.ajax({
-                url: '@Url.Content("~/UserSetofBook/Save")',
-                data: model,
-                datatype: 'json',
-                type: 'post',
-                error: function (data) { },
-                success: function (data) {
-                    $('#dvDefaultSOB').dialog('close');
-                    window.location.reload();
-                }
-            });
-        }
         //Default SOB
 
         var lookupTextField = '';
