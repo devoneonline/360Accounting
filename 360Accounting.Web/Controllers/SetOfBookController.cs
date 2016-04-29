@@ -13,7 +13,7 @@ using System.Web.Mvc;
 namespace _360Accounting.Web.Controllers
 {
     [Authorize]
-    public class SetOfBookController : Controller
+    public class SetOfBookController : BaseController
     {
         public ActionResult SetOfBookPartial()
         {
@@ -71,15 +71,8 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            try
-            {
-                SetOfBookHelper.Delete(id);
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                return RedirectToAction("Index", new { message = ex.GetBaseException().Message });
-            }
+            SetOfBookHelper.Delete(id);
+            return RedirectToAction("Index");
         }
     }
 }

@@ -34,6 +34,10 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Edit(string id)
         {
             AccountCreateViewModel model = AccountHelper.GetAccount(id);
+            List<Core.Entities.CodeCombinition> codeCombinitions = CodeCombinationHelper.GetCodeCombinations(model.SOBId, AuthenticationHelper.CompanyId.Value);
+            if (codeCombinitions.Any())
+                return RedirectToAction("Index", new { message = "Accounts having codecombinitions can not be edited." });
+
             model.SOBId = SessionHelper.SOBId;
             return View(model);
         }

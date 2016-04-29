@@ -12,7 +12,7 @@ namespace _360Accounting.Core
     {
         Account GetAccountBySOBId(string sobId, long companyId);
 
-        IEnumerable<AccountView> GetAll(long companyId, string searchText, bool paging, int? page, string sort, string sortDir);
+        IEnumerable<AccountView> GetAll(long sobId, long companyId, string searchText, bool paging, int? page, string sort, string sortDir);
 
         long GetAccountIdBySegments(string segments, long companyId);
     }

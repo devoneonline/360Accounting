@@ -28,14 +28,14 @@ namespace _360Accounting.Service
             return this.repository.GetSingle(id,companyId);
         }
 
-        public IEnumerable<Account> GetAll( long companyId)
+        public IEnumerable<Account> GetAll(long companyId)
         {
             return this.repository.GetAll(companyId);
         }
 
-        public IEnumerable<AccountView> GetAll(long companyId, string searchText, bool paging, int? page, string sort, string sortDir)
+        public IEnumerable<AccountView> GetAll(long sobId, long companyId, string searchText, bool paging, int? page, string sort, string sortDir)
         {
-            return this.repository.GetAll(companyId, searchText, paging, page ?? 1, sort, sortDir);
+            return this.repository.GetAll(sobId, companyId, searchText, paging, page ?? 1, sort, sortDir);
         }
 
         public string Insert(Account entity)

@@ -306,7 +306,7 @@ namespace _360Accounting.Data
                 } 
                 if (ex.GetBaseException().HResult == -2146232060)
                 {
-                    throw new Exception("Can not delete the record that is being used.");
+                    throw new Exception("Delete Error", new Exception { Source = "Record is in use somewhere in the application" });
                 }
                 throw ex;
             }

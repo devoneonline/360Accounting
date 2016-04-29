@@ -329,7 +329,7 @@ namespace _360Accounting.Web
         public static List<AccountViewModel> GetAccounts(string searchText, bool paging, int? page, string sort, string sortDir)
         {
             List<AccountViewModel> modelList = service
-                .GetAll(AuthenticationHelper.CompanyId.Value, searchText, paging, page, sort, sortDir)
+                .GetAll(SessionHelper.SOBId, AuthenticationHelper.CompanyId.Value, searchText, paging, page, sort, sortDir)
                 .Select(x => new AccountViewModel(x)).ToList();
             return modelList;
         }

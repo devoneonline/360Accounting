@@ -1,0 +1,34 @@
+﻿<div id="ExceptionBox">
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(function () {
+            $('#ExceptionBox').dialog({
+                modal: true,
+                title: '@TempData["ErrorMessage"]',
+                autoOpen: false,
+                height: 'auto',
+                width: 500,
+            });
+        });
+
+        //GetSOBs();
+
+        $.ajax({
+            url: '@Url.Content("~/Base/ViewErrorPopup")',
+            data: {},
+            datatype: 'html',
+            type: 'get',
+            error: function (error) {
+                alert('Error');
+            },
+            success: function (data) {
+                $('#ExceptionBox').html(data);
+                $('#ExceptionBox').dialog("open");
+                return false;
+            }
+        });
+    })
+</script>
