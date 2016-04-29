@@ -99,7 +99,7 @@ namespace _360Accounting.Web.Controllers
                 model.SOBId = SessionHelper.SOBId;
 
                 string result = CodeCombinationHelper.SaveCodeCombination(model);
-                return Json("Success");
+                return Json(result);
             }
             catch (Exception ex)
             {

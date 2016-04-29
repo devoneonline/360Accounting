@@ -99,10 +99,10 @@ namespace _360Accounting.Data.Repositories
             return mappingObject;
         }
 
-        public long GetAccountIdBySegments(string segments, long companyId)
+        public long GetAccountIdBySegments(string segments, long companyId, long sobId)
         {
             var segmentList = segments.Split(new char[] {'.'}, StringSplitOptions.None);
-            var query = this.Context.CodeCombinitions.Where(x => x.CompanyId == companyId);
+            var query = this.Context.CodeCombinitions.Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.AllowedPosting == true);
 
             for(int i=0;i<segmentList.Count();i++)
             {
