@@ -10,11 +10,7 @@ namespace _360Accounting.Web.Models
 {
     public class PayableInvoiceListModel
     {
-        [Display(Name = "Period")]
-        public List<SelectListItem> Periods { get; set; }
-
         public long SOBId { get; set; }
-        public long PeriodId { get; set; }
     }
 
     public class PayableInvoiceModel : ModelBase
@@ -36,6 +32,9 @@ namespace _360Accounting.Web.Models
 
         [Display(Name = "With Holding Tax")]
         public List<SelectListItem> WHTaxes { get; set; }
+
+        [Display(Name = "Period")]
+        public List<SelectListItem> Periods { get; set; }
 
         [Display(Name = "Vendor")]
         public List<SelectListItem> Vendors { get; set; }

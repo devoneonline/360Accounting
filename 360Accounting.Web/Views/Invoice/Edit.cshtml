@@ -42,7 +42,7 @@
                 </div>
             </div>
             <div class="col-lg-2">
-                <div class="form-group customDropDownWrapper">
+                <div class="form-group">
                     @Html.LabelFor(model => model.InvoiceType)
                     @Html.DropDownListFor(model => model.InvoiceType, Model.InvoiceTypes, new { @class = "form-control" })
                 </div>
@@ -74,13 +74,13 @@
         </div>
         <div class="row">
             <div class="col-lg-4">
-                <div class="form-group customDropDownWrapper">
+                <div class="form-group">
                     @Html.LabelFor(model => model.CustomerId)
                     @Html.DropDownListFor(model => model.CustomerId, Model.Customers, new { @class = "form-control" })
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="form-group customDropDownWrapper">
+                <div class="form-group">
                     @Html.LabelFor(model => model.CustomerSiteId)
                     @Html.DropDownListFor(model => model.CustomerSiteId, Model.CustomerSites, new { @class = "form-control" })
                 </div>

@@ -124,6 +124,18 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_Detail", PayableInvoiceHelper.GetInvoiceDetail());
         }
 
+        public JsonResult VendorList()
+        {
+            List<SelectListItem> vendorList = VendorHelper.GetVendorList(SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
+            return Json(vendorList, JsonRequestBehavior.AllowGet);
+        }
+        
+        public JsonResult InvoiceTypeList()
+        {
+            List<SelectListItem> invoiceTypeList = InvoiceTypeHelper.GetInvoiceTypes(SessionHelper.SOBId, SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
+            return Json(invoiceTypeList, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult WHTaxList(long vendorId, long vendorSiteId)
         {
             List<SelectListItem> whTaxList = WithholdingHelper.GetWithHoldingList(vendorId, vendorSiteId, SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
@@ -150,48 +162,74 @@ namespace _360Accounting.Web.Controllers
             return Json(result);
         }
 
-        public ActionResult Create(long periodId)
-        {
-            
-            SessionHelper.Calendar = CalendarHelper.GetCalendar(PayablePeriodHelper.GetPayablePeriod(periodId.ToString()).CalendarId.ToString());
-
-            ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
-            ViewBag.PeriodName = SessionHelper.Calendar.PeriodName;
-            
-            PayableInvoiceModel model = SessionHelper.PayableInvoice;
-            if (model == null)
-            {
-                List<SelectListItem> vendors = VendorHelper.GetVendorList(SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
-                List<SelectListItem> vendorSites = VendorHelper.GetVendorSiteList(vendors.Any() ? Convert.ToInt64(vendors.First().Value) : 0);
-                List<SelectListItem> whTaxes = WithholdingHelper.GetWithHoldingList(vendors.Any() ? Convert.ToInt64(vendors.First().Value) : 0,
-                    vendorSites.Any() ? Convert.ToInt64(vendorSites.First().Value) : 0, SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
-                List<SelectListItem> invoiceTypes = InvoiceTypeHelper.GetInvoiceTypes(SessionHelper.SOBId, SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
-
-                model = new PayableInvoiceModel();
-                model.CompanyId = AuthenticationHelper.CompanyId.Value;
-                model.Vendors = vendors.Any() ? vendors : new List<SelectListItem>();
-                model.VendorId = vendors.Any() ? Convert.ToInt64(vendors.First().Value) : 0;
-                model.VendorSites = vendorSites.Any() ? vendorSites : new List<SelectListItem>();
-                model.VendorSiteId = vendorSites.Any() ? Convert.ToInt64(vendorSites.First().Value) : 0;
-                model.InvoiceDate = SessionHelper.Calendar.StartDate;
-                model.InvoiceDetail = new List<PayableInvoiceDetailModel>();
-                model.InvoiceNo = "New";
-                model.InvoiceTypes = invoiceTypes.Any() ? invoiceTypes : new List<SelectListItem>();
-                model.InvoiceTypeId = invoiceTypes.Any() ? Convert.ToInt64(invoiceTypes.First().Value) : 0;
-                model.PeriodId = periodId;
-                model.SOBId = SessionHelper.SOBId;
-                model.WHTaxes = whTaxes.Any() ? whTaxes : new List<SelectListItem>();
-                model.WHTaxId = whTaxes.Any() ? Convert.ToInt64(whTaxes.First().Value) : 0;
-                
-                SessionHelper.PayableInvoice = model;
-            }
-            return View("Edit", model);
-        }
-
         public JsonResult PeriodList()
         {
             List<SelectListItem> periodList = PayablePeriodHelper.GetPeriodList(SessionHelper.SOBId);
             return Json(periodList, JsonRequestBehavior.AllowGet);
+        }
+
+        public void AddCalendarInSession(long periodId)
+        {
+            SessionHelper.Calendar = CalendarHelper.GetCalendar(PayablePeriodHelper.GetPayablePeriod(periodId.ToString()).CalendarId.ToString());
+        }
+
+        public ActionResult Create()
+        {
+            ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
+            
+            PayableInvoiceModel model = SessionHelper.PayableInvoice;
+            if (model == null)
+            {
+                model = new PayableInvoiceModel
+                {
+                    CompanyId = AuthenticationHelper.CompanyId.Value,
+                    InvoiceDetail = new List<PayableInvoiceDetailModel>(),
+                    Periods = new List<SelectListItem>(),
+                    Vendors = new List<SelectListItem>(),
+                    VendorSites = new List<SelectListItem>(),
+                    WHTaxes = new List<SelectListItem>(),
+                    InvoiceNo = "New",
+                    SOBId = SessionHelper.SOBId                    
+                };
+            }
+
+            model.Periods = PayablePeriodHelper.GetPeriodList(SessionHelper.SOBId);
+
+            if (model.Periods != null && model.Periods.Count() > 0)
+            {
+                model.PeriodId = Convert.ToInt64(model.Periods.FirstOrDefault().Value);
+                SessionHelper.Calendar = CalendarHelper.GetCalendar(model.PeriodId.ToString());
+                model.InvoiceDate = SessionHelper.Calendar.StartDate;
+                
+                model.InvoiceTypes = InvoiceTypeHelper.GetInvoiceTypes(SessionHelper.SOBId, SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
+
+                if (model.InvoiceTypes != null && model.InvoiceTypes.Count() > 0)
+                {
+                    model.InvoiceTypeId = Convert.ToInt64(model.InvoiceTypes.FirstOrDefault().Value);
+                }
+
+                model.Vendors = VendorHelper.GetVendorList(SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
+
+                if (model.Vendors != null && model.Vendors.Count() > 0)
+                {
+                    model.VendorId = Convert.ToInt64(model.Vendors.FirstOrDefault().Value);
+                    model.VendorSites = VendorHelper.GetVendorSiteList(model.VendorId);
+                    
+                    if (model.VendorSites != null && model.VendorSites.Count() > 0)
+                    {
+                        model.VendorSiteId = Convert.ToInt64(model.VendorSites.FirstOrDefault().Value);
+                        model.WHTaxes = WithholdingHelper.GetWithHoldingList(model.VendorId, model.VendorSiteId, SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
+                            
+                        if (model.WHTaxId != null && model.WHTaxes.Count() > 0)
+                        {
+                            model.WHTaxId = Convert.ToInt64(model.WHTaxes.FirstOrDefault().Value);
+                        }
+                    }
+                }
+            }
+
+            SessionHelper.PayableInvoice = model;
+            return View("Edit", model);
         }
 
         public ActionResult Delete(string id)
@@ -256,10 +294,10 @@ namespace _360Accounting.Web.Controllers
             return View(model);
         }
 
-        public ActionResult ListPartial(long periodId)
+        public ActionResult ListPartial()
         {
             return PartialView("_List", PayableInvoiceHelper
-                .GetInvoices(SessionHelper.SOBId, periodId));
+                .GetInvoices(SessionHelper.SOBId));
         }
 
         public ActionResult Index(PayableInvoiceListModel model, string message="")
@@ -269,18 +307,6 @@ namespace _360Accounting.Web.Controllers
                 ViewBag.ErrorMessage = message;
                 SessionHelper.PayableInvoice = null;
                 model.SOBId = SessionHelper.SOBId;
-
-                if (model.Periods == null)
-                {
-                    model.Periods = PayablePeriodHelper.GetPeriodList(SessionHelper.SOBId);
-                    model.PeriodId = model.Periods.Any() ?
-                        Convert.ToInt32(model.Periods.First().Value) : 0;
-                }
-                else if (model.Periods == null)
-                {
-                    model.Periods = new List<SelectListItem>();
-                }   
-
                 return View(model);
             }
             catch (Exception ex)

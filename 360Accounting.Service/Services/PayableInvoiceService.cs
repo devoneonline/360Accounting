@@ -23,9 +23,9 @@ namespace _360Accounting.Service
             return this.repository.GetSingle(companyId, sobId, periodId);
         }
 
-        public IEnumerable<PayableInvoice> GetAll(long companyId, long sobId, long periodId)
+        public IEnumerable<PayableInvoice> GetAll(long companyId, long sobId)
         {
-            return this.repository.GetAll(companyId, sobId, periodId);
+            return this.repository.GetAll(companyId, sobId);
         }
 
         public PayableInvoice GetSingle(string id, long companyId)

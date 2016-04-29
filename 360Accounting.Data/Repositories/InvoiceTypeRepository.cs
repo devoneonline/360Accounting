@@ -14,7 +14,7 @@ namespace _360Accounting.Data.Repositories
     {
         public IEnumerable<InvoiceType> GetAll(long companyId, long sobId, DateTime startDate, DateTime endDate)
         {
-            return this.GetAll(companyId).Where(x => x.SOBId == sobId && x.DateFrom <= startDate && x.DateTo >= endDate);
+            return this.GetAll(companyId).Where(x => x.SOBId == sobId && (x.DateFrom <= startDate || x.DateFrom == null) && (x.DateTo >= endDate || x.DateTo == null));
         }
         
         public InvoiceType GetSingle(string id, long companyId)

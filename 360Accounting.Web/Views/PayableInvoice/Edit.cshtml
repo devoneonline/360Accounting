@@ -8,11 +8,18 @@
 }
 
 <div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
+        </div>
+    </div>
+
     @using (Html.BeginForm())
     {
         @Html.HiddenFor(model => model.Id)
         @Html.HiddenFor(model => model.SOBId)
-        @Html.HiddenFor(model => model.PeriodId)
         @Html.HiddenFor(model => model.CompanyId)
         @Html.HiddenFor(model => model.CreateBy)
         @Html.HiddenFor(model => model.CreateDate)
@@ -21,9 +28,9 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <div class="navbar-left">
-                    SOB: @ViewBag.SOBName / Period: @ViewBag.PeriodName
-                </div>
+                @*<div class="navbar-left">
+                    SOB: @ViewBag.SOBName
+                </div>*@
                 <div class="navbar-right">
                     <input type="button" value="Save" id="btnSave" class="btn btn-default tstyCus-btn" />
                     <input type="button" value="Cancel" id="btnCancel" class="btn btn-default tstyCus-btn" />
@@ -39,6 +46,13 @@
             </div>
             <div class="col-lg-2">
                 <div class="form-group">
+                    @Html.LabelFor(m => m.Periods)
+                    @Html.DropDownListFor(m => m.PeriodId, Model.Periods, new { @class = "form-control criteria" })
+                </div>
+            </div>
+
+            <div class="col-lg-2">
+                <div class="form-group">
                     @Html.LabelFor(model => model.InvoiceTypes)
                     @Html.DropDownListFor(model => model.InvoiceTypeId, Model.InvoiceTypes, new { @class = "form-control" })
                 </div>
@@ -49,26 +63,20 @@
                     @Html.EditorFor(model => model.InvoiceDate)
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Remarks)
-                    @Html.TextAreaFor(model => model.Remarks, new { @class = "form-control" })
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Vendors)
                     @Html.DropDownListFor(model => model.VendorId, Model.Vendors, new { @class = "form-control" })
                 </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.VendorSites)
                     @Html.DropDownListFor(model => model.VendorSiteId, Model.VendorSites, new { @class = "form-control" })
                 </div>
             </div>
+        </div>
+        <div class="row">
             <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.WHTaxes)
@@ -87,6 +95,13 @@
                     @Html.TextBoxFor(model => model.Amount, new { @readonly = "readonly", @class = "form-control" })
                 </div>
             </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Remarks)
+                    @Html.TextAreaFor(model => model.Remarks, new { @class = "form-control" })
+                </div>
+            </div>
+            
         </div>
         
         <div class="row">
@@ -126,35 +141,9 @@
             })
         })
 
-        jQuery.ajaxSetup({ async: false });
-
-        $('#VendorId').change(function () {
-            var url = '@Url.Content("~/PayableInvoice/VendorSiteList")';
-            var url2 = '@Url.Content("~/PayableInvoice/WHTaxList")';
-
-            $.get(url, { vendorId: $(this).val() },
-                function (data) {
-                    var vendorSiteDropdown = $('#VendorSiteId');
-                    vendorSiteDropdown.empty();
-                    for (var i = 0; i < data.length; i++) {
-                        vendorSiteDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
-                    }
-
-                    $.get(url2, { vendorId: $(this).val(), vendorSiteId: data[0].value },
-                        function (data) {
-                            var whTaxDropdown = $('#WHTaxId');
-                            whTaxDropdown.empty();
-                            for (var i = 0; i < data.length; i++) {
-                                whTaxDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
-                            }
-                        });
-                });  
-        });
-
-        $('#VendorSiteId').change(function () {
-            var url = '@Url.Content("~/PayableInvoice/WithHoldingTaxList")';
-
-            $.get(url, { vendorId: $('#VendorId').val(), vendorSiteId: $(this).val() },
+        function GetWHTaxes(vendorId, vendordSiteId) {
+            var url = '@Url.Content("~/PayableInvoice/WHTaxList")';
+            $.get(url, { vendorId: vendorId, vendorSiteId: vendordSiteId },
                 function (data) {
                     var whTaxDropdown = $('#WHTaxId');
                     whTaxDropdown.empty();
@@ -162,7 +151,70 @@
                         whTaxDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
                     }
                 });
+        }
+
+        function GetVendorSites(vendorId) {
+            var url = '@Url.Content("~/PayableInvoice/VendorSiteList")';
+            $.get(url, { vendorId: vendorId },
+                function (data) {
+                    var vendorSiteDropdown = $('#VendorSiteId');
+                    var whTaxDropdown = $('#WHTaxId');
+                    vendorSiteDropdown.empty();
+                    whTaxDropdown.empty();
+                    if (data.length > 0){
+                        for (var i = 0; i < data.length; i++) {
+                            vendorSiteDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
+                        }
+                        GetWHTaxes(vendorId, data[0].Value)
+                    }
+                });
+        }
+
+        $('#VendorId').change(function () {
+            GetVendorSites($(this).val())
         });
+
+        $('#VendorSiteId').change(function () {
+            GetWHTaxes($('#VendorId').val(), $(this).val());
+        });
+
+        jQuery.ajaxSetup({ async: false });
+
+        $('#PeriodId').change(function () {
+            $.ajax({
+                url: '@Url.Content("~/PayableInvoice/AddCalendarInSession")',
+                data: { periodId: $(this).val() },
+                type: 'post',
+                datatype: 'json',
+                success: function (data) { },
+                error: function () { }
+            });
+
+            $.get('@Url.Content("~/PayableInvoice/InvoiceTypeList")', {},
+                function (data) {
+                    var invoiceTypeDropdown = $('#InvoiceTypeId')
+                    invoiceTypeDropdown.empty();
+                    if (data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            invoiceTypeDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
+                        }
+                    }
+                });
+
+            $.get('@Url.Content("~/PayableInvoice/VendorList")', {},
+                function (data) {
+                    var vendorSiteDropdown = $('#VendorSiteId')
+                    var vendorDropdown = $('#VendorId');
+                    vendorDropdown.empty();
+                    vendorSiteDropdown.empty();
+                    if (data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            vendorDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
+                        }
+                        GetVendorSites(data[0].Value)
+                    }
+                });
+        })
 
         $('#btnSave').click(function () {
 

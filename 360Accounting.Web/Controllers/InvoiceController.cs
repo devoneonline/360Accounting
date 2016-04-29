@@ -163,7 +163,18 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
-                    InvoiceHelper.UpdateInvoiceDetail(model);
+                    if (model.ItemId == null && model.InvoiceSourceId == null)
+                    {
+                        ViewData["EditError"] = "Either Invoice Source or Item is required.";
+                    }
+                    else if (model.ItemId != null && model.InvoiceSourceId != null)
+                    {
+                        ViewData["EditError"] = "Only Invoice Source or Item can be entered at a time.";
+                    }
+                    else
+                    {
+                        InvoiceHelper.UpdateInvoiceDetail(model);
+                    }
                 }
                 catch (Exception e)
                 {
@@ -195,6 +206,10 @@ namespace _360Accounting.Web.Controllers
                     if (model.ItemId == null && model.InvoiceSourceId == null)
                     {
                         ViewData["EditError"] = "Either Invoice Source or Item is required.";
+                    }
+                    else if (model.ItemId != null && model.InvoiceSourceId != null)
+                    {
+                        ViewData["EditError"] = "Only Invoice Source or Item can be entered at a time.";
                     }
                     else
                     {
@@ -266,6 +281,7 @@ namespace _360Accounting.Web.Controllers
             }
             model.Currencies = CurrencyHelper.GetCurrencyList(SessionHelper.SOBId);
             model.Periods = CalendarHelper.GetCalendarsList(SessionHelper.SOBId);
+            //model.Periods = ReceivablePeriodHelper.GetPeriodList(SessionHelper.SOBId);
 
             if (model.Currencies != null && model.Currencies.Count() > 0)
             {

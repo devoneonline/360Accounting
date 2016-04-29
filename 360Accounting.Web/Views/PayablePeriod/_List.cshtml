@@ -21,12 +21,14 @@
             settings.CommandColumn.ShowNewButton = true;
             settings.CommandColumn.ShowDeleteButton = true;
             settings.CommandColumn.ShowEditButton = true;
+            settings.CommandColumn.Width = System.Web.UI.WebControls.Unit.Percentage(30);
             
             settings.Columns.Add(column =>
             {
                 column.FieldName = "CalendarId";
                 column.Caption = "Calendar";
-
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(40);
+                
                 column.ColumnType = MVCxGridViewColumnType.ComboBox;
                 var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
                 comboBoxProperties.DataSource = CalendarHelper.GetCalendars(_360Accounting.Web.SessionHelper.SOBId);
@@ -38,6 +40,7 @@
             {
                 column.FieldName = "Status";
                 column.Caption = "Status";
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(30);
 
                 column.ColumnType = MVCxGridViewColumnType.ComboBox;
                 var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
