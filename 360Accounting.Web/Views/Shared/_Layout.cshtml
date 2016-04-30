@@ -127,6 +127,9 @@
                 enableFiltering: true
             });
 
+            if ($('#activeBook').text() == "(Click here to select Set of Book)")
+                $('#activeBook').css('color', '#D8000C')
+
             $(function () {
                 $('#dvAccountLookup').dialog({
                     modal: true,
