@@ -70,6 +70,7 @@ namespace _360Accounting.Web
                 return
                     User.CompanyId;
             }
+            set { User.CompanyId = value.Value; }
         }
 
         public static string CompanyName

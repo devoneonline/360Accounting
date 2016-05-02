@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace _360Accounting.Web
 {
@@ -445,6 +446,21 @@ namespace _360Accounting.Web
         public static long GetAccountIdBySegments(string segments)
         {
             return service.GetAccountIdBySegments(segments, AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId);
+        }
+
+        public static FeatureSetAccessModel UserFeatureSet(string featureSetId)
+        {
+            var entity = service.UserFeatureSet(Convert.ToInt64(featureSetId),AuthenticationHelper.CompanyId.Value);
+
+            MembershipUserCollection memCollection = Membership.GetAllUsers();
+            entity.AvailableUser=new Dictionary<Guid,string>();
+            foreach (MembershipUser user in memCollection)
+            {
+                UserProfile profile = UserProfile.GetProfile(user.UserName);
+                if (profile.CompanyId == AuthenticationHelper.CompanyId.Value)
+                    entity.AvailableUser.Add(Guid.Parse(user.ProviderUserKey.ToString()),user.UserName);
+            }
+            return new FeatureSetAccessModel(entity);
         }
     }
 }

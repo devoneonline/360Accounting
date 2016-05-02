@@ -26,6 +26,11 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Create()
         {
+            if (AccountHelper.GetAccountBySOBId(SessionHelper.SOBId.ToString())!=null)
+            {
+                ViewBag.ErrorMessage = "One book can have maximum one chart of account!";
+                return RedirectToAction("Index");
+            }
             AccountCreateViewModel model = new AccountCreateViewModel();
             model.SOBId = SessionHelper.SOBId;
             return View("Edit", model);
@@ -47,6 +52,11 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (model.SegmentEnabled1==false )
+                {
+                    ModelState.AddModelError("Error", "First segment should be enabled.");
+                    return View(model);
+                }
                 model.SOBId = SessionHelper.SOBId;
                 if (model.Id > 0)
                 {
