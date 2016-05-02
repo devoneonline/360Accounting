@@ -80,15 +80,36 @@
                 },
                 success: function (data) {
                     $('#dvDefaultSOB').html(data);
+
+                    //handling noConflict issue manually..
+                    if (typeof $('#dvDefaultSOB').dialog == 'undefined')
+                    {
+                        $.noConflict();
+                        $('#dvDefaultSOB').dialog({
+                            modal: true,
+                            title: "Please select your Set of Book",
+                            autoOpen: false,
+                            height: 'auto',
+                            width: 500,
+                            height: 300,
+                            zIndex: zind,
+                        });
+
+                        $('select').multiselect({
+                            enableFiltering: true
+                        });
+                    }
                     $('#dvDefaultSOB').dialog("open");
                     return false;
                 }
             });
         }
+
         //Default SOB
 
         var lookupTextField = '';
         var lookupValueField = '';
+        var lookupModelField = '';
 
         function SetMultiselect(combo, data) {
             jQuery.noConflict();
@@ -106,6 +127,9 @@
                 enableFiltering: true
             });
 
+            if ($('#activeBook').text() == "(Click here to select Set of Book)")
+                $('#activeBook').css('color', '#D8000C')
+
             $(function () {
                 $('#dvAccountLookup').dialog({
                     modal: true,
@@ -118,9 +142,10 @@
 
 
             $('.AccountLookup').click(function () {
+                debugger;
                 lookupValueField = (this.id).replace('String', '');
+                lookupModelField = (this.id).replace('String', 'Id');
                 lookupTextField = this.id;
-                //var sobId = 6;
                 $.ajax({
                     url: '@Url.Content("~/CodeCombinition/LookupAccountCode")',
                     data: { },

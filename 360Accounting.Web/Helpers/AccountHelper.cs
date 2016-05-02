@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace _360Accounting.Web
 {
@@ -196,122 +197,154 @@ namespace _360Accounting.Web
             {
                 if (account.SegmentEnabled1 == true)
                 {
-                    segmentList.Add(new Segment
+                    List<AccountValueViewModel> accountValues = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName1, 1, fetchSaved);
+                    if (accountValues.Any())
                     {
-                        SegmentCount = 1,
-                        SegmentName = account.SegmentName1,
-                        SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName1, 1, fetchSaved)
-                        .Select(x => new SelectListItem
+                        segmentList.Add(new Segment
                         {
-                            Value = x.Value,
-                            Text = x.ValueName
-                        }).ToList()
-                    });
+                            SegmentCount = 1,
+                            SegmentName = account.SegmentName1,
+                            SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName1, 1, fetchSaved)
+                            .Select(x => new SelectListItem
+                            {
+                                Value = x.Value,
+                                Text = x.ValueName
+                            }).ToList()
+                        });
+                    }
                 }
 
                 if (account.SegmentEnabled2 == true)
                 {
-                    segmentList.Add(new Segment
+                    List<AccountValueViewModel> accountValues = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName2, 2, fetchSaved);
+                    if (accountValues.Any())
                     {
-                        SegmentCount = 2,
-                        SegmentName = account.SegmentName2,
-                        SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName2, 2, fetchSaved)
-                        .Select(x => new SelectListItem
+                        segmentList.Add(new Segment
                         {
-                            Value = x.Value,
-                            Text = x.ValueName
-                        }).ToList()
-                    });
+                            SegmentCount = 2,
+                            SegmentName = account.SegmentName2,
+                            SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName2, 2, fetchSaved)
+                            .Select(x => new SelectListItem
+                            {
+                                Value = x.Value,
+                                Text = x.ValueName
+                            }).ToList()
+                        });
+                    }
                 }
 
                 if (account.SegmentEnabled3 == true)
                 {
-                    segmentList.Add(new Segment
+                    List<AccountValueViewModel> accountValues = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName3, 3, fetchSaved);
+                    if (accountValues.Any())
                     {
-                        SegmentCount = 3,
-                        SegmentName = account.SegmentName3,
-                        SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName3, 3, fetchSaved)
-                        .Select(x => new SelectListItem
+                        segmentList.Add(new Segment
                         {
-                            Value = x.Value,
-                            Text = x.ValueName
-                        }).ToList()
-                    });
+                            SegmentCount = 3,
+                            SegmentName = account.SegmentName3,
+                            SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName3, 3, fetchSaved)
+                            .Select(x => new SelectListItem
+                            {
+                                Value = x.Value,
+                                Text = x.ValueName
+                            }).ToList()
+                        });
+                    }
                 }
 
                 if (account.SegmentEnabled4 == true)
                 {
-                    segmentList.Add(new Segment
+                    List<AccountValueViewModel> accountValues = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName4, 4, fetchSaved);
+                    if (accountValues.Any())
                     {
-                        SegmentCount = 4,
-                        SegmentName = account.SegmentName4,
-                        SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName4, 4, fetchSaved)
-                        .Select(x => new SelectListItem
+                        segmentList.Add(new Segment
                         {
-                            Value = x.Value,
-                            Text = x.ValueName
-                        }).ToList()
-                    });
+                            SegmentCount = 4,
+                            SegmentName = account.SegmentName4,
+                            SegmentValueList = accountValues
+                            .Select(x => new SelectListItem
+                            {
+                                Value = x.Value,
+                                Text = x.ValueName
+                            }).ToList()
+                        });
+                    }
                 }
 
                 if (account.SegmentEnabled5 == true)
                 {
-                    segmentList.Add(new Segment
+                    List<AccountValueViewModel> accountValues = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName5, 5, fetchSaved);
+                    if (accountValues.Any())
                     {
-                        SegmentCount = 5,
-                        SegmentName = account.SegmentName5,
-                        SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName5, 5, fetchSaved)
-                        .Select(x => new SelectListItem
+                        segmentList.Add(new Segment
                         {
-                            Value = x.Value,
-                            Text = x.ValueName
-                        }).ToList()
-                    });
+                            SegmentCount = 5,
+                            SegmentName = account.SegmentName5,
+                            SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName5, 5, fetchSaved)
+                            .Select(x => new SelectListItem
+                            {
+                                Value = x.Value,
+                                Text = x.ValueName
+                            }).ToList()
+                        });
+                    }
                 }
 
                 if (account.SegmentEnabled6 == true)
                 {
-                    segmentList.Add(new Segment
+                    List<AccountValueViewModel> accountValues = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName6, 6, fetchSaved);
+                    if (accountValues.Any())
                     {
-                        SegmentCount = 6,
-                        SegmentName = account.SegmentName6,
-                        SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName6, 6, fetchSaved)
-                        .Select(x => new SelectListItem
+                        segmentList.Add(new Segment
                         {
-                            Value = x.Value,
-                            Text = x.ValueName
-                        }).ToList()
-                    });
+                            SegmentCount = 6,
+                            SegmentName = account.SegmentName6,
+                            SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName6, 6, fetchSaved)
+                            .Select(x => new SelectListItem
+                            {
+                                Value = x.Value,
+                                Text = x.ValueName
+                            }).ToList()
+                        });
+                    }
                 }
 
                 if (account.SegmentEnabled7 == true)
                 {
-                    segmentList.Add(new Segment
+                    List<AccountValueViewModel> accountValues = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName7, 7, fetchSaved);
+                    if (accountValues.Any())
                     {
-                        SegmentCount = 7,
-                        SegmentName = account.SegmentName7,
-                        SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName7, 7, fetchSaved)
-                        .Select(x => new SelectListItem
+                        segmentList.Add(new Segment
                         {
-                            Value = x.Value,
-                            Text = x.ValueName
-                        }).ToList()
-                    });
+                            SegmentCount = 7,
+                            SegmentName = account.SegmentName7,
+                            SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName7, 7, fetchSaved)
+                            .Select(x => new SelectListItem
+                            {
+                                Value = x.Value,
+                                Text = x.ValueName
+                            }).ToList()
+                        });
+                    }
                 }
 
                 if (account.SegmentEnabled8 == true)
                 {
-                    segmentList.Add(new Segment
+                    List<AccountValueViewModel> accountValues = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName8, 8, fetchSaved);
+                    if (accountValues.Any())
                     {
-                        SegmentCount = 8,
-                        SegmentName = account.SegmentName8,
-                        SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName8, 8, fetchSaved)
-                        .Select(x => new SelectListItem
+                        segmentList.Add(new Segment
                         {
-                            Value = x.Value,
-                            Text = x.ValueName
-                        }).ToList()
-                    });
+                            SegmentCount = 8,
+                            SegmentName = account.SegmentName8,
+                            SegmentValueList = AccountValueHelper.GetAccountValues(account.Id, account.SOBId, account.SegmentName8, 8, fetchSaved)
+                            .Select(x => new SelectListItem
+                            {
+                                Value = x.Value,
+                                Text = x.ValueName
+                            }).ToList()
+                        });
+                    }
                 }
             }
 
@@ -412,7 +445,22 @@ namespace _360Accounting.Web
 
         public static long GetAccountIdBySegments(string segments)
         {
-            return service.GetAccountIdBySegments(segments, AuthenticationHelper.CompanyId.Value);
+            return service.GetAccountIdBySegments(segments, AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId);
+        }
+
+        public static FeatureSetAccessModel UserFeatureSet(string featureSetId)
+        {
+            var entity = service.UserFeatureSet(Convert.ToInt64(featureSetId),AuthenticationHelper.CompanyId.Value);
+
+            MembershipUserCollection memCollection = Membership.GetAllUsers();
+            entity.AvailableUser=new Dictionary<Guid,string>();
+            foreach (MembershipUser user in memCollection)
+            {
+                UserProfile profile = UserProfile.GetProfile(user.UserName);
+                if (profile.CompanyId == AuthenticationHelper.CompanyId.Value)
+                    entity.AvailableUser.Add(Guid.Parse(user.ProviderUserKey.ToString()),user.UserName);
+            }
+            return new FeatureSetAccessModel(entity);
         }
     }
 }

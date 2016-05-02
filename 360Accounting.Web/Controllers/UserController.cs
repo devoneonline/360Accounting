@@ -316,9 +316,13 @@ namespace _360Accounting.Web.Controllers
         {
             ViewBag.ErrorMessage = message;
             int totalRecords = 0;
+
             FeatureSetListModel model = new FeatureSetListModel();
             if (Id != null)
+            {
+                AuthenticationHelper.CompanyId = Id;//TODO: temporary fix by khanani.
                 model.FeatureSet = featureSetService.GetAll(Id.Value).Select(x => new FeatureSetModel(x)).ToList();
+            }
             else
                 model.FeatureSet = featureSetService.GetAll().Select(x => new FeatureSetModel(x)).ToList();
             
@@ -356,30 +360,38 @@ namespace _360Accounting.Web.Controllers
             }
         }
 
-        public ActionResult UserFeatureSet(string featureSetId)
+        public ActionResult UserFeatureSet(long id)
         {
-            ViewBag.FeatureSetId = featureSetId;
-            //TODO: Is this the way to get users??
+            var model = AccountHelper.UserFeatureSet(id.ToString());
+            return View(model);
+        }
 
-            List<SelectUser> modelList = new List<SelectUser>();
-            MembershipUserCollection memCollection = Membership.GetAllUsers();
-            foreach (MembershipUser user in memCollection)
+        [HttpPost]
+        public ActionResult UserFeatureSet(FeatureSetAccessModel model)
+        {
+            var UserList = model.SelectedUsers;
+            List<FeatureSetAccess> tobeRemoved = featureSetAccessService.GetAll(AuthenticationHelper.CompanyId.Value).Where(rec => rec.UserId != null).ToList();
+            if (tobeRemoved.Count() > 0)
             {
-                UserProfile profile = UserProfile.GetProfile(user.UserName);
-                SelectUser item = new SelectUser();
-                item.UserId = Guid.Parse(user.ProviderUserKey.ToString());
-                item.UserName = user.UserName;
-                item.CompanyId = profile.CompanyId;
-                item.Selected = featureSetAccessService.GetSingle(AuthenticationHelper.CompanyId.Value, user.ProviderUserKey.ToString()) == null ? false : true;
-                item.Role = Roles.GetRolesForUser(user.UserName)[0];
-                modelList.Add(item);
+                foreach (var item in tobeRemoved)
+                {
+                    featureSetAccessService.Delete(item.Id.ToString(), Convert.ToInt64(item.CompanyId));
+                }
             }
-            if (AuthenticationHelper.UserRole != UserRoles.SuperAdmin.ToString())
+            foreach (var item in UserList)
             {
-                modelList = modelList.Where(x => x.CompanyId == AuthenticationHelper.CompanyId.Value && x.Role != UserRoles.SuperAdmin.ToString()).ToList();
+                if (!string.IsNullOrEmpty(item))
+                {
+                    featureSetAccessService.Insert(new FeatureSetAccess
+                    {
+                        CompanyId = AuthenticationHelper.CompanyId.Value,
+                        FeatureSetId = Convert.ToInt64(model.FeatureSetId),
+                        UserId = Guid.Parse(item),
+                        CreateDate = DateTime.Now
+                    });
+                }
             }
-
-            return View("CheckUsersPartial", modelList);
+            return RedirectToAction("FeatureSet");
         }
 
         public ActionResult SaveFSforUsers(string featureSetId, string userList)

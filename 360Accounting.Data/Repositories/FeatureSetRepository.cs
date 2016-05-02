@@ -18,9 +18,9 @@ namespace _360Accounting.Data.Repositories
         public IEnumerable<FeatureSet> GetAll(long companyId)
         {
             IEnumerable<FeatureSet> featureSets = from a in this.Context.FeatureSets
-                        join b in this.Context.FeatureSetAccesses on a.Id equals b.FeatureSetId
-                        select a;
-            //IEnumerable<FeatureSet> featureSets = this.Context.FeatureSets;
+                                                  join b in this.Context.FeatureSetAccesses on a.Id equals b.FeatureSetId
+                                                  where b.CompanyId == companyId
+                                                  select a;
             return featureSets.ToList();
         }
 

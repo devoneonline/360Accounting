@@ -111,12 +111,24 @@ namespace _360Accounting.Web
 
         public static string SaveCodeCombination(CodeCombinitionCreateViewModel model)
         {
+            List<CodeCombinition> codeCombinitions = service.GetAll(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId);
             if (model.Id > 0)
             {
+                if (codeCombinitions.Where(rec => rec.Id != model.Id && rec.Segment1 == model.Segment1 && rec.Segment2 == model.Segment2 && rec.Segment3 == model.Segment3 && rec.Segment4 == model.Segment4 && rec.Segment5 == model.Segment5 && rec.Segment6 == model.Segment6 && rec.Segment7 == model.Segment7 && rec.Segment8 == model.Segment8).Any())
+                {
+                    return "Combinition already exists";
+                }
                 return service.Update(getEntityByModel(model));
             }
             else
             {
+                if (codeCombinitions.Any())
+                {
+                    if (codeCombinitions.Where(rec => rec.Segment1 == model.Segment1 && rec.Segment2 == model.Segment2 && rec.Segment3 == model.Segment3 && rec.Segment4 == model.Segment4 && rec.Segment5 == model.Segment5 && rec.Segment6 == model.Segment6 && rec.Segment7 == model.Segment7 && rec.Segment8 == model.Segment8).Any())
+                    {
+                        return "Combinition already exists";
+                    }
+                }
                 return service.Insert(getEntityByModel(model));
             }
         }

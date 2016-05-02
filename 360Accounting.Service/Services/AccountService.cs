@@ -58,9 +58,14 @@ namespace _360Accounting.Service
             return this.repository.Count(companyId);
         }
 
-        public long GetAccountIdBySegments(string segments, long companyId)
+        public long GetAccountIdBySegments(string segments, long companyId, long sobId)
         {
-            return this.repository.GetAccountIdBySegments(segments, companyId);
+            return this.repository.GetAccountIdBySegments(segments, companyId, sobId);
+        }
+
+        public FeatureSetAccessList UserFeatureSet(long featureSetId, long companyId)
+        {
+            return this.repository.UserFeatureSet(featureSetId,companyId);
         }
     }
 }

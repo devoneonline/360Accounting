@@ -14,6 +14,8 @@ namespace _360Accounting.Core
 
         IEnumerable<AccountView> GetAll(long sobId, long companyId, string searchText, bool paging, int? page, string sort, string sortDir);
 
-        long GetAccountIdBySegments(string segments, long companyId);
+        long GetAccountIdBySegments(string segments, long companyId, long sobId);
+
+        FeatureSetAccessList UserFeatureSet(long featureSetId, long companyId);
     }
 }
