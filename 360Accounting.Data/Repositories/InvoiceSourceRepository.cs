@@ -30,6 +30,11 @@ namespace _360Accounting.Data.Repositories
             return invoiceSourceList;
         }
 
+        public IEnumerable<InvoiceSource> GetByCodeCombinitionId(long companyId, long sobId, long codeCombinitionId)
+        {
+            return this.Context.InvoiceSources.Where(rec => rec.CompanyId == companyId && rec.SOBId == sobId && rec.CodeCombinationId == codeCombinitionId);
+        }
+
         public string Insert(InvoiceSource entity)
         {
             this.Context.InvoiceSources.Add(entity);

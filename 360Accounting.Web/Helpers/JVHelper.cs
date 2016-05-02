@@ -169,6 +169,11 @@ namespace _360Accounting.Web
             service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
 
+        public static IEnumerable<GLLines> GetByCodeCombinitionId(long codeCombinitionId)
+        {
+            return lineService.GetByCodeCombinitionId(codeCombinitionId);
+        }
+
         #region Private Methods
         private static GLHeader getEntityByModel(GLHeaderModel model)
         {

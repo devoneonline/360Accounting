@@ -165,6 +165,9 @@ namespace _360Accounting.Web
             }
         }
 
-        
+        public static IEnumerable<CustomerSite> GetByCodeCombinitionId(long codeCombinitionId)
+        {
+            return siteService.GetByCodeCombinitionId(codeCombinitionId);
+        }
     }
 }

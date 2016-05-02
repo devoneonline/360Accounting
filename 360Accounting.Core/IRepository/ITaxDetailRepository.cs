@@ -10,5 +10,7 @@ namespace _360Accounting.Core.Interfaces
     public interface ITaxDetailRepository : IRepository<TaxDetail>
     {
         IList<TaxDetail> GetAll(long companyId, long taxId);
+
+        IEnumerable<TaxDetail> GetByCodeCombinitionId(long codeCombinitionId);
     }
 }

@@ -23,6 +23,11 @@ namespace _360Accounting.Service
             return this.repository.GetAll(companyId, taxId);
         }
 
+        public IEnumerable<TaxDetail> GetByCodeCombinitionId(long codeCombinitionId)
+        {
+            return this.repository.GetByCodeCombinitionId(codeCombinitionId);
+        }
+
         public TaxDetail GetSingle(string id, long companyId)
         {
             return this.repository.GetSingle(id, companyId);

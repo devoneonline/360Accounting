@@ -4,28 +4,16 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $(function () {
-            $('#ExceptionBox').dialog({
-                modal: true,
-                title: '@TempData["ErrorMessage"]',
-                autoOpen: false,
-                height: 'auto',
-                width: 500,
-            });
-        });
-
-        //GetSOBs();
-
         $.ajax({
-            url: '@Url.Content("~/Base/ViewErrorPopup")',
+            url: '@Url.Content("~/UserSetofBook/ViewErrorPopup")',
             data: {},
             datatype: 'html',
             type: 'get',
             error: function (error) {
                 alert('Error');
             },
-            success: function (data) {
-                $('#ExceptionBox').html(data);
+            success: function (rtnData) {
+                $('#ExceptionBox').html(rtnData);
                 $('#ExceptionBox').dialog("open");
                 return false;
             }

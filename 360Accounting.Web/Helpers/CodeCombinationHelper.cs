@@ -155,5 +155,39 @@ namespace _360Accounting.Web
         {
             service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
+
+        public static bool CheckCodeCombinition(long id)
+        {
+            IEnumerable<Withholding> withholding = WithholdingHelper.GetByCodeCombinitionId(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, id);
+            if (withholding.Any())
+                return false;
+
+            IEnumerable<CustomerSite> customerSite = CustomerHelper.GetByCodeCombinitionId(id);
+            if (customerSite.Any())
+                return false;
+
+            IEnumerable<GLLines> glLines = JVHelper.GetByCodeCombinitionId(id);
+            if (glLines.Any())
+                return false;
+
+            IEnumerable<InvoiceSource> invoiceSource = InvoiceSourceHelper.GetByCodeCombinitionId(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, id);
+            if (invoiceSource.Any())
+                return false;
+
+            IEnumerable<Item> item = ItemHelper.GetByCodeCombinitionId(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, id);
+            if (item.Any())
+                return false;
+
+            IEnumerable<TaxDetail> taxDetail = TaxHelper.GetByCodeCombinitionId(id);
+            if (taxDetail.Any())
+                return false;
+
+            IEnumerable<VendorSite> vendorSite = VendorHelper.GetByCodeCombinitionId(id);
+            if (vendorSite.Any())
+                return false;
+
+            return true;
+
+        }
     }
 }

@@ -103,6 +103,11 @@ namespace _360Accounting.Web
             service.DeleteSite(vendorSiteId, AuthenticationHelper.CompanyId.Value);
         }
 
+        public static IEnumerable<VendorSite> GetByCodeCombinitionId(long codeCombinitionId)
+        {
+            return service.GetByCodeCombinitionId(codeCombinitionId);
+        }
+
         #endregion
 
         #region Private Method

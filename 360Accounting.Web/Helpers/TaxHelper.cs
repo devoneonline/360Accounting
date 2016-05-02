@@ -222,5 +222,10 @@ namespace _360Accounting.Web
             else
                 return getTaxDetail();
         }
+
+        public static IEnumerable<TaxDetail> GetByCodeCombinitionId(long codeCombinitionId)
+        {
+            return detailService.GetByCodeCombinitionId(codeCombinitionId);
+        }
     }
 }

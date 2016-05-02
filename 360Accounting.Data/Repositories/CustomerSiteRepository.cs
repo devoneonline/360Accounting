@@ -59,6 +59,11 @@ namespace _360Accounting.Data.Repositories
             return customerSites;
         }
 
+        public IEnumerable<CustomerSite> GetByCodeCombinitionId(long codeCombinitionId)
+        {
+            return this.Context.CustomerSites.Where(rec => rec.CodeCombinationId == codeCombinitionId);
+        }
+
         public string Insert(CustomerSite entity)
         {
             this.Context.CustomerSites.Add(entity);

@@ -10,5 +10,7 @@ namespace _360Accounting.Core.Interfaces
     public interface IGLLineRepository : IRepository<GLLines>
     {
         IList<GLLines> GetAll(long companyId, long headerId);
+
+        IEnumerable<GLLines> GetAllByCodeCombinitionId(long codeCombinitionId);
     }
 }

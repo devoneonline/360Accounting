@@ -33,6 +33,11 @@ namespace _360Accounting.Service
             return this.repository.GetAll(companyId);
         }
 
+        public IEnumerable<Withholding> GetByCodeCombinitionId(long companyId, long sobId, long codeCombinitionId)
+        {
+            return this.repository.GetByCodeCombinitionId(companyId, sobId, codeCombinitionId);
+        }
+
         public IEnumerable<Withholding> GetWithholdings(long companyId, long sobId, long codeCombinitionId, long vendorId)
         {
             return this.repository.GetWithholdings(companyId, sobId, codeCombinitionId, vendorId);

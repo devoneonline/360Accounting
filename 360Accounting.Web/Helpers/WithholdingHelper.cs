@@ -89,5 +89,10 @@ namespace _360Accounting.Web
                     Text = x.Description
                 }).ToList();
         }
+
+        public static IEnumerable<Withholding> GetByCodeCombinitionId(long companyId, long sobId, long codeCombinitionId)
+        {
+            return service.GetByCodeCombinitionId(companyId, sobId, codeCombinitionId);
+        }
     }
 }
