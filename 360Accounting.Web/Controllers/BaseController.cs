@@ -31,7 +31,7 @@ namespace _360Accounting.Web.Controllers
             }
             else
             {
-                if (Request.Url.Segments[1].ToUpper() == "SETOFBOOK")
+                if (Request.Url.Segments[1].ToUpper() == "SETOFBOOK" || Request.Url.Segments[1].ToUpper() == "SETOFBOOK/")
                     base.OnActionExecuting(filterContext);
                 else
                 {
@@ -41,12 +41,6 @@ namespace _360Accounting.Web.Controllers
                     filterContext.Result.ExecuteResult(filterContext.Controller.ControllerContext);
                 }
             }
-        }
-
-        public ActionResult ViewErrorPopup()
-        {
-            TempData["LastURL"] = TempData["LastURL"];
-            return PartialView("_Exception");
         }
     }
 }

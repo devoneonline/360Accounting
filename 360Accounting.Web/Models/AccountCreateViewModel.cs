@@ -59,7 +59,7 @@ namespace _360Accounting.Web.Models
 
         public long CompanyId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "First segment is mandatory.")]
         [Display(Name = "1 *")]
         [StringLength(30, ErrorMessage = "Segment1 should not exceed length of 30 characters!")]
         public string SegmentName1 { get; set; }
@@ -93,7 +93,7 @@ namespace _360Accounting.Web.Models
         public string SegmentName8 { get; set; }
 
         [Display(Name = "Segments")]
-        [Required]
+        [Required(ErrorMessage = "First segment size is mandatory.")]
         [RegularExpression("^[0-9]{1,1}$", ErrorMessage = "Segment size should be less than 10")]
         public int? SegmentChar1 { get; set; }
 

@@ -41,4 +41,11 @@ namespace _360Accounting.Core.Entities
             return true;
         }
     }
+
+    public class FeatureSetAccessList
+    {
+        public long FeatureSetId { get; set; }
+        public Dictionary<Guid, string> SelectedUser { get; set; }
+        public Dictionary<Guid, string> AvailableUser { get; set; }
+    }
 }

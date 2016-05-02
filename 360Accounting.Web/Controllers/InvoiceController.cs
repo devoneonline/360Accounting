@@ -75,7 +75,8 @@ namespace _360Accounting.Web.Controllers
             });
 
             model.Currencies = CurrencyHelper.GetCurrencyList(SessionHelper.SOBId);
-            model.Periods = CalendarHelper.GetCalendarsList(SessionHelper.SOBId);
+            //model.Periods = CalendarHelper.GetCalendarsList(SessionHelper.SOBId);
+            model.Periods = ReceivablePeriodHelper.GetPeriodList(SessionHelper.SOBId);
 
             SessionHelper.Invoice = model;
             return View(model);
@@ -280,8 +281,8 @@ namespace _360Accounting.Web.Controllers
                 SessionHelper.Invoice = model;
             }
             model.Currencies = CurrencyHelper.GetCurrencyList(SessionHelper.SOBId);
-            model.Periods = CalendarHelper.GetCalendarsList(SessionHelper.SOBId);
-            //model.Periods = ReceivablePeriodHelper.GetPeriodList(SessionHelper.SOBId);
+            //model.Periods = CalendarHelper.GetCalendarsList(SessionHelper.SOBId);
+            model.Periods = ReceivablePeriodHelper.GetPeriodList(SessionHelper.SOBId);
 
             if (model.Currencies != null && model.Currencies.Count() > 0)
             {

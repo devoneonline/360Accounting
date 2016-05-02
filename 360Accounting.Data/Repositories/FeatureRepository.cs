@@ -56,13 +56,27 @@ namespace _360Accounting.Data.Repositories
 
         public IEnumerable<Feature> GetMenuItemsByUserId(Guid userId)
         {
-            IEnumerable<Feature> featureList = (from a in this.Context.FeatureSetAccesses
-                                                join b in this.Context.FeatureSets on a.FeatureSetId equals b.Id
-                                                join c in this.Context.FeatureSetLists on b.Id equals c.FeatureSetId
-                                                join d in this.Context.Features on c.FeatureId equals d.Id
-                                                where a.UserId == userId
-                                                select d).Include(x => x.Features);
-            return featureList.Where(x => x.ParentId == null);
+            var query = (from a in this.Context.FeatureSetAccesses
+                         join c in this.Context.FeatureSetLists on a.FeatureSetId equals c.FeatureSetId
+                         join d in this.Context.Features on c.FeatureId equals d.Id
+                         where a.UserId == userId
+                         select d).ToList();
+
+            List<Feature> featureList = new List<Feature>();
+            featureList.AddRange(query.Where(x => x.ParentId == null));
+
+            foreach (var q in query)
+            {
+                var f = featureList.FirstOrDefault(x => x.Id == q.ParentId);
+                if (f != null)
+                {
+                    if (f.Features == null)
+                        f.Features = new List<Feature>();
+                    if (!f.Features.Any(x => x.Id == q.Id))
+                        f.Features.Add(q);
+                }
+            }
+            return featureList;
         }
 
         public IEnumerable<Feature> GetSuperAdminMenu()

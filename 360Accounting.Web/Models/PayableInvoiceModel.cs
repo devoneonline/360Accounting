@@ -20,42 +20,38 @@ namespace _360Accounting.Web.Models
         public long Id { get; set; }
         public long SOBId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Vendor is Required")]
+        [Display(Name = "Vendor *")]
         public long VendorId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Vendor Site is Required")]
+        [Display(Name = "Vendor Site *")]
         public long VendorSiteId { get; set; }
+
+        [Required(ErrorMessage = "Period is Required")]
+        [Display(Name = "Period *")]
         public long PeriodId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Invoice Type is Required")]
+        [Display(Name = "Invoice Type *")]
         public long InvoiceTypeId { get; set; }
 
-        [Display(Name = "With Holding Tax")]
         public List<SelectListItem> WHTaxes { get; set; }
-
-        [Display(Name = "Period")]
         public List<SelectListItem> Periods { get; set; }
-
-        [Display(Name = "Vendor")]
         public List<SelectListItem> Vendors { get; set; }
-
-        [Display(Name = "Vendor Site")]
         public List<SelectListItem> VendorSites { get; set; }
-
-        [Display(Name = "Invoice Type")]
         public List<SelectListItem> InvoiceTypes { get; set; }
 
-        [Required]
-        [Display(Name = "WH Tax")]
+        [Display(Name = "With Holding Tax")]
         public long? WHTaxId { get; set; }
 
         [Display(Name = "Invoice No")]
         public string InvoiceNo { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Invoice Date is Required")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Invoice Date")]
+        [Display(Name = "Invoice Date *")]
         public DateTime InvoiceDate { get; set; }
 
         [Display(Name = "Description")]

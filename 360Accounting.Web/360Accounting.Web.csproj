@@ -632,6 +632,7 @@
     <Content Include="Views\UserSetofBook\_Create.cshtml" />
     <Content Include="Views\Shared\_OnException.cshtml" />
     <Content Include="Views\Shared\_Exception.cshtml" />
+    <Content Include="Views\User\UserFeatureSet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

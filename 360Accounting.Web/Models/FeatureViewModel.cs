@@ -3,9 +3,31 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
+
+    public class FeatureSetAccessModel
+    {
+        public long FeatureSetId { get; set; }
+        public string[] SelectedUsers { get; set; }
+        public string[] AvailableUsers { get; set; }
+        public List<SelectListItem> SelectedUserList { get; set; }
+        public List<SelectListItem> AvailableUserList { get; set; }
+
+        public FeatureSetAccessModel(FeatureSetAccessList entity)
+        {
+            FeatureSetId = entity.FeatureSetId;
+            SelectedUserList = entity.SelectedUser.Select(x => new SelectListItem { Text = x.Value, Value = x.Key.ToString() }).ToList(); ;
+            AvailableUserList = entity.AvailableUser.Select(x => new SelectListItem { Text = x.Value, Value = x.Key.ToString() }).ToList();
+
+            SelectedUsers = SelectedUserList.Select(x => x.Value).ToArray();
+            AvailableUsers = AvailableUserList.Select(x=> x.Value).ToArray();
+        }
+    }
+
+
     public class FeatureViewModel
     {
         public FeatureViewModel(Core.Entities.Feature x)

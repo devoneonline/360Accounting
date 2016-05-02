@@ -48,6 +48,11 @@ namespace _360Accounting.Service
             return this.repository.GetAllItemWarehouses(itemId);
         }
 
+        public IEnumerable<Item> GetByCodeCombinitionId(long companyId, long sobId, long codeCombinitionId)
+        {
+            return this.repository.GetByCodeCombinitionId(companyId, sobId, codeCombinitionId);
+        }
+
         public Item GetSingle(string id, long companyId)
         {
             return this.repository.GetSingle(id, companyId);

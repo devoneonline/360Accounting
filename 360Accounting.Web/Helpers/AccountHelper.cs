@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace _360Accounting.Web
 {
@@ -118,7 +119,7 @@ namespace _360Accounting.Web
                     Value = account.SegmentName1,
                     Selected = true
                 });
-                if (account.SegmentName2 != null)
+                if (account.SegmentName2 != null && account.SegmentEnabled2 != false)
                 {
                     lst.Add(new SelectListItem
                     {
@@ -127,7 +128,7 @@ namespace _360Accounting.Web
                     });
                 }
 
-                if (account.SegmentName3 != null)
+                if (account.SegmentName3 != null && account.SegmentEnabled3 != false)
                 {
                     lst.Add(new SelectListItem
                     {
@@ -136,7 +137,7 @@ namespace _360Accounting.Web
                     });
                 }
 
-                if (account.SegmentName4 != null)
+                if (account.SegmentName4 != null && account.SegmentEnabled4 != false)
                 {
                     lst.Add(new SelectListItem
                     {
@@ -145,7 +146,7 @@ namespace _360Accounting.Web
                     });
                 }
 
-                if (account.SegmentName5 != null)
+                if (account.SegmentName5 != null && account.SegmentEnabled5 != false)
                 {
                     lst.Add(new SelectListItem
                     {
@@ -154,7 +155,7 @@ namespace _360Accounting.Web
                     });
                 }
 
-                if (account.SegmentName6 != null)
+                if (account.SegmentName6 != null && account.SegmentEnabled6 != false)
                 {
                     lst.Add(new SelectListItem
                     {
@@ -163,7 +164,7 @@ namespace _360Accounting.Web
                     });
                 }
 
-                if (account.SegmentName7 != null)
+                if (account.SegmentName7 != null && account.SegmentEnabled7 != false)
                 {
                     lst.Add(new SelectListItem
                     {
@@ -172,7 +173,7 @@ namespace _360Accounting.Web
                     });
                 }
 
-                if (account.SegmentName8 != null)
+                if (account.SegmentName8 != null && account.SegmentEnabled8 != false)
                 {
                     lst.Add(new SelectListItem
                     {
@@ -435,16 +436,27 @@ namespace _360Accounting.Web
 
         public static void Delete(string id)
         {
-            List<AccountValueViewModel> accountValues = AccountValueHelper.GetAccountValuesbyChartId(Convert.ToInt64(id), SessionHelper.SOBId);
-            if (accountValues.Any())
-                throw new Exception("The account having values, cannot be deleted");
-
             service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
 
         public static long GetAccountIdBySegments(string segments)
         {
             return service.GetAccountIdBySegments(segments, AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId);
+        }
+
+        public static FeatureSetAccessModel UserFeatureSet(string featureSetId)
+        {
+            var entity = service.UserFeatureSet(Convert.ToInt64(featureSetId),AuthenticationHelper.CompanyId.Value);
+
+            MembershipUserCollection memCollection = Membership.GetAllUsers();
+            entity.AvailableUser=new Dictionary<Guid,string>();
+            foreach (MembershipUser user in memCollection)
+            {
+                UserProfile profile = UserProfile.GetProfile(user.UserName);
+                if (profile.CompanyId == AuthenticationHelper.CompanyId.Value)
+                    entity.AvailableUser.Add(Guid.Parse(user.ProviderUserKey.ToString()),user.UserName);
+            }
+            return new FeatureSetAccessModel(entity);
         }
     }
 }

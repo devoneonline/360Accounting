@@ -26,6 +26,11 @@ namespace _360Accounting.Data.Repositories
             return this.Context.ItemWarehouses.Where(x => x.ItemId == itemId);
         }
 
+        public IEnumerable<Item> GetByCodeCombinitionId(long companyId, long sobId, long codeCombinitionId)
+        {
+            return this.Context.Items.Where(rec => rec.CompanyId == companyId && rec.SOBId == sobId && (rec.COGSCodeCombinationId == codeCombinitionId || rec.SalesCodeCombinationId == codeCombinitionId));
+        }
+
         public long Insert(ItemWarehouse entity)
         {
             this.Context.ItemWarehouses.Add(entity);

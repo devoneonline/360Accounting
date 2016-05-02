@@ -33,6 +33,11 @@ namespace _360Accounting.Service
             return this.repository.GetAll(companyId);
         }
 
+        public IEnumerable<GLLines> GetByCodeCombinitionId(long codeCombinitionId)
+        {
+            return this.repository.GetAllByCodeCombinitionId(codeCombinitionId);
+        }
+
         public string Insert(GLLines entity)
         {
             return this.repository.Insert(entity);

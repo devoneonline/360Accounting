@@ -45,6 +45,11 @@ namespace _360Accounting.Data.Repositories
             return query;
         }
 
+        public IEnumerable<Withholding> GetByCodeCombinitionId(long companyId, long sobId, long codeCombinitionId)
+        {
+            return this.Context.Withholdings.Where(rec => rec.CompanyId == companyId && rec.SOBId == sobId && rec.CodeCombinitionId == codeCombinitionId);
+        }
+
         public string Insert(Withholding entity)
         {
             this.Context.Withholdings.Add(entity);

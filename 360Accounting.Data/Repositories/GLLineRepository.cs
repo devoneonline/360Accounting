@@ -30,6 +30,11 @@ namespace _360Accounting.Data.Repositories
             return entityList;
         }
 
+        public IEnumerable<GLLines> GetAllByCodeCombinitionId(long codeCombinitionId)
+        {
+            return this.Context.GLLines.Where(rec => rec.CodeCombinationId == codeCombinitionId);
+        }
+
         public string Insert(GLLines entity)
         {
             this.Context.GLLines.Add(entity);

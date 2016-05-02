@@ -22,6 +22,11 @@ namespace _360Accounting.Service
         {
             return this.repository.GetAll(companyId, sobId);
         }
+
+        public IEnumerable<InvoiceSource> GetByCodeCombinitionId(long companyId, long sobId, long codeCombinitionId)
+        {
+            return this.repository.GetByCodeCombinitionId(companyId, sobId, codeCombinitionId);
+        }
         
         public InvoiceSource GetSingle(string id, long companyId)
         {

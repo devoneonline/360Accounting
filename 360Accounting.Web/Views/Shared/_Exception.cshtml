@@ -1,4 +1,8 @@
-﻿<div class="col-lg-12" style="margin-top:10px;">
+﻿@{
+    ViewBag.Title = "Exception";
+}
+
+<div class="col-lg-12" style="margin-top:10px;">
     @Html.Raw(TempData["ErrorSource"])
 </div>
 
@@ -9,8 +13,24 @@
 </div>
 
 <script type="text/javascript">
-    function GoBack()
-    {
-        window.location.href = '@Url.Content(TempData["LastURL"].ToString())'
+    $(document).ready(function () {
+        $(function () {
+            $('#ExceptionBox').dialog({
+                modal: true,
+                title: '@Html.Raw(TempData["ErrorMessage"])',
+                autoOpen: false,
+                height: 'auto',
+                width: 500,
+            });
+        });
+    })
+
+    function GoBack() {
+        window.location.href = '@Url.Content(TempData["LastURL"] == null ? "/" : TempData["LastURL"].ToString())'
     }
+
+    $('#ExceptionBox').on('dialogclose', function (event) {
+        GoBack();
+    });
+
 </script>

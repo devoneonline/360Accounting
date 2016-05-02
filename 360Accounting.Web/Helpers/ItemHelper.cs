@@ -202,5 +202,10 @@ namespace _360Accounting.Web
         {
             service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
+
+        public static IEnumerable<Item> GetByCodeCombinitionId(long companyId, long sobId, long codeCombinitionId)
+        {
+            return service.GetByCodeCombinitionId(companyId, sobId, codeCombinitionId);
+        }
     }
 }

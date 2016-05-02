@@ -11,5 +11,7 @@ namespace _360Accounting.Core
     public interface IInvoiceSourceService : IService<InvoiceSource>
     {
         List<InvoiceSource> GetAll(long companyId, long sobId);
+
+        IEnumerable<InvoiceSource> GetByCodeCombinitionId(long companyId, long sobId, long codeCombinitionId);
     }
 }

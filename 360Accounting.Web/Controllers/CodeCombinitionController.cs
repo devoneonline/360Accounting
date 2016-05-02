@@ -15,7 +15,7 @@ namespace _360Accounting.Web.Controllers
     [Authorize]
     public class CodeCombinitionController : BaseController
     {
-        public ActionResult Index(long id, CodeCombinitionListModel model, string message="")
+        public ActionResult Index(long id, CodeCombinitionListModel model)
         {
             model.SOBId = id;
             model.CodeCombinitions = CodeCombinationHelper.GetCodeCombinations(model);
@@ -38,6 +38,8 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Edit(string id)
         {
+            if (!CodeCombinationHelper.CheckCodeCombinition(Convert.ToInt64(id)))
+                throw new Exception("Edit Error", new Exception { Source = "Combinition is in use some where." });
             CodeCombinitionCreateViewModel model = CodeCombinationHelper.GetCodeCombination(id);
             model.SegmentList = AccountHelper.GetSegmentListForCodeCombination(SessionHelper.SOBId.ToString());
             model.SOBId = Convert.ToInt32(SessionHelper.SOBId.ToString());
@@ -109,15 +111,11 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            try
-            {
-                CodeCombinationHelper.Delete(id);
-                return RedirectToAction("Index", new { id = SessionHelper.SOBId });
-            }
-            catch (Exception ex)
-            {
-                return RedirectToAction("Index", new { id = SessionHelper.SOBId, message=ex.Message });
-            }
+            if (!CodeCombinationHelper.CheckCodeCombinition(Convert.ToInt64(id)))
+                throw new Exception("Delete Error", new Exception { Source = "Combinition is in use some where." });
+
+            CodeCombinationHelper.Delete(id);
+            return RedirectToAction("Index", new { id = SessionHelper.SOBId });
         }
 
         public ActionResult GetCodeCombinitionList()
@@ -127,6 +125,5 @@ namespace _360Accounting.Web.Controllers
             model.CodeCombinitions = CodeCombinationHelper.GetCodeCombinations(model);
             return PartialView("_List", model);
         }
-
     }
 }

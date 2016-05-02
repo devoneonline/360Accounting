@@ -10,5 +10,7 @@ namespace _360Accounting.Core.Interfaces
     public interface IInvoiceSourceRepository : IRepository<InvoiceSource>
     {
         List<InvoiceSource> GetAll(long companyId, long sobId);
+
+        IEnumerable<InvoiceSource> GetByCodeCombinitionId(long companyId, long sobId, long codeCombinitionId);
     }
 }

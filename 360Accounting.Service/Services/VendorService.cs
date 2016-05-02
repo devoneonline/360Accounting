@@ -67,6 +67,11 @@ namespace _360Accounting.Service
         {
             return this.repository.Count(companyId);
         }
+
+        public IEnumerable<VendorSite>GetByCodeCombinitionId(long codeCombinitionId)
+        { 
+            return this.repository.GetByCodeCombinitionId(codeCombinitionId); 
+        }
    
         public IEnumerable<VendorSiteView> GetAllSites(long vendorId, long companyId)
         {
