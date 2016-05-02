@@ -46,14 +46,14 @@
             </div>
             <div class="col-lg-2">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Periods)
+                    @Html.LabelFor(m => m.PeriodId)
                     @Html.DropDownListFor(m => m.PeriodId, Model.Periods, new { @class = "form-control criteria" })
                 </div>
             </div>
 
             <div class="col-lg-2">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.InvoiceTypes)
+                    @Html.LabelFor(model => model.InvoiceTypeId)
                     @Html.DropDownListFor(model => model.InvoiceTypeId, Model.InvoiceTypes, new { @class = "form-control" })
                 </div>
             </div>
@@ -65,13 +65,13 @@
             </div>
             <div class="col-lg-2">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Vendors)
+                    @Html.LabelFor(model => model.VendorId)
                     @Html.DropDownListFor(model => model.VendorId, Model.Vendors, new { @class = "form-control" })
                 </div>
             </div>
             <div class="col-lg-2">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.VendorSites)
+                    @Html.LabelFor(model => model.VendorSiteId)
                     @Html.DropDownListFor(model => model.VendorSiteId, Model.VendorSites, new { @class = "form-control" })
                 </div>
             </div>
@@ -79,7 +79,7 @@
         <div class="row">
             <div class="col-lg-2">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.WHTaxes)
+                    @Html.LabelFor(model => model.WHTaxId)
                     @Html.DropDownListFor(model => model.WHTaxId, Model.WHTaxes, new { @class = "form-control" })
                 </div>
             </div>
@@ -218,6 +218,7 @@
 
         $('#btnSave').click(function () {
 
+            var periodId = $('#PeriodId').val();
             var invoiceTypeId = $('#InvoiceTypeId').val();
             var invoiceDate = $('#InvoiceDate').val();
             var remarks = $('#Remarks').val();
@@ -229,10 +230,10 @@
 
             var url = '@Url.Content("~/PayableInvoice/SaveInvoice")';
             $.post(url, {
-                invoiceTypeId: invoiceTypeId, invoiceDate: invoiceDate,
-                remarks: remarks, vendorId: vendorId,
-                vendorSiteId: vendorSiteId, whTaxId: whTaxId,
-                amount: amount, status: status
+                periodId: periodId, invoiceTypeId: invoiceTypeId,
+                invoiceDate: invoiceDate, remarks: remarks,
+                vendorId: vendorId, vendorSiteId: vendorSiteId,
+                whTaxId: whTaxId, amount: amount, status: status
             },
                 function (result) {
                     if (result.success) {

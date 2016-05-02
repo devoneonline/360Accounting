@@ -9,9 +9,9 @@ namespace _360Accounting.Web.Controllers
 {
     public class PayableInvoiceController : BaseController
     {
-        public ActionResult SaveInvoice(long invoiceTypeId, string invoiceDate,
-            string remarks, long vendorId, long vendorSiteId, long whTaxId,
-            string amount, string status)
+        public ActionResult SaveInvoice(long periodId, long invoiceTypeId, 
+            string invoiceDate, string remarks, long vendorId, long vendorSiteId, 
+            long? whTaxId, string amount, string status)
         {
             string message = "";
             try
@@ -19,23 +19,31 @@ namespace _360Accounting.Web.Controllers
                 bool saved = false;
                 if (SessionHelper.PayableInvoice != null)
                 {
-                    SessionHelper.PayableInvoice.InvoiceTypeId = invoiceTypeId;
-                    SessionHelper.PayableInvoice.InvoiceDate = Convert.ToDateTime(invoiceDate);
-                    SessionHelper.PayableInvoice.Remarks = remarks;
-                    SessionHelper.PayableInvoice.VendorId = vendorId;
-                    SessionHelper.PayableInvoice.VendorSiteId = vendorSiteId;
-                    SessionHelper.PayableInvoice.WHTaxId = whTaxId;
-                    SessionHelper.PayableInvoice.Amount = SessionHelper.PayableInvoice.InvoiceDetail.Sum(x => x.Amount);
-                    SessionHelper.PayableInvoice.Status = status;
-                    if (SessionHelper.PayableInvoice.InvoiceNo == "New")
+                    if (SessionHelper.PayableInvoice.InvoiceDetail.Count == 0)
                     {
-                        SessionHelper.PayableInvoice.InvoiceNo = PayableInvoiceHelper.GetInvoiceNo(AuthenticationHelper.CompanyId.Value, SessionHelper.PayableInvoice.SOBId, SessionHelper.PayableInvoice.PeriodId);
-                    }                    
+                        message = "No detail information available to save!";
+                    }
+                    else 
+                    {
+                        SessionHelper.PayableInvoice.PeriodId = periodId;
+                        SessionHelper.PayableInvoice.InvoiceTypeId = invoiceTypeId;
+                        SessionHelper.PayableInvoice.InvoiceDate = Convert.ToDateTime(invoiceDate);
+                        SessionHelper.PayableInvoice.Remarks = remarks;
+                        SessionHelper.PayableInvoice.VendorId = vendorId;
+                        SessionHelper.PayableInvoice.VendorSiteId = vendorSiteId;
+                        SessionHelper.PayableInvoice.WHTaxId = whTaxId;
+                        SessionHelper.PayableInvoice.Amount = SessionHelper.PayableInvoice.InvoiceDetail.Sum(x => x.Amount);
+                        SessionHelper.PayableInvoice.Status = status;
+                        if (SessionHelper.PayableInvoice.InvoiceNo == "New")
+                        {
+                            SessionHelper.PayableInvoice.InvoiceNo = PayableInvoiceHelper.GetInvoiceNo(AuthenticationHelper.CompanyId.Value, SessionHelper.PayableInvoice.SOBId, SessionHelper.PayableInvoice.PeriodId);
+                        }                    
 
-                    PayableInvoiceHelper.Update(SessionHelper.PayableInvoice);
-                    SessionHelper.PayableInvoice = null;
-                    saved = true;
-                    message = "Saved successfully";
+                        PayableInvoiceHelper.Update(SessionHelper.PayableInvoice);
+                        SessionHelper.PayableInvoice = null;
+                        saved = true;
+                        message = "Saved successfully";
+                    }
                 }
                 else
                     message = "No voucher information available!";
@@ -97,17 +105,17 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
-                    bool validated = false;
                     if (SessionHelper.PayableInvoice != null)
                     {
-                        model.Id = SessionHelper.PayableInvoice.InvoiceDetail.Last().Id + 1;
-                        validated = true;
+                        if (SessionHelper.PayableInvoice.InvoiceDetail != null && SessionHelper.PayableInvoice.InvoiceDetail.Count > 0)
+                            model.Id = SessionHelper.PayableInvoice.InvoiceDetail.LastOrDefault().Id + 1;
+                        else
+                            model.Id = 1;
                     }
                     else
                         model.Id = 1;
 
-                    if (validated)
-                        PayableInvoiceHelper.Insert(model);
+                    PayableInvoiceHelper.Insert(model);
                 }
                 catch (Exception e)
                 {
@@ -175,8 +183,6 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
-            
             PayableInvoiceModel model = SessionHelper.PayableInvoice;
             if (model == null)
             {
@@ -250,16 +256,13 @@ namespace _360Accounting.Web.Controllers
             PayableInvoiceModel model = PayableInvoiceHelper.GetInvoice(id);
             SessionHelper.Calendar = CalendarHelper.GetCalendar(PayablePeriodHelper.GetPayablePeriod(periodId.ToString()).CalendarId.ToString());
 
-            ViewBag.SOBName = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
-            ViewBag.PeriodName = SessionHelper.Calendar.PeriodName;
-            
             model.InvoiceDetail = PayableInvoiceHelper.GetInvoiceDetail(id);
             model.SOBId = SessionHelper.SOBId;
             model.PeriodId = periodId;
+            model.Periods = PayablePeriodHelper.GetPeriodList(SessionHelper.SOBId);
 
             VendorModel vendors = VendorHelper.GetSingle(model.VendorId.ToString());
             VendorSiteModel vendorSites = VendorHelper.GetSingle(model.VendorSiteId);
-            WithholdingModel withHoldingTaxes = WithholdingHelper.GetWithholding(model.WHTaxId.ToString());
             InvoiceTypeModel invoiceTypes = InvoiceTypeHelper.GetInvoiceType(model.InvoiceTypeId.ToString());
 
             ///TODO: Plz do the code audit.
@@ -277,12 +280,16 @@ namespace _360Accounting.Web.Controllers
             });
 
             model.WHTaxes = new List<SelectListItem>();
-            model.WHTaxes.Add(new SelectListItem
+            if (model.WHTaxId != null)
             {
-                Value = withHoldingTaxes.Id.ToString(),
-                Text = withHoldingTaxes.Description
-            });
-
+                WithholdingModel withHoldingTaxes = WithholdingHelper.GetWithholding(model.WHTaxId.ToString());
+                model.WHTaxes.Add(new SelectListItem
+                {
+                    Value = withHoldingTaxes.Id.ToString(),
+                    Text = withHoldingTaxes.Description
+                });
+            }
+            
             model.InvoiceTypes = new List<SelectListItem>();
             model.InvoiceTypes.Add(new SelectListItem
             {
