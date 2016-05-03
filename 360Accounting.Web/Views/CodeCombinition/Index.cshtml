@@ -24,12 +24,6 @@
         @Html.HiddenFor(m => m.SOBId)
         
     </div>
-    @if (ViewBag.ErrorMessage != "")
-    {
-        <div class="form-group col-lg-12">
-            @ViewBag.ErrorMessage
-        </div>
-    }
     <div id="dvList" class="col-lg-12 cusGridWrapper">
         @Html.Partial("_List", Model)
     </div>

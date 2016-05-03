@@ -65,5 +65,10 @@ namespace _360Accounting.Web.Controllers
             return View("_SelectSOB");
         }
 
+        public ActionResult ViewErrorPopup()
+        {
+            TempData["LastURL"] = TempData["LastURL"];
+            return PartialView("_Exception");
+        }
     }
 }

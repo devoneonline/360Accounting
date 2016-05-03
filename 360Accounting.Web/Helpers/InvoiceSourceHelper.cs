@@ -90,5 +90,10 @@ namespace _360Accounting.Web
                     Value = x.Id.ToString()
                 }).ToList();
         }
+
+        public static IEnumerable<InvoiceSource> GetByCodeCombinitionId(long companyId, long sobId, long codeCombinitionId)
+        {
+            return service.GetByCodeCombinitionId(companyId, sobId, codeCombinitionId);
+        }
     }
 }

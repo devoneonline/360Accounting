@@ -31,6 +31,11 @@ namespace _360Accounting.Data.Repositories
             return entityList;
         }
 
+        public IEnumerable<TaxDetail> GetByCodeCombinitionId(long codeCombinitionId)
+        {
+            return this.Context.TaxDetails.Where(rec => rec.CodeCombinationId == codeCombinitionId);
+        }
+
         public string Insert(TaxDetail entity)
         {
             this.Context.TaxDetails.Add(entity);

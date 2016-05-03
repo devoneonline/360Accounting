@@ -42,11 +42,5 @@ namespace _360Accounting.Web.Controllers
                 }
             }
         }
-
-        public ActionResult ViewErrorPopup()
-        {
-            TempData["LastURL"] = TempData["LastURL"];
-            return PartialView("_Exception");
-        }
     }
 }

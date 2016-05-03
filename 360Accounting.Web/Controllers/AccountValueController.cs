@@ -17,9 +17,8 @@ namespace _360Accounting.Web.Controllers
     [Authorize]
     public class AccountValueController : BaseController
     {
-        public ActionResult Index(AccountValueListModel model, string message="")
+        public ActionResult Index(AccountValueListModel model)
         {
-            ViewBag.ErrorMessage = message;
             model.SOBId = SessionHelper.SOBId;
             model.Segments = AccountHelper.GetSegmentList(model.SOBId.ToString());
             model.Segment = model.Segments[0].Value;
@@ -52,6 +51,10 @@ namespace _360Accounting.Web.Controllers
         
         public ActionResult Edit(string id)
         {
+            if (!AccountValueHelper.CheckAccountValue(id))
+            {
+                throw new Exception("Edit Error", new Exception { Source = "Values having code combinitions cannot be edited" });
+            }
             AccountValueViewModel model = AccountValueHelper.GetAccountValue(id);
             model.SetOfBook = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
             model.ValueChar = AccountHelper.GetSegmentCharacters(model.Segment, AccountHelper.GetAccountBySOBId(SessionHelper.SOBId.ToString()));
@@ -92,15 +95,10 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            try
-            {
-                AccountValueHelper.Delete(id);
-                return RedirectToAction("Index", new { id = SessionHelper.SOBId });
-            }
-            catch (Exception ex)
-            {
-                return RedirectToAction("Index", new { id = SessionHelper.SOBId, message = ex.Message });
-            }
+            if (!AccountValueHelper.CheckAccountValue(id))
+                throw new Exception("Delete Error", new Exception { Source = "Values having code combinitions cannot be deleted" });
+            AccountValueHelper.Delete(id);
+            return RedirectToAction("Index", new { id = SessionHelper.SOBId });
         }
 
         public ActionResult AccountValuesPartial(string segment)

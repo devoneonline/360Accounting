@@ -33,6 +33,11 @@ namespace _360Accounting.Service
             return this.repository.GetAllbyCustomerId(customerId);
         }
 
+        public IEnumerable<CustomerSite> GetByCodeCombinitionId(long codeCombinition)
+        {
+            return this.repository.GetByCodeCombinitionId(codeCombinition);
+        }
+
         public string Insert(CustomerSite entity)
         {
             return this.repository.Insert(entity);

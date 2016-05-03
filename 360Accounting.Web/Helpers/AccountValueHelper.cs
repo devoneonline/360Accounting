@@ -87,6 +87,31 @@ namespace _360Accounting.Web
             service.Delete(id, AuthenticationHelper.CompanyId.Value);
         }
 
-        
+        public static bool CheckAccountValue(string accountValueId)
+        {
+            AccountValue accountValue = service.GetSingle(accountValueId, AuthenticationHelper.CompanyId.Value);
+            List<CodeCombinition> codeCombinition = CodeCombinationHelper.GetCodeCombinations(SessionHelper.SOBId, AuthenticationHelper.CompanyId.Value);
+            if (codeCombinition.Any())
+            {
+                if (codeCombinition.Any(rec => rec.Segment1 == accountValue.Value))
+                    return false;
+                if (codeCombinition.Any(rec => rec.Segment2 == accountValue.Value))
+                    return false;
+                if (codeCombinition.Any(rec => rec.Segment3 == accountValue.Value))
+                    return false;
+                if (codeCombinition.Any(rec => rec.Segment4 == accountValue.Value))
+                    return false;
+                if (codeCombinition.Any(rec => rec.Segment5 == accountValue.Value))
+                    return false;
+                if (codeCombinition.Any(rec => rec.Segment6 == accountValue.Value))
+                    return false;
+                if (codeCombinition.Any(rec => rec.Segment7 == accountValue.Value))
+                    return false;
+                if (codeCombinition.Any(rec => rec.Segment8 == accountValue.Value))
+                    return false;
+            }
+
+            return true;
+        }
     }
 }

@@ -17,5 +17,7 @@ namespace _360Accounting.Core
         IEnumerable<ItemWarehouse> GetAllItemWarehouses(long itemId);
 
         IEnumerable<Item> GetAll(long companyId, long sobId);
+
+        IEnumerable<Item> GetByCodeCombinitionId(long companyId, long sobId, long codeCombinitionId);
     }
 }

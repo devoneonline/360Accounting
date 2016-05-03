@@ -11,5 +11,7 @@ namespace _360Accounting.Core
     public interface ITaxDetailService : IService<TaxDetail>
     {
         IList<TaxDetail> GetAll(long companyId, long taxId);
+
+        IEnumerable<TaxDetail> GetByCodeCombinitionId(long codeCombinitionId);
     }
 }

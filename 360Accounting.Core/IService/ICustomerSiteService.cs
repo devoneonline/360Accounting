@@ -11,5 +11,7 @@ namespace _360Accounting.Core
     public interface ICustomerSiteService : IService<CustomerSite>
     {
         IEnumerable<CustomerSiteView> GetAllbyCustomerId(long CustomerId);
+
+        IEnumerable<CustomerSite> GetByCodeCombinitionId(long codeCombinitionId);
     }
 }
