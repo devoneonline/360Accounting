@@ -11,5 +11,7 @@ namespace _360Accounting.Core
     public interface IPayablePeriodService : IService<PayablePeriod>
     {
         IEnumerable<PayablePeriod> GetAll(long companyId, long sobId);
+
+        IEnumerable<PayablePeriod> GetByCalendarId(long companyId, long sobId, long calendarId);
     }
 }

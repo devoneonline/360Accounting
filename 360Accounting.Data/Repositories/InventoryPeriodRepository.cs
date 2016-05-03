@@ -17,6 +17,12 @@ namespace _360Accounting.Data.Repositories
             return list;
         }
 
+        public IEnumerable<InventoryPeriod> GetByCalendarId(long companyId, long sobId, long calendarId)
+        {
+            IEnumerable<InventoryPeriod> list = this.GetAll(companyId).Where(x => x.SOBId == sobId && x.CalendarId == calendarId);
+            return list;
+        }
+
         public InventoryPeriod GetSingle(string id, long companyId)
         {
             long longId = Convert.ToInt64(id);

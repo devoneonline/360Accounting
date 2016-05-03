@@ -88,5 +88,10 @@ namespace _360Accounting.Web
             return service.GetAll(AuthenticationHelper.CompanyId.Value, sobId)
                 .Select(x => new ReceivablePeriodModel(x)).ToList();
         }
+
+        public static IEnumerable<ReceivablePeriod> GetByCalendarId(long calendarId)
+        {
+            return service.GetByCalendarId(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, calendarId);
+        }
     }
 }

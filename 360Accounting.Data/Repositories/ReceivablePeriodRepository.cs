@@ -31,6 +31,12 @@ namespace _360Accounting.Data.Repositories
             return list;
         }
 
+        public IEnumerable<ReceivablePeriod> GetByCalendarId(long companyId, long sobId, long calendarId)
+        {
+            IEnumerable<ReceivablePeriod> list = this.Context.ReceivablePeriods.Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.CalendarId == calendarId);
+            return list;
+        }
+
         public string Insert(ReceivablePeriod entity)
         {
             this.Context.ReceivablePeriods.Add(entity);
