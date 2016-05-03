@@ -11,59 +11,66 @@ namespace _360Accounting.Service
 {
     public class OrderService : IOrderService
     {
+        private IOrderRepository repository;
+
+        public OrderService(IOrderRepository repo)
+        {
+            this.repository = repo;
+        }
+
         public IEnumerable<OrderDetail> GetAllOrderDetail(long orderId)
         {
-            throw new NotImplementedException();
+            return this.repository.GetAllOrderDetail(orderId);
         }
 
         public IEnumerable<OrderDetail> GetOrderDetailByItem(long itemId)
         {
-            throw new NotImplementedException();
+            return this.repository.GetOrderDetailByItem(itemId);
         }
 
         public IEnumerable<OrderDetail> GetOrderDetailByWarehouse(long warehouseId)
         {
-            throw new NotImplementedException();
+            return this.repository.GetOrderDetailByWarehouse(warehouseId);
         }
 
         public IEnumerable<OrderDetail> GetOrderDetailByTax(long taxId)
         {
-            throw new NotImplementedException();
+            return this.repository.GetOrderDetailByTax(taxId);
         }
 
         public string Insert(OrderDetail entity)
         {
-            throw new NotImplementedException();
+            return this.repository.Insert(entity);
         }
 
         public string Update(OrderDetail entity)
         {
-            throw new NotImplementedException();
+            return this.repository.Update(entity);
         }
 
         public void DeleteOrderDetail(long id)
         {
-            throw new NotImplementedException();
+            this.repository.DeleteOrderDetail(id);
         }
 
         public IEnumerable<Order> GetAll(long sobId)
         {
-            throw new NotImplementedException();
+            return this.repository.GetAll(sobId);
         }
 
         public IEnumerable<Order> GetAllOrdersByOrderType(long sobId, long orderTypeId)
         {
-            throw new NotImplementedException();
+            return this.repository.GetAllOrdersByOrderType(sobId, orderTypeId);
         }
 
         public IEnumerable<Order> GetAllOrdersByCustomer(long sobId, long customerId)
         {
-            throw new NotImplementedException();
+            return this.repository.GetAllOrdersByCustomer(sobId, customerId);
         }
 
         public IEnumerable<Order> GetAllOrdersByCustomerSite(long sobId, long customerSiteId)
         {
-            throw new NotImplementedException();
+            return this.repository.GetAllOrdersByCustomerSite(sobId, customerSiteId);
         }
     }
 }
