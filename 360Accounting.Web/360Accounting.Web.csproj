@@ -213,7 +213,6 @@
     <Compile Include="Helpers\AccountHelper.cs" />
     <Compile Include="Helpers\AccountValueHelper.cs" />
     <Compile Include="Helpers\BankHelper.cs" />
-    <Compile Include="Helpers\OrderHelper.cs" />
     <Compile Include="Helpers\OrderTypeHelper.cs" />
     <Compile Include="Helpers\UserSetofBookHelper.cs" />
     <Compile Include="Helpers\InventoryPeriodHelper.cs" />
@@ -269,13 +268,7 @@
     <Compile Include="Models\BankAccountViewModel.cs">
       <SubType>Code</SubType>
     </Compile>
-<<<<<<< .mine
-    <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\OrderTypeModel.cs" />
-=======
-    <Compile Include="Models\OrderTypeModel.cs" />
-
->>>>>>> .theirs
     <Compile Include="Models\UserSetofBookModel.cs" />
     <Compile Include="Models\InventoryPeriodModel.cs" />
     <Compile Include="Models\InvoiceModel.cs" />

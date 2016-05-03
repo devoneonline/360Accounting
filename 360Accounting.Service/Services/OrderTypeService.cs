@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using _360Accounting.Core;
 
 namespace _360Accounting.Service
 {
@@ -27,11 +26,6 @@ namespace _360Accounting.Service
         public OrderType GetSingle(string id, long companyId)
         {
             return this.repository.GetSingle(id, companyId);
-        }
-
-        public IEnumerable<OrderType> GetAll(long companyId, long sobId)
-        {
-            return this.repository.GetAll(companyId).Where(rec => rec.SOBId == sobId);
         }
 
         public IEnumerable<OrderType> GetAll(long companyId)
