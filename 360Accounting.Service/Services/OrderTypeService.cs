@@ -1,4 +1,5 @@
-﻿using _360Accounting.Core.Entities;
+﻿using _360Accounting.Core;
+using _360Accounting.Core.Entities;
 using _360Accounting.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -8,13 +9,18 @@ using System.Threading.Tasks;
 
 namespace _360Accounting.Service
 {
-    public class OrderTypeService : IService<OrderType>
+    public class OrderTypeService : IOrderTypeService
     {
         private IOrderTypeRepository repository;
 
         public OrderTypeService(IOrderTypeRepository repo)
         {
             this.repository = repo;
+        }
+
+        public IEnumerable<OrderType> GetAll(long companyId, long sobId)
+        {
+            return this.repository.GetAll(companyId, sobId);
         }
 
         public OrderType GetSingle(string id, long companyId)
