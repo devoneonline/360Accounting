@@ -334,7 +334,7 @@ namespace _360Accounting.Web.Controllers
 
         public JsonResult VendorList(long periodId)
         {
-            SessionHelper.Calendar = CalendarHelper.GetCalendar(periodId.ToString());
+            SessionHelper.Calendar = CalendarHelper.GetCalendar(PayablePeriodHelper.GetPayablePeriod(periodId.ToString()).CalendarId.ToString());
             List<SelectListItem> VendorList = VendorHelper.GetVendorList(SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
             return Json(VendorList, JsonRequestBehavior.AllowGet);
         }

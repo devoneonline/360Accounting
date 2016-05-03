@@ -21,6 +21,12 @@ namespace _360Accounting.Data
 
         #region DbSets
 
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<OrderType> OrderTypes { get; set; }
+
         public DbSet<MiscellaneousTransaction> MiscellaneousTransactions { get; set; }
 
         public DbSet<MoveOrder> MoveOrders { get; set; }
@@ -122,6 +128,15 @@ namespace _360Accounting.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ////base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<OrderType>().ToTable("tbOrderType");
+            modelBuilder.Entity<OrderType>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<Order>().ToTable("tbOrderMaster");
+            modelBuilder.Entity<Order>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<OrderDetail>().ToTable("tbOrderDetail");
+            modelBuilder.Entity<OrderDetail>().HasKey(t => t.Id);
 
             modelBuilder.Entity<MiscellaneousTransaction>().ToTable("tbMiscellaneousTransaction");
             modelBuilder.Entity<MiscellaneousTransaction>().HasKey(t => t.Id);
