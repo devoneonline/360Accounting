@@ -1,0 +1,53 @@
+﻿@{
+
+Html.EnableClientValidation();
+Html.EnableUnobtrusiveJavaScript();
+
+var grid = Html.DevExpress().GridView(
+    settings =>
+    {
+        settings.Name = "OrderTypes";
+        settings.KeyFieldName = "Id";
+        settings.CallbackRouteValues = new { Controller = "OrderType", Action = "CreatePartial" };
+        settings.CustomActionRouteValues = new { Controller = "Editing", Action = "ChangeEditModePartial" };
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "OrderType", Action = "AddNewInline" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "OrderType", Action = "UpdateInline" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "OrderType", Action = "DeleteInline" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.Inline;
+        settings.SettingsBehavior.ConfirmDelete = true;
+        settings.SettingsPopup.EditForm.Width = 600;
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButton = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+        settings.CommandColumn.Width = 120;
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "OrderTypeName";
+            column.Caption = "Order Type";
+        });
+        settings.Columns.Add(column =>
+            {
+                column.FieldName = "DateFrom";
+                column.Caption = "Date From";
+
+                column.ColumnType = MVCxGridViewColumnType.DateEdit;
+            });
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "DateTo";
+            column.Caption = "Date To";
+
+            column.ColumnType = MVCxGridViewColumnType.DateEdit;
+        });
+    });
+
+if (ViewData["EditError"] != null)
+{
+    grid.SetEditErrorText((string)ViewData["EditError"]);
+}
+}
+@grid.Bind(Model).GetHtml()

@@ -49,6 +49,7 @@ namespace _360Accounting.Data.Repositories
         public void Delete(string id, long companyId)
         {
             this.Context.OrderTypes.Remove(this.GetSingle(id, companyId));
+            this.Commit();
         }
 
         public int Count(long companyId)

@@ -8,7 +8,7 @@ using System.Web;
 
 namespace _360Accounting.Web
 {
-    public class OrderTypeHelper
+    public static class OrderTypeHelper
     {
         private static IOrderTypeService service;
 
@@ -48,5 +48,38 @@ namespace _360Accounting.Web
             return entity;
         }
         #endregion
+
+        public static OrderTypeModel GetOrderType(string id)
+        {
+            return new OrderTypeModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
+        }
+
+        public static List<OrderTypeModel> GetOrderTypes()
+        {
+            return service.GetAll(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId).Select(x => new OrderTypeModel(x)).ToList();
+        }
+
+        public static string Save(OrderTypeModel model)
+        {
+            if (model.Id > 0)
+            {
+                OrderType savedOrder = service.GetSingle(model.Id.ToString(), AuthenticationHelper.CompanyId.Value);
+                if(savedOrder != null)
+                {
+                    model.CreateDate = savedOrder.CreateDate;
+                    model.CreateBy = savedOrder.CreateBy;
+                    model.UpdateDate = savedOrder.UpdateDate;
+                    model.UpdateBy = savedOrder.UpdateBy;
+                }
+                return service.Update(getEntityByModel(model));
+            }
+            else
+                return service.Insert(getEntityByModel(model));
+        }
+
+        public static void Delete(string id)
+        {
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
+        }
     }
 }
