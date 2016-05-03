@@ -23,6 +23,11 @@ namespace _360Accounting.Service
             return this.repository.GetAll(companyId, sobId);
         }
 
+        public IEnumerable<InventoryPeriod> GetByCalendarId(long companyId, long sobId, long calendarId)
+        {
+            return this.repository.GetByCalendarId(companyId, sobId, calendarId);
+        }
+
         public InventoryPeriod GetSingle(string id, long companyId)
         {
             return this.repository.GetSingle(id, companyId);

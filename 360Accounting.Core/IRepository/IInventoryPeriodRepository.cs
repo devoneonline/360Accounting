@@ -10,5 +10,7 @@ namespace _360Accounting.Core.Interfaces
     public interface IInventoryPeriodRepository : IRepository<InventoryPeriod>
     {
         IEnumerable<InventoryPeriod> GetAll(long companyId, long sobId);
+
+        IEnumerable<InventoryPeriod> GetByCalendarId(long companyId, long sobId, long calendarId);
     }
 }

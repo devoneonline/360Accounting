@@ -11,5 +11,7 @@ namespace _360Accounting.Core
     public interface IInventoryPeriodService : IService<InventoryPeriod>
     {
         IEnumerable<InventoryPeriod> GetAll(long companyId, long sobId);
+
+        IEnumerable<InventoryPeriod> GetByCalendarId(long companyId, long sobId, long calendarId);
     }
 }

@@ -90,5 +90,10 @@ namespace _360Accounting.Web
             return service.GetAll(AuthenticationHelper.CompanyId.Value, sobId)
                 .Select(x => new InventoryPeriodModel(x)).ToList();
         }
+
+        public static IEnumerable<InventoryPeriod> GetByCalendarId(long calendarId)
+        {
+            return service.GetByCalendarId(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, calendarId);
+        }
     }
 }
