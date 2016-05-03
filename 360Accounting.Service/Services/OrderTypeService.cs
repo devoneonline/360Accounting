@@ -21,7 +21,7 @@ namespace _360Accounting.Service
 
         public IEnumerable<OrderType> GetAll(long companyId, long sobId)
         {
-            return this.repository.GetAll(companyId, sobId);
+            return this.repository.GetOrderTypes(companyId, sobId);
         }
 
         public OrderType GetSingle(string id, long companyId)
@@ -29,7 +29,7 @@ namespace _360Accounting.Service
             return this.repository.GetSingle(id, companyId);
         }
 
-        public IEnumerable<OrderType> GetAll(long companyId, long sobId)
+        public IEnumerable<OrderType> GetOrderTypes(long companyId, long sobId)
         {
             return this.repository.GetAll(companyId).Where(rec => rec.SOBId == sobId);
         }

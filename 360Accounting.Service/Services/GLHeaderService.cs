@@ -77,5 +77,10 @@ namespace _360Accounting.Service
         {
             return this.repository.UserwiseEntriesTrail(companyId, sobId, fromDate, toDate, UserId);
         }
+
+        public IEnumerable<GLHeader> GetByCurrencyId(long companyId, long sobId, long currencyId)
+        {
+            return this.GetByCurrencyId(companyId, sobId, currencyId);
+        }
     }
 }

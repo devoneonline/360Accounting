@@ -14,5 +14,7 @@ namespace _360Accounting.Core.Interfaces
         Invoice GetSingle(long companyId, long sobId, long periodId, long currencyId);
 
         IEnumerable<Invoice> GetInvoices(long companyId, long sobId, long periodId);
+
+        IEnumerable<Invoice> GetByCurrencyId(long companyId, long sobId, long currencyId);
     }
 }

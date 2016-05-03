@@ -56,7 +56,7 @@ namespace _360Accounting.Web
 
         public static List<OrderTypeModel> GetOrderTypes()
         {
-            return service.GetAll(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId).Select(x => new OrderTypeModel(x)).ToList();
+            return service.GetOrderTypes(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId).Select(x => new OrderTypeModel(x)).ToList();
         }
 
         public static string Save(OrderTypeModel model)

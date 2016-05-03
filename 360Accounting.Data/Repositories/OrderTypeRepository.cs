@@ -11,7 +11,7 @@ namespace _360Accounting.Data.Repositories
 {
     public class OrderTypeRepository : Repository, IOrderTypeRepository
     {
-        public IEnumerable<OrderType> GetAll(long companyId, long sobId)
+        public IEnumerable<OrderType> GetOrderTypes(long companyId, long sobId)
         {
             IEnumerable<OrderType> list = this.Context.OrderTypes.Where(x => x.CompanyId == companyId && x.SOBId == sobId);
             return list;
