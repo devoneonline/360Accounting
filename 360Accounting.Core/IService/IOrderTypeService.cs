@@ -10,6 +10,6 @@ namespace _360Accounting.Core
 {
     public interface IOrderTypeService : IService<OrderType>
     {
-        IEnumerable<OrderType> GetAll(long companyId, long sobId);
+        IEnumerable<OrderType> GetOrderTypes(long companyId, long sobId);
     }
 }

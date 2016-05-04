@@ -9,6 +9,6 @@ namespace _360Accounting.Core.Interfaces
 {
     public interface IOrderTypeRepository : IRepository<OrderType>
     {
-        IEnumerable<OrderType> GetAll(long companyId, long sobId);
+        IEnumerable<OrderType> GetOrderTypes(long companyId, long sobId);
     }
 }

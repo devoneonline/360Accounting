@@ -64,10 +64,14 @@ namespace _360Accounting.Service
             return this.repository.Count(companyId);
         }
 
-
         public Receipt GetSingle(long companyId, long sobId, long periodId, long currencyId, long customerId)
         {
             return this.repository.GetSingle(companyId, sobId, periodId, currencyId, customerId);
+        }
+
+        public IEnumerable<Receipt> GetByCurrencyId(long companyId, long sobId, long currencyId)
+        {
+            return this.GetByCurrencyId(companyId, sobId, currencyId);
         }
     }
 }

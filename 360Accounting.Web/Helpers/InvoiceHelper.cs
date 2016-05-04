@@ -145,8 +145,12 @@ namespace _360Accounting.Web
         {
             InvoiceModel invoice = SessionHelper.Invoice;
             invoice.InvoiceDetail.Add(model);
-        } 
-         
+        }
+
+        public static IEnumerable<Invoice> GetByCurrencyId(long currencyId)
+        {
+            return service.GetByCurrencyId(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, currencyId);
+        }
 
         public static void UpdateInvoiceDetail(InvoiceDetailModel model)
         {

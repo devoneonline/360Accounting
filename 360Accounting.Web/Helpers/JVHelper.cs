@@ -62,6 +62,11 @@ namespace _360Accounting.Web
             return modelList;
         }
 
+        public static IEnumerable<GLHeader> GetByCurrencyId(long currencyId)
+        {
+            return service.GetByCurrencyId(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, currencyId);
+        }
+
         public static IList<GLLinesModel> GetGLLines([Optional]string headerId)
         {
             if (headerId == null)
