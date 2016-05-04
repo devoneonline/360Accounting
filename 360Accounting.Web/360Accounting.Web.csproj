@@ -188,6 +188,7 @@
     <Compile Include="Controllers\BaseController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\OrderTypeController.cs" />
     <Compile Include="Controllers\UserSetofBookController.cs" />
     <Compile Include="Controllers\InventoryPeriodController.cs" />
@@ -213,6 +214,7 @@
     <Compile Include="Helpers\AccountHelper.cs" />
     <Compile Include="Helpers\AccountValueHelper.cs" />
     <Compile Include="Helpers\BankHelper.cs" />
+    <Compile Include="Helpers\OrderHelper.cs" />
     <Compile Include="Helpers\OrderTypeHelper.cs" />
     <Compile Include="Helpers\UserSetofBookHelper.cs" />
     <Compile Include="Helpers\InventoryPeriodHelper.cs" />
@@ -268,6 +270,7 @@
     <Compile Include="Models\BankAccountViewModel.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\OrderTypeModel.cs" />
     <Compile Include="Models\UserSetofBookModel.cs" />
     <Compile Include="Models\InventoryPeriodModel.cs" />
@@ -471,6 +474,7 @@
     <Content Include="Views\InventoryPeriod\_List.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Views\Order\_Detail.cshtml" />
     <Content Include="Views\Payment\Create.cshtml">
       <SubType>Code</SubType>
     </Content>
@@ -638,6 +642,9 @@
     <Content Include="Views\User\UserFeatureSet.cshtml" />
     <Content Include="Views\OrderType\_List.cshtml" />
     <Content Include="Views\OrderType\Index.cshtml" />
+    <Content Include="Views\Order\Index.cshtml" />
+    <Content Include="Views\Order\_List.cshtml" />
+    <Content Include="Views\Order\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

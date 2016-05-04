@@ -96,6 +96,7 @@ namespace _360Accounting.Data.Repositories
         {
             long longId = Convert.ToInt64(id);
             this.Context.Orders.Remove(this.Context.Orders.FirstOrDefault(x => x.Id == longId && x.CompanyId == companyId));
+            this.Commit();
         }
 
         public int Count(long companyId)

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace _360Accounting.Core
 {
-    public interface IOrderService
+    public interface IOrderService:IService<Order>
     {
         //OrderDetail GetSingleOrderDetail(string id, long companyId);
         IEnumerable<OrderDetail> GetAllOrderDetail(long orderId);

@@ -52,11 +52,34 @@ namespace _360Accounting.Web.Controllers
 
         public JsonResult Save(UserSetofBookModel model)
         {
+            UserSetofBookModel defaultSOB = UserSetofBookHelper.GetDefaultSOB();
+            if (defaultSOB != null)
+            {
+                model.Id = defaultSOB.Id;
+            }
+
+            //Remove all transaction's session that depends on SOB..
+            SessionHelper.JV = null;
+            SessionHelper.Invoice = null;
+            SessionHelper.PayableInvoice = null;
+            SessionHelper.Payment = null;
+            SessionHelper.Order = null;
+            SessionHelper.MiscellaneousTransaction = null;
+            SessionHelper.Locator = null;
+            SessionHelper.Receipts = null;
+            SessionHelper.Bank = null;
+            SessionHelper.BankAccount = null;
+            SessionHelper.Calendar = null;
+            SessionHelper.Item = null;
+            SessionHelper.Remittance = null;
+            SessionHelper.Tax = null;
+
             model.UserId = AuthenticationHelper.UserId;
             model.CompanyId = AuthenticationHelper.CompanyId.Value;
 
             SessionHelper.SOBId = model.SOBId;
             SessionHelper.SOBName = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
+
             return Json(UserSetofBookHelper.Save(model));
         }
 

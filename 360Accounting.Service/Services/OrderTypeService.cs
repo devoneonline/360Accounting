@@ -33,6 +33,11 @@ namespace _360Accounting.Service
             return this.repository.GetAll(companyId).Where(rec => rec.SOBId == sobId);
         }
 
+        public IEnumerable<OrderType> GetOrderTypes(long companyId, long sobId, DateTime date)
+        {
+            return this.repository.GetOrderTypes(companyId, sobId, date);
+        }
+
         public IEnumerable<OrderType> GetAll(long companyId)
         {
             return this.repository.GetAll(companyId);

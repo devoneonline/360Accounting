@@ -4,6 +4,7 @@ using _360Accounting.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Web;
 
 namespace _360Accounting.Web
@@ -18,6 +19,7 @@ namespace _360Accounting.Web
         }
 
         #region Private Methods
+
         private static Order getEntityByModel(OrderModel model)
         {
             if (model == null) return null;
@@ -82,6 +84,139 @@ namespace _360Accounting.Web
 
             return entity;
         }
+
+        private static List<OrderDetailModel> getDetail()
+        {
+            return SessionHelper.Order.OrderDetail.ToList();
+        }
+
+        private static List<OrderDetailModel> getDetailByOrderId(long orderId)
+        {
+            IList<OrderDetailModel> modelList = service.GetAllOrderDetail(orderId).Select(x => new OrderDetailModel(x)).ToList();
+            return modelList.ToList();
+        }
+
         #endregion
+
+        public static List<OrderModel> GetOrders()
+        {
+            return service.GetAll(SessionHelper.SOBId).Select(x => new OrderModel(x)).ToList();
+        }
+
+        public static OrderModel GetOrder(string id)
+        {
+            return new OrderModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
+        }
+
+        public static List<OrderDetailModel> GetOrderDetail([Optional]string orderId)
+        {
+            if (orderId == null)
+                return getDetail();
+            else
+                return getDetailByOrderId(Convert.ToInt64(orderId));
+        }
+
+        public static string GenerateOrderNum(OrderModel model)
+        {
+            var currentDocument = service.GetAll(SessionHelper.SOBId).OrderByDescending(rec => rec.Id).FirstOrDefault();
+            string newDocNo = "";
+            if (currentDocument != null)
+            {
+                int outVal;
+                bool isNumeric = int.TryParse(currentDocument.OrderNo, out outVal);
+                if (isNumeric && currentDocument.OrderNo.Length == 8)
+                {
+                    newDocNo = (int.Parse(currentDocument.OrderNo) + 1).ToString();
+                    return newDocNo;
+                }
+            }
+
+            //Create New DocNum..
+            string yearDigit = model.OrderDate.ToString("yy");
+            string monthDigit = model.OrderDate.ToString("MM");
+            string docNo = int.Parse("1").ToString().PadLeft(4, '0');
+
+            return yearDigit + monthDigit + docNo;
+        }
+
+        public static void Save(OrderModel model)
+        {
+            Order entity = getEntityByModel(model);
+
+            string result = string.Empty;
+            if (entity.IsValid())
+            {
+                if (model.Id > 0)
+                    result = service.Update(entity);
+                else
+                    result = service.Insert(entity);
+
+                if (!string.IsNullOrEmpty(result))
+                {
+                    var savedLines = getDetailByOrderId(Convert.ToInt64(result));
+                    if (savedLines.Count() > model.OrderDetail.Count())
+                    {
+                        var tobeDeleted = savedLines.Take(savedLines.Count() - model.OrderDetail.Count());
+                        foreach (var item in tobeDeleted)
+                        {
+                            service.DeleteOrderDetail(item.Id);
+                        }
+                        savedLines = getDetailByOrderId(Convert.ToInt64(result));
+                    }
+
+                    foreach (var detail in model.OrderDetail)
+                    {
+                        OrderDetail detailEntity = getEntityByModel(detail);
+                        if (detailEntity.IsValid())
+                        {
+                            detailEntity.OrderId = Convert.ToInt64(result);
+                            if (savedLines.Count() > 0)
+                            {
+                                detailEntity.Id = savedLines.FirstOrDefault().Id;
+                                savedLines.Remove(savedLines.FirstOrDefault(rec => rec.Id == detailEntity.Id));
+                                service.Update(detailEntity);
+                            }
+                            else
+                                service.Insert(detailEntity);
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void Delete(string id)
+        {
+            service.Delete(id, AuthenticationHelper.CompanyId.Value);
+        }
+
+        public static void Update(OrderDetailModel model)
+        {
+            OrderModel order = SessionHelper.Order;
+            order.OrderDetail.FirstOrDefault(x => x.Id == model.Id).Amount = model.Amount;
+            order.OrderDetail.FirstOrDefault(x => x.Id == model.Id).CreateBy = model.CreateBy;
+            order.OrderDetail.FirstOrDefault(x => x.Id == model.Id).CreateDate = model.CreateDate;
+            order.OrderDetail.FirstOrDefault(x => x.Id == model.Id).Id = model.Id;
+            order.OrderDetail.FirstOrDefault(x => x.Id == model.Id).ItemId = model.ItemId;
+            order.OrderDetail.FirstOrDefault(x => x.Id == model.Id).OrderId = model.OrderId;
+            order.OrderDetail.FirstOrDefault(x => x.Id == model.Id).Quantity = model.Quantity;
+            order.OrderDetail.FirstOrDefault(x => x.Id == model.Id).Rate = model.Rate;
+            order.OrderDetail.FirstOrDefault(x => x.Id == model.Id).TaxId = model.TaxId;
+            order.OrderDetail.FirstOrDefault(x => x.Id == model.Id).UpdateBy = model.UpdateBy;
+            order.OrderDetail.FirstOrDefault(x => x.Id == model.Id).UpdateDate = model.UpdateDate;
+            order.OrderDetail.FirstOrDefault(x => x.Id == model.Id).WarehouseId = model.WarehouseId;
+        }
+
+        public static void Delete(OrderDetailModel model)
+        {
+            OrderModel order = SessionHelper.Order;
+            OrderDetailModel orderDetail = order.OrderDetail.FirstOrDefault(x => x.Id == model.Id);
+            SessionHelper.Order.OrderDetail.Remove(orderDetail);
+        }
+
+        public static void Insert(OrderDetailModel model)
+        {
+            OrderModel order = SessionHelper.Order;
+            order.OrderDetail.Add(model);
+        }
     }
 }

@@ -17,6 +17,12 @@ namespace _360Accounting.Data.Repositories
             return list;
         }
 
+        public IEnumerable<OrderType> GetOrderTypes(long companyId, long sobId, DateTime date)
+        {
+            IEnumerable<OrderType> list = this.Context.OrderTypes.Where(x => x.CompanyId == companyId && x.SOBId == sobId && (x.DateTo >= date || x.DateTo == null));
+            return list;
+        }
+
         public OrderType GetSingle(string id, long companyId)
         {
             long longId = Convert.ToInt64(id);

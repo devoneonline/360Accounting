@@ -18,6 +18,11 @@ namespace _360Accounting.Service
             this.repository = repo;
         }
 
+        public Order GetSingle(string id, long companyId)
+        {
+            return this.repository.GetSingle(id, companyId);
+        }
+
         public IEnumerable<OrderDetail> GetAllOrderDetail(long orderId)
         {
             return this.repository.GetAllOrderDetail(orderId);
@@ -71,6 +76,26 @@ namespace _360Accounting.Service
         public IEnumerable<Order> GetAllOrdersByCustomerSite(long sobId, long customerSiteId)
         {
             return this.repository.GetAllOrdersByCustomerSite(sobId, customerSiteId);
+        }
+
+        public string Insert(Order entity)
+        {
+            return this.repository.Insert(entity);
+        }
+
+        public string Update(Order entity)
+        {
+            return this.repository.Update(entity);
+        }
+
+        public void Delete(string id, long companyId)
+        {
+            this.repository.Delete(id, companyId);
+        }
+
+        public int Count(long companyId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

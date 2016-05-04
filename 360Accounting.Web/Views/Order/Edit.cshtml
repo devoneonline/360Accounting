@@ -1,0 +1,191 @@
+﻿@Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView })
+@Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
+
+@model _360Accounting.Web.Models.OrderModel
+
+@{
+    ViewBag.Title = "Sale Order";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
+        </div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(m => m.CreateBy)
+        @Html.HiddenFor(m => m.CreateDate)
+        @Html.HiddenFor(m => m.UpdateBy)
+        @Html.HiddenFor(m => m.UpdateDate)
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="navbar-right">
+                    <input type="button" value="Save" id="btnSave" class="btn btn-default tstyCus-btn" />
+                    <input type="button" value="Cancel" id="btnCancel" class="btn btn-default tstyCus-btn" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.OrderNo)
+                    @Html.TextBoxFor(model => model.OrderNo, new { @readonly = "readonly", @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.OrderDate)
+                    @Html.EditorFor(model => model.OrderDate)
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Status)
+                    @Html.TextBoxFor(model => model.Status, new { @readonly = "readonly", @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Remarks)
+                    @Html.TextBoxFor(model => model.Remarks, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.OrderTypeId)
+                    @Html.DropDownListFor(model => model.OrderTypeId, Model.OrderTypes, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CustomerId)
+                    @Html.DropDownListFor(model => model.CustomerId, Model.Customers, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CustomerSiteId)
+                    @Html.DropDownListFor(model => model.CustomerSiteId, Model.CustomerSites, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                @Html.Partial("_Detail", Model.OrderDetail)
+            </div>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#OrderDate').attr('class', 'form-control');
+
+        $('#OrderDate').blur(function () {
+            $.ajax({
+                url: '@Url.Content("~/Order/ChangeCombos")',
+                data: { orderDate: $(this).val() },
+                type: 'post',
+                datatype: 'json',
+                success: function (data) {
+                    if (typeof data == 'undefined' || data == 'Order date cannot be the past date!.') {
+                        alert(data);
+                        $('#OrderDate').focus();
+                        $('#btnSave').attr('disabled', true);
+                    }
+                    else {
+                        RefillCombos(data);
+                        $('#btnSave').attr('disabled', false);
+                    }
+                },
+                error: function () { }
+            })
+        })
+
+        function RefillCombos(data) {
+            jQuery.ajaxSetup({ async: false });
+            var customerDropdown = $('#CustomerId');
+            customerDropdown.empty();
+            $('#CustomerId').val(0)
+            var customerSiteDropdown = $('#CustomerSiteId');
+            customerSiteDropdown.empty();
+            $('#CustomerSiteId').val(0)
+            var orderTypeDropdown = $('#OrderTypeId');
+            orderTypeDropdown.empty();
+            $('#OrderTypeId').val(0)
+
+            if (data.Customers.length > 0) {
+                for (var i = 0; i < data.Customers.length; i++) {
+                    customerDropdown.append('<option value=' + data.Customers[i].Value + '>' + data.Customers[i].Text + '</option>');
+                }
+            }
+            
+            if (data.CustomerSites.length > 0) {
+                for (var i = 0; i < data.CustomerSites.length; i++) {
+                    customerSiteDropdown.append('<option value=' + data.CustomerSites[i].Value + '>' + data.CustomerSites[i].Text + '</option>');
+                }
+            }
+            
+            if (data.OrderTypes.length > 0) {
+                for (var i = 0; i < data.OrderTypes.length; i++) {
+                    orderTypeDropdown.append('<option value=' + data.OrderTypes[i].Value + '>' + data.OrderTypes[i].Text + '</option>');
+                }
+            }
+        }
+
+        $('#CustomerId').change(function () {
+            GetCustomerSites($(this).val())
+        });
+
+        function GetCustomerSites(customerId) {
+            var url = '@Url.Content("~/Order/GetCustomerSites")';
+            $.get(url, { customerId: customerId },
+                function (data) {
+                    var customerSiteDropdown = $('#CustomerSiteId');
+                    customerSiteDropdown.empty();
+                    for (var i = 0; i < data.length; i++) {
+                        customerSiteDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
+                    }
+                });
+        }
+
+        $('#btnCancel').click(function () {
+            if (confirm('Do you want to leave this page?')) {
+                window.location.href = '@Url.Content("~/Order")';
+            }
+        });
+
+        $('#btnSave').click(function () {
+            var orderNo = $('#OrderNo').val();
+            var orderDate = $('#OrderDate').val();
+            var customerId = $('#CustomerId').val();
+            var customerSiteId = $('#CustomerSiteId').val();
+            var remarks = $('#Remarks').val();
+            var orderTypeId = $('#OrderTypeId').val();
+            var status = $('#Status').val();
+
+            if (orderDate == null || orderDate == '' || orderTypeId == null || orderTypeId == 0 || customerId == null || customerId == 0 || customerSiteId == null || customerSiteId == 0)
+                alert('Please fill out the required fields');
+
+            else {
+                var url = '@Url.Content("~/Order/Save")';
+                $.post(url, {
+                    orderNo: orderNo, orderDate: orderDate, customerId: customerId, customerSiteId: customerSiteId, remarks: remarks, orderTypeId: orderTypeId, status: status
+                },
+                    function (result) {
+                        alert(result);
+                        window.location.href = '@Url.Content("~/Order")';
+                    });
+            }
+        });
+    });
+</script>

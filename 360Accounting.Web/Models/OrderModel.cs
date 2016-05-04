@@ -86,6 +86,27 @@ namespace _360Accounting.Web.Models
 
     public class OrderDetailModel : ModelBase
     {
+        public OrderDetailModel()
+        { }
+
+        public OrderDetailModel(OrderDetail entity)
+        {
+            if (entity != null)
+            {
+                this.Amount = entity.Amount;
+                this.CreateBy = entity.CreateBy;
+                this.CreateDate = entity.CreateDate;
+                this.Id = entity.Id;
+                this.ItemId = entity.ItemId;
+                this.OrderId = entity.OrderId;
+                this.Quantity = entity.Quantity;
+                this.Rate = entity.Rate;
+                this.TaxId = entity.TaxId;
+                this.UpdateBy = entity.UpdateBy;
+                this.UpdateDate = entity.UpdateDate;
+                this.WarehouseId = entity.WarehouseId;
+            }
+        }
 
         public long Id { get; set; }
         public long OrderId { get; set; }
