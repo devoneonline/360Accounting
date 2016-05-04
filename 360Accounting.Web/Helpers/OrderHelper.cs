@@ -116,6 +116,11 @@ namespace _360Accounting.Web
                 return getDetailByOrderId(Convert.ToInt64(orderId));
         }
 
+        public static OrderDetailModel GetSingleOrderDetail(long id)
+        {
+            return new OrderDetailModel(service.GetSingleOrderDetail(id));
+        }
+
         public static string GenerateOrderNum(OrderModel model)
         {
             var currentDocument = service.GetAll(SessionHelper.SOBId).OrderByDescending(rec => rec.Id).FirstOrDefault();
@@ -217,6 +222,12 @@ namespace _360Accounting.Web
         {
             OrderModel order = SessionHelper.Order;
             order.OrderDetail.Add(model);
+        }
+
+        public static List<OrderModel> GetOrders(long customerId, long customerSiteId)
+        {
+            List<OrderModel> orders = service.GetAll(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, customerId, customerSiteId).Select(x => new OrderModel(x)).ToList();
+            return orders;
         }
     }
 }

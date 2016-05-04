@@ -20,8 +20,11 @@ namespace _360Accounting.Core
         void DeleteOrderDetail(long id);
 
         IEnumerable<Order> GetAll(long sobId);
+        IEnumerable<Order> GetAll(long companyId, long sobId, long customerId, long customerSiteId);
         IEnumerable<Order> GetAllOrdersByOrderType(long sobId, long orderTypeId);
         IEnumerable<Order> GetAllOrdersByCustomer(long sobId, long customerId);
         IEnumerable<Order> GetAllOrdersByCustomerSite(long sobId, long customerSiteId);
+
+        OrderDetail GetSingleOrderDetail(long id);
     }
 }

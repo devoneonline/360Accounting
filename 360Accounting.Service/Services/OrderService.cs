@@ -43,6 +43,11 @@ namespace _360Accounting.Service
             return this.repository.GetOrderDetailByTax(taxId);
         }
 
+        public OrderDetail GetSingleOrderDetail(long id)
+        {
+            return this.repository.GetSingleOrderDetail(id);
+        }
+
         public string Insert(OrderDetail entity)
         {
             return this.repository.Insert(entity);
@@ -61,6 +66,11 @@ namespace _360Accounting.Service
         public IEnumerable<Order> GetAll(long sobId)
         {
             return this.repository.GetAll(sobId);
+        }
+
+        public IEnumerable<Order> GetAll(long companyId, long sobId, long customerId, long customerSiteId)
+        {
+            return this.repository.GetAll(companyId, sobId, customerId, customerSiteId);
         }
 
         public IEnumerable<Order> GetAllOrdersByOrderType(long sobId, long orderTypeId)

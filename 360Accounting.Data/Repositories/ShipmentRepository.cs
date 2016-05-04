@@ -13,7 +13,8 @@ namespace _360Accounting.Data.Repositories
     {
         public IEnumerable<Shipment> GetAll(long companyId, long sobId)
         {
-            IEnumerable<Shipment> list = this.Context.Shipments.Where(x => x.CompanyId == companyId && x.SOBId == sobId);
+            IEnumerable<Shipment> list = this.Context.Shipments.Where(x => x.CompanyId == companyId && x.SOBId == sobId)
+                .GroupBy(rec => rec.OrderId).Select(x => x.FirstOrDefault());
             return list;
         }
 

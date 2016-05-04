@@ -56,9 +56,20 @@ namespace _360Accounting.Data.Repositories
             this.Context.OrderDetails.Remove(this.Context.OrderDetails.FirstOrDefault(x => x.Id == id));
         }
 
+        public OrderDetail GetSingleOrderDetail(long id)
+        {
+            return this.Context.OrderDetails.FirstOrDefault(rec => rec.Id == id);
+        }
+
         public IEnumerable<Order> GetAll(long sobId)
         {
             IEnumerable<Order> list = this.Context.Orders.Where(x => x.SOBId == sobId);
+            return list;
+        }
+
+        public IEnumerable<Order> GetAll(long companyId, long sobId, long customerId, long customerSiteId)
+        {
+            IEnumerable<Order> list = this.Context.Orders.Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.CustomerId == customerId && x.CustomerSiteId == customerSiteId && x.Status != "Shipped");
             return list;
         }
 

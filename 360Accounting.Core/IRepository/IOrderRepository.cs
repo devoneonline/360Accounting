@@ -23,6 +23,8 @@ namespace _360Accounting.Core.Interfaces
         IEnumerable<Order> GetAllOrdersByCustomer(long sobId, long customerId);
         IEnumerable<Order> GetAllOrdersByCustomerSite(long sobId, long customerSiteId);
 
+        IEnumerable<Order> GetAll(long companyId, long sobId, long customerId, long customerSiteId);
 
+        OrderDetail GetSingleOrderDetail(long id);
     }
 }
