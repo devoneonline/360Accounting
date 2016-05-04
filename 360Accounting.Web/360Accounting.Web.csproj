@@ -215,6 +215,7 @@
     <Compile Include="Helpers\BankHelper.cs" />
     <Compile Include="Helpers\OrderHelper.cs" />
     <Compile Include="Helpers\OrderTypeHelper.cs" />
+    <Compile Include="Helpers\ShipmentHelper.cs" />
     <Compile Include="Helpers\UserSetofBookHelper.cs" />
     <Compile Include="Helpers\InventoryPeriodHelper.cs" />
     <Compile Include="Helpers\ItemHelper.cs" />
@@ -271,6 +272,7 @@
     </Compile>
     <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\OrderTypeModel.cs" />
+    <Compile Include="Models\ShipmentModel.cs" />
     <Compile Include="Models\UserSetofBookModel.cs" />
     <Compile Include="Models\InventoryPeriodModel.cs" />
     <Compile Include="Models\InvoiceModel.cs" />

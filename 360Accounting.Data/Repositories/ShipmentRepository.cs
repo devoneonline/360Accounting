@@ -35,6 +35,12 @@ namespace _360Accounting.Data.Repositories
             return list;
         }
 
+        public IEnumerable<Shipment> GetAllByLineId(long companyId, long sobId, long lineId)
+        {
+            IEnumerable<Shipment> list = this.Context.Shipments.Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.LineId == lineId);
+            return list;
+        }
+
         public Shipment GetSingle(string id, long companyId)
         {
             long longId = Convert.ToInt64(id);

@@ -14,5 +14,6 @@ namespace _360Accounting.Core
         IEnumerable<Shipment> GetAllByOrderId(long companyId, long sobId, long orderId);
         IEnumerable<Shipment> GetAllWarehouseId(long companyId, long sobId, long warehouseId);
         IEnumerable<Shipment> GetAllByLocatorId(long companyId, long sobId, long locatorId);
+        IEnumerable<Shipment> GetAllByLineId(long companyId, long sobId, long lineId);
     }
 }
