@@ -19,38 +19,43 @@ namespace _360Accounting.Web
 
         #region Private Methods
 
-        private static Shipment getEntityByModel(ShipmentModel model)
+        private static List<Shipment> getEntitiesByModel(OrderShipmentModel model)
         {
             if (model == null) return null;
+            List<Shipment> entityList = new List<Shipment>();
 
-            Shipment entity = new Shipment();
-
-            if (model.Id == 0)
+            if (model.OrderShipments == null || model.OrderShipments.Count == 0)
+                return null;
+            foreach (var item in model.OrderShipments)
             {
-                entity.CreateBy = AuthenticationHelper.UserId;
-                entity.CreateDate = DateTime.Now;
-                entity.CompanyId = AuthenticationHelper.CompanyId.Value;
-            }
-            else
-            {
-                entity.CreateBy = model.CreateBy;
-                entity.CreateDate = model.CreateDate;
-            }
+                Shipment entity = new Shipment();
+                if (item.Id == 0)
+                {
+                    entity.CreateBy = AuthenticationHelper.UserId;
+                    entity.CreateDate = DateTime.Now;
+                    entity.CompanyId = AuthenticationHelper.CompanyId.Value;
+                }
+                else
+                {
+                    entity.CreateBy = model.CreateBy;
+                    entity.CreateDate = model.CreateDate;
+                }
+                entity.DeliveryDate = model.DeliveryDate;
+                entity.SOBId = SessionHelper.SOBId;
+                entity.WarehouseId = model.WarehouseId;
+                entity.OrderId = model.OrderId;
+                entity.UpdateBy = model.UpdateBy;
+                entity.UpdateDate = model.UpdateDate;
+                entity.Id = item.Id;
+                entity.LineId = item.LineId;
+                entity.LocatorId = item.LocatorId;
+                entity.LotNo = item.LotNo;
+                entity.Quantity = item.ThisShipQuantity;
+                entity.SerialNo = item.SerialNo;
 
-            entity.DeliveryDate = model.DeliveryDate;
-            entity.Id = model.Id;
-            entity.LineId = model.LineId;
-            entity.LocatorId = model.LocatorId;
-            entity.LotNo = model.LotNo;
-            entity.OrderId = model.OrderId;
-            entity.Quantity = model.Quantity;
-            entity.SerialNo = model.SerialNo;
-            entity.SOBId = SessionHelper.SOBId;
-            entity.UpdateBy = AuthenticationHelper.UserId;
-            entity.UpdateDate = DateTime.Now;
-            entity.WarehouseId = model.WarehouseId;
-
-            return entity;
+                entityList.Add(entity);
+            }
+            return entityList;
         }
 
         private static OrderShipmentLine fromOrderDetailtoShipment(OrderDetailModel model, List<ShipmentModel> shipments)
@@ -164,7 +169,7 @@ namespace _360Accounting.Web
                 return validationResult;
         }
 
-        //Assuming that lineId is unique, no record can be entered without its order..
+        //Assuming that no record can be entered without its order..
         public static string Update(OrderShipmentLine model)
         {
             string validationResult = validateShipmentQuantity(model);
@@ -187,9 +192,12 @@ namespace _360Accounting.Web
                 return validationResult;
         }
 
-        //Assuming that lineId is unique, no record can be entered without its order..
+        //Assuming no record can be entered without its order and order detail is unique in every line..
+        //Assuming no record can be deleted if the form is in edit..
         public static string Delete(OrderShipmentLine model)
         {
+            if (model.Id > 0)
+                return "Can not remove the shipped items";
             OrderShipmentModel orderShipment = SessionHelper.Shipment;
             OrderShipmentLine shipment = orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId);
             SessionHelper.Shipment.OrderShipments.Remove(shipment);
@@ -197,15 +205,56 @@ namespace _360Accounting.Web
             return "Record removed";
         }
 
-        //Assuming that Shipment could not be edited.
+        //Assuming no record can be entered except the order and no Shipment row can be removed on edit..
         public static string Save(OrderShipmentModel model)
         {
-            return "";
+            string result = "";
+            List<Shipment> currentShipments = getEntitiesByModel(model);
+            if (currentShipments != null && currentShipments.Count() > 0)
+            {
+                foreach (var item in currentShipments)
+                {
+                    List<ShipmentModel> shipments = GetShipments(item.LineId);
+                    OrderDetailModel orderDetail = OrderHelper.GetSingleOrderDetail(item.LineId);
+                    decimal savedQty = 0;
+                    if (shipments != null && shipments.Count() > 0)
+                        savedQty = shipments.Sum(x => x.Quantity);
+
+                    if (item.Quantity > savedQty + orderDetail.Quantity)
+                        return "Quantity is exceeding than order!";
+                    if (item.Id > 0)
+                        result = service.Update(item);
+                    else
+                        result = service.Insert(item);
+                }
+
+                List<OrderDetailModel> orderDetailQty = OrderHelper.GetOrderDetail(model.OrderId.ToString());
+                string status = "";
+                foreach (var orderDetailItem in orderDetailQty)
+                {
+                    List<ShipmentModel> ShippedQty = GetShipments(orderDetailItem.Id);
+                    if (ShippedQty != null && ShippedQty.Count() > 0)
+                    {
+                        if (ShippedQty.Sum(x => x.Quantity) < orderDetailItem.Quantity)
+                            status = "Partially Shipped";
+                        else
+                            status = "Shipped";
+                    }
+                    else
+                        status = "Partially Shipped";
+                }
+                OrderModel updatedOrder = OrderHelper.GetOrder(model.OrderId.ToString());
+                updatedOrder.Status = status;
+                result = OrderHelper.UpdateOrder(updatedOrder);
+            }
+            else
+                result = "Please select order to ship!";
+            return result;
         }
 
         public static void Delete(long orderId)
         {
- 
+            service.DeleteByOrderId(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, orderId);
         }
     }
 }

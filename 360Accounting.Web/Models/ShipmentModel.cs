@@ -13,6 +13,10 @@ namespace _360Accounting.Web.Models
         public OrderShipmentModel()
         {
             this.CreateDate = DateTime.Now;
+            this.Customers = new List<SelectListItem>();
+            this.CustomerSites = new List<SelectListItem>();
+            this.Warehouses = new List<SelectListItem>();
+            this.Orders = new List<SelectListItem>();
         }
         public OrderShipmentModel(ShipmentModel model, long? customerId, long? customerSiteId)
         {
@@ -41,6 +45,13 @@ namespace _360Accounting.Web.Models
         [Display(Name = "Customer Site")]
         public long CustomerSiteId { get; set; }
 
+        public long CompanyId { get; set; }
+
+        public List<SelectListItem> Orders { get; set; }
+        public List<SelectListItem> Warehouses { get; set; }
+        public List<SelectListItem> Customers { get; set; }
+        public List<SelectListItem> CustomerSites { get; set; }
+
         public IList<OrderShipmentLine> OrderShipments { get; set; }
     }
 
@@ -52,6 +63,7 @@ namespace _360Accounting.Web.Models
         {
             if (model != null)
             {
+                this.Id = model.Id;
                 this.LineId = model.LineId;
                 this.LocatorId = model.LocatorId;
                 this.LotNo = model.LotNo;
@@ -61,6 +73,7 @@ namespace _360Accounting.Web.Models
             }
         }
 
+        public long Id { get; set; }
         public long LineId { get; set; }
         public long LocatorId { get; set; }
         //public long LotNoId { get; set; }

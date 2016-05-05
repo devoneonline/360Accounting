@@ -68,6 +68,26 @@ namespace _360Accounting.Service
             this.repository.Delete(id, companyId);
         }
 
+        public string BatchInsert(List<Shipment> entities)
+        {
+            return this.repository.BatchInsert(entities);
+        }
+
+        public string BatchUpdate(List<Shipment> entities)
+        {
+            return this.repository.BatchUpdate(entities);
+        }
+
+        public void BatchDelete(List<Shipment> entities)
+        {
+            this.repository.BatchDelete(entities);
+        }
+
+        public void DeleteByOrderId(long companyId, long sobId, long orderId)
+        {
+            this.repository.DeleteByOrderId(companyId, sobId, orderId);
+        }
+
         public int Count(long companyId)
         {
             return this.repository.Count(companyId);

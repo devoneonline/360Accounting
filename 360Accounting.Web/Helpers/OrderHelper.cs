@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Web;
+using System.Web.Mvc;
 
 namespace _360Accounting.Web
 {
@@ -103,6 +104,11 @@ namespace _360Accounting.Web
             return service.GetAll(SessionHelper.SOBId).Select(x => new OrderModel(x)).ToList();
         }
 
+        public static List<SelectListItem> GetOrdersCombo()
+        {
+            return service.GetAll(SessionHelper.SOBId).Where(rec => rec.Status != "Shipped").Select(x => new SelectListItem { Text = x.OrderNo, Value = x.Id.ToString() }).ToList();
+        }
+
         public static OrderModel GetOrder(string id)
         {
             return new OrderModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
@@ -142,6 +148,12 @@ namespace _360Accounting.Web
             string docNo = int.Parse("1").ToString().PadLeft(4, '0');
 
             return yearDigit + monthDigit + docNo;
+        }
+
+        public static string UpdateOrder(OrderModel model)
+        {
+            Order entity = getEntityByModel(model);
+            return service.Update(entity);
         }
 
         public static void Save(OrderModel model)

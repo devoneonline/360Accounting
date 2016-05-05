@@ -73,6 +73,7 @@ namespace _360Accounting.Web.Controllers
             SessionHelper.Item = null;
             SessionHelper.Remittance = null;
             SessionHelper.Tax = null;
+            SessionHelper.Shipment = null;
 
             model.UserId = AuthenticationHelper.UserId;
             model.CompanyId = AuthenticationHelper.CompanyId.Value;

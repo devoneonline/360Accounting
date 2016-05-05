@@ -77,6 +77,51 @@ namespace _360Accounting.Data.Repositories
             this.Commit();
         }
 
+        public string BatchInsert(List<Shipment> entities)
+        {
+            foreach (var item in entities)
+            {
+                this.Context.Shipments.Add(item);
+            }
+            this.Commit();
+            return this.Context.Shipments.Count().ToString();
+        }
+
+        public string BatchUpdate(List<Shipment> entities)
+        {
+            foreach (var item in entities)
+            {
+                var originalEntity = this.Context.Shipments.Find(item.Id);
+                this.Context.Entry(originalEntity).CurrentValues.SetValues(item);
+                this.Context.Entry(originalEntity).State = EntityState.Modified;
+            }
+            
+            this.Commit();
+            return this.Context.Shipments.Count().ToString();
+        }
+
+        public void BatchDelete(List<Shipment> entities)
+        {
+            foreach (var item in entities)
+            {
+                this.Context.Shipments.Remove(this.Context.Shipments.FirstOrDefault(x => x.Id == item.Id));
+            }
+            this.Commit();
+        }
+
+        public void DeleteByOrderId(long companyId, long sobId, long orderId)
+        {
+            List<Shipment> shipments = this.Context.Shipments.Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.OrderId == orderId).ToList();
+            if (shipments != null && shipments.Count() > 0)
+            {
+                foreach (var item in shipments)
+                {
+                    this.Context.Shipments.Remove(item);
+                }
+                this.Commit();
+            }
+        }
+
         public int Count(long companyId)
         {
             throw new NotImplementedException();
