@@ -18,7 +18,7 @@ namespace _360Accounting.Web.Models
             this.Warehouses = new List<SelectListItem>();
             this.Orders = new List<SelectListItem>();
         }
-        public OrderShipmentModel(ShipmentModel model, long? customerId, long? customerSiteId)
+        public OrderShipmentModel(ShipmentModel model)
         {
             if (model != null)
             {
@@ -26,8 +26,7 @@ namespace _360Accounting.Web.Models
                 this.DeliveryDate = model.DeliveryDate;
                 this.OrderId = model.OrderId;
                 this.WarehouseId = model.WarehouseId;
-                this.CustomerId = customerId == null ? 0 : customerId.Value;
-                this.CustomerSiteId = customerSiteId == null ? 0 : customerSiteId.Value;
+                this.CompanyId = model.CompanyId;
             }
         }
         public long Id { get; set; }
@@ -95,6 +94,33 @@ namespace _360Accounting.Web.Models
         public ShipmentModel()
         { }
 
+        public ShipmentModel(ShipmentView entityView, bool forIndex)
+        {
+            if (entityView != null)
+            {
+                this.Id = entityView.Id;
+                this.CreateBy = entityView.CreateBy;
+                this.CreateDate = entityView.CreateDate;
+                this.DeliveryDate = entityView.DeliveryDate;
+                this.Id = entityView.Id;
+                this.LineId = entityView.LineId;
+                this.LocatorId = entityView.LocatorId;
+                this.LotNo = entityView.LotNo;
+                this.OrderId = entityView.OrderId;
+                this.Quantity = entityView.Quantity;
+                this.SerialNo = entityView.SerialNo;
+                this.SOBId = entityView.SOBId;
+                this.UpdateBy = entityView.UpdateBy;
+                this.UpdateDate = entityView.UpdateDate;
+                this.WarehouseId = entityView.WarehouseId;
+                this.CompanyId = entityView.CompanyId;
+
+                this.OrderNo = entityView.OrderNo;
+                this.CustomerName = entityView.CustomerName;
+                this.CustomerSiteName = entityView.CustomerSiteName;
+            }
+        }
+
         public ShipmentModel(Shipment entity)
         {
             if (entity != null)
@@ -114,6 +140,7 @@ namespace _360Accounting.Web.Models
                 this.UpdateBy = entity.UpdateBy;
                 this.UpdateDate = entity.UpdateDate;
                 this.WarehouseId = entity.WarehouseId;
+                this.CompanyId = entity.CompanyId;
             }
         }
 
@@ -130,6 +157,11 @@ namespace _360Accounting.Web.Models
         public decimal Quantity { get; set; }
         public string LotNo { get; set; }
         public string SerialNo { get; set; }
+        public long CompanyId { get; set; }
+
+        public string OrderNo { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerSiteName { get; set; }
         #endregion
     }
 }

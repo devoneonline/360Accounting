@@ -43,6 +43,29 @@ namespace _360Accounting.Web.Models
                 this.UpdateDate = entity.UpdateDate;
             }
         }
+
+        public OrderModel(OrderView entityView, bool isForIndex)
+        {
+            if (entityView != null)
+            {
+                this.CompanyId = entityView.CompanyId;
+                this.CreateBy = entityView.CreateBy;
+                this.CreateDate = entityView.CreateDate;
+                this.CustomerId = entityView.CustomerId;
+                this.CustomerSiteId = entityView.CustomerSiteId;
+                this.Id = entityView.Id;
+                this.OrderDate = entityView.OrderDate;
+                this.OrderNo = entityView.OrderNo;
+                this.OrderTypeId = entityView.OrderTypeId;
+                this.Remarks = entityView.Remarks;
+                this.Status = entityView.Status;
+                this.UpdateBy = entityView.UpdateBy;
+                this.UpdateDate = entityView.UpdateDate;
+                this.CustomerName = entityView.CustomerName;
+                this.CustomerSiteName = entityView.CustomerSiteName;
+                this.OrderTypeName = entityView.OrderTypeName;
+            }
+        }
         #endregion
 
         #region Properties
@@ -81,6 +104,10 @@ namespace _360Accounting.Web.Models
         public string Status { get; set; }
 
         public IList<OrderDetailModel> OrderDetail { get; set; }
+
+        public string CustomerName { get; set; }
+        public string CustomerSiteName { get; set; }
+        public string OrderTypeName { get; set; }
         #endregion
     }
 

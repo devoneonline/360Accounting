@@ -76,21 +76,23 @@
                 spinEditProperties.MaxValue = 100000000;
                 spinEditProperties.SpinButtons.ShowLargeIncrementButtons = true;
             });
-            
-            var amountColumn = settings.Columns.Add("Amount");
-            amountColumn.PropertiesEdit.DisplayFormatString = "c";
-            amountColumn.UnboundType = DevExpress.Data.UnboundColumnType.Decimal;
-            amountColumn.Width = System.Web.UI.WebControls.Unit.Percentage(10);
-            
-            settings.CustomUnboundColumnData = (sender, e) => 
+
+            settings.Columns.Add(column =>
             {
-                if (e.Column.FieldName == "Amount")
-                {
-                    decimal rate = (decimal)e.GetListSourceFieldValue("Rate");
-                    decimal quantity = (decimal)e.GetListSourceFieldValue("Quantity");
-                    e.Value = rate * quantity;
-                }
-            };
+                column.FieldName = "Amount";
+                column.Caption = "Amount";
+                
+                column.ColumnType = MVCxGridViewColumnType.SpinEdit;
+                var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
+                spinEditProperties.NumberType = SpinEditNumberType.Float;
+                spinEditProperties.NumberType = SpinEditNumberType.Float;
+                spinEditProperties.DecimalPlaces = 2;// SessionHelper.PrecisionLimit;
+                spinEditProperties.DisplayFormatString = "c";
+                spinEditProperties.DisplayFormatInEditMode = true;
+                spinEditProperties.MinValue = 0;
+                spinEditProperties.MaxValue = 100000000;
+                spinEditProperties.SpinButtons.ShowLargeIncrementButtons = true;
+            });
 
             settings.Columns.Add(column =>
             {

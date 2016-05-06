@@ -8,8 +8,9 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Controllers
 {
-    public class ShipmentController : Controller
+    public class ShipmentController : BaseController
     {
+        public static long currentId = 0;
         public ActionResult Index()
         {
             return View();
@@ -59,9 +60,9 @@ namespace _360Accounting.Web.Controllers
             return View("Edit", newShipment);
         }
 
-        public ActionResult Edit(string id)//orderId
+        public ActionResult Edit(string id, DateTime date)
         {
-            OrderShipmentModel orderShipment = ShipmentHelper.GetShipment(id);
+            OrderShipmentModel orderShipment = ShipmentHelper.GetShipmentEdit(id, date);
 
             ViewBag.Customer = CustomerHelper.GetCustomer(orderShipment.CustomerId.ToString()).CustomerName;
             ViewBag.CustomerSite = CustomerHelper.GetCustomerSite(orderShipment.CustomerSiteId.ToString()).SiteName;
@@ -83,12 +84,19 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult DetailPartial()
         {
+            //Because Id field is not passing when updating the row, saving the Id of the particular record here on Edit click..
+
+            //Edit or Delete..
+            if (SessionHelper.Shipment.OrderShipments.Count() == 1)
+                currentId = SessionHelper.Shipment.OrderShipments.FirstOrDefault().Id;
+
             return PartialView("_Detail", SessionHelper.Shipment.OrderShipments);
         }
 
         public ActionResult DetailPartialParams(long warehouseId, long customerId, long customerSiteId, long orderId)
         {
-            return PartialView("_Detail", ShipmentHelper.GetShipment(warehouseId, customerId, customerSiteId, orderId).OrderShipments);
+            SessionHelper.Shipment.OrderShipments = ShipmentHelper.GetShipment(warehouseId, customerId, customerSiteId, orderId).OrderShipments;
+            return PartialView("_Detail", SessionHelper.Shipment.OrderShipments);
         }
 
         [HttpPost, ValidateInput(false)]
@@ -118,10 +126,12 @@ namespace _360Accounting.Web.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult UpdatePartial(OrderShipmentLine model)
         {
+            //Showing two records on new.. Check.. start from here..
             if (ModelState.IsValid)
             {
                 try
                 {
+                    model.Id = currentId;
                     ShipmentHelper.Update(model);
                 }
                 catch (Exception ex)
@@ -139,6 +149,7 @@ namespace _360Accounting.Web.Controllers
         {
             try
             {
+                model.Id = currentId;
                 ShipmentHelper.Delete(model);
             }
             catch (Exception ex)
@@ -149,13 +160,16 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_Detail", SessionHelper.Shipment.OrderShipments);
         }
 
-        public ActionResult Save(DateTime deliveryDate, long orderId, long warehouseId)
+        public ActionResult Save(DateTime deliveryDate, long orderId, long warehouseId, long companyId)
         {
             SessionHelper.Shipment.DeliveryDate = deliveryDate;
             SessionHelper.Shipment.OrderId = orderId;
             SessionHelper.Shipment.WarehouseId = warehouseId;
+            SessionHelper.Shipment.CompanyId = companyId;
 
-            return Json(ShipmentHelper.Save(SessionHelper.Shipment));
+            string result = ShipmentHelper.Save(SessionHelper.Shipment);
+            SessionHelper.Shipment = null;
+            return Json(result);
         }
 
         public ActionResult ChangeCombos(DateTime deliveryDate)
@@ -178,7 +192,5 @@ namespace _360Accounting.Web.Controllers
         {
             return Json(CustomerHelper.GetCustomerSitesCombo(customerId));
         }
-
-
 	}
 }

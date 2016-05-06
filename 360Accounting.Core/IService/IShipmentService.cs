@@ -11,7 +11,7 @@ namespace _360Accounting.Core
     public interface IShipmentService : IService<Shipment>
     {
         IEnumerable<Shipment> GetAll(long companyId, long sobId);
-        IEnumerable<Shipment> GetAllByOrderId(long companyId, long sobId, long orderId);
+        IEnumerable<Shipment> GetAllByOrderId(long companyId, long sobId, long orderId, DateTime date);
         IEnumerable<Shipment> GetAllWarehouseId(long companyId, long sobId, long warehouseId);
         IEnumerable<Shipment> GetAllByLocatorId(long companyId, long sobId, long locatorId);
         IEnumerable<Shipment> GetAllByLineId(long companyId, long sobId, long lineId);
@@ -20,5 +20,7 @@ namespace _360Accounting.Core
         string BatchUpdate(List<Shipment> entities);
         string BatchInsert(List<Shipment> entities);
         void BatchDelete(List<Shipment> entities);
+
+        IEnumerable<ShipmentView> GetAllShipments(long companyId, long sobId);
     }
 }

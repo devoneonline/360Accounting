@@ -6,11 +6,12 @@
         settings =>
         {
             settings.Name = "GridView";
-            settings.KeyFieldName = "Id";
+            settings.KeyFieldName = "LineId";
             settings.CallbackRouteValues = new { Controller = "Shipment", Action = "DetailPartial" };
             settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Shipment", Action = "AddNewPartial" };
             settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Shipment", Action = "UpdatePartial" };
             settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Shipment", Action = "DeletePartial" };
+            settings.CommandColumn.ShowNewButton = false;
             settings.SettingsEditing.Mode = GridViewEditingMode.EditForm;
             settings.SettingsBehavior.ConfirmDelete = true;
             settings.SettingsPopup.EditForm.Width = 600;
@@ -21,65 +22,16 @@
             settings.CommandColumn.ShowDeleteButton = true;
             settings.CommandColumn.ShowEditButton = true;
 
-            settings.Columns.Add(column =>
-            {
-                column.FieldName = "ItemId";
-                column.SetEditItemTemplateContent(c =>
-                {
-                    Html.DevExpress().TextBox(tb =>
-                    {
-                        tb.Enabled = false;
-                    }).GetHtml();
-                });
-                column.Caption = "Item";
-                column.Width = System.Web.UI.WebControls.Unit.Percentage(25);
-            });
-
-            settings.Columns.Add(column =>
-            {
-                column.FieldName = "OrderQuantity";
-                column.SetEditItemTemplateContent(c =>
-                {
-                    Html.DevExpress().TextBox(tb =>
-                    {
-                        tb.Enabled = false;
-                    }).GetHtml();
-                });
-                column.Caption = "Ordered Qty.";                
-            });
-
-            settings.Columns.Add(column =>
-            {
-                column.FieldName = "ShipedQuantity";
-                column.SetEditItemTemplateContent(c =>
-                {
-                    Html.DevExpress().TextBox(tb =>
-                    {
-                        tb.Enabled = false;
-                    }).GetHtml();
-                });
-                column.Caption = "Shipped Qty.";
-            });
-
-            settings.Columns.Add(column =>
-            {
-                column.FieldName = "BalanceQuantity";
-                column.SetEditItemTemplateContent(c =>
-                {
-                    Html.DevExpress().TextBox(tb =>
-                    {
-                        tb.Enabled = false;
-                    }).GetHtml();
-                });
-                column.Caption = "Balance Qty.";
-            });
-
+            //settings.Columns.Add("Id").Width = System.Web.UI.WebControls.Unit.Percentage(0);
+            settings.Columns.Add("ItemName", "Item").ReadOnly = true;
+            settings.Columns.Add("OrderQuantity", "Ordered Qty.").ReadOnly = true;
+            settings.Columns.Add("ShipedQuantity", "Shipped Qty.").ReadOnly = true;
+            settings.Columns.Add("BalanceQuantity", "Balance Qty.").ReadOnly = true;
             settings.Columns.Add(column =>
             {
                 column.FieldName = "ThisShipQuantity";
                 column.Caption = "This shipping";
-                column.Width = System.Web.UI.WebControls.Unit.Percentage(5);
-
+                
                 column.ColumnType = MVCxGridViewColumnType.SpinEdit;
                 var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
                 spinEditProperties.NumberType = SpinEditNumberType.Float;
@@ -95,7 +47,6 @@
             {
                 column.FieldName = "LocatorId";
                 column.Caption = "Locator";
-                column.Width = System.Web.UI.WebControls.Unit.Percentage(25);
 
                 column.ColumnType = MVCxGridViewColumnType.ComboBox;
                 var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
@@ -107,28 +58,12 @@
             settings.Columns.Add(column =>
             {
                 column.FieldName = "LotNo";
-                column.SetEditItemTemplateContent(c =>
-                {
-                    Html.DevExpress().TextBox(tb =>
-                    {
-                        tb.Enabled = false;
-                    }).GetHtml();
-                });
                 column.Caption = "Lot No.";
-                column.Width = System.Web.UI.WebControls.Unit.Percentage(25);
             });
             settings.Columns.Add(column =>
             {
                 column.FieldName = "SerialNo";
-                column.SetEditItemTemplateContent(c =>
-                {
-                    Html.DevExpress().TextBox(tb =>
-                    {
-                        tb.Enabled = false;
-                    }).GetHtml();
-                });
                 column.Caption = "Serial No.";
-                column.Width = System.Web.UI.WebControls.Unit.Percentage(25);
             });
         });
 

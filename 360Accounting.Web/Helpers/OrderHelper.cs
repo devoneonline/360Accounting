@@ -101,7 +101,7 @@ namespace _360Accounting.Web
 
         public static List<OrderModel> GetOrders()
         {
-            return service.GetAll(SessionHelper.SOBId).Select(x => new OrderModel(x)).ToList();
+            return service.GetAllOrders(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId).Select(x => new OrderModel(x, true)).ToList();
         }
 
         public static List<SelectListItem> GetOrdersCombo()

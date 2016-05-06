@@ -39,6 +39,7 @@ namespace _360Accounting.Web
                 {
                     entity.CreateBy = model.CreateBy;
                     entity.CreateDate = model.CreateDate;
+                    entity.CompanyId = model.CompanyId;
                 }
                 entity.DeliveryDate = model.DeliveryDate;
                 entity.SOBId = SessionHelper.SOBId;
@@ -75,13 +76,49 @@ namespace _360Accounting.Web
         {
             decimal totalQty = model.ThisShipQuantity;
             OrderDetailModel orderDetail = OrderHelper.GetSingleOrderDetail(model.LineId);
-            List<Shipment> shiped = service.GetAllByLineId(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, model.LineId).ToList();
+            List<Shipment> shiped = new List<Shipment>();
+            if (model.Id > 0)
+                shiped = service.GetAllByLineId(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, model.LineId)
+                    .Where(rec => rec.Id < model.Id).ToList();
+            else
+                shiped = service.GetAllByLineId(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, model.LineId).ToList();
+
             if (shiped != null && shiped.Count() > 0)
                 totalQty += shiped.Sum(rec => rec.Quantity);
             if (totalQty > orderDetail.Quantity)
-                return "Quantity can not be more than order";
+                return "Quantity is exceeding than order!";
             //Other validations..
 
+            OrderShipmentModel orderShipment = SessionHelper.Shipment;
+            if (model.Id > 0)
+            {
+                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).BalanceQuantity = orderDetail.Quantity - (shiped.Sum(rec => rec.Quantity) + model.ThisShipQuantity);
+                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).Id = model.Id;
+                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).ItemName = model.ItemName;
+                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).LineId = model.LineId;
+                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).LocatorId = model.LocatorId;
+                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).LotNo = model.LotNo;
+                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).OrderQuantity = orderDetail.Quantity;
+                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).SerialNo = model.SerialNo;
+                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).ShipedQuantity = shiped.Sum(rec => rec.Quantity);
+                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).ThisShipQuantity = model.ThisShipQuantity;
+            }
+            else
+            {
+                orderShipment.OrderShipments.Add(new OrderShipmentLine
+                    {
+                        BalanceQuantity = orderDetail.Quantity - (shiped.Sum(rec => rec.Quantity) + model.ThisShipQuantity),
+                        Id = model.Id,
+                        ItemName = model.ItemName,
+                        LineId = model.LineId,
+                        LocatorId = model.LocatorId,
+                        LotNo = model.LotNo,
+                        OrderQuantity = orderDetail.Quantity,
+                        SerialNo = model.SerialNo,
+                        ShipedQuantity = shiped.Sum(rec => rec.Quantity),
+                        ThisShipQuantity = model.ThisShipQuantity
+                    });
+            }
             return "";
         }
 
@@ -89,15 +126,23 @@ namespace _360Accounting.Web
 
         public static List<ShipmentModel> GetShipments()
         {
-            List<ShipmentModel> shipments = service.GetAll(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId).Select(x => new ShipmentModel(x)).ToList();
+            List<ShipmentModel> shipments = service.GetAllShipments(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId).Select(x => new ShipmentModel(x, true)).ToList();
             return shipments;
         }
 
-        public static OrderShipmentModel GetShipment(string orderId)
+        public static OrderShipmentModel GetShipmentEdit(string orderId, DateTime date)
         {
-            List<ShipmentModel> shipmentDetail = service.GetAllByOrderId(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, Convert.ToInt64(orderId)).Select(x => new ShipmentModel(x)).ToList();
+            List<ShipmentModel> shipmentDetail = service.GetAllByOrderId(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, Convert.ToInt64(orderId), date).Select(x => new ShipmentModel(x)).ToList();
             OrderModel order = OrderHelper.GetOrder(orderId);
-            OrderShipmentModel orderShipment = new OrderShipmentModel(shipmentDetail.FirstOrDefault(), order.CustomerId, order.CustomerSiteId);
+
+            OrderShipmentModel orderShipment = new OrderShipmentModel(shipmentDetail.FirstOrDefault());
+            orderShipment.CreateBy = shipmentDetail.FirstOrDefault().CreateBy;
+            orderShipment.CreateDate = shipmentDetail.FirstOrDefault().CreateDate;
+            orderShipment.CustomerId = order.CustomerId;
+            orderShipment.CustomerSiteId = order.CustomerSiteId;
+            orderShipment.UpdateBy = shipmentDetail.FirstOrDefault().UpdateBy;
+            orderShipment.UpdateDate = shipmentDetail.FirstOrDefault().UpdateDate;
+
             orderShipment.OrderShipments = new List<OrderShipmentLine>();
             foreach (var item in shipmentDetail)
             {
@@ -105,7 +150,15 @@ namespace _360Accounting.Web
                 OrderDetailModel orderDetail = OrderHelper.GetSingleOrderDetail(item.LineId);
                 if (orderDetail != null)
                     itemName = ItemHelper.GetItem(orderDetail.ItemId.ToString()).ItemName;
-                orderShipment.OrderShipments.Add(new OrderShipmentLine(item, itemName));
+
+                OrderShipmentLine shipmentLine = new OrderShipmentLine(item, itemName);
+                decimal shippedQty = GetShipments(item.LineId).Sum(x => x.Quantity);
+                shipmentLine.BalanceQuantity = orderDetail.Quantity - shippedQty;
+                shipmentLine.OrderQuantity = orderDetail.Quantity;
+                shipmentLine.ShipedQuantity = shippedQty - item.Quantity;
+                shipmentLine.ThisShipQuantity = item.Quantity;
+
+                orderShipment.OrderShipments.Add(shipmentLine);
             }
 
             return orderShipment;
@@ -129,7 +182,7 @@ namespace _360Accounting.Web
                 OrderShipments = new List<OrderShipmentLine>(),
                 WarehouseId = warehouseId
             };
-            OrderModel order = OrderHelper.GetOrders(customerId, customerId).FirstOrDefault(rec => rec.Id == orderId);
+            OrderModel order = OrderHelper.GetOrders(customerId, customerSiteId).FirstOrDefault(rec => rec.Id == orderId);
             if (order != null)
             {
                 List<OrderDetailModel> orderDetail = OrderHelper.GetOrderDetail(order.Id.ToString()).ToList();
@@ -158,38 +211,13 @@ namespace _360Accounting.Web
 
         public static string Insert(OrderShipmentLine model)
         {
-            string validationResult = validateShipmentQuantity(model);
-            if (string.IsNullOrEmpty(validationResult))
-            {
-                OrderShipmentModel orderShipment = SessionHelper.Shipment;
-                orderShipment.OrderShipments.Add(model);
-                return "Record added";
-            }
-            else
-                return validationResult;
+            return validateShipmentQuantity(model);
         }
 
         //Assuming that no record can be entered without its order..
         public static string Update(OrderShipmentLine model)
         {
-            string validationResult = validateShipmentQuantity(model);
-            if (string.IsNullOrEmpty(validationResult))
-            {
-                OrderShipmentModel orderShipment = SessionHelper.Shipment;
-                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).BalanceQuantity = model.BalanceQuantity;
-                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).ItemName = model.ItemName;
-                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).LineId = model.LineId;
-                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).LocatorId = model.LocatorId;
-                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).LotNo = model.LotNo;
-                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).OrderQuantity = model.OrderQuantity;
-                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).SerialNo = model.SerialNo;
-                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).ShipedQuantity = model.ShipedQuantity;
-                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).ThisShipQuantity = model.ThisShipQuantity;
-
-                return "Record added";
-            }
-            else
-                return validationResult;
+            return validateShipmentQuantity(model);
         }
 
         //Assuming no record can be entered without its order and order detail is unique in every line..

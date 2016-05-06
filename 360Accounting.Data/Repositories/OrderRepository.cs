@@ -61,6 +61,37 @@ namespace _360Accounting.Data.Repositories
             return this.Context.OrderDetails.FirstOrDefault(rec => rec.Id == id);
         }
 
+        public IEnumerable<OrderView> GetAllOrders(long companyId, long sobId)
+        {
+            var query = from a in this.Context.Orders
+                        join b in this.Context.OrderTypes on a.OrderTypeId equals b.Id
+                        join c in this.Context.Customers on a.CustomerId equals c.Id
+                        join d in this.Context.CustomerSites on a.CustomerSiteId equals d.Id
+                        where a.CompanyId == companyId && a.SOBId == sobId
+                        select new OrderView
+                        {
+                            CompanyId = a.CompanyId,
+                            OrderTypeName = b.OrderTypeName,
+                            CustomerSiteName = d.SiteName,
+                            CustomerName = c.CustomerName,
+                            CreateBy = a.CreateBy,
+                            CreateDate = a.CreateDate,
+                            CustomerId = a.CustomerId,
+                            CustomerSiteId = a.CustomerSiteId,
+                            Id = a.Id,
+                            OrderDate = a.OrderDate,
+                            OrderNo = a.OrderNo,
+                            OrderTypeId = a.OrderTypeId,
+                            Remarks = a.Remarks,
+                            SOBId = a.SOBId,
+                            Status = a.Status,
+                            UpdateBy = a.UpdateBy,
+                            UpdateDate = a.UpdateDate
+                        };
+
+            return query.ToList();
+        }
+        
         public IEnumerable<Order> GetAll(long sobId)
         {
             IEnumerable<Order> list = this.Context.Orders.Where(x => x.SOBId == sobId);

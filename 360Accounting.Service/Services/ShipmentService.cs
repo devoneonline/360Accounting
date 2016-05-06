@@ -18,29 +18,34 @@ namespace _360Accounting.Service
             this.repository = repo;
         }
 
+        public IEnumerable<ShipmentView> GetAllShipments(long companyId, long sobId)
+        {
+            return this.repository.GetAllShipments(companyId, sobId);
+        }
+        
         public IEnumerable<Shipment> GetAll(long companyId, long sobId)
         {
             return this.repository.GetAll(companyId, sobId);
         }
 
-        public IEnumerable<Shipment> GetAllByOrderId(long companyId, long sobId, long orderId)
+        public IEnumerable<Shipment> GetAllByOrderId(long companyId, long sobId, long orderId, DateTime date)
         {
-            return this.repository.GetAllByOrderId(companyId, sobId, orderId);
+            return this.repository.GetAllByOrderId(companyId, sobId, orderId, date);
         }
 
         public IEnumerable<Shipment> GetAllWarehouseId(long companyId, long sobId, long warehouseId)
         {
-            return this.repository.GetAllByOrderId(companyId, sobId, warehouseId);
+            throw new NotImplementedException();
         }
 
         public IEnumerable<Shipment> GetAllByLocatorId(long companyId, long sobId, long locatorId)
         {
-            return this.repository.GetAllByOrderId(companyId, sobId, locatorId);
+            throw new NotImplementedException();
         }
 
         public IEnumerable<Shipment> GetAllByLineId(long companyId, long sobId, long lineId)
         {
-            return this.repository.GetAllByOrderId(companyId, sobId, lineId);
+            return this.repository.GetAllByLineId(companyId, sobId, lineId);
         }
 
         public Shipment GetSingle(string id, long companyId)

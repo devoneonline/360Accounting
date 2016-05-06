@@ -26,5 +26,7 @@ namespace _360Accounting.Core
         IEnumerable<Order> GetAllOrdersByCustomerSite(long sobId, long customerSiteId);
 
         OrderDetail GetSingleOrderDetail(long id);
+
+        IEnumerable<OrderView> GetAllOrders(long companyId, long sobId);
     }
 }

@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Controllers
 {
-    public class OrderController : Controller
+    public class OrderController : BaseController
     {
         public ActionResult Index()
         {
@@ -92,6 +92,7 @@ namespace _360Accounting.Web.Controllers
                     SessionHelper.Order.OrderNo = OrderHelper.GenerateOrderNum(SessionHelper.Order);
 
                 OrderHelper.Save(SessionHelper.Order);
+                SessionHelper.Order = null;
                 return Json("Saved Successfully");
             }
 
@@ -113,7 +114,7 @@ namespace _360Accounting.Web.Controllers
                     if (SessionHelper.Order != null)
                     {
                         if (SessionHelper.Order.OrderDetail != null && SessionHelper.Order.OrderDetail.Count() > 0)
-                            model.Id = SessionHelper.Invoice.InvoiceDetail.LastOrDefault().Id + 1;
+                            model.Id = SessionHelper.Order.OrderDetail.LastOrDefault().Id + 1;
                         else
                             model.Id = 1;
                     }

@@ -13,14 +13,41 @@ namespace _360Accounting.Data.Repositories
     {
         public IEnumerable<Shipment> GetAll(long companyId, long sobId)
         {
-            IEnumerable<Shipment> list = this.Context.Shipments.Where(x => x.CompanyId == companyId && x.SOBId == sobId)
-                .GroupBy(rec => rec.OrderId).Select(x => x.FirstOrDefault());
+            IEnumerable<Shipment> list = this.Context.Shipments.Where(x => x.CompanyId == companyId && x.SOBId == sobId);
             return list;
         }
 
-        public IEnumerable<Shipment> GetAllByOrderId(long companyId, long sobId, long orderId)
+        public IEnumerable<ShipmentView> GetAllShipments(long companyId, long sobId)
         {
-            IEnumerable<Shipment> list = this.Context.Shipments.Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.OrderId == orderId);
+            var query = from a in this.Context.Shipments
+                        group a by a.DeliveryDate into g
+                        join b in this.Context.Orders on g.FirstOrDefault().OrderId equals b.Id
+                        join c in this.Context.Customers on b.CustomerId equals c.Id
+                        join d in this.Context.CustomerSites on b.CustomerSiteId equals d.Id
+                        where g.FirstOrDefault().CompanyId == companyId && g.FirstOrDefault().SOBId == sobId
+                        select new ShipmentView
+                        {
+                            CompanyId = g.FirstOrDefault().CompanyId,
+                            CustomerSiteName = d.SiteName,
+                            CustomerName = c.CustomerName,
+                            OrderNo = b.OrderNo,
+                            CreateBy = g.FirstOrDefault().CreateBy,
+                            CreateDate = g.FirstOrDefault().CreateDate,
+                            DeliveryDate = g.Key,
+                            Id = g.FirstOrDefault().Id,
+                            OrderId = g.FirstOrDefault().OrderId,
+                            Quantity = g.Sum(x => x.Quantity),
+                            SOBId = g.FirstOrDefault().SOBId,
+                            UpdateBy = g.FirstOrDefault().UpdateBy,
+                            UpdateDate = g.FirstOrDefault().UpdateDate
+                        };
+
+            return query.ToList();
+        }
+
+        public IEnumerable<Shipment> GetAllByOrderId(long companyId, long sobId, long orderId, DateTime date)
+        {
+            IEnumerable<Shipment> list = this.Context.Shipments.Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.OrderId == orderId && x.DeliveryDate == date);
             return list;
         }
 

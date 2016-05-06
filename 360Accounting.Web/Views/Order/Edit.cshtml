@@ -128,13 +128,13 @@
                     customerDropdown.append('<option value=' + data.Customers[i].Value + '>' + data.Customers[i].Text + '</option>');
                 }
             }
-            
+
             if (data.CustomerSites.length > 0) {
                 for (var i = 0; i < data.CustomerSites.length; i++) {
                     customerSiteDropdown.append('<option value=' + data.CustomerSites[i].Value + '>' + data.CustomerSites[i].Text + '</option>');
                 }
             }
-            
+
             if (data.OrderTypes.length > 0) {
                 for (var i = 0; i < data.OrderTypes.length; i++) {
                     orderTypeDropdown.append('<option value=' + data.OrderTypes[i].Value + '>' + data.OrderTypes[i].Text + '</option>');
@@ -147,15 +147,20 @@
         });
 
         function GetCustomerSites(customerId) {
-            var url = '@Url.Content("~/Order/GetCustomerSites")';
-            $.get(url, { customerId: customerId },
-                function (data) {
+            $.ajax({
+                url: '@Url.Content("~/Order/GetCustomerSites")',
+                data: { customerId: customerId },
+                type: 'post',
+                datatype: 'json',
+                success: function (data) {
                     var customerSiteDropdown = $('#CustomerSiteId');
                     customerSiteDropdown.empty();
                     for (var i = 0; i < data.length; i++) {
                         customerSiteDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
                     }
-                });
+                },
+                error: function () { }
+            })
         }
 
         $('#btnCancel').click(function () {
