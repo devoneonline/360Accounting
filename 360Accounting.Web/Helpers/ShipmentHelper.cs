@@ -87,15 +87,13 @@ namespace _360Accounting.Web
                 totalQty += shiped.Sum(rec => rec.Quantity);
             if (totalQty > orderDetail.Quantity)
                 return "Quantity is exceeding than order!";
-            //Other validations..
+            //Other validations if any..
 
             OrderShipmentModel orderShipment = SessionHelper.Shipment;
             if (model.Id > 0)
             {
                 orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).BalanceQuantity = orderDetail.Quantity - (shiped.Sum(rec => rec.Quantity) + model.ThisShipQuantity);
                 orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).Id = model.Id;
-                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).ItemName = model.ItemName;
-                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).LineId = model.LineId;
                 orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).LocatorId = model.LocatorId;
                 orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).LotNo = model.LotNo;
                 orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).OrderQuantity = orderDetail.Quantity;
@@ -105,19 +103,34 @@ namespace _360Accounting.Web
             }
             else
             {
-                orderShipment.OrderShipments.Add(new OrderShipmentLine
-                    {
-                        BalanceQuantity = orderDetail.Quantity - (shiped.Sum(rec => rec.Quantity) + model.ThisShipQuantity),
-                        Id = model.Id,
-                        ItemName = model.ItemName,
-                        LineId = model.LineId,
-                        LocatorId = model.LocatorId,
-                        LotNo = model.LotNo,
-                        OrderQuantity = orderDetail.Quantity,
-                        SerialNo = model.SerialNo,
-                        ShipedQuantity = shiped.Sum(rec => rec.Quantity),
-                        ThisShipQuantity = model.ThisShipQuantity
-                    });
+                if (orderShipment.OrderShipments.Any(x => x.LineId == model.LineId))
+                {
+                    orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).BalanceQuantity = orderDetail.Quantity - (shiped.Sum(rec => rec.Quantity) + model.ThisShipQuantity);
+                    orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).Id = model.Id;
+                    orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).LocatorId = model.LocatorId;
+                    orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).LotNo = model.LotNo;
+                    orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).OrderQuantity = orderDetail.Quantity;
+                    orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).SerialNo = model.SerialNo;
+                    orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).ShipedQuantity = shiped.Sum(rec => rec.Quantity);
+                    orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).ThisShipQuantity = model.ThisShipQuantity;
+                }
+                else
+                {
+                    //Never be in this case..
+                    orderShipment.OrderShipments.Add(new OrderShipmentLine
+                        {
+                            BalanceQuantity = orderDetail.Quantity - (shiped.Sum(rec => rec.Quantity) + model.ThisShipQuantity),
+                            Id = model.Id,
+                            ItemName = model.ItemName,
+                            LineId = model.LineId,
+                            LocatorId = model.LocatorId,
+                            LotNo = model.LotNo,
+                            OrderQuantity = orderDetail.Quantity,
+                            SerialNo = model.SerialNo,
+                            ShipedQuantity = shiped.Sum(rec => rec.Quantity),
+                            ThisShipQuantity = model.ThisShipQuantity
+                        });
+                }
             }
             return "";
         }
@@ -152,10 +165,10 @@ namespace _360Accounting.Web
                     itemName = ItemHelper.GetItem(orderDetail.ItemId.ToString()).ItemName;
 
                 OrderShipmentLine shipmentLine = new OrderShipmentLine(item, itemName);
-                decimal shippedQty = GetShipments(item.LineId).Sum(x => x.Quantity);
-                shipmentLine.BalanceQuantity = orderDetail.Quantity - shippedQty;
+                decimal shippedQty = GetShipments(item.LineId).Where(rec => rec.Id < item.Id).Sum(x => x.Quantity);
+                shipmentLine.BalanceQuantity = orderDetail.Quantity - (shippedQty + item.Quantity);
                 shipmentLine.OrderQuantity = orderDetail.Quantity;
-                shipmentLine.ShipedQuantity = shippedQty - item.Quantity;
+                shipmentLine.ShipedQuantity = shippedQty;
                 shipmentLine.ThisShipQuantity = item.Quantity;
 
                 orderShipment.OrderShipments.Add(shipmentLine);
@@ -230,7 +243,7 @@ namespace _360Accounting.Web
             OrderShipmentLine shipment = orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId);
             SessionHelper.Shipment.OrderShipments.Remove(shipment);
 
-            return "Record removed";
+            return "";
         }
 
         //Assuming no record can be entered except the order and no Shipment row can be removed on edit..
@@ -264,12 +277,18 @@ namespace _360Accounting.Web
                     if (ShippedQty != null && ShippedQty.Count() > 0)
                     {
                         if (ShippedQty.Sum(x => x.Quantity) < orderDetailItem.Quantity)
+                        {
                             status = "Partially Shipped";
+                            break;
+                        }
                         else
                             status = "Shipped";
                     }
                     else
+                    {
                         status = "Partially Shipped";
+                        break;
+                    }
                 }
                 OrderModel updatedOrder = OrderHelper.GetOrder(model.OrderId.ToString());
                 updatedOrder.Status = status;
@@ -280,9 +299,9 @@ namespace _360Accounting.Web
             return result;
         }
 
-        public static void Delete(long orderId)
+        public static void Delete(long orderId, DateTime date)
         {
-            service.DeleteByOrderId(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, orderId);
+            service.DeleteByOrderId(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, orderId, date);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace _360Accounting.Core
         IEnumerable<Shipment> GetAllByLocatorId(long companyId, long sobId, long locatorId);
         IEnumerable<Shipment> GetAllByLineId(long companyId, long sobId, long lineId);
 
-        void DeleteByOrderId(long companyId, long sobId, long orderId);
+        void DeleteByOrderId(long companyId, long sobId, long orderId, DateTime date);
         string BatchUpdate(List<Shipment> entities);
         string BatchInsert(List<Shipment> entities);
         void BatchDelete(List<Shipment> entities);

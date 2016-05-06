@@ -42,7 +42,7 @@ namespace _360Accounting.Data.Repositories
                             UpdateDate = g.FirstOrDefault().UpdateDate
                         };
 
-            return query.ToList();
+            return query.OrderByDescending(rec => rec.Id).ToList();
         }
 
         public IEnumerable<Shipment> GetAllByOrderId(long companyId, long sobId, long orderId, DateTime date)
@@ -136,9 +136,9 @@ namespace _360Accounting.Data.Repositories
             this.Commit();
         }
 
-        public void DeleteByOrderId(long companyId, long sobId, long orderId)
+        public void DeleteByOrderId(long companyId, long sobId, long orderId, DateTime date)
         {
-            List<Shipment> shipments = this.Context.Shipments.Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.OrderId == orderId).ToList();
+            List<Shipment> shipments = this.Context.Shipments.Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.OrderId == orderId && x.DeliveryDate == date).ToList();
             if (shipments != null && shipments.Count() > 0)
             {
                 foreach (var item in shipments)

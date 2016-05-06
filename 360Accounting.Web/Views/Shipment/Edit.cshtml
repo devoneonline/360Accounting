@@ -197,9 +197,13 @@
         }
 
         $('#btnCancel').click(function () {
-            if (confirm('Do you want to leave this page?')) {
-                window.location.href = '@Url.Content("~/Shipment")';
+            if ($('#isNew').val() == 'true') {
+                if (confirm('Do you want to leave this page?')) {
+                    window.location.href = '@Url.Content("~/Shipment")';
+                }
             }
+            else
+                window.location.href = '@Url.Content("~/Shipment")';
         });
 
         $('#btnSave').click(function () {

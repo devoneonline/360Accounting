@@ -13,6 +13,7 @@ namespace _360Accounting.Web.Controllers
         public static long currentId = 0;
         public ActionResult Index()
         {
+            SessionHelper.Shipment = null;
             return View();
         }
 
@@ -76,9 +77,9 @@ namespace _360Accounting.Web.Controllers
             return View("Edit", orderShipment);
         }
 
-        public ActionResult Delete(string Id)
+        public ActionResult Delete(string Id, DateTime date)
         {
-            ShipmentHelper.Delete(Convert.ToInt64(Id));
+            ShipmentHelper.Delete(Convert.ToInt64(Id), date);
             return RedirectToAction("Index");
         }
 
@@ -111,7 +112,9 @@ namespace _360Accounting.Web.Controllers
                     else
                         model.Id = 1;
 
-                    ShipmentHelper.Insert(model);
+                    string result = ShipmentHelper.Insert(model);
+                    if(!string.IsNullOrEmpty(result))
+                        ViewData["EditError"] = result;
                 }
                 catch (Exception ex)
                 {
@@ -132,7 +135,9 @@ namespace _360Accounting.Web.Controllers
                 try
                 {
                     model.Id = currentId;
-                    ShipmentHelper.Update(model);
+                    string result = ShipmentHelper.Update(model);
+                    if (!string.IsNullOrEmpty(result))
+                        ViewData["EditError"] = result;
                 }
                 catch (Exception ex)
                 {
@@ -150,7 +155,9 @@ namespace _360Accounting.Web.Controllers
             try
             {
                 model.Id = currentId;
-                ShipmentHelper.Delete(model);
+                string result = ShipmentHelper.Delete(model);
+                if(!string.IsNullOrEmpty(result))
+                    ViewData["EditError"] = result;
             }
             catch (Exception ex)
             {
@@ -162,6 +169,9 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Save(DateTime deliveryDate, long orderId, long warehouseId, long companyId)
         {
+            if (deliveryDate < DateTime.Now.Date)
+                return Json("Shipment date can not be the past date!");
+
             SessionHelper.Shipment.DeliveryDate = deliveryDate;
             SessionHelper.Shipment.OrderId = orderId;
             SessionHelper.Shipment.WarehouseId = warehouseId;

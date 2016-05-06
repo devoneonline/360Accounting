@@ -88,9 +88,9 @@ namespace _360Accounting.Service
             this.repository.BatchDelete(entities);
         }
 
-        public void DeleteByOrderId(long companyId, long sobId, long orderId)
+        public void DeleteByOrderId(long companyId, long sobId, long orderId, DateTime date)
         {
-            this.repository.DeleteByOrderId(companyId, sobId, orderId);
+            this.repository.DeleteByOrderId(companyId, sobId, orderId, date);
         }
 
         public int Count(long companyId)
