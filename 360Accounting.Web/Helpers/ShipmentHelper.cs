@@ -219,7 +219,7 @@ namespace _360Accounting.Web
                 }
             }
 
-            return newShipment;
+            return newShipment == null ? new OrderShipmentModel() : newShipment;
         }
 
         public static string Insert(OrderShipmentLine model)
@@ -251,6 +251,10 @@ namespace _360Accounting.Web
         {
             string result = "";
             List<Shipment> currentShipments = getEntitiesByModel(model);
+            if (model.OrderShipments.Any(rec => rec.LocatorId == 0 || rec.LotNo == "" || rec.SerialNo == ""))
+            {
+                return "Invalid Shipment, please select required fields!";
+            }
             if (currentShipments != null && currentShipments.Count() > 0)
             {
                 foreach (var item in currentShipments)
@@ -261,14 +265,11 @@ namespace _360Accounting.Web
                     if (shipments != null && shipments.Count() > 0)
                         savedQty = shipments.Sum(x => x.Quantity);
 
-                    if (item.Quantity > savedQty + orderDetail.Quantity)
-                        return "Quantity is exceeding than order!";
                     if (item.Id > 0)
                         result = service.Update(item);
                     else
                         result = service.Insert(item);
                 }
-
                 List<OrderDetailModel> orderDetailQty = OrderHelper.GetOrderDetail(model.OrderId.ToString());
                 string status = "";
                 foreach (var orderDetailItem in orderDetailQty)
