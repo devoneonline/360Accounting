@@ -311,7 +311,7 @@ namespace _360Accounting.Data
                 foreach (DbEntityEntry entry in this.ChangeTracker.Entries())
                 {
                     switch (entry.State)
-                    { 
+                    {
                         case EntityState.Modified:
                             entry.State = EntityState.Unchanged;
                             break;
@@ -323,11 +323,15 @@ namespace _360Accounting.Data
                             break;
                         default: break;
                     }
-                } 
+                }
                 if (ex.GetBaseException().HResult == -2146232060)
                 {
                     throw new Exception("Delete Error", new Exception { Source = "Record is in use somewhere in the application" });
                 }
+                throw ex;
+            }
+            catch (Exception ex)
+            {
                 throw ex;
             }
         }

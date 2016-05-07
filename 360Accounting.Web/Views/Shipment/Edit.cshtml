@@ -173,7 +173,7 @@
             else {
                 var url = '@Url.Content("~/Shipment/Save")';
                 $.post(url, {
-                    deliveryDate: deliveryDate, orderId: orderId, warehouseId: warehouseId, companyId:companyId
+                    orderId: orderId, warehouseId: warehouseId, companyId:companyId
                 },
                     function (result) {
                         if (isNaN(result))

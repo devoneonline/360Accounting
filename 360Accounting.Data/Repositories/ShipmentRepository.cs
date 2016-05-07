@@ -47,7 +47,10 @@ namespace _360Accounting.Data.Repositories
 
         public IEnumerable<Shipment> GetAllByOrderId(long companyId, long sobId, long orderId, DateTime date)
         {
-            IEnumerable<Shipment> list = this.Context.Shipments.Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.OrderId == orderId && x.DeliveryDate == date);
+            List<Shipment> list = this.Context.Shipments.Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.OrderId == orderId).ToList();
+            list = list.Where(x => Convert.ToDateTime(x.DeliveryDate).ToShortDateString() == date.ToShortDateString() &&
+                Convert.ToDateTime(x.DeliveryDate).ToShortTimeString() == date.ToShortTimeString()).ToList();
+
             return list;
         }
 
@@ -138,7 +141,9 @@ namespace _360Accounting.Data.Repositories
 
         public void DeleteByOrderId(long companyId, long sobId, long orderId, DateTime date)
         {
-            List<Shipment> shipments = this.Context.Shipments.Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.OrderId == orderId && x.DeliveryDate == date).ToList();
+            List<Shipment> shipments = this.Context.Shipments.Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.OrderId == orderId).ToList();
+            shipments = shipments.Where(x => Convert.ToDateTime(x.DeliveryDate).ToShortDateString() == date.ToShortDateString() &&
+                Convert.ToDateTime(x.DeliveryDate).ToShortTimeString() == date.ToShortTimeString()).ToList();
             if (shipments != null && shipments.Count() > 0)
             {
                 foreach (var item in shipments)

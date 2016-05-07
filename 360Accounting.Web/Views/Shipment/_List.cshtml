@@ -25,7 +25,7 @@ var grid = Html.DevExpress().GridView(settings =>
             ViewContext.Writer.Write(
                 Html.Raw("<a href='" + Url.Content("~/Shipment/Edit?Id=") + DataBinder.Eval(c.DataItem, "OrderId") + "&date=" + DataBinder.Eval(c.DataItem, "DeliveryDate") + "'><i class='fa fa-edit'></i></a>")
                     + "&nbsp;" +
-                Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/Order/Delete?Id=") + DataBinder.Eval(c.DataItem, "OrderId") + "&date=" + DataBinder.Eval(c.DataItem, "DeliveryDate") + "'><i class='fa fa-trash-o'></i></a>")
+                Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/Shipment/Delete?Id=") + DataBinder.Eval(c.DataItem, "OrderId") + "&date=" + DataBinder.Eval(c.DataItem, "DeliveryDate") + "'><i class='fa fa-trash-o'></i></a>")
             );
         });
 
