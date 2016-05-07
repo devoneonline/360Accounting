@@ -167,12 +167,9 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_Detail", SessionHelper.Shipment.OrderShipments);
         }
 
-        public ActionResult Save(DateTime deliveryDate, long orderId, long warehouseId, long companyId)
+        public ActionResult Save(long orderId, long warehouseId, long companyId)
         {
-            if (deliveryDate < DateTime.Now.Date)
-                return Json("Shipment date can not be the past date!");
-
-            SessionHelper.Shipment.DeliveryDate = deliveryDate;
+            SessionHelper.Shipment.DeliveryDate = DateTime.Now;
             SessionHelper.Shipment.OrderId = orderId;
             SessionHelper.Shipment.WarehouseId = warehouseId;
             SessionHelper.Shipment.CompanyId = companyId;
@@ -180,22 +177,6 @@ namespace _360Accounting.Web.Controllers
             string result = ShipmentHelper.Save(SessionHelper.Shipment);
             SessionHelper.Shipment = null;
             return Json(result);
-        }
-
-        public ActionResult ChangeCombos(DateTime deliveryDate)
-        {
-            if (deliveryDate < DateTime.Now.Date)
-                return Json("Shipment date can not be the past date!");
-
-            OrderShipmentModel changedCombo = new OrderShipmentModel();
-            changedCombo.Customers = CustomerHelper.GetActiveCustomersCombo(deliveryDate);
-            if (changedCombo.Customers != null && changedCombo.Customers.Count() > 0)
-            {
-                changedCombo.CustomerId = changedCombo.CustomerId > 0 ? changedCombo.CustomerId : Convert.ToInt64(changedCombo.Customers.FirstOrDefault().Value);
-                changedCombo.CustomerSites = CustomerHelper.GetCustomerSitesCombo(changedCombo.CustomerId);
-            }
-
-            return Json(changedCombo);
         }
 
         public ActionResult GetCustomerSites(long customerId)

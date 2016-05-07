@@ -11,6 +11,7 @@ namespace _360Accounting.Web.Controllers
     {
         public ActionResult Index()
         {
+            SessionHelper.Order = null;
             return View();
         }
 

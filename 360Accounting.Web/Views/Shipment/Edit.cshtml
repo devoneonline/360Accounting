@@ -37,14 +37,6 @@
         if (ViewBag.IsNewRecord)
         {
             <div class="row">
-                <div class="col-lg-2">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.DeliveryDate)
-                        @Html.EditorFor(model => model.DeliveryDate)
-                    </div>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-lg-3">
                     <div class="form-group">
                         @Html.LabelFor(model => model.OrderId)
@@ -78,12 +70,6 @@
             @Html.HiddenFor(m => m.CustomerSiteId)
             @Html.HiddenFor(m => m.OrderId)
             <div class="row">
-                <div class="col-lg-2">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.DeliveryDate)
-                        @Html.EditorFor(model => model.DeliveryDate)
-                    </div>
-                </div>
                 <div class="col-lg-8 col-lg-offset-2">
                     <div class="form-group">
                         OrderNo.: @ViewBag.OrderNo / Customer: @ViewBag.Customer / CustomerSite: @ViewBag.CustomerSite / Warehouse:@ViewBag.Warehouse
@@ -101,39 +87,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#DeliveryDate').attr('class', 'form-control');
-
-        $('#DeliveryDate').blur(function () {
-            $.ajax({
-                url: '@Url.Content("~/Shipment/ChangeCombos")',
-                data: { deliveryDate: $(this).val() },
-                type: 'post',
-                datatype: 'json',
-                success: function (data) {
-                    if (typeof data == 'undefined' || data == 'Shipment date can not be the past date!') {
-                        alert(data);
-                        $('#DeliveryDate').focus();
-                        $('#btnSave').attr('disabled', true);
-                    }
-                    else {
-                        jQuery.ajaxSetup({ async: false });
-
-                        RefillCombos(data);
-
-                        var customerId = $('#CustomerId').val() == null ? 0 : $('#CustomerId').val();
-                        var customerSiteId = $('#CustomerSiteId').val() == null ? 0 : $('#CustomerSiteId').val();
-                        var warehouseId = $('#WarehouseId').val() == null ? 0 : $('#WarehouseId').val();
-                        var orderId = $('#OrderId').val() == null ? 0 : $('#OrderId').val();
-
-                        RefreshDetail(customerId, customerSiteId, warehouseId, orderId);
-
-                        $('#btnSave').attr('disabled', false);
-                    }
-                },
-                error: function () { }
-            })
-        })
-
+        
         function RefillCombos(data) {
             jQuery.ajaxSetup({ async: false });
             var customerDropdown = $('#CustomerId');
@@ -208,16 +162,12 @@
 
         $('#btnSave').click(function () {
             var orderId = $('#OrderId').val();
-            var deliveryDate = $('#DeliveryDate').val();
             var warehouseId = $('#WarehouseId').val();
             var companyId = $('#CompanyId').val();
 
             if ($('#isNew').val() == 'true') {
-                if (deliveryDate == null || deliveryDate == '' || orderId == null || orderId == 0 || warehouseId == null || warehouseId == 0)
+                if (orderId == null || orderId == 0 || warehouseId == null || warehouseId == 0)
                     alert('Please fill out the required fields');
-                else
-                    if (deliveryDate == null || deliveryDate == '')
-                        alert('Please fill out the required fields');
             }
 
             else {
