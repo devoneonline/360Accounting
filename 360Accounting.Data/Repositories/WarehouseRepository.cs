@@ -20,9 +20,11 @@ namespace _360Accounting.Data.Repositories
         public IEnumerable<Warehouse> GetAllforCombo(long companyId, long sobId)
         {
             var query = from a in this.Context.Warehouses
-                        join b in this.Context.LocatorWarehouses on a.Id equals b.WarehouseId
+                        //join b in this.Context.LocatorWarehouses on a.Id equals b.WarehouseId
                         join c in this.Context.ItemWarehouses on a.Id equals c.WarehouseId
-                        where a.CompanyId == companyId && a.SOBId == sobId && a.Id == b.WarehouseId && a.Id == c.WarehouseId
+                        where a.CompanyId == companyId && a.SOBId == sobId 
+                        //&& a.Id == b.WarehouseId 
+                        && a.Id == c.WarehouseId
                         select a;
 
             return query;

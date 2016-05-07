@@ -94,6 +94,11 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_Detail", SessionHelper.Shipment.OrderShipments);
         }
 
+        public ActionResult NoData()
+        {
+            return PartialView("_Detail", new List<OrderShipmentLine>());
+        }
+
         public ActionResult DetailPartialParams(long warehouseId, long customerId, long customerSiteId, long orderId)
         {
             SessionHelper.Shipment.OrderShipments = ShipmentHelper.GetShipment(warehouseId, customerId, customerSiteId, orderId).OrderShipments;

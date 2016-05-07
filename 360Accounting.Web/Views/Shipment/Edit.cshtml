@@ -87,7 +87,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        
+
         function RefillCombos(data) {
             jQuery.ajaxSetup({ async: false });
             var customerDropdown = $('#CustomerId');
@@ -121,9 +121,15 @@
         });
 
         function RefreshDetail(customerId, customerSiteId, warehouseId, orderId) {
+            var url = '@Url.Content("~/Shipment/NoData")';
+            var data = {};
+            if (customerId != null && customerSiteId != null && warehouseId != null && orderId != null) {
+                url = '@Url.Content("~/Shipment/DetailPartialParams")';
+                data = { warehouseId: warehouseId, customerId: customerId, customerSiteId: customerSiteId, orderId: orderId };
+            }
             $.ajax({
-                url: '@Url.Content("~/Shipment/DetailPartialParams")',
-                data: { warehouseId: warehouseId, customerId: customerId, customerSiteId: customerSiteId, orderId: orderId },
+                url: url,
+                data: data,
                 type: 'post',
                 datatype: 'json',
                 success: function (data) {
@@ -178,7 +184,8 @@
                     function (result) {
                         if (isNaN(result))
                             alert(result);
-                        window.location.href = '@Url.Content("~/Shipment")';
+                        else
+                            window.location.href = '@Url.Content("~/Shipment")';
                     });
             }
         });
