@@ -85,5 +85,10 @@ namespace _360Accounting.Web.Models
         {
             FeatureSetList = new List<SelectListItem>();
         }
+
+        public UserCreateModel(List<SelectListItem> fsList)
+        {
+            FeatureSetList = fsList;
+        }
     }
 }

@@ -9,8 +9,8 @@ namespace _360Accounting.Core.Interfaces
 {
     public interface IFeatureRepository : IRepository<Feature>
     {
-        IEnumerable<Feature> GetMenuItemsByUserId(Guid userId);
-        IEnumerable<Feature> GetSuperAdminMenu();
-        IEnumerable<Feature> GetAll(long companyId, string userRole, string accessType);
+        List<Feature> GetMenuItemsByUserId(Guid userId);
+        List<Feature> GetSuperAdminMenu();
+        List<Feature> GetAll(long companyId, string userRole, string accessType);
     }
 }

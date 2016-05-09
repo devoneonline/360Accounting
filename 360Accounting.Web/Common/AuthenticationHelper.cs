@@ -1,5 +1,4 @@
 ﻿using _360Accounting.Common;
-using _360Accounting.Web.Helpers;
 using _360Accounting.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -91,12 +90,7 @@ namespace _360Accounting.Web
         {
             get
             {
-                if ( HttpContext.Current.Session[SESSION_MENU_ITEMS] == null )
-                {
-                    if (!System.Security.Principal.WindowsPrincipal.Current.IsInRole(UserRoles.SuperAdmin.ToString()))
-                        new UserHelper().UpdateMenuItems(System.Security.Principal.WindowsPrincipal.Current.Identity.Name);
-                }
-                return (IEnumerable<FeatureViewModel>)HttpContext.Current.Session[SESSION_MENU_ITEMS];
+                return  HttpContext.Current.Session[SESSION_MENU_ITEMS] == null ? null : (IEnumerable<FeatureViewModel>)HttpContext.Current.Session[SESSION_MENU_ITEMS];
             }
 
             set

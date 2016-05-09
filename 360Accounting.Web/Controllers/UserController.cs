@@ -1,8 +1,8 @@
 ﻿using _360Accounting.Common;
 using _360Accounting.Core;
 using _360Accounting.Core.Entities;
-using _360Accounting.Web.Helpers;
 using _360Accounting.Web.Models;
+using _360Accounting.Web.Reports;
 using DevExpress.Web.Mvc;
 using System;
 using System.Collections.Generic;
@@ -50,22 +50,22 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult UserwiseRolePartial()
         {
-            return PartialView("_UserwiseRole", UserHelper.CreateUserwiseRoleReport());
+            return PartialView("_UserwiseRole", CreateUserwiseRoleReport());
         }
 
         public ActionResult DocumentViewerPartial()
         {
-            return PartialView("_UserList", UserHelper.CreateReport());
+            return PartialView("_UserList", CreateReport());
         }
 
         public ActionResult UserwiseRolePartialExport()
         {
-            return DocumentViewerExtension.ExportTo(UserHelper.CreateUserwiseRoleReport(), Request);
+            return DocumentViewerExtension.ExportTo(CreateUserwiseRoleReport(), Request);
         }
 
         public ActionResult DocumentViewerPartialExport()
         {
-            return DocumentViewerExtension.ExportTo(UserHelper.CreateReport(), Request);
+            return DocumentViewerExtension.ExportTo(CreateReport(), Request);
         }
 
         #endregion
@@ -94,7 +94,8 @@ namespace _360Accounting.Web.Controllers
                     }
                     else
                     {
-                        new UserHelper().UpdateMenuItems(model.UserName);
+                        AuthenticationHelper.MenuItems = null;
+                        UpdateMenuItems(model.UserName);
                     }
                     return RedirectToAction("Index", "Home");
                 }
@@ -190,7 +191,8 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Create()
         {
-            UserCreateModel model = new UserCreateModel();
+            List<SelectListItem> fsList = featureSetService.GetAll(AuthenticationHelper.CompanyId.Value, AuthenticationHelper.UserRole).Select(x => new SelectListItem { Text = x.Name, Value =x.Id.ToString() }).ToList();
+            UserCreateModel model = new UserCreateModel(fsList);
             return View(model);
         }
 
@@ -199,7 +201,7 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (UserHelper.CreateUser(model))
+                if (CreateUser(model))
                 {
                     return RedirectToAction("Index");
                 }
@@ -232,7 +234,7 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (UserHelper.UpdateUser(model))
+                if (UpdateUser(model))
                 {
                     return RedirectToAction("Index");
                 }
@@ -459,5 +461,134 @@ namespace _360Accounting.Web.Controllers
         }
 
         #endregion
+
+        #region Methods
+
+        public bool CreateUser(UserCreateModel model)
+        {
+            if (!Roles.RoleExists(model.RoleName))
+            {
+                return false;
+            }
+
+            MembershipUser user = Membership.GetUser(model.UserName);
+            if (user == null)
+            {
+                MembershipCreateStatus status;
+                user = Membership.CreateUser(model.UserName, model.Password, model.Email, model.PasswordQuestion, model.PasswordAnswer, true, out status);
+                if (status == MembershipCreateStatus.Success && user != null)
+                {
+                    UserProfile up = UserProfile.GetProfile(model.UserName);
+                    up.FirstName = model.FirstName;
+                    up.LastName = model.LastName;
+                    up.PhoneNumber = model.PhoneNumber;
+                    up.Email = model.Email;
+                    up.CompanyId = AuthenticationHelper.CompanyId.Value;
+                    up.Save();
+
+                    if (!Roles.GetRolesForUser(model.UserName).Contains(model.RoleName))
+                    {
+                        Roles.AddUserToRole(model.UserName, model.RoleName);
+                    }
+
+
+                    featureSetAccessService.Insert(new FeatureSetAccess { CompanyId = AuthenticationHelper.CompanyId.Value, CreateBy= AuthenticationHelper.UserId, CreateDate = DateTime.Now, FeatureSetId = model.FeatureSetId, UserId = Guid.Parse(user.ProviderUserKey.ToString()) });
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool CreateRole(string roleName)
+        {
+            if (!Roles.RoleExists(roleName))
+            {
+                Roles.CreateRole(roleName);
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool UpdateUser(UserCreateModel model)
+        {
+            if (!Roles.RoleExists(model.RoleName))
+            {
+                return false;
+            }
+
+            MembershipUser user = Membership.GetUser(model.UserName);
+            if (user != null)
+            {
+                UserProfile up = UserProfile.GetProfile(model.UserName);
+                up.FirstName = model.FirstName;
+                up.LastName = model.LastName;
+                up.PhoneNumber = model.PhoneNumber;
+                up.Email = model.Email;
+                up.CompanyId = model.CompanyId.Value;
+                up.Save();
+                if (!Roles.GetRolesForUser(model.UserName).Contains(model.RoleName))
+                {
+                    Roles.AddUserToRole(model.UserName, model.RoleName);
+                }
+                return true;
+            }
+
+            return false;
+        }
+
+        internal void GetSuperAdminMenu()
+        {
+            AuthenticationHelper.MenuItems = service.GetSuperAdminMenu().Select(x => new FeatureViewModel(x)).ToList();
+        }
+
+        internal void UpdateMenuItems(string userName)
+        {
+            var memUser = Membership.GetUser(userName);
+            if (memUser != null)
+            {
+                List<Feature> featureList = service.GetMenuItemsByUserId(Guid.Parse(memUser.ProviderUserKey.ToString())).ToList();
+                var modelList = featureList.Select(x => new FeatureViewModel(x)).ToList();
+                AuthenticationHelper.MenuItems = modelList;
+            }
+        }
+
+        internal UserwiseRole CreateUserwiseRoleReport()
+        {
+            List<UserViewModel> modelList = GetUserList();
+            UserwiseRole report = new UserwiseRole();
+            report.DataSource = modelList;
+            report.Parameters["CompanyName"].Value = AuthenticationHelper.CompanyName;
+            return report;
+        }
+
+        internal UserList CreateReport()
+        {
+            List<UserViewModel> modelList = GetUserList();
+            UserList report = new UserList();
+            report.DataSource = modelList;
+            report.Parameters["CompanyName"].Value = AuthenticationHelper.CompanyName;
+            return report;
+        }
+
+        private List<UserViewModel> GetUserList()
+        {
+            MembershipUserCollection memCollection = Membership.GetAllUsers();
+            List<UserViewModel> users = new List<UserViewModel>();
+            foreach (MembershipUser user in memCollection)
+            {
+                UserViewModel item = new UserViewModel();
+                item.UserId = Guid.Parse(user.ProviderUserKey.ToString());
+                item.UserName = user.UserName;
+                item.Role = Roles.GetRolesForUser(user.UserName)[0];
+                users.Add(item);
+            }
+
+            return users;
+        }
+
+        #endregion        
     }
 }
