@@ -21,5 +21,7 @@ namespace _360Accounting.Core
         List<AuditTrail> AuditTrail(long companyId, long sobId, DateTime fromDate, DateTime toDate);
 
         List<Ledger> Ledger(long companyId, long sobId, long fromCodeCombinationId, long toCodeCombinationId, DateTime fromDate, DateTime toDate);
+
+        IEnumerable<GLHeader> GetByCurrencyId(long companyId, long sobId, long currencyId);
     }
 }

@@ -148,5 +148,10 @@ namespace _360Accounting.Data.Repositories
                     OrderByDescending(rec => rec.Id).FirstOrDefault();
             return entity;
         }
+
+        public IEnumerable<Receipt> GetByCurrencyId(long companyId, long sobId, long currencyId)
+        {
+            return this.Context.Receipts.Where(rec => rec.CompanyId == companyId && rec.SOBId == sobId && rec.CurrencyId == currencyId);
+        }
     }
 }

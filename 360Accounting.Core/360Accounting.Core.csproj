@@ -50,6 +50,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\OrderView.cs" />
+    <Compile Include="Entities\Order.cs" />
+    <Compile Include="Entities\OrderType.cs" />
+    <Compile Include="Entities\ShipmentView.cs" />
+    <Compile Include="Entities\Shipment.cs" />
     <Compile Include="Entities\UserSetofBook.cs" />
     <Compile Include="Entities\InventoryPeriod.cs" />
     <Compile Include="Entities\Item.cs" />
@@ -100,6 +105,9 @@
     <Compile Include="Entities\VendorSite.cs" />
     <Compile Include="Interfaces\ICore360.cs" />
     <Compile Include="IoC.cs" />
+    <Compile Include="IRepository\IOrderRepository.cs" />
+    <Compile Include="IRepository\IOrderTypeRepository.cs" />
+    <Compile Include="IRepository\IShipmentRepository.cs" />
     <Compile Include="IRepository\IUserSetofBookRepository.cs" />
     <Compile Include="IRepository\IInventoryPeriodRepository.cs" />
     <Compile Include="IRepository\IItemRepository.cs" />
@@ -145,6 +153,9 @@
     <Compile Include="IRepository\IVendorRepository.cs" />
     <Compile Include="IService\IBankService.cs" />
     <Compile Include="IService\IBankAccountService.cs" />
+    <Compile Include="IService\IOrderService.cs" />
+    <Compile Include="IService\IOrderTypeService.cs" />
+    <Compile Include="IService\IShipmentService.cs" />
     <Compile Include="IService\IUserSetofBookService.cs" />
     <Compile Include="IService\IInventoryPeriodService.cs" />
     <Compile Include="IService\IItemService.cs" />

@@ -62,5 +62,10 @@ namespace _360Accounting.Service
         {
             return this.repository.Count(companyId);
         }
+
+        public IEnumerable<Invoice> GetByCurrencyId(long companyId, long sobId, long currencyId)
+        {
+            return this.GetByCurrencyId(companyId, sobId, currencyId);
+        }
     }
 }

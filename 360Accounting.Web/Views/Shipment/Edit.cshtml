@@ -1,0 +1,193 @@
+﻿@Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView })
+@Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
+
+@model _360Accounting.Web.Models.OrderShipmentModel
+
+@{
+    ViewBag.Title = "Shipment";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
+        </div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(m => m.CreateBy)
+        @Html.HiddenFor(m => m.CreateDate)
+        @Html.HiddenFor(m => m.UpdateBy)
+        @Html.HiddenFor(m => m.UpdateDate)
+        @Html.HiddenFor(m => m.CompanyId)
+        <input id="isNew" type="hidden" value="@ViewBag.IsNewRecord" />
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="navbar-right">
+                    <input type="button" value="Save" id="btnSave" class="btn btn-default tstyCus-btn" />
+                    <input type="button" value="Cancel" id="btnCancel" class="btn btn-default tstyCus-btn" />
+                </div>
+            </div>
+        </div>
+
+        if (ViewBag.IsNewRecord)
+        {
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.OrderId)
+                        @Html.DropDownListFor(model => model.OrderId, Model.Orders, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CustomerId)
+                        @Html.DropDownListFor(model => model.CustomerId, Model.Customers, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CustomerSiteId)
+                        @Html.DropDownListFor(model => model.CustomerSiteId, Model.CustomerSites, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.WarehouseId)
+                        @Html.DropDownListFor(model => model.WarehouseId, Model.Warehouses, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            @Html.HiddenFor(m => m.WarehouseId)
+            @Html.HiddenFor(m => m.CustomerId)
+            @Html.HiddenFor(m => m.CustomerSiteId)
+            @Html.HiddenFor(m => m.OrderId)
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <div class="form-group">
+                        OrderNo.: @ViewBag.OrderNo / Customer: @ViewBag.Customer / CustomerSite: @ViewBag.CustomerSite / Warehouse:@ViewBag.Warehouse
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    <div class="row">
+        <div id="dvDetail" class="col-lg-12">
+            @Html.Action("DetailPartial")
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        function RefillCombos(data) {
+            jQuery.ajaxSetup({ async: false });
+            var customerDropdown = $('#CustomerId');
+            customerDropdown.empty();
+            $('#CustomerId').val(0)
+            var customerSiteDropdown = $('#CustomerSiteId');
+            customerSiteDropdown.empty();
+            $('#CustomerSiteId').val(0)
+
+            if (data.Customers.length > 0) {
+                for (var i = 0; i < data.Customers.length; i++) {
+                    customerDropdown.append('<option value=' + data.Customers[i].Value + '>' + data.Customers[i].Text + '</option>');
+                }
+            }
+
+            if (data.CustomerSites.length > 0) {
+                for (var i = 0; i < data.CustomerSites.length; i++) {
+                    customerSiteDropdown.append('<option value=' + data.CustomerSites[i].Value + '>' + data.CustomerSites[i].Text + '</option>');
+                }
+            }
+        }
+
+        $('#CustomerId').change(function () {
+            jQuery.ajaxSetup({ async: false });
+            GetCustomerSites($(this).val())
+            RefreshDetail($('#CustomerId').val(), $('#CustomerSiteId').val(), $('#WarehouseId').val(), $('#OrderId').val());
+        });
+
+        $('#CustomerSiteId, #WarehouseId, #OrderId').change(function () {
+            RefreshDetail($('#CustomerId').val(), $('#CustomerSiteId').val(), $('#WarehouseId').val(), $('#OrderId').val());
+        });
+
+        function RefreshDetail(customerId, customerSiteId, warehouseId, orderId) {
+            var url = '@Url.Content("~/Shipment/NoData")';
+            var data = {};
+            if (customerId != null && customerSiteId != null && warehouseId != null && orderId != null) {
+                url = '@Url.Content("~/Shipment/DetailPartialParams")';
+                data = { warehouseId: warehouseId, customerId: customerId, customerSiteId: customerSiteId, orderId: orderId };
+            }
+            $.ajax({
+                url: url,
+                data: data,
+                type: 'post',
+                datatype: 'json',
+                success: function (data) {
+                    $('#dvDetail').empty().html(data);
+                },
+                error: function () { }
+            })
+        }
+
+        function GetCustomerSites(customerId) {
+            $.ajax({
+                url: '@Url.Content("~/Shipment/GetCustomerSites")',
+                data: { customerId: customerId },
+                type: 'post',
+                datatype: 'json',
+                success: function (data) {
+                    var customerSiteDropdown = $('#CustomerSiteId');
+                    customerSiteDropdown.empty();
+                    for (var i = 0; i < data.length; i++) {
+                        customerSiteDropdown.append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
+                    }
+                },
+                error: function () { }
+            })
+        }
+
+        $('#btnCancel').click(function () {
+            if ($('#isNew').val() == 'true') {
+                if (confirm('Do you want to leave this page?')) {
+                    window.location.href = '@Url.Content("~/Shipment")';
+                }
+            }
+            else
+                window.location.href = '@Url.Content("~/Shipment")';
+        });
+
+        $('#btnSave').click(function () {
+            var orderId = $('#OrderId').val();
+            var warehouseId = $('#WarehouseId').val();
+            var companyId = $('#CompanyId').val();
+
+            if ($('#isNew').val() == 'true') {
+                if (orderId == null || orderId == 0 || warehouseId == null || warehouseId == 0)
+                    alert('Please fill out the required fields');
+            }
+
+            else {
+                var url = '@Url.Content("~/Shipment/Save")';
+                $.post(url, {
+                    orderId: orderId, warehouseId: warehouseId, companyId:companyId
+                },
+                    function (result) {
+                        if (isNaN(result))
+                            alert(result);
+                        else
+                            window.location.href = '@Url.Content("~/Shipment")';
+                    });
+            }
+        });
+    });
+</script>

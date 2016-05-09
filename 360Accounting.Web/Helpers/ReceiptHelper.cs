@@ -78,6 +78,11 @@ namespace _360Accounting.Web
             return receipts;
         }
 
+        public static IEnumerable<Receipt> GetByCurrencyId(long currencyId)
+        {
+            return service.GetByCurrencyId(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, currencyId);
+        }
+
         public static ReceiptViewModel GetReceipt(string id)
         {
             ReceiptViewModel receipt = new ReceiptViewModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));

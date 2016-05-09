@@ -20,5 +20,7 @@ namespace _360Accounting.Core.Interfaces
         List<Ledger> Ledger(long companyId, long sobId, long fromCodeCombinationId, long toCodeCombinationId, DateTime fromDate, DateTime toDate);
 
         List<TrialBalance> TrialBalance(long companyId, long sobId, long fromCodeCombinationId, long toCodeCombinationId, long periodId);
+
+        IEnumerable<GLHeader> GetByCurrencyId(long companyId, long sobId, long currencyId);
     }
 }

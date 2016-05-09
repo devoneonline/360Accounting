@@ -31,17 +31,10 @@ namespace _360Accounting.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                try
-                {
-                    CalendarViewModel calendar = CalendarHelper.GetCalendar(model.Id.ToString());
-                    calendar.ClosingStatus = model.ClosingStatus;
-                    string result = CalendarHelper.SaveCalendar(calendar);
-                    return RedirectToAction("Index");
-                }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError("Error", ex.Message);
-                }
+                CalendarViewModel calendar = CalendarHelper.GetCalendar(model.Id.ToString());
+                calendar.ClosingStatus = model.ClosingStatus;
+                string result = CalendarHelper.SaveCalendar(calendar);
+                return RedirectToAction("Index");
             }
 
             return View(model);
@@ -55,15 +48,14 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
-            try
-            {
-                CalendarHelper.Delete(id);
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                return RedirectToAction("Index", new { message = ex.Message });
-            }
+            List<InventoryPeriod> inventoryPeriods = InventoryPeriodHelper.GetByCalendarId(Convert.ToInt64(id)).ToList();
+            List<PayablePeriod> payablePeriods = PayablePeriodHelper.GetByCalendarId(Convert.ToInt64(id)).ToList();
+            List<ReceivablePeriod> receivablePeriods = ReceivablePeriodHelper.GetByCalendarId(Convert.ToInt64(id)).ToList();
+            if (inventoryPeriods.Any() || payablePeriods.Any() || receivablePeriods.Any())
+                throw new Exception("Delete Error", new Exception { Source = "Calendar cannot be deleted because it is being used." });
+
+            CalendarHelper.Delete(id);
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -88,6 +80,12 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Edit(string id)
         {
+            List<InventoryPeriod> inventoryPeriods = InventoryPeriodHelper.GetByCalendarId(Convert.ToInt64(id)).ToList();
+            List<PayablePeriod> payablePeriods = PayablePeriodHelper.GetByCalendarId(Convert.ToInt64(id)).ToList();
+            List<ReceivablePeriod> receivablePeriods = ReceivablePeriodHelper.GetByCalendarId(Convert.ToInt64(id)).ToList();
+            if (inventoryPeriods.Any() || payablePeriods.Any() || receivablePeriods.Any())
+                throw new Exception("Edit Error", new Exception { Source = "Calendar cannot be deleted because it is being used." });
+
             CalendarViewModel model = CalendarHelper.GetCalendar(id);
             return View(model);
         }
@@ -157,9 +155,8 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_List", model);
         }
 
-        public ActionResult Index(CalendarListModel model, string message="")
+        public ActionResult Index(CalendarListModel model)
         {
-            ViewBag.ErrorMessage = message;
             model.SOBId = SessionHelper.SOBId;
 
             return View(model);

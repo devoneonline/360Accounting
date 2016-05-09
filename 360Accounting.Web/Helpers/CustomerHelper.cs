@@ -128,6 +128,12 @@ namespace _360Accounting.Web
             return customerList;
         }
 
+        public static List<SelectListItem> GetActiveCustomersCombo(DateTime date)
+        {
+            List<SelectListItem> customerList = service.GetAllByDate(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, date).Select(x => new SelectListItem { Text = x.CustomerName, Value = x.Id.ToString() }).ToList();
+            return customerList;
+        }
+
         public static List<SelectListItem> GetCustomerSitesCombo(long customerId)
         {
             List<SelectListItem> CustomerSiteList = GetCustomerSites(customerId).Select(x => new SelectListItem { Text = x.SiteName, Value = x.Id.ToString() }).ToList();

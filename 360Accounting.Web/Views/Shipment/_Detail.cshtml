@@ -1,0 +1,108 @@
+﻿@{
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+
+    var grid = Html.DevExpress().GridView(
+        settings =>
+        {
+            settings.Name = "GridView";
+            settings.KeyFieldName = "LineId";
+            settings.CallbackRouteValues = new { Controller = "Shipment", Action = "DetailPartial" };
+            settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Shipment", Action = "AddNewPartial" };
+            settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Shipment", Action = "UpdatePartial" };
+            settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Shipment", Action = "DeletePartial" };
+            settings.CommandColumn.ShowNewButton = false;
+            settings.SettingsEditing.Mode = GridViewEditingMode.EditForm;
+            settings.SettingsBehavior.ConfirmDelete = true;
+            settings.SettingsPopup.EditForm.Width = 600;
+            settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+            settings.CommandColumn.Visible = true;
+            settings.CommandColumn.ShowNewButton = false;
+            settings.CommandColumn.ShowDeleteButton = true;
+            settings.CommandColumn.ShowEditButton = true;
+            settings.CommandColumn.Width = System.Web.UI.WebControls.Unit.Percentage(7);
+
+            settings.Columns.Add(co =>
+            {
+                co.FieldName = "ItemName";
+                co.Caption = "Item";
+                co.ReadOnly = true;
+                co.Width = System.Web.UI.WebControls.Unit.Percentage(15);
+                co.EditFormSettings.Visible = DefaultBoolean.False; 
+            });
+            settings.Columns.Add(co =>
+            {
+                co.FieldName = "OrderQuantity";
+                co.Caption = "Ordered Qty.";
+                co.ReadOnly = true;
+                co.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+                co.EditFormSettings.Visible = DefaultBoolean.False; 
+            });
+            settings.Columns.Add(co =>
+            {
+                co.FieldName = "ShipedQuantity";
+                co.Caption = "Shipped Qty.";
+                co.ReadOnly = true;
+                co.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+                co.EditFormSettings.Visible = DefaultBoolean.False; 
+            });
+            settings.Columns.Add(co =>
+            {
+                co.FieldName = "BalanceQuantity";
+                co.Caption = "Balance Qty.";
+                co.ReadOnly = true;
+                co.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+                co.EditFormSettings.Visible = DefaultBoolean.False; 
+            });
+            
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "ThisShipQuantity";
+                column.Caption = "This shippment";
+                
+                column.ColumnType = MVCxGridViewColumnType.SpinEdit;
+                var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
+                spinEditProperties.NumberType = SpinEditNumberType.Float;
+                spinEditProperties.DisplayFormatString = "c";
+                spinEditProperties.NumberFormat = SpinEditNumberFormat.Number;
+                spinEditProperties.DisplayFormatInEditMode = true;
+                spinEditProperties.MinValue = 0;
+                spinEditProperties.MaxValue = 100000000;
+                spinEditProperties.SpinButtons.ShowLargeIncrementButtons = true;
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+            });
+            
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "LocatorId";
+                column.Caption = "Locator";
+
+                column.ColumnType = MVCxGridViewColumnType.ComboBox;
+                var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+                comboBoxProperties.DataSource = LocatorHelper.GetLocators(_360Accounting.Web.SessionHelper.SOBId);
+                comboBoxProperties.TextField = "Text";
+                comboBoxProperties.ValueField = "Value";
+                comboBoxProperties.ValueType = typeof(int);
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(15);
+            });
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "LotNo";
+                column.Caption = "Lot No.";
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+            });
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "SerialNo";
+                column.Caption = "Serial No.";
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+            });
+        });
+
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

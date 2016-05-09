@@ -1,0 +1,57 @@
+﻿@{Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
+
+var grid = Html.DevExpress().GridView(settings =>
+{
+    settings.Name = "Shipment";
+    settings.Theme = "Office2010Black";
+    settings.KeyFieldName = "Id";
+
+    settings.CallbackRouteValues = new { Controller = "Shipment", Action = "ListPartial" };
+
+    settings.SettingsBehavior.ConfirmDelete = true;
+
+    settings.SettingsPager.Visible = true;
+    settings.Settings.ShowGroupPanel = false;
+    settings.Settings.ShowFilterRow = false;
+    settings.SettingsBehavior.AllowSort = false;
+    settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+    settings.Columns.Add(column =>
+    {
+        column.SetDataItemTemplateContent(c =>
+        {
+            ViewContext.Writer.Write(
+                Html.Raw("<a href='" + Url.Content("~/Shipment/Edit?Id=") + DataBinder.Eval(c.DataItem, "OrderId") + "&date=" + DataBinder.Eval(c.DataItem, "DeliveryDate") + "'><i class='fa fa-edit'></i></a>")
+                    + "&nbsp;" +
+                Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/Shipment/Delete?Id=") + DataBinder.Eval(c.DataItem, "OrderId") + "&date=" + DataBinder.Eval(c.DataItem, "DeliveryDate") + "'><i class='fa fa-trash-o'></i></a>")
+            );
+        });
+
+        column.Settings.AllowDragDrop = DefaultBoolean.False;
+        column.Settings.AllowSort = DefaultBoolean.False;
+        column.Width = 70;
+    });
+    settings.Columns.Add("DeliveryDate", "Delivery Date").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;
+    settings.Columns.Add("OrderNo", "Order No.");
+    settings.Columns.Add("CustomerName", "Customer");
+    settings.Columns.Add("CustomerSiteName", "Customer Site");
+    settings.Columns.Add("Quantity", "Total Qty.");
+});
+if (ViewData["EditError"] != null)
+{
+    grid.SetEditErrorText((string)ViewData["EditError"]);
+}
+}
+@grid.Bind(Model).GetHtml()
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('.deleteQuestion').click(function () {
+            return confirm("Sure! you wanted to delete ?");
+        });
+    });
+
+</script>

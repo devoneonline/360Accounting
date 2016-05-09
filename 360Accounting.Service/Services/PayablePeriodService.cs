@@ -18,6 +18,11 @@ namespace _360Accounting.Service
             this.repository = repo;
         }
 
+        public IEnumerable<PayablePeriod> GetByCalendarId(long companyId, long sobId, long calendarId)
+        {
+            return this.repository.GetByCalendarId(companyId, sobId, calendarId);
+        }
+
         public IEnumerable<PayablePeriod> GetAll(long companyId, long sobId)
         {
             return this.repository.GetAll(companyId, sobId);

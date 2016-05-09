@@ -102,5 +102,10 @@ namespace _360Accounting.Data.Repositories
         {
             return this.Context.SaveChanges();
         }
+
+        public IEnumerable<Invoice> GetByCurrencyId(long companyId, long sobId, long currencyId)
+        {
+            return this.Context.Invoices.Where(rec => rec.CompanyId == companyId && rec.SOBId == sobId && rec.CurrencyId == currencyId);
+        }
     }
 }

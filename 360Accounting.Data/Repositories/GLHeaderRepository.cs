@@ -403,5 +403,10 @@ namespace _360Accounting.Data.Repositories
 
             return data;
         }
+
+        public IEnumerable<GLHeader> GetByCurrencyId(long companyId, long sobId, long currencyId)
+        {
+            return this.Context.GLHeaders.Where(rec => rec.CompanyId == companyId && rec.SOBId == sobId && rec.CurrencyId == currencyId);
+        }
     }
 }

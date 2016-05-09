@@ -21,6 +21,14 @@ namespace _360Accounting.Data
 
         #region DbSets
 
+        public DbSet<Shipment> Shipments { get; set; }
+
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<OrderType> OrderTypes { get; set; }
+
         public DbSet<MiscellaneousTransaction> MiscellaneousTransactions { get; set; }
 
         public DbSet<MoveOrder> MoveOrders { get; set; }
@@ -122,6 +130,18 @@ namespace _360Accounting.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ////base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Shipment>().ToTable("tbShipment");
+            modelBuilder.Entity<Shipment>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<OrderType>().ToTable("tbOrderType");
+            modelBuilder.Entity<OrderType>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<Order>().ToTable("tbOrderMaster");
+            modelBuilder.Entity<Order>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<OrderDetail>().ToTable("tbOrderDetail");
+            modelBuilder.Entity<OrderDetail>().HasKey(t => t.Id);
 
             modelBuilder.Entity<MiscellaneousTransaction>().ToTable("tbMiscellaneousTransaction");
             modelBuilder.Entity<MiscellaneousTransaction>().HasKey(t => t.Id);
@@ -291,7 +311,7 @@ namespace _360Accounting.Data
                 foreach (DbEntityEntry entry in this.ChangeTracker.Entries())
                 {
                     switch (entry.State)
-                    { 
+                    {
                         case EntityState.Modified:
                             entry.State = EntityState.Unchanged;
                             break;
@@ -303,11 +323,15 @@ namespace _360Accounting.Data
                             break;
                         default: break;
                     }
-                } 
+                }
                 if (ex.GetBaseException().HResult == -2146232060)
                 {
                     throw new Exception("Delete Error", new Exception { Source = "Record is in use somewhere in the application" });
                 }
+                throw ex;
+            }
+            catch (Exception ex)
+            {
                 throw ex;
             }
         }

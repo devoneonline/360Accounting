@@ -3,6 +3,9 @@
 <objects xmlns="http://www.springframework.net">
   <description>360Accounting Configuration</description>
 
+  <object name="ShipmentRepository" type="_360Accounting.Data.Repositories.ShipmentRepository, 360Accounting.Data"> </object>
+  <object name="OrderRepository" type="_360Accounting.Data.Repositories.OrderRepository, 360Accounting.Data"> </object>
+  <object name="OrderTypeRepository" type="_360Accounting.Data.Repositories.OrderTypeRepository, 360Accounting.Data"> </object>
   <object name="MiscellaneousTransactionRepository" type="_360Accounting.Data.Repositories.MiscellaneousTransactionRepository, 360Accounting.Data"> </object>
   <object name="LotNumberRepository" type="_360Accounting.Data.Repositories.LotNumberRepository, 360Accounting.Data"> </object>
   <object name="MoveOrderRepository" type="_360Accounting.Data.Repositories.MoveOrderRepository, 360Accounting.Data"> </object>
@@ -18,7 +21,6 @@
   <object name="FeatureSetRepository" type="_360Accounting.Data.Repositories.FeatureSetRepository, 360Accounting.Data"> </object>
   <object name="FeatureSetListRepository" type="_360Accounting.Data.Repositories.FeatureSetListRepository, 360Accounting.Data"> </object>
   <object name="FeatureSetAccessRepository" type="_360Accounting.Data.Repositories.FeatureSetAccessRepository, 360Accounting.Data"> </object>
-
   <object name="CompanyRepository" type="_360Accounting.Data.Repositories.CompanyRepository, 360Accounting.Data"> </object>
   <object name="SetOfBookRepository" type="_360Accounting.Data.Repositories.SetOfBookRepository, 360Accounting.Data"> </object>
   <object name="AccountRepository" type="_360Accounting.Data.Repositories.AccountRepository, 360Accounting.Data"> </object>
@@ -46,6 +48,16 @@
   <object name="PaymentRepository" type="_360Accounting.Data.Repositories.PaymentRepository, 360Accounting.Data"> </object>
   <object name="UserSetofBookRepository" type="_360Accounting.Data.Repositories.UserSetofBookRepository, 360Accounting.Data"> </object>
 
+
+  <object name="ShipmentService" type="_360Accounting.Service.ShipmentService, 360Accounting.Service" >
+    <constructor-arg name="repo" ref="ShipmentRepository" />
+  </object>
+  <object name="OrderService" type="_360Accounting.Service.OrderService, 360Accounting.Service" >
+    <constructor-arg name="repo" ref="OrderRepository" />
+  </object>
+  <object name="OrderTypeService" type="_360Accounting.Service.OrderTypeService, 360Accounting.Service" >
+    <constructor-arg name="repo" ref="OrderTypeRepository" />
+  </object>
   <object name="MiscellaneousTransactionService" type="_360Accounting.Service.MiscellaneousTransactionService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="MiscellaneousTransactionRepository" />
   </object>
