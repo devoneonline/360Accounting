@@ -56,9 +56,10 @@ namespace _360Accounting.Web.Models
                 List<SelectListItem> lst = new List<SelectListItem>();
                 foreach (var role in Enum.GetNames(typeof(UserRoles)))
                 {
-                    if (role.ToUpper() == UserRoles.SuperAdmin.ToString().ToUpper() && AuthenticationHelper.UserRole == UserRoles.SuperAdmin.ToString())
+                    if (role.ToUpper() == UserRoles.SuperAdmin.ToString().ToUpper()) 
                     {
-                        lst.Add(new SelectListItem { Text = role, Value = role });
+                        if (AuthenticationHelper.UserRole == UserRoles.SuperAdmin.ToString())
+                            lst.Add(new SelectListItem { Text = role, Value = role });
                     }
                     else
                     {

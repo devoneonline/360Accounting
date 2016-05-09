@@ -57,8 +57,6 @@
                                         Html.Raw("<a href='" + Url.Content("~/User/EditCompanyFeatureList/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
                                         + "&nbsp;&nbsp;" +
                                         Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/User/DeleteFeatureSet/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
-                                        + "&nbsp;&nbsp;" +
-                                        Html.Raw("<a title='Add Users' href='" + Url.Content("~/User/UserFeatureSet/") + DataBinder.Eval(c.DataItem,"Id")  + "'><i class='fa fa-users'></i></a>")
                                     );
                                 });
                                 column.Settings.AllowDragDrop = DefaultBoolean.False;
