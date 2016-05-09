@@ -44,20 +44,6 @@ namespace _360Accounting.Web.Models
         [Display(Name = "Company")]
         public long? CompanyId { get; set; }
 
-        public List<SelectListItem> CompanyList
-        {
-            get
-            {
-                List<SelectListItem> companyList = new List<SelectListItem>();
-                if (AuthenticationHelper.UserRole == UserRoles.SuperAdmin.ToString())
-                {
-                    CompanyService service = new CompanyService(new CompanyRepository());
-                    companyList.AddRange(service.GetAll(AuthenticationHelper.CompanyId.Value).Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }));
-                }
-                return companyList;
-            }
-        }
-
         public string Email { get; set; }
 
         [Display(Name = "Role Name")]
@@ -70,10 +56,9 @@ namespace _360Accounting.Web.Models
                 List<SelectListItem> lst = new List<SelectListItem>();
                 foreach (var role in Enum.GetNames(typeof(UserRoles)))
                 {
-                    if (role.ToUpper() == UserRoles.SuperAdmin.ToString().ToUpper())
+                    if (role.ToUpper() == UserRoles.SuperAdmin.ToString().ToUpper() && AuthenticationHelper.UserRole == UserRoles.SuperAdmin.ToString())
                     {
-                        if (AuthenticationHelper.UserRole == UserRoles.SuperAdmin.ToString())
-                            lst.Add(new SelectListItem { Text = role, Value = role });
+                        lst.Add(new SelectListItem { Text = role, Value = role });
                     }
                     else
                     {
@@ -89,5 +74,16 @@ namespace _360Accounting.Web.Models
 
         [Display(Name = "Password Answer")]
         public string PasswordAnswer { get { return "school"; } }
+
+        [Required]
+        [Display(Name = "Feature Set")]
+        public long FeatureSetId { get; set; }
+
+        public List<SelectListItem> FeatureSetList { get; set; }
+
+        public UserCreateModel()
+        {
+            FeatureSetList = new List<SelectListItem>();
+        }
     }
 }

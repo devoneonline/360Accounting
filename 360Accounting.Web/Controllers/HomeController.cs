@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _360Accounting.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,7 +12,9 @@ namespace _360Accounting.Web.Controllers
     {
         public ActionResult Index()
         {
-            //Need to confirm..
+            if (AuthenticationHelper.UserRole == UserRoles.SuperAdmin.ToString())
+                return RedirectToAction("Index", "Company");
+
             SessionHelper.SOBId = UserSetofBookHelper.GetDefaultSOB() == null ? 0 : UserSetofBookHelper.GetDefaultSOB().SOBId;
             SessionHelper.SOBName = SessionHelper.SOBId == 0? "Click here to select Set of Book": SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
             return View();

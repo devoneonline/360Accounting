@@ -23,7 +23,14 @@
                     <span class="navbar-brand"><img class="img-responsive" src='@Url.Content("~/Content/images/logo.png")' alt="" /></span>
                 </div>
                 <div class="navbar-collapse collapse">
-                    <div class="customClientLogo">@AuthenticationHelper.CompanyName <a id="activeBook" href="#">(@SessionHelper.SOBName)</a></div>
+                    @if (AuthenticationHelper.UserRole.ToUpper() !=_360Accounting.Common.UserRoles.SuperAdmin.ToString().ToUpper())
+                    {
+                        <div class="customClientLogo">@AuthenticationHelper.CompanyName <a id="activeBook" href="#">(@SessionHelper.SOBName)</a></div>                        
+                    }
+                    else
+                    { 
+                        <div class="customClientLogo">@AuthenticationHelper.CompanyName</div>
+                    }
                     @Html.Partial("_LoginPartial")
                     @Html.Partial("_Menu")
                 </div>

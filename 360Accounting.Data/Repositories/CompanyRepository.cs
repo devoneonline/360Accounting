@@ -1,5 +1,6 @@
 ﻿using _360Accounting.Core.Entities;
 using _360Accounting.Core.Interfaces;
+using _360Accounting.Common;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -17,6 +18,16 @@ namespace _360Accounting.Data.Repositories
         public IEnumerable<Company> GetAll(long companyId)
         {
             return this.Context.Companies;
+        }
+
+        public IEnumerable<Company> GetAll(long companyId, string userRole)
+        {
+            if (userRole.ToUpper() == UserRoles.SuperAdmin.ToString().ToUpper())
+                return GetAll(companyId);
+            else
+            {
+                return this.Context.Companies.Where(x => x.Id == companyId);
+            }
         }
 
         public string Insert(Company entity)
@@ -50,5 +61,6 @@ namespace _360Accounting.Data.Repositories
         {
             return this.Context.SaveChanges();
         }
+
     }
 }

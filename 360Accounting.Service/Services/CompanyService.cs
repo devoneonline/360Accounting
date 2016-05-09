@@ -45,5 +45,10 @@ namespace _360Accounting.Service
         {
             return this.repository.Count(companyId);
         }
+
+        public IEnumerable<Company> GetAll(long companyId, string userRole)
+        {
+            return this.repository.GetAll(companyId, userRole);
+        }
     }
 }

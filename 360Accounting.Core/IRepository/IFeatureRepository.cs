@@ -11,5 +11,6 @@ namespace _360Accounting.Core.Interfaces
     {
         IEnumerable<Feature> GetMenuItemsByUserId(Guid userId);
         IEnumerable<Feature> GetSuperAdminMenu();
+        IEnumerable<Feature> GetAll(long companyId, string userRole, string accessType);
     }
 }

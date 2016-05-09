@@ -14,6 +14,10 @@ namespace _360Accounting.Core.Entities
 
         public string AccessType { get; set; }
 
+        public long CompanyId { get; set; }
+
+        public long? ParentId { get; set; }
+
         [ForeignKey("FeatureSetId")]
         public IEnumerable<FeatureSetList> FeatureSetList { get; set; }
 

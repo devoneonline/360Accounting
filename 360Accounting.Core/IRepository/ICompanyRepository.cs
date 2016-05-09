@@ -9,5 +9,6 @@ namespace _360Accounting.Core.Interfaces
 {
     public interface ICompanyRepository : IRepository<Company>
     {
+        IEnumerable<Company> GetAll(long companyId, string userRole);
     }
 }

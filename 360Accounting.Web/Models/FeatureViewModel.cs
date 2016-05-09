@@ -16,6 +16,10 @@ namespace _360Accounting.Web.Models
         public List<SelectListItem> SelectedUserList { get; set; }
         public List<SelectListItem> AvailableUserList { get; set; }
 
+        public FeatureSetAccessModel()
+        {
+
+        }
         public FeatureSetAccessModel(FeatureSetAccessList entity)
         {
             FeatureSetId = entity.FeatureSetId;

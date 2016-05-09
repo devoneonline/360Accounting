@@ -11,7 +11,7 @@ using System.Web.Security;
 
 namespace _360Accounting.Web.Helpers
 {
-    public static class UserHelper
+    public class UserHelper
     {
         #region Declaration
 
@@ -49,10 +49,7 @@ namespace _360Accounting.Web.Helpers
                     up.LastName = model.LastName;
                     up.PhoneNumber = model.PhoneNumber;
                     up.Email = model.Email;
-                    if (AuthenticationHelper.UserRole != UserRoles.SuperAdmin.ToString())
-                        up.CompanyId = AuthenticationHelper.CompanyId.Value;
-                    else
-                        up.CompanyId = model.CompanyId ?? 0;
+                    up.CompanyId = AuthenticationHelper.CompanyId.Value;
                     up.Save();
 
                     if (!Roles.GetRolesForUser(model.UserName).Contains(model.RoleName))
@@ -93,17 +90,12 @@ namespace _360Accounting.Web.Helpers
                 up.LastName = model.LastName;
                 up.PhoneNumber = model.PhoneNumber;
                 up.Email = model.Email;
-                if (model.RoleName == UserRoles.SuperAdmin.ToString())
-                    up.CompanyId = 0;
-                else
-                    up.CompanyId = model.CompanyId ?? 0;
+                up.CompanyId = model.CompanyId.Value;
                 up.Save();
-
                 if (!Roles.GetRolesForUser(model.UserName).Contains(model.RoleName))
                 {
                     Roles.AddUserToRole(model.UserName, model.RoleName);
                 }
-
                 return true;
             }
 
@@ -115,7 +107,7 @@ namespace _360Accounting.Web.Helpers
             AuthenticationHelper.MenuItems = service.GetSuperAdminMenu().Select(x => new FeatureViewModel(x)).ToList();
         }
 
-        internal static void UpdateMenuItems(string userName)
+        internal void UpdateMenuItems(string userName)
         {
             var memUser = Membership.GetUser(userName);
             if (memUser != null)

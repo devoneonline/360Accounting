@@ -30,7 +30,7 @@ namespace _360Accounting.Web
 
         public static IEnumerable<CompanyModel> GetCompanies()
         {
-            return service.GetAll(AuthenticationHelper.CompanyId.Value)
+            return service.GetAll(AuthenticationHelper.CompanyId.Value,AuthenticationHelper.UserRole)
                 .Select(x => new CompanyModel(x)).ToList();
         }
 

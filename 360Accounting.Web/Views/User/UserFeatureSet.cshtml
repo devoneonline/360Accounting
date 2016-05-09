@@ -15,6 +15,7 @@
 @using (Html.BeginForm("UserFeatureSet", "User", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
     @Html.ValidationSummary()
+    @Html.HiddenFor(model=> model.FeatureSetId)
     <div class="clearfix">
         <div class="col-md-6">
             <div class="form-group customDropDownWrapper">
@@ -27,7 +28,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <input type="submit" value="Update" class="btn btn-default tstyCus-btn" />
-                <input type="button" value="Cancel" class="btn btn-default tstyCus-btn" onclick="javascript: window.location.href='@Url.Content("~/User/FeatureSet")'" />
+                <input type="button" value="Cancel" class="btn btn-default tstyCus-btn" onclick="javascript: window.location.href='@Url.Content("~/User/FeatureSet/")' + @AuthenticationHelper.CompanyId.Value " />
             </div>
         </div>
     </div>

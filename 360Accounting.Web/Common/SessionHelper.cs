@@ -210,6 +210,10 @@ namespace _360Accounting.Web
         {
             get
             {
+                if (HttpContext.Current.Session["SOBName"]==null)
+                {
+                    HttpContext.Current.Session["SOBName"] = "Click here to select Set of Book";
+                }
                 return HttpContext.Current.Session["SOBName"].ToString();
             }
             set
