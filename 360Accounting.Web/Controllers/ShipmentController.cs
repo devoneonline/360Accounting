@@ -39,19 +39,19 @@ namespace _360Accounting.Web.Controllers
             newShipment.Customers = CustomerHelper.GetActiveCustomersCombo(newShipment.DeliveryDate);
             if (newShipment.Customers != null && newShipment.Customers.Count() > 0)
             {
-                newShipment.CustomerId = newShipment.CustomerId > 0 ? newShipment.CustomerId : Convert.ToInt64(newShipment.Customers.FirstOrDefault().Value);
+                newShipment.CustomerId = newShipment.CustomerId > 0 ? newShipment.CustomerId : Convert.ToInt64(newShipment.Customers.First().Value);
                 newShipment.CustomerSites = CustomerHelper.GetCustomerSitesCombo(newShipment.CustomerId);
                 if (newShipment.CustomerSites != null && newShipment.CustomerSites.Count() > 0)
-                    newShipment.CustomerSiteId = newShipment.CustomerSiteId > 0 ? newShipment.CustomerSiteId : Convert.ToInt64(newShipment.CustomerSites.FirstOrDefault().Value);
+                    newShipment.CustomerSiteId = newShipment.CustomerSiteId > 0 ? newShipment.CustomerSiteId : Convert.ToInt64(newShipment.CustomerSites.First().Value);
             }
 
             newShipment.Orders = OrderHelper.GetOrdersCombo();
             if (newShipment.Orders != null && newShipment.Orders.Count() > 0)
-                newShipment.OrderId = newShipment.OrderId > 0 ? newShipment.OrderId : Convert.ToInt64(newShipment.Orders.FirstOrDefault().Value);
+                newShipment.OrderId = newShipment.OrderId > 0 ? newShipment.OrderId : Convert.ToInt64(newShipment.Orders.First().Value);
 
             newShipment.Warehouses = WarehouseHelper.GetWarehousesCombo(SessionHelper.SOBId);
             if (newShipment.Warehouses != null && newShipment.Warehouses.Count() > 0)
-                newShipment.WarehouseId = newShipment.WarehouseId > 0 ? newShipment.WarehouseId : Convert.ToInt64(newShipment.Warehouses.FirstOrDefault().Value);
+                newShipment.WarehouseId = newShipment.WarehouseId > 0 ? newShipment.WarehouseId : Convert.ToInt64(newShipment.Warehouses.First().Value);
 
             SessionHelper.Shipment = newShipment;
             SessionHelper.Shipment.OrderShipments = ShipmentHelper.GetShipment(newShipment.WarehouseId, newShipment.CustomerId, newShipment.CustomerSiteId, newShipment.OrderId).OrderShipments;
@@ -89,7 +89,7 @@ namespace _360Accounting.Web.Controllers
 
             //Edit or Delete..
             if (SessionHelper.Shipment.OrderShipments.Count() == 1)
-                currentId = SessionHelper.Shipment.OrderShipments.FirstOrDefault().Id;
+                currentId = SessionHelper.Shipment.OrderShipments.First().Id;
 
             return PartialView("_Detail", SessionHelper.Shipment.OrderShipments);
         }
