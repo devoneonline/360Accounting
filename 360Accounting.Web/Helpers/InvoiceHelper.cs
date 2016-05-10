@@ -41,6 +41,7 @@ namespace _360Accounting.Web
             entity.Id = model.Id;
             entity.InvoiceId = model.InvoiceId;
             entity.InvoiceSourceId = model.InvoiceSourceId;
+            entity.ItemId = model.ItemId;
             entity.Quantity = model.Quantity;
             entity.Rate = model.Rate;
             entity.TaxId = model.TaxId;

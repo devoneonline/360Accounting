@@ -81,6 +81,7 @@ namespace _360Accounting.Web.Controllers
         {
             ViewBag.ErrorMessage = message;
             ViewBag.VendorId = id;
+            ViewBag.VendorName = VendorHelper.GetSingle(id.ToString()).Name;
             var modelList = VendorHelper.GetAllSites(id);
             return View(modelList);
         }
@@ -93,6 +94,8 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult CreateSite(long id)
         {
+            ViewBag.VendorName = VendorHelper.GetSingle(id.ToString()).Name;
+
             VendorSiteModel model = new VendorSiteModel(id);
             model.CodeCombination = codeCombinationService.GetAllCodeCombinitionView(AuthenticationHelper.CompanyId.Value)
                     .Select(x => new SelectListItem
@@ -141,6 +144,8 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult EditSite(long id)
         {
+            ViewBag.VendorName = VendorHelper.GetSingle(id.ToString()).Name;
+
             var model = VendorHelper.GetSingle(id);
 
             CodeCombinitionCreateViewModel codeCombination = CodeCombinationHelper.GetCodeCombination(model.CodeCombinationId.ToString());

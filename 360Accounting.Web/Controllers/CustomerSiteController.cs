@@ -27,6 +27,7 @@ namespace _360Accounting.Web.Controllers
         {
             ViewBag.ErrorMessage = message;
             ViewBag.CustomerId = Id;
+            ViewBag.CustomerName = CustomerHelper.GetCustomer(Id.ToString()).CustomerName;
             List<CustomerSiteViewModel> model = new List<CustomerSiteViewModel>();
             model = CustomerHelper.GetCustomerSites(Id);
             return View(model);
@@ -34,6 +35,8 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Edit(long customerId, long? id)
         {
+            ViewBag.CustomerName = CustomerHelper.GetCustomer(customerId.ToString()).CustomerName;
+
             CustomerSiteModel model;
             if (id != null)
             {

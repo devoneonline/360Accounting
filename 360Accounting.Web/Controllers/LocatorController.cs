@@ -92,14 +92,34 @@ namespace _360Accounting.Web.Controllers
                     model.SOBId = SessionHelper.SOBId;
                     if (SessionHelper.Locator != null)
                     {
-                        model.Id = SessionHelper.Locator.LocatorWarehouses.Count() + 1;
+                        model.Id = SessionHelper.Locator.LocatorWarehouses.Last().Id + 1;
                         validated = true;
                     }
                     else
                         model.Id = 1;
 
+
+                    if (SessionHelper.Locator.LocatorWarehouses.Count > 0)
+                    {
+                        foreach (var item in SessionHelper.Locator.LocatorWarehouses)
+                        {
+                            if (model.StartDate <= item.EndDate || model.EndDate <= item.StartDate)
+                            {
+                                ViewData["EditError"] = "Dates are overlapping.";
+                                validated = false;
+                            }
+                        }
+                    }
+                    
+                    if (model.StartDate > model.EndDate)
+                    {
+                        ViewData["EditError"] = "End Date cannot be less than Start Date.";
+                        validated = false;
+                    }
+                    
                     if (validated)
-                        LocatorHelper.InsertLocatorWarehouse(model);
+                            LocatorHelper.InsertLocatorWarehouse(model);
+                    
                 }
                 catch (Exception e)
                 {
@@ -119,7 +139,27 @@ namespace _360Accounting.Web.Controllers
                 model.SOBId = SessionHelper.SOBId;
                 try
                 {
-                    LocatorHelper.UpdateLocatorWarehouse(model);
+                    bool validated = true;
+                    if (SessionHelper.Locator.LocatorWarehouses.Count > 0)
+                    {
+                        foreach (var item in SessionHelper.Locator.LocatorWarehouses)
+                        {
+                            if ((model.StartDate <= item.EndDate || model.EndDate <= item.StartDate) && model.Id != item.Id)
+                            {
+                                validated = false;
+                                ViewData["EditError"] = "Dates are overlapping.";
+                            }
+                        }
+                    }
+
+                    if (model.StartDate > model.EndDate)
+                    {
+                        validated = false;
+                        ViewData["EditError"] = "End Date cannot be less than Start Date.";
+                    }
+                    
+                    if (validated)
+                        LocatorHelper.UpdateLocatorWarehouse(model);
                 }
                 catch (Exception e)
                 {

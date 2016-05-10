@@ -20,5 +20,7 @@ namespace _360Accounting.Core.Interfaces
         string UpdateSerialNum(SerialNumber entity);
 
         void DeleteSerialNum(string id, long companyId);
+
+        IEnumerable<LotNumber> GetAvailableLots(long companyId, long sobId, long itemId);
     }
 }

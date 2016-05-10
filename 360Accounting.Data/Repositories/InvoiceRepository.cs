@@ -20,8 +20,9 @@ namespace _360Accounting.Data.Repositories
         public IEnumerable<InvoiceView> GetAll(long companyId, long sobId)
         {
             var query = (from a in this.Context.Invoices
-                        join b in this.Context.Calendars on a.PeriodId equals b.Id
+                        join b in this.Context.ReceivablePeriods on a.PeriodId equals b.Id
                         join c in this.Context.Currencies on a.CurrencyId equals c.Id
+                        join d in this.Context.Calendars on b.CalendarId equals d.Id
                         where a.CompanyId == companyId && a.SOBId == sobId
 
                         select new InvoiceView
@@ -39,7 +40,7 @@ namespace _360Accounting.Data.Repositories
                             InvoiceNo = a.InvoiceNo,
                             InvoiceType = a.InvoiceType,
                             PeriodId = a.PeriodId,
-                            PeriodName = b.PeriodName,
+                            PeriodName = d.PeriodName,
                             Remarks = a.Remarks,
                             SOBId = a.SOBId,
                             UpdateBy = a.UpdateBy,

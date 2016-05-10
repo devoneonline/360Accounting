@@ -92,27 +92,27 @@ namespace _360Accounting.Web
             OrderShipmentModel orderShipment = SessionHelper.Shipment;
             if (model.Id > 0)
             {
-                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).BalanceQuantity = orderDetail.Quantity - (shiped.Sum(rec => rec.Quantity) + model.ThisShipQuantity);
-                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).Id = model.Id;
-                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).LocatorId = model.LocatorId;
-                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).LotNo = model.LotNo;
-                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).OrderQuantity = orderDetail.Quantity;
-                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).SerialNo = model.SerialNo;
-                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).ShipedQuantity = shiped.Sum(rec => rec.Quantity);
-                orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).ThisShipQuantity = model.ThisShipQuantity;
+                orderShipment.OrderShipments.First(x => x.LineId == model.LineId).BalanceQuantity = orderDetail.Quantity - (shiped.Sum(rec => rec.Quantity) + model.ThisShipQuantity);
+                orderShipment.OrderShipments.First(x => x.LineId == model.LineId).Id = model.Id;
+                orderShipment.OrderShipments.First(x => x.LineId == model.LineId).LocatorId = model.LocatorId;
+                orderShipment.OrderShipments.First(x => x.LineId == model.LineId).LotNo = model.LotNo;
+                orderShipment.OrderShipments.First(x => x.LineId == model.LineId).OrderQuantity = orderDetail.Quantity;
+                orderShipment.OrderShipments.First(x => x.LineId == model.LineId).SerialNo = model.SerialNo;
+                orderShipment.OrderShipments.First(x => x.LineId == model.LineId).ShipedQuantity = shiped.Sum(rec => rec.Quantity);
+                orderShipment.OrderShipments.First(x => x.LineId == model.LineId).ThisShipQuantity = model.ThisShipQuantity;
             }
             else
             {
                 if (orderShipment.OrderShipments.Any(x => x.LineId == model.LineId))
                 {
-                    orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).BalanceQuantity = orderDetail.Quantity - (shiped.Sum(rec => rec.Quantity) + model.ThisShipQuantity);
-                    orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).Id = model.Id;
-                    orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).LocatorId = model.LocatorId;
-                    orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).LotNo = model.LotNo;
-                    orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).OrderQuantity = orderDetail.Quantity;
-                    orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).SerialNo = model.SerialNo;
-                    orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).ShipedQuantity = shiped.Sum(rec => rec.Quantity);
-                    orderShipment.OrderShipments.FirstOrDefault(x => x.LineId == model.LineId).ThisShipQuantity = model.ThisShipQuantity;
+                    orderShipment.OrderShipments.First(x => x.LineId == model.LineId).BalanceQuantity = orderDetail.Quantity - (shiped.Sum(rec => rec.Quantity) + model.ThisShipQuantity);
+                    orderShipment.OrderShipments.First(x => x.LineId == model.LineId).Id = model.Id;
+                    orderShipment.OrderShipments.First(x => x.LineId == model.LineId).LocatorId = model.LocatorId;
+                    orderShipment.OrderShipments.First(x => x.LineId == model.LineId).LotNo = model.LotNo;
+                    orderShipment.OrderShipments.First(x => x.LineId == model.LineId).OrderQuantity = orderDetail.Quantity;
+                    orderShipment.OrderShipments.First(x => x.LineId == model.LineId).SerialNo = model.SerialNo;
+                    orderShipment.OrderShipments.First(x => x.LineId == model.LineId).ShipedQuantity = shiped.Sum(rec => rec.Quantity);
+                    orderShipment.OrderShipments.First(x => x.LineId == model.LineId).ThisShipQuantity = model.ThisShipQuantity;
                 }
                 else
                 {
@@ -148,13 +148,13 @@ namespace _360Accounting.Web
             List<ShipmentModel> shipmentDetail = service.GetAllByOrderId(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, Convert.ToInt64(orderId), date).Select(x => new ShipmentModel(x)).ToList();
             OrderModel order = OrderHelper.GetOrder(orderId);
 
-            OrderShipmentModel orderShipment = new OrderShipmentModel(shipmentDetail.FirstOrDefault());
-            orderShipment.CreateBy = shipmentDetail.FirstOrDefault().CreateBy;
-            orderShipment.CreateDate = shipmentDetail.FirstOrDefault().CreateDate;
+            OrderShipmentModel orderShipment = new OrderShipmentModel(shipmentDetail.First());
+            orderShipment.CreateBy = shipmentDetail.First().CreateBy;
+            orderShipment.CreateDate = shipmentDetail.First().CreateDate;
             orderShipment.CustomerId = order.CustomerId;
             orderShipment.CustomerSiteId = order.CustomerSiteId;
-            orderShipment.UpdateBy = shipmentDetail.FirstOrDefault().UpdateBy;
-            orderShipment.UpdateDate = shipmentDetail.FirstOrDefault().UpdateDate;
+            orderShipment.UpdateBy = shipmentDetail.First().UpdateBy;
+            orderShipment.UpdateDate = shipmentDetail.First().UpdateDate;
 
             orderShipment.OrderShipments = new List<OrderShipmentLine>();
             foreach (var item in shipmentDetail)

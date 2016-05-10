@@ -41,6 +41,19 @@ namespace _360Accounting.Data.Repositories
             return this.Context.SerialNumbers.Where(rec => rec.CompanyId == companyId && rec.LotNo == lotNum && rec.SerialNo == serialNum);
         }
 
+        public IEnumerable<LotNumber> GetAvailableLots(long companyId, long sobId, long itemId)
+        {
+            IEnumerable<LotNumber> mainQuery = this.Context.LotNumbers.Where(rec => rec.CompanyId == companyId &&
+                rec.SOBId == sobId && rec.ItemId == itemId);
+            IEnumerable<LotNumber> received = mainQuery.Where(rec => rec.SourceType == "Move Order" || rec.SourceType == "Receiving");
+            IEnumerable<LotNumber> shipped = mainQuery.Where(rec => rec.SourceType == "Shipment");
+
+            IEnumerable<LotNumber> available = mainQuery.Where(x => x.LotNo == received.First(y => y.LotNo == x.LotNo).LotNo && 
+                !shipped.Any(cri => cri.LotNo == x.LotNo)).ToList();
+
+            return available;
+        }
+
         public string Insert(LotNumber entity)
         {
             this.Context.LotNumbers.Add(entity);
