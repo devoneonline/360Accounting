@@ -350,7 +350,7 @@ namespace _360Accounting.Web.Controllers
 
         public void AddCalendarinSession(long periodId)
         {
-            SessionHelper.Calendar = CalendarHelper.GetCalendar(periodId.ToString());
+            SessionHelper.Calendar = CalendarHelper.GetCalendar(ReceivablePeriodHelper.GetReceivablePeriod(periodId.ToString()).CalendarId.ToString());
         }
     }
 }
