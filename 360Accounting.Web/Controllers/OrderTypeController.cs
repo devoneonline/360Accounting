@@ -26,8 +26,17 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
+                    bool validate = true;
+                    if (model.DateFrom > model.DateTo)
+                    {
+                        validate = false;
+                        ViewData["EditError"] = "From Date cannot be less than To Date.";
+                    }
+
                     model.CompanyId = AuthenticationHelper.CompanyId.Value;
-                    OrderTypeHelper.Save(model);
+                    
+                    if (validate)
+                        OrderTypeHelper.Save(model);
                 }
                 catch (Exception ex)
                 {
@@ -47,8 +56,17 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
+                    bool validate = true;
+                    if (model.DateFrom > model.DateTo)
+                    {
+                        validate = false;
+                        ViewData["EditError"] = "From Date cannot be less than To Date.";
+                    }
+
                     model.CompanyId = AuthenticationHelper.CompanyId.Value;
-                    OrderTypeHelper.Save(model);
+                    
+                    if (validate)
+                        OrderTypeHelper.Save(model);
                 }
                 catch (Exception e)
                 {
