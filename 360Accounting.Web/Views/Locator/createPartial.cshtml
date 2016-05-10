@@ -24,11 +24,13 @@
             settings.CommandColumn.ShowNewButton = true;
             settings.CommandColumn.ShowDeleteButton = true;
             settings.CommandColumn.ShowEditButton = true;
+            settings.CommandColumn.Width = System.Web.UI.WebControls.Unit.Percentage(20);
             
             settings.Columns.Add(column =>
             {
                 column.FieldName = "WarehouseId";
                 column.Caption = "Warehouse";
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(40);
 
                 column.ColumnType = MVCxGridViewColumnType.ComboBox;
                 var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
@@ -41,6 +43,7 @@
             {
                 column.FieldName = "StartDate";
                 column.Caption = "Start Date";
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(20);
 
                 column.ColumnType = MVCxGridViewColumnType.DateEdit;
                 var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
@@ -50,6 +53,7 @@
             {
                 column.FieldName = "EndDate";
                 column.Caption = "End Date";
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(20);
 
                 column.ColumnType = MVCxGridViewColumnType.DateEdit;
                 var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
