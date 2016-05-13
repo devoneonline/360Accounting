@@ -89,15 +89,20 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
-                    bool validated = false;
+                    bool validated = true;
                     model.SOBId = SessionHelper.SOBId;
                     if (SessionHelper.Locator != null)
                     {
-                        model.Id = SessionHelper.Locator.LocatorWarehouses.Last().Id + 1;
-                        validated = true;
+                        if (SessionHelper.Locator.LocatorWarehouses != null && SessionHelper.Locator.LocatorWarehouses.Count > 0)
+                            model.Id = SessionHelper.Locator.LocatorWarehouses.LastOrDefault().Id + 1;
+                        else
+                            model.Id = 1;
                     }
                     else
+                    {
                         model.Id = 1;
+                    }
+                        
 
 
                     if (SessionHelper.Locator.LocatorWarehouses.Count > 0)
