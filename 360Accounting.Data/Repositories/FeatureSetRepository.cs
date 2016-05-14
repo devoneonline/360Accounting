@@ -1,4 +1,5 @@
-﻿using _360Accounting.Core.Entities;
+﻿using _360Accounting.Common;
+using _360Accounting.Core.Entities;
 using _360Accounting.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -17,11 +18,16 @@ namespace _360Accounting.Data.Repositories
 
         public IEnumerable<FeatureSet> GetAll(long companyId)
         {
-            IEnumerable<FeatureSet> featureSets = from a in this.Context.FeatureSets
-                                                  join b in this.Context.FeatureSetAccesses on a.Id equals b.FeatureSetId
-                                                  where b.CompanyId == companyId
-                                                  select a;
+            IEnumerable<FeatureSet> featureSets = this.Context.FeatureSets.Where(x => x.CompanyId == companyId);
             return featureSets.ToList();
+        }
+
+        public IEnumerable<FeatureSet> GetAll(long companyId, string userRole)
+        {
+            IEnumerable<FeatureSet> featureSet = this.Context.FeatureSets.Where(x => x.CompanyId == companyId );
+            if (userRole != UserRoles.SuperAdmin.ToString())
+                return featureSet.Where(x => x.AccessType.ToUpper() != "COMPANY").ToList();
+            return featureSet.ToList();
         }
 
         public IEnumerable<FeatureSet> GetAll()
@@ -40,6 +46,9 @@ namespace _360Accounting.Data.Repositories
         public string Update(FeatureSet entity)
         {
             var originalEntity = this.Context.FeatureSets.Find(entity.Id);
+            entity.CreateBy = originalEntity.CreateBy;
+            entity.CreateDate = originalEntity.CreateDate;
+            entity.AccessType = originalEntity.AccessType;
             this.Context.Entry(originalEntity).CurrentValues.SetValues(entity);
             this.Context.Entry(originalEntity).State = EntityState.Modified;
             this.Commit();

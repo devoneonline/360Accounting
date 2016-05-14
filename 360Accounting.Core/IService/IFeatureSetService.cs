@@ -11,5 +11,6 @@ namespace _360Accounting.Core
     public interface IFeatureSetService : IService<FeatureSet>
     {
         IEnumerable<FeatureSet> GetAll();
+        IEnumerable<FeatureSet> GetAll(long companyId, string userRole);
     }
 }

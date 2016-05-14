@@ -33,6 +33,11 @@ namespace _360Accounting.Service
             return this.repository.GetAll();
         }
 
+        public IEnumerable<FeatureSet> GetAll(long companyId, string userRole)
+        {
+            return this.repository.GetAll(companyId, userRole);
+        }
+
         public string Insert(FeatureSet entity)
         {
             return this.repository.Insert(entity);

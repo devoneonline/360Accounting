@@ -10,5 +10,6 @@ namespace _360Accounting.Core
 {
     public interface ICompanyService : IService<Company>
     {
+        IEnumerable<Company> GetAll(long companyId, string userRole);
     }
 }

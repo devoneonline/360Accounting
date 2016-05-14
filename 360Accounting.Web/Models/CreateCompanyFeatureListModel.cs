@@ -9,12 +9,8 @@ namespace _360Accounting.Web.Models
 {
     public class CreateCompanyFeatureListModel
     {
-        public List<SelectListItem> CompanyList { get; set; }
-
         public long Id { get; set; }
 
-        [Required]
-        [Display(Name="Select Company")]
         public long CompanyId { get; set; }
 
         [Required]

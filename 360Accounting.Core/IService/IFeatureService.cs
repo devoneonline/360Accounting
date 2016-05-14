@@ -10,6 +10,7 @@ namespace _360Accounting.Core
 {
     public interface IFeatureService : IService<Feature>
     {
+        IEnumerable<Feature> GetAll(long companyId, string userRole, string accessType);
         IEnumerable<Feature> GetMenuItemsByUserId(Guid userId);
         IEnumerable<Feature> GetSuperAdminMenu();
         void InsertCompanyFeatureSet(FeatureSet fs, FeatureSetAccess fsa);

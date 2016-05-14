@@ -35,6 +35,11 @@ namespace _360Accounting.Service
             return this.repository.GetAll(companyId);
         }
 
+        public IEnumerable<Feature> GetAll(long companyId, string userRole, string accessType)
+        {
+            return this.repository.GetAll(companyId, userRole, accessType);
+        }
+
         public string Insert(Feature entity)
         {
             return this.repository.Insert(entity);
@@ -121,5 +126,6 @@ namespace _360Accounting.Service
 
             fsRepo.Update(fs);
         }
+
     }
 }

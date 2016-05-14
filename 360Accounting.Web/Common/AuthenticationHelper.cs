@@ -1,5 +1,4 @@
 ﻿using _360Accounting.Common;
-using _360Accounting.Web.Helpers;
 using _360Accounting.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -16,6 +15,7 @@ namespace _360Accounting.Web
         private const string SESSION_MENU_ITEMS = "MENU_ITEMS";
         private const string SESSION_COMPANY_ID = "USER_COMPANY_ID";
         private const string SESSION_COMPANY_NAME = "USER_COMPANY_NAME";
+        private const string SESSION_COMPANY_LIST = "COMPANY_LIST";
         private const string SESSION_USER_ID = "USER_ID";
 
 
@@ -83,30 +83,31 @@ namespace _360Accounting.Web
                 }
                 return HttpContext.Current.Session[SESSION_COMPANY_NAME].ToString();
             }
+            set { HttpContext.Current.Session[SESSION_COMPANY_NAME] = value; }
         }
 
         public static IEnumerable<FeatureViewModel> MenuItems
         {
             get
             {
-                if ( HttpContext.Current.Session[SESSION_MENU_ITEMS] == null )
-                {
-                    if (System.Security.Principal.WindowsPrincipal.Current.IsInRole(UserRoles.SuperAdmin.ToString()))
-                    {
-                        UserHelper.GetSuperAdminMenu();
-                    }
-                    else
-                    {
-                        UserHelper.UpdateMenuItems(System.Security.Principal.WindowsPrincipal.Current.Identity.Name);
-                    }
-
-                }
-                return (IEnumerable<FeatureViewModel>)HttpContext.Current.Session[SESSION_MENU_ITEMS];
+                return  HttpContext.Current.Session[SESSION_MENU_ITEMS] == null ? null : (IEnumerable<FeatureViewModel>)HttpContext.Current.Session[SESSION_MENU_ITEMS];
             }
 
             set
             {
                 HttpContext.Current.Session[SESSION_MENU_ITEMS] = value;
+            }
+        }
+
+        public static IEnumerable<CompanyModel> CompanyList
+        {
+            get
+            {
+                return (HttpContext.Current.Session[SESSION_COMPANY_LIST] == null ? null : (List<CompanyModel>)HttpContext.Current.Session[SESSION_COMPANY_LIST]);
+            }
+            set
+            {
+                HttpContext.Current.Session[SESSION_COMPANY_LIST] = value;
             }
         }
     }

@@ -19,6 +19,7 @@ namespace _360Accounting.Web.Controllers
             ViewBag.ErrorMessage = message;
             CompanyListModel model = new CompanyListModel();
             model.Companies = CompanyHelper.GetCompanies();
+            AuthenticationHelper.CompanyList = model.Companies;
             return View(model);
         }
 
