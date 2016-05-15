@@ -51,7 +51,8 @@ namespace _360Accounting.Web.Controllers
         public ActionResult Index(MoveOrderListModel model, string message="")
         {
             ViewBag.ErrorMessage = message;
-            SessionHelper.Item = null;
+            ////SessionHelper.Item = null;
+            SessionHelper.MoveOrder = null;
             model.SOBId = SessionHelper.SOBId;
             return View(model);
         }
