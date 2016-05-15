@@ -50,8 +50,8 @@
             </div>
             <div class="col-lg-2">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Levl)
-                    @Html.TextBoxFor(m => m.Levl, new { @class = "form-control" })
+                    @Html.LabelFor(m => m.StartDate)
+                    @Html.EditorFor(m => m.StartDate, new { @class = "form-control" })
                 </div>
             </div>
         </div>
@@ -67,8 +67,8 @@
             </div>
             <div class="col-lg-2">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.StartDate)
-                    @Html.EditorFor(m => m.StartDate, new { @class = "form-control" })
+                    @Html.LabelFor(m => m.EndDate)
+                    @Html.EditorFor(m => m.EndDate, new { @class = "form-control" })
                 </div>
             </div>
         </div>
@@ -84,8 +84,8 @@
             </div>
             <div class="col-lg-2">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.EndDate)
-                    @Html.EditorFor(m => m.EndDate, new { @class = "form-control" })
+                    @Html.LabelFor(m => m.Levl)
+                    @Html.TextBoxFor(m => m.Levl, new { @class = "form-control" })
                 </div>
             </div>
         </div>
@@ -107,6 +107,7 @@
 
     //Validation for Account Value char length..
     $('#Value').keypress(function(e){
+        debugger;
         var valueLength = $('#ValueChar').val();
         if(e.charCode > 31 && (e.charCode < 48 || e.charCode > 57))
             e.preventDefault();

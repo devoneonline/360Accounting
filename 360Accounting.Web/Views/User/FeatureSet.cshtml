@@ -28,22 +28,7 @@
     </div>
 </div>
 
-<div id="UserListPopup">
-
-</div>
-
 <script type="text/javascript">
-
-    $(function () {
-        $.noConflict();
-        $('#UserListPopup').dialog({
-            modal: true,
-            autoOpen: false,
-            height: 500,
-            width: 400,
-            title: "Select Users"
-        });
-    });
 
     $(document).ready(function () {
         $('.deleteQuestion').click(function () {
@@ -54,28 +39,4 @@
             window.location.href = '@Url.Content("~/User/CreateCompanyFeatureList")';
         });
     });
-
-    function showCompanyUsers(received) {
-        $.ajax({
-            url: '@Url.Content("~/User/UserFeatureSet")',
-            data: {
-                featureSetId: received
-            },
-            datatype: 'html',
-            type: 'get',
-            error: function (data) { },
-            success: function (data) {
-                $('#UserListPopup').empty();
-                $('#UserListPopup').html(data);
-                $('#UserListPopup').dialog({
-                    modal: true,
-                    autoOpen: true,
-                    height: 500,
-                    width: 400,
-                    title: "Select Users"
-                });
-                //$('#UserListPopup').dialog("open");
-            }
-        })
-    }
 </script>
