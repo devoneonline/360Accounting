@@ -1,4 +1,8 @@
-﻿@Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
+﻿@{Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
+                new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
+                new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
+                @Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
+}
 
 @model _360Accounting.Web.Models.FeatureSetListModel
 @{
@@ -20,61 +24,7 @@
     </div>
 
     <div class="col-lg-12 cusGridWrapper">
-        @{
-            if (Model.FeatureSet != null)
-            {
-                if (Model.FeatureSet.Count > 0)
-                {
-                    Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
-                    new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
-                    new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
-
-                    Html.EnableClientValidation();
-                    Html.EnableUnobtrusiveJavaScript();
-
-                    var grid = Html.DevExpress().GridView(settings =>
-                    {
-                        settings.Name = "FeatureSet";
-                        settings.Theme = "Office2010Black";
-                        settings.KeyFieldName = "Id";
-
-                        settings.CallbackRouteValues = new { Controller = "Account", Action = "FeatureSetListPartial" };
-
-                        settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
-                        settings.SettingsBehavior.ConfirmDelete = true;
-
-                        settings.SettingsPager.Visible = true;
-                        settings.Settings.ShowGroupPanel = false;
-                        settings.Settings.ShowFilterRow = false;
-                        settings.SettingsBehavior.AllowSort = false;
-                        settings.SettingsBehavior.AllowSelectByRowClick = true;
-
-                        settings.Columns.Add(column =>
-                            {
-                                column.SetDataItemTemplateContent(c =>
-                                {
-                                    ViewContext.Writer.Write(
-                                        Html.Raw("<a href='" + Url.Content("~/User/EditCompanyFeatureList/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
-                                        + "&nbsp;&nbsp;" +
-                                        Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/User/DeleteFeatureSet/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
-                                    );
-                                });
-                                column.Settings.AllowDragDrop = DefaultBoolean.False;
-                                column.Settings.AllowSort = DefaultBoolean.False;
-                                column.Width = 70;
-                            });
-
-                        settings.Columns.Add("Name", "Feature Type");
-                        settings.Columns.Add("AccessType", "Access Level");
-                    });
-                    if (ViewData["EditError"] != null)
-                    {
-                        grid.SetEditErrorText((string)ViewData["EditError"]);
-                    }
-                    grid.Bind(Model.FeatureSet).GetHtml();
-                }
-            }
-        }
+        @Html.Action("FeatureSetListPartial")
     </div>
 </div>
 

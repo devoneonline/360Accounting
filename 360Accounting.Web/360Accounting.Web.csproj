@@ -651,6 +651,8 @@
     <Content Include="Views\Shipment\_List.cshtml" />
     <Content Include="Views\Shipment\Edit.cshtml" />
     <Content Include="Views\Shipment\Index.cshtml" />
+    <Content Include="Views\User\_ListFeatureSet.cshtml" />
+    <Content Include="Views\Company\_List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

@@ -67,7 +67,7 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult CompanyListPartial()
         {
-            return PartialView("_List", CompanyHelper.GetCompanies());
+            return PartialView("_List", AuthenticationHelper.CompanyList);
         }
     }
 }
