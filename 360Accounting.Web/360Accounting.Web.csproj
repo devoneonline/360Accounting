@@ -188,8 +188,10 @@
     <Compile Include="Controllers\BaseController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controllers\BuyerController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\OrderTypeController.cs" />
+    <Compile Include="Controllers\PurchasingPeriodController.cs" />
     <Compile Include="Controllers\ShipmentController.cs" />
     <Compile Include="Controllers\UserSetofBookController.cs" />
     <Compile Include="Controllers\InventoryPeriodController.cs" />
@@ -271,8 +273,10 @@
     <Compile Include="Models\BankAccountViewModel.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\BuyerModel.cs" />
     <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\OrderTypeModel.cs" />
+    <Compile Include="Models\PurchasingPeriodModel.cs" />
     <Compile Include="Models\ShipmentModel.cs" />
     <Compile Include="Models\UserSetofBookModel.cs" />
     <Compile Include="Models\InventoryPeriodModel.cs" />
@@ -654,6 +658,11 @@
     <Content Include="Views\User\_ListFeatureSet.cshtml" />
     <Content Include="Views\Company\_List.cshtml" />
     <Content Include="Views\SetOfBook\_List.cshtml" />
+    <Content Include="Views\PurchasingPeriod\Index.cshtml" />
+    <Content Include="Views\PurchasingPeriod\_List.cshtml" />
+    <Content Include="Views\Buyer\Index.cshtml" />
+    <Content Include="Views\Buyer\_List.cshtml" />
+    <Content Include="Views\Buyer\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

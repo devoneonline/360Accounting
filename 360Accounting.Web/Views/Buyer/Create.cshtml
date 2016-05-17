@@ -1,7 +1,7 @@
-﻿@model _360Accounting.Web.Models.VendorModel
+﻿@model _360Accounting.Web.Models.BuyerModel
 
 @{
-    ViewBag.Title = "Create Vendor";
+    ViewBag.Title = "Create Buyer";
 }
 
 <div class="container">
@@ -14,7 +14,7 @@
     </div>
 
     <div class="clearfix">
-        @using (Html.BeginForm("Create", "Vendor", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        @using (Html.BeginForm("Create", "Buyer", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             @Html.ValidationSummary()
             @Html.HiddenFor(m => m.Id)
@@ -33,41 +33,24 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-2">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.ContactNo)
-                        @Html.TextBoxFor(model => model.ContactNo, new { @class = "form-control" })
-                    </div>
-                </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <div class="form-group">
                         @Html.LabelFor(model => model.StartDate)
                         @Html.EditorFor(model => model.StartDate, new { @class = "form-control" })
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <div class="form-group">
                         @Html.LabelFor(model => model.EndDate)
                         @Html.EditorFor(model => model.EndDate, new { @class = "form-control" })
                     </div>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Address)
-                        @Html.TextAreaFor(model => model.Address, new { @class = "form-control" })
-                    </div>
-                </div>
-
-            </div>
-
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
                         <input type="submit" value="Save" class="btn btn-default tstyCus-btn" />
-                        <input type="button" value="Cancel" class="btn btn-default tstyCus-btn" onclick="javascript: window.location.href='@Url.Content("~/Vendor/Index")'" />
+                        <input type="button" value="Cancel" class="btn btn-default tstyCus-btn" onclick="javascript: window.location.href='@Url.Content("~/Buyer/Index")'" />
                     </div>
                 </div>
             </div>

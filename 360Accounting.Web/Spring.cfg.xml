@@ -3,6 +3,8 @@
 <objects xmlns="http://www.springframework.net">
   <description>360Accounting Configuration</description>
 
+  <object name="BuyerRepository" type="_360Accounting.Data.Repositories.BuyerRepository, 360Accounting.Data"> </object>
+  <object name="PurchasingPeriodRepository" type="_360Accounting.Data.Repositories.PurchasingPeriodRepository, 360Accounting.Data"> </object>
   <object name="ShipmentRepository" type="_360Accounting.Data.Repositories.ShipmentRepository, 360Accounting.Data"> </object>
   <object name="OrderRepository" type="_360Accounting.Data.Repositories.OrderRepository, 360Accounting.Data"> </object>
   <object name="OrderTypeRepository" type="_360Accounting.Data.Repositories.OrderTypeRepository, 360Accounting.Data"> </object>
@@ -28,7 +30,6 @@
   <object name="CalendarRepository" type="_360Accounting.Data.Repositories.CalendarRepository, 360Accounting.Data"> </object>
   <object name="CodeCombinitionRepository" type="_360Accounting.Data.Repositories.CodeCombinitionRepository, 360Accounting.Data"> </object>
   <object name="CurrencyRepository" type="_360Accounting.Data.Repositories.CurrencyRepository, 360Accounting.Data"> </object>
-  <!--<object name="JournalVoucherRepository" type="_360Accounting.Data.Repositories.JournalVoucherRepository, 360Accounting.Data"> </object>-->
   <object name="CustomerRepository" type="_360Accounting.Data.Repositories.CustomerRepository, 360Accounting.Data"> </object>
   <object name="CustomerSiteRepository" type="_360Accounting.Data.Repositories.CustomerSiteRepository, 360Accounting.Data"> </object>
   <object name="BankRepository" type="_360Accounting.Data.Repositories.BankRepository, 360Accounting.Data"> </object>
@@ -49,6 +50,12 @@
   <object name="UserSetofBookRepository" type="_360Accounting.Data.Repositories.UserSetofBookRepository, 360Accounting.Data"> </object>
 
 
+  <object name="BuyerService" type="_360Accounting.Service.BuyerService, 360Accounting.Service" >
+    <constructor-arg name="repo" ref="BuyerRepository" />
+  </object>
+  <object name="PurchasingPeriodService" type="_360Accounting.Service.PurchasingPeriodService, 360Accounting.Service" >
+    <constructor-arg name="repo" ref="PurchasingPeriodRepository" />
+  </object>
   <object name="ShipmentService" type="_360Accounting.Service.ShipmentService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="ShipmentRepository" />
   </object>
