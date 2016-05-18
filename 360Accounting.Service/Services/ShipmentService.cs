@@ -28,9 +28,9 @@ namespace _360Accounting.Service
             return this.repository.GetAll(companyId, sobId);
         }
 
-        public IEnumerable<Shipment> GetAllByOrderId(long companyId, long sobId, long orderId, DateTime date)
+        public IEnumerable<Shipment> GetDelivery(long companyId, long sobId, string deliveryNo, DateTime date)
         {
-            return this.repository.GetAllByOrderId(companyId, sobId, orderId, date);
+            return this.repository.GetDelivery(companyId, sobId, deliveryNo, date);
         }
 
         public IEnumerable<Shipment> GetAllWarehouseId(long companyId, long sobId, long warehouseId)
@@ -88,9 +88,9 @@ namespace _360Accounting.Service
             this.repository.BatchDelete(entities);
         }
 
-        public void DeleteByOrderId(long companyId, long sobId, long orderId, DateTime date)
+        public void DeleteDelivery(long companyId, long sobId, string deliveryNo, DateTime date)
         {
-            this.repository.DeleteByOrderId(companyId, sobId, orderId, date);
+            this.repository.DeleteDelivery(companyId, sobId, deliveryNo, date);
         }
 
         public int Count(long companyId)

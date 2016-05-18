@@ -18,11 +18,28 @@ namespace _360Accounting.Data.Repositories
             return entity;
         }
 
+        public LotNumber GetLotBySourceId(long sourceId, long companyId, long sobId)
+        {
+            LotNumber entity = this.Context.LotNumbers.FirstOrDefault(x => x.CompanyId == companyId && x.SOBId == sobId && x.SourceId == sourceId);
+            return entity;
+        }
+
         public SerialNumber GetSingleSerialNum(string id, long companyId)
         {
             long longId = Convert.ToInt64(id);
             SerialNumber entity = this.Context.SerialNumbers.FirstOrDefault(x => x.Id == longId && x.CompanyId == companyId);
             return entity;
+        }
+
+        public SerialNumber GetSerialNo(string serial, long lotNoId, long companyId, long sobId)
+        {
+            return this.Context.SerialNumbers.Where(rec => rec.CompanyId == companyId && rec.LotNoId == lotNoId && rec.SerialNo == serial).
+                OrderByDescending(cri => cri.Id).FirstOrDefault();
+        }
+
+        public List<SerialNumber> GetSerialsbyLotNo(long lotNoId, long companyId, long sobId)
+        {
+            return this.Context.SerialNumbers.Where(rec => rec.LotNoId == lotNoId && rec.CompanyId == companyId).ToList();
         }
 
         public IEnumerable<LotNumber> GetAll(long companyId)
@@ -36,22 +53,73 @@ namespace _360Accounting.Data.Repositories
             return this.Context.LotNumbers.Where(rec => rec.CompanyId == companyId && rec.LotNo == lotNum && rec.ItemId == itemId && rec.SOBId == sobId);
         }
 
-        public IEnumerable<SerialNumber> CheckSerialNumAvailability(long companyId, string lotNum, string serialNum)
+        public bool CheckSerialNumAvailability(long companyId, long lotNoId, string serialNum)
         {
-            return this.Context.SerialNumbers.Where(rec => rec.CompanyId == companyId && rec.LotNo == lotNum && rec.SerialNo == serialNum);
+            IEnumerable<SerialNumber> serials = this.Context.SerialNumbers.Where(rec => rec.CompanyId == companyId && rec.LotNoId == lotNoId && rec.SerialNo == serialNum);
+            if (serials.Count() % 2 == 0)
+                return false;
+            else
+                return true;
         }
 
         public IEnumerable<LotNumber> GetAvailableLots(long companyId, long sobId, long itemId)
         {
             IEnumerable<LotNumber> mainQuery = this.Context.LotNumbers.Where(rec => rec.CompanyId == companyId &&
-                rec.SOBId == sobId && rec.ItemId == itemId);
+                rec.SOBId == sobId && rec.ItemId == itemId).ToList();
+            List<LotNumber> availableLots = new List<LotNumber>();
+
             IEnumerable<LotNumber> received = mainQuery.Where(rec => rec.SourceType == "Move Order" || rec.SourceType == "Receiving");
             IEnumerable<LotNumber> shipped = mainQuery.Where(rec => rec.SourceType == "Shipment");
 
-            IEnumerable<LotNumber> available = mainQuery.Where(x => x.LotNo == received.First(y => y.LotNo == x.LotNo).LotNo && 
-                !shipped.Any(cri => cri.LotNo == x.LotNo)).ToList();
+            availableLots.AddRange(mainQuery.Where(x => x.LotNo == received.First(y => y.LotNo == x.LotNo).LotNo &&
+                !shipped.Any(cri => cri.LotNo == x.LotNo)).ToList());
 
-            return available;
+            foreach (var lot in mainQuery)
+            {
+                List<SerialNumber> serialExist = this.GetSerialsbyLotNo(lot.Id, companyId, sobId).ToList();
+                if (serialExist != null && serialExist.Count > 0)
+                {
+                    var availableSerials = from a in serialExist
+                                           group a by a.SerialNo into g
+                                           where g.Count() % 2 != 0
+                                           select new
+                                           {
+                                           };
+                    if (availableSerials.Count() > 0)
+                    {
+                        if (!availableLots.Any(rec => rec.Id == lot.Id))
+                            availableLots.Add(lot);
+                    }
+                }
+            }
+
+            return availableLots;
+        }
+
+        public IEnumerable<SerialNumber> GetAvailableSerials(LotNumber entity, long companyId, long sobId)
+        {
+            List<SerialNumber> serialExist = this.GetSerialsbyLotNo(entity.Id, companyId, sobId).ToList();
+            if (serialExist != null && serialExist.Count > 0)
+            {
+                var availableSerials = (from a in serialExist
+                                       group a by a.SerialNo into g
+                                       where g.Count() % 2 != 0
+                                       select new SerialNumber
+                                       {
+                                           CompanyId = g.FirstOrDefault().CompanyId,
+                                           CreateBy = g.FirstOrDefault().CreateBy,
+                                           CreateDate = g.FirstOrDefault().CreateDate,
+                                           Id = g.FirstOrDefault().Id,
+                                           LotNo = g.FirstOrDefault().LotNo,
+                                           LotNoId = g.FirstOrDefault().LotNoId,
+                                           SerialNo = g.FirstOrDefault().SerialNo,
+                                           UpdateBy = g.FirstOrDefault().UpdateBy,
+                                           UpdateDate = g.FirstOrDefault().UpdateDate
+                                       }).ToList();
+                
+                return availableSerials;
+            }
+            return new List<SerialNumber>();
         }
 
         public string Insert(LotNumber entity)

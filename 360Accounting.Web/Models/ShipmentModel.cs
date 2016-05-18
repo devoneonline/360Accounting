@@ -27,6 +27,7 @@ namespace _360Accounting.Web.Models
                 this.OrderId = model.OrderId;
                 this.WarehouseId = model.WarehouseId;
                 this.CompanyId = model.CompanyId;
+                this.DeliveryNo = model.DeliveryNo;
             }
         }
         public long Id { get; set; }
@@ -46,6 +47,8 @@ namespace _360Accounting.Web.Models
 
         public long CompanyId { get; set; }
 
+        public string DeliveryNo { get; set; }
+
         public List<SelectListItem> Orders { get; set; }
         public List<SelectListItem> Warehouses { get; set; }
         public List<SelectListItem> Customers { get; set; }
@@ -58,16 +61,15 @@ namespace _360Accounting.Web.Models
     {
         public OrderShipmentLine()
         { }
-        public OrderShipmentLine(ShipmentModel model, string itemName)
+        public OrderShipmentLine(ShipmentModel model)
         {
             if (model != null)
             {
                 this.Id = model.Id;
                 this.LineId = model.LineId;
                 this.LocatorId = model.LocatorId;
-                this.LotNo = model.LotNo;
+                this.LotNoId = model.LotNoId;
                 this.SerialNo = model.SerialNo;
-                this.ItemName = itemName;
                 this.ShipedQuantity = model.Quantity;
             }
         }
@@ -75,16 +77,21 @@ namespace _360Accounting.Web.Models
         public long Id { get; set; }
         public long LineId { get; set; }
         public long LocatorId { get; set; }
-        //public long LotNoId { get; set; }
-        public string LotNo { get; set; }
-        //public long SerialNoId { get; set; }
+        public long? LotNoId { get; set; }
         public string SerialNo { get; set; }
-        //public long ItemId { get; set; }
+        public long ItemId { get; set; }
         public string ItemName { get; set; }
         public decimal OrderQuantity { get; set; }
         public decimal ShipedQuantity { get; set; }
         public decimal BalanceQuantity { get; set; }
         public decimal ThisShipQuantity { get; set; }
+        
+        public long CustomerId { get; set; }
+        public string CustomerName { get; set; }
+        public long CustomerSiteId { get; set; }
+        public string CustomerSiteName { get; set; }
+        public long OrderId { get; set; }
+        public string OrderNo { get; set; }
     }
 
     public class ShipmentModel : ModelBase
@@ -105,7 +112,7 @@ namespace _360Accounting.Web.Models
                 this.Id = entityView.Id;
                 this.LineId = entityView.LineId;
                 this.LocatorId = entityView.LocatorId;
-                this.LotNo = entityView.LotNo;
+                this.LotNoId = entityView.LotNoId;
                 this.OrderId = entityView.OrderId;
                 this.Quantity = entityView.Quantity;
                 this.SerialNo = entityView.SerialNo;
@@ -114,6 +121,7 @@ namespace _360Accounting.Web.Models
                 this.UpdateDate = entityView.UpdateDate;
                 this.WarehouseId = entityView.WarehouseId;
                 this.CompanyId = entityView.CompanyId;
+                this.DeliveryNo = entityView.DeliveryNo;
 
                 this.OrderNo = entityView.OrderNo;
                 this.CustomerName = entityView.CustomerName;
@@ -132,7 +140,7 @@ namespace _360Accounting.Web.Models
                 this.Id = entity.Id;
                 this.LineId = entity.LineId;
                 this.LocatorId = entity.LocatorId;
-                this.LotNo = entity.LotNo;
+                this.LotNoId = entity.LotNoId;
                 this.OrderId = entity.OrderId;
                 this.Quantity = entity.Quantity;
                 this.SerialNo = entity.SerialNo;
@@ -141,6 +149,7 @@ namespace _360Accounting.Web.Models
                 this.UpdateDate = entity.UpdateDate;
                 this.WarehouseId = entity.WarehouseId;
                 this.CompanyId = entity.CompanyId;
+                this.DeliveryNo = entity.DeliveryNo;
             }
         }
 
@@ -155,9 +164,10 @@ namespace _360Accounting.Web.Models
         public long LocatorId { get; set; }
         public DateTime DeliveryDate { get; set; }
         public decimal Quantity { get; set; }
-        public string LotNo { get; set; }
+        public long? LotNoId { get; set; }
         public string SerialNo { get; set; }
         public long CompanyId { get; set; }
+        public string DeliveryNo { get; set; }
 
         public string OrderNo { get; set; }
         public string CustomerName { get; set; }

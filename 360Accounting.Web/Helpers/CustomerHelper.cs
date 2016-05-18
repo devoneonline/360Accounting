@@ -137,6 +137,11 @@ namespace _360Accounting.Web
         public static List<SelectListItem> GetCustomerSitesCombo(long customerId)
         {
             List<SelectListItem> CustomerSiteList = GetCustomerSites(customerId).Select(x => new SelectListItem { Text = x.SiteName, Value = x.Id.ToString() }).ToList();
+            if (CustomerSiteList == null || CustomerSiteList.Count() == 0)
+            {
+                CustomerSiteList = new List<SelectListItem>();
+                CustomerSiteList.Add(new SelectListItem { Text = "-- Select --", Value = "0" });
+            }
 
             return CustomerSiteList;
         }

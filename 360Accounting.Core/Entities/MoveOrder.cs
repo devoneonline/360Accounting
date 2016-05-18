@@ -49,8 +49,11 @@ namespace _360Accounting.Core.Entities
     {
         [Key]
         public long Id { get; set; }
-        public string LotNo { get; set; }
+        public long LotNoId { get; set; }
         public string SerialNo { get; set; }
         public long CompanyId { get; set; }
+
+        //Temporary for MoveOrder, will be removed.
+        public string LotNo { get; set; }
     }
 }

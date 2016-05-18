@@ -18,14 +18,16 @@ namespace _360Accounting.Core.Interfaces
         string Update(OrderDetail entity);
         void DeleteOrderDetail(long id);
 
-        IEnumerable<Order> GetAll(long sobId);
         IEnumerable<Order> GetAllOrdersByOrderType(long sobId, long orderTypeId);
         IEnumerable<Order> GetAllOrdersByCustomer(long sobId, long customerId);
         IEnumerable<Order> GetAllOrdersByCustomerSite(long sobId, long customerSiteId);
 
+        IEnumerable<Order> GetAll(long sobId);
         IEnumerable<Order> GetAll(long companyId, long sobId, long customerId, long customerSiteId);
+        IEnumerable<OrderView> GetAll(long companyId, long sobId, long customerId);
         IEnumerable<OrderView> GetAllOrders(long companyId, long sobId);
 
         OrderDetail GetSingleOrderDetail(long id);
+        OrderView GetSingleOrder(string id, long companyId, long sobId);
     }
 }

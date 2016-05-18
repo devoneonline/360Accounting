@@ -204,11 +204,11 @@ namespace _360Accounting.Web
                                 LotNumberHelper.Delete(lotNum.FirstOrDefault().Id.ToString());
                             }
 
-                            IEnumerable<SerialNumber> serialNum = lotNumService.CheckSerialNumAvailability(AuthenticationHelper.CompanyId.Value, item.LotNo, item.SerialNo);
-                            if (serialNum.Any())
-                            {
-                                LotNumberHelper.DeleteSerialNumber(serialNum.FirstOrDefault().Id.ToString());
-                            }
+                            //IEnumerable<SerialNumber> serialNum = lotNumService.CheckSerialNumAvailability(AuthenticationHelper.CompanyId.Value, item.LotNo, item.SerialNo);
+                            //if (serialNum.Any())
+                            //{
+                            //    LotNumberHelper.DeleteSerialNumber(serialNum.FirstOrDefault().Id.ToString());
+                            //}
                         }
                         savedDetail = GetMoveOrderLines(result);
                     }
@@ -230,11 +230,11 @@ namespace _360Accounting.Web
                                     LotNumberHelper.Update(lotNum.FirstOrDefault());
                                 }
 
-                                IEnumerable<SerialNumber> serialNum = lotNumService.CheckSerialNumAvailability(AuthenticationHelper.CompanyId.Value, detailEntity.LotNo, detailEntity.SerialNo);
-                                if (serialNum.Any())
-                                {
-                                    LotNumberHelper.UpdateSerialNumber(serialNum.FirstOrDefault());
-                                }
+                                //IEnumerable<SerialNumber> serialNum = lotNumService.CheckSerialNumAvailability(AuthenticationHelper.CompanyId.Value, detailEntity.LotNo, detailEntity.SerialNo);
+                                //if (serialNum.Any())
+                                //{
+                                //    LotNumberHelper.UpdateSerialNumber(serialNum.FirstOrDefault());
+                                //}
                             }
                             else
                             {
@@ -245,11 +245,11 @@ namespace _360Accounting.Web
                                     LotNumberHelper.Insert(new MoveOrderDetailModel(detailEntity));
                                 }
 
-                                IEnumerable<SerialNumber> serialNum = lotNumService.CheckSerialNumAvailability(AuthenticationHelper.CompanyId.Value, detailEntity.LotNo, detailEntity.SerialNo);
-                                if (!serialNum.Any())
-                                {
-                                    LotNumberHelper.InsertSerialNumber(new MoveOrderDetailModel(detailEntity));
-                                }
+                                //IEnumerable<SerialNumber> serialNum = lotNumService.CheckSerialNumAvailability(AuthenticationHelper.CompanyId.Value, detailEntity.LotNo, detailEntity.SerialNo);
+                                //if (!serialNum.Any())
+                                //{
+                                //    LotNumberHelper.InsertSerialNumber(new MoveOrderDetailModel(detailEntity));
+                                //}
                             }
                         }
                     }

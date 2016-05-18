@@ -39,15 +39,16 @@ namespace _360Accounting.Data.Repositories
                             Quantity = g.Sum(x => x.Quantity),
                             SOBId = g.FirstOrDefault().SOBId,
                             UpdateBy = g.FirstOrDefault().UpdateBy,
-                            UpdateDate = g.FirstOrDefault().UpdateDate
+                            UpdateDate = g.FirstOrDefault().UpdateDate,
+                            DeliveryNo = g.FirstOrDefault().DeliveryNo
                         };
 
             return query.OrderByDescending(rec => rec.Id).ToList();
         }
 
-        public IEnumerable<Shipment> GetAllByOrderId(long companyId, long sobId, long orderId, DateTime date)
+        public IEnumerable<Shipment> GetDelivery(long companyId, long sobId, string deliveryNo, DateTime date)
         {
-            List<Shipment> list = this.Context.Shipments.Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.OrderId == orderId).ToList();
+            List<Shipment> list = this.Context.Shipments.Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.DeliveryNo == deliveryNo).ToList();
             list = list.Where(x => Convert.ToDateTime(x.DeliveryDate).ToShortDateString() == date.ToShortDateString() &&
                 Convert.ToDateTime(x.DeliveryDate).ToShortTimeString() == date.ToShortTimeString()).ToList();
 
@@ -139,9 +140,9 @@ namespace _360Accounting.Data.Repositories
             this.Commit();
         }
 
-        public void DeleteByOrderId(long companyId, long sobId, long orderId, DateTime date)
+        public void DeleteDelivery(long companyId, long sobId, string deliveryNo, DateTime date)
         {
-            List<Shipment> shipments = this.Context.Shipments.Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.OrderId == orderId).ToList();
+            List<Shipment> shipments = this.Context.Shipments.Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.DeliveryNo == deliveryNo).ToList();
             shipments = shipments.Where(x => Convert.ToDateTime(x.DeliveryDate).ToShortDateString() == date.ToShortDateString() &&
                 Convert.ToDateTime(x.DeliveryDate).ToShortTimeString() == date.ToShortTimeString()).ToList();
             if (shipments != null && shipments.Count() > 0)

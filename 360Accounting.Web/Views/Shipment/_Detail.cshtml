@@ -23,44 +23,75 @@
             settings.CommandColumn.ShowEditButton = true;
             settings.CommandColumn.Width = System.Web.UI.WebControls.Unit.Percentage(7);
 
+            settings.Columns.Add("Id").Width = 0;
+            settings.Columns.Add("ItemId").Width = 0;
             settings.Columns.Add(co =>
             {
                 co.FieldName = "ItemName";
                 co.Caption = "Item";
                 co.ReadOnly = true;
-                co.Width = System.Web.UI.WebControls.Unit.Percentage(15);
-                co.EditFormSettings.Visible = DefaultBoolean.False; 
+                co.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+                co.EditFormSettings.Visible = DefaultBoolean.False;
+                //co.SetDataItemTemplateContent(c =>
+                //{
+                //    ViewContext.Writer.Write(DataBinder.Eval(c.DataItem, "ItemName").ToString());
+                //    SessionHelper.ItemId = Convert.ToInt64(DataBinder.Eval(c.DataItem, "ItemId").ToString());
+                //});   
+            });
+            settings.Columns.Add(co =>
+            {
+                co.FieldName = "OrderNo";
+                co.Caption = "Order No";
+                co.ReadOnly = true;
+                co.Width = System.Web.UI.WebControls.Unit.Percentage(7);
+                co.EditFormSettings.Visible = DefaultBoolean.False;
+            });
+            settings.Columns.Add(co =>
+            {
+                co.FieldName = "CustomerName";
+                co.Caption = "Customer";
+                co.ReadOnly = true;
+                co.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+                co.EditFormSettings.Visible = DefaultBoolean.False;
+            });
+            settings.Columns.Add(co =>
+            {
+                co.FieldName = "CustomerSiteName";
+                co.Caption = "Customer Site";
+                co.ReadOnly = true;
+                co.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+                co.EditFormSettings.Visible = DefaultBoolean.False;
             });
             settings.Columns.Add(co =>
             {
                 co.FieldName = "OrderQuantity";
                 co.Caption = "Ordered Qty.";
                 co.ReadOnly = true;
-                co.Width = System.Web.UI.WebControls.Unit.Percentage(10);
-                co.EditFormSettings.Visible = DefaultBoolean.False; 
+                co.Width = System.Web.UI.WebControls.Unit.Percentage(7);
+                co.EditFormSettings.Visible = DefaultBoolean.False;
             });
             settings.Columns.Add(co =>
             {
                 co.FieldName = "ShipedQuantity";
                 co.Caption = "Shipped Qty.";
                 co.ReadOnly = true;
-                co.Width = System.Web.UI.WebControls.Unit.Percentage(10);
-                co.EditFormSettings.Visible = DefaultBoolean.False; 
+                co.Width = System.Web.UI.WebControls.Unit.Percentage(7);
+                co.EditFormSettings.Visible = DefaultBoolean.False;
             });
             settings.Columns.Add(co =>
             {
                 co.FieldName = "BalanceQuantity";
                 co.Caption = "Balance Qty.";
                 co.ReadOnly = true;
-                co.Width = System.Web.UI.WebControls.Unit.Percentage(10);
-                co.EditFormSettings.Visible = DefaultBoolean.False; 
+                co.Width = System.Web.UI.WebControls.Unit.Percentage(7);
+                co.EditFormSettings.Visible = DefaultBoolean.False;
             });
-            
+
             settings.Columns.Add(column =>
             {
                 column.FieldName = "ThisShipQuantity";
                 column.Caption = "This shippment";
-                
+
                 column.ColumnType = MVCxGridViewColumnType.SpinEdit;
                 var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
                 spinEditProperties.NumberType = SpinEditNumberType.Float;
@@ -70,9 +101,9 @@
                 spinEditProperties.MinValue = 0;
                 spinEditProperties.MaxValue = 100000000;
                 spinEditProperties.SpinButtons.ShowLargeIncrementButtons = true;
-                column.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(7);
             });
-            
+
             settings.Columns.Add(column =>
             {
                 column.FieldName = "LocatorId";
@@ -84,18 +115,30 @@
                 comboBoxProperties.TextField = "Text";
                 comboBoxProperties.ValueField = "Value";
                 comboBoxProperties.ValueType = typeof(int);
-                column.Width = System.Web.UI.WebControls.Unit.Percentage(15);
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(10);
             });
             settings.Columns.Add(column =>
             {
-                column.FieldName = "LotNo";
+                column.FieldName = "LotNoId";
                 column.Caption = "Lot No.";
+                column.ColumnType = MVCxGridViewColumnType.ComboBox;
+                var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+                comboBoxProperties.DataSource = LotNumberHelper.GetAvailabelLotsCombo(SessionHelper.ItemId);
+                comboBoxProperties.TextField = "Text";
+                comboBoxProperties.ValueField = "Value";
+                comboBoxProperties.ValueType = typeof(int);
                 column.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+
+                //column.SetEditItemTemplateContent(c =>
+                //{
+                //    SessionHelper.ItemId = Convert.ToInt64(c.Grid.GetRowValues(c.Grid.EditingRowVisibleIndex, "ItemId"));
+                //});
             });
             settings.Columns.Add(column =>
             {
                 column.FieldName = "SerialNo";
                 column.Caption = "Serial No.";
+                column.ToolTip = "Please enter comma separated values e.g (1,2,....,6)";
                 column.Width = System.Web.UI.WebControls.Unit.Percentage(10);
             });
         });
@@ -106,3 +149,9 @@
     }
 }
 @grid.Bind(Model).GetHtml()
+
+<script type="text/javascript">
+    function Hello(a, b, c) {
+        alert('Hello');
+    }
+</script>
