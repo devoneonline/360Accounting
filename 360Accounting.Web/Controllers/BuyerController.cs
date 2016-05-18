@@ -54,6 +54,38 @@ namespace _360Accounting.Web.Controllers
         }
         #endregion
 
+        public ActionResult Delete(string id)
+        {
+            try
+            {
+                service.Delete(id, AuthenticationHelper.CompanyId.Value);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", new { message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Edit(BuyerModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                Save(model);
+                return RedirectToAction("Index");
+            }
+            return View(model);
+        }
+
+        public ActionResult Edit(string id)
+        {
+            BuyerModel model = new BuyerModel(service.GetSingle(id, AuthenticationHelper.CompanyId.Value));
+            if (model == null)
+                return HttpNotFound();
+            return View(model);
+        }
+
         [HttpPost]
         public ActionResult Create(BuyerModel model)
         {
