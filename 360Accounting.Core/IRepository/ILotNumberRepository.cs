@@ -11,7 +11,7 @@ namespace _360Accounting.Core.Interfaces
     {
         IEnumerable<LotNumber> CheckLotNumAvailability(long companyId, string lotNum, long itemId, long sobId);
 
-        IEnumerable<SerialNumber> CheckSerialNumAvailability(long companyId, string lotNum, string serialNum);
+        bool CheckSerialNumAvailability(long companyId, long lotNoId, string serialNum);
 
         SerialNumber GetSingleSerialNum(string id, long companyId);
 
@@ -22,5 +22,13 @@ namespace _360Accounting.Core.Interfaces
         void DeleteSerialNum(string id, long companyId);
 
         IEnumerable<LotNumber> GetAvailableLots(long companyId, long sobId, long itemId);
+
+        SerialNumber GetSerialNo(string serial, long lotNoId, long companyId, long sobId);
+
+        List<SerialNumber> GetSerialsbyLotNo(long lotNoId, long companyId, long sobId);
+        
+        IEnumerable<SerialNumber> GetAvailableSerials(LotNumber entity, long companyId, long sobId);
+
+        LotNumber GetLotBySourceId(long sourceId, long companyId, long sobId);
     }
 }

@@ -241,5 +241,31 @@ namespace _360Accounting.Web
             List<OrderModel> orders = service.GetAll(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, customerId, customerSiteId).Select(x => new OrderModel(x)).ToList();
             return orders;
         }
+
+        public static List<OrderModel> GetOrders(long orderId, long customerId, long customerSiteId)
+        {
+            List<OrderModel> result = new List<OrderModel>();
+            if (customerId > 0)
+            {
+                result = service.GetAll(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, customerId).Select(x => new OrderModel(x, true)).ToList();
+                if (customerSiteId > 0)
+                    result = result.Where(rec => rec.CustomerSiteId == customerSiteId).ToList();
+            }
+
+            if (orderId > 0)
+            {
+                if (result.Count() > 0)
+                    result = result.Where(rec => rec.Id == orderId).ToList();
+                else if(customerId == 0)
+                    result.Add(new OrderModel(service.GetSingleOrder(orderId.ToString(), AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId), true));
+            }
+
+            return result;
+        }
+
+        public static OrderModel GetSingleOrder(string orderId)
+        {
+            return new OrderModel(service.GetSingleOrder(orderId, AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId), true);
+        }
     }
 }

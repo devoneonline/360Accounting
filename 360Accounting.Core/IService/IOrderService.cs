@@ -21,6 +21,8 @@ namespace _360Accounting.Core
 
         IEnumerable<Order> GetAll(long sobId);
         IEnumerable<Order> GetAll(long companyId, long sobId, long customerId, long customerSiteId);
+        IEnumerable<OrderView> GetAll(long companyId, long sobId, long customerId);
+
         IEnumerable<Order> GetAllOrdersByOrderType(long sobId, long orderTypeId);
         IEnumerable<Order> GetAllOrdersByCustomer(long sobId, long customerId);
         IEnumerable<Order> GetAllOrdersByCustomerSite(long sobId, long customerSiteId);
@@ -28,5 +30,6 @@ namespace _360Accounting.Core
         OrderDetail GetSingleOrderDetail(long id);
 
         IEnumerable<OrderView> GetAllOrders(long companyId, long sobId);
+        OrderView GetSingleOrder(string id, long companyId, long sobId);
     }
 }

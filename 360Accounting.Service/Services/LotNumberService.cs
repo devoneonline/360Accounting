@@ -23,9 +23,24 @@ namespace _360Accounting.Service
             return this.repository.GetSingle(id, companyId);
         }
 
+        public LotNumber GetLotBySourceId(long sourceId, long companyId, long sobId)
+        {
+            return this.repository.GetLotBySourceId(sourceId, companyId, sobId);
+        }
+
         public SerialNumber GetSingleSerialNum(string id, long companyId)
         {
             return this.repository.GetSingleSerialNum(id, companyId);
+        }
+
+        public SerialNumber GetSerialNo(string serial, long lotNoId, long companyId, long sobId)
+        {
+            return this.repository.GetSerialNo(serial, lotNoId, companyId, sobId);
+        }
+
+        public List<SerialNumber> GetSerialsbyLotNo(long lotNoId, long companyId, long sobId)
+        {
+            return this.repository.GetSerialsbyLotNo(lotNoId, companyId, sobId);
         }
 
         public IEnumerable<LotNumber> GetAll(long companyId)
@@ -38,9 +53,19 @@ namespace _360Accounting.Service
             return this.repository.CheckLotNumAvailability(companyId, lotNum, itemId, sobId);
         }
 
-        public IEnumerable<SerialNumber> CheckSerialNumAvailability(long companyId, string lotNum, string serialNum)
+        public bool CheckSerialNumAvailability(long companyId, long lotNoId, string serialNum)
         {
-            return this.repository.CheckSerialNumAvailability(companyId, lotNum, serialNum);
+            return this.repository.CheckSerialNumAvailability(companyId, lotNoId, serialNum);
+        }
+
+        public IEnumerable<LotNumber> GetAvailableLots(long companyId, long sobId, long itemId)
+        {
+            return this.repository.GetAvailableLots(companyId, sobId, itemId);
+        }
+
+        public IEnumerable<SerialNumber> GetAvailableSerials(LotNumber entity, long companyId, long sobId)
+        {
+            return this.repository.GetAvailableSerials(entity, companyId, sobId);
         }
 
         public string Insert(LotNumber entity)

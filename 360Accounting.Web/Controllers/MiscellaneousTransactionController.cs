@@ -145,11 +145,11 @@ namespace _360Accounting.Web.Controllers
                         ViewData["EditError"] = "Lot Number must be unique";
                         return PartialView("createPartial", MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(model.SOBId, model.TransactionType, model.CodeCombinationId, model.TransactionDate));
                     }
-                    if (LotNumberHelper.CheckSerialNumAvailability(model.LotNo, model.SerialNo).Any())
-                    {
-                        ViewData["EditError"] = "Serial Number must be unique";
-                        return PartialView("createPartial", MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(model.SOBId, model.TransactionType, model.CodeCombinationId, model.TransactionDate));
-                    }
+                    //if (LotNumberHelper.CheckSerialNumAvailability(model.LotNo, model.SerialNo).Any())
+                    //{
+                    //    ViewData["EditError"] = "Serial Number must be unique";
+                    //    return PartialView("createPartial", MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(model.SOBId, model.TransactionType, model.CodeCombinationId, model.TransactionDate));
+                    //}
                     if (SessionHelper.MiscellaneousTransaction != null)
                     {
                         model.Id = SessionHelper.MiscellaneousTransaction.MiscellaneousTransactionDetail.Count() + 1;
@@ -199,11 +199,11 @@ namespace _360Accounting.Web.Controllers
                         ViewData["EditError"] = "Lot Number must be unique";
                         return PartialView("createPartial", MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(model.SOBId, model.TransactionType, model.CodeCombinationId, model.TransactionDate));
                     }
-                    if (LotNumberHelper.CheckSerialNumAvailability(model.LotNo, model.SerialNo).Any())
-                    {
-                        ViewData["EditError"] = "Serial Number must be unique";
-                        return PartialView("createPartial", MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(model.SOBId, model.TransactionType, model.CodeCombinationId, model.TransactionDate));
-                    }
+                    //if (LotNumberHelper.CheckSerialNumAvailability(model.LotNo, model.SerialNo).Any())
+                    //{
+                    //    ViewData["EditError"] = "Serial Number must be unique";
+                    //    return PartialView("createPartial", MiscellaneousTransactionHelper.GetMiscellaneousTransactionDetail(model.SOBId, model.TransactionType, model.CodeCombinationId, model.TransactionDate));
+                    //}
                     MiscellaneousTransactionHelper.UpdateMiscellaneousTransactionDetail(model);
                 }
                 catch (Exception e)

@@ -91,6 +91,39 @@ namespace _360Accounting.Data.Repositories
 
             return query.ToList();
         }
+
+        public OrderView GetSingleOrder(string id, long companyId, long sobId)
+        {
+            long longId = Convert.ToInt64(id);
+
+            var query = from a in this.Context.Orders
+                        join b in this.Context.OrderTypes on a.OrderTypeId equals b.Id
+                        join c in this.Context.Customers on a.CustomerId equals c.Id
+                        join d in this.Context.CustomerSites on a.CustomerSiteId equals d.Id
+                        where a.CompanyId == companyId && a.Id == longId
+                        select new OrderView
+                        {
+                            CompanyId = a.CompanyId,
+                            OrderTypeName = b.OrderTypeName,
+                            CustomerSiteName = d.SiteName,
+                            CustomerName = c.CustomerName,
+                            CreateBy = a.CreateBy,
+                            CreateDate = a.CreateDate,
+                            CustomerId = a.CustomerId,
+                            CustomerSiteId = a.CustomerSiteId,
+                            Id = a.Id,
+                            OrderDate = a.OrderDate,
+                            OrderNo = a.OrderNo,
+                            OrderTypeId = a.OrderTypeId,
+                            Remarks = a.Remarks,
+                            SOBId = a.SOBId,
+                            Status = a.Status,
+                            UpdateBy = a.UpdateBy,
+                            UpdateDate = a.UpdateDate
+                        };
+
+            return query.FirstOrDefault();
+        }
         
         public IEnumerable<Order> GetAll(long sobId)
         {
@@ -102,6 +135,36 @@ namespace _360Accounting.Data.Repositories
         {
             IEnumerable<Order> list = this.Context.Orders.Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.CustomerId == customerId && x.CustomerSiteId == customerSiteId && x.Status != "Shipped");
             return list;
+        }
+
+        public IEnumerable<OrderView> GetAll(long companyId, long sobId, long customerId)
+        {
+            var query = from a in this.Context.Orders
+                        join b in this.Context.Customers on a.CustomerId equals b.Id
+                        join c in this.Context.CustomerSites on a.CustomerSiteId equals c.Id
+                        where a.CompanyId == companyId && a.SOBId == sobId && a.CustomerId == customerId
+                        select new OrderView
+                        {
+                            CompanyId = a.CompanyId,
+                            CreateBy = a.CreateBy,
+                            CreateDate = a.CreateDate,
+                            CustomerId = a.CustomerSiteId,
+                            CustomerName = b.CustomerName,
+                            CustomerSiteId = a.CustomerSiteId,
+                            CustomerSiteName = c.SiteName,
+                            Id = a.Id,
+                            OrderDate = a.OrderDate,
+                            OrderNo = a.OrderNo,
+                            OrderTypeId = a.OrderTypeId,
+                            OrderTypeName = "",
+                            Remarks = a.Remarks,
+                            SOBId = a.SOBId,
+                            Status = a.Status,
+                            UpdateBy = a.UpdateBy,
+                            UpdateDate = a.UpdateDate
+                        };
+            
+            return query.ToList();
         }
 
         public IEnumerable<Order> GetAllOrdersByOrderType(long sobId, long orderTypeId)

@@ -19,8 +19,9 @@ namespace _360Accounting.Core.Entities
         public long LocatorId { get; set; }
         public DateTime DeliveryDate { get; set; }
         public decimal Quantity { get; set; }
-        public string LotNo { get; set; }
+        public long LotNoId { get; set; }
         public string SerialNo { get; set; }
+        public string DeliveryNo { get; set; }
 
         public string OrderNo { get; set; }
         public string CustomerName { get; set; }

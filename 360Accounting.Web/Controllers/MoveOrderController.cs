@@ -118,11 +118,11 @@ namespace _360Accounting.Web.Controllers
                         ViewData["EditError"] = "Lot Number must be unique";
                         return PartialView("createPartial", MoveOrderHelper.GetMoveOrderLines());
                     }
-                    if (LotNumberHelper.CheckSerialNumAvailability(model.LotNo, model.SerialNo).Any())
-                    {
-                        ViewData["EditError"] = "Serial Number must be unique";
-                        return PartialView("createPartial", MoveOrderHelper.GetMoveOrderLines());
-                    }
+                    //if (LotNumberHelper.CheckSerialNumAvailability(model.LotNo, model.SerialNo).Any())
+                    //{
+                    //    ViewData["EditError"] = "Serial Number must be unique";
+                    //    return PartialView("createPartial", MoveOrderHelper.GetMoveOrderLines());
+                    //}
                     if (SessionHelper.MoveOrder != null)
                     {
                         model.Id = SessionHelper.MoveOrder.MoveOrderDetail.Count() + 1;
@@ -172,11 +172,11 @@ namespace _360Accounting.Web.Controllers
                         ViewData["EditError"] = "Lot Number must be unique";
                         return PartialView("createPartial", MoveOrderHelper.GetMoveOrderLines());
                     }
-                    if (LotNumberHelper.CheckSerialNumAvailability(model.LotNo, model.SerialNo).Any())
-                    {
-                        ViewData["EditError"] = "Serial Number must be unique";
-                        return PartialView("createPartial", MoveOrderHelper.GetMoveOrderLines());
-                    }
+                    //if (LotNumberHelper.CheckSerialNumAvailability(model.LotNo, model.SerialNo).Any())
+                    //{
+                    //    ViewData["EditError"] = "Serial Number must be unique";
+                    //    return PartialView("createPartial", MoveOrderHelper.GetMoveOrderLines());
+                    //}
                     MoveOrderHelper.UpdateMoveOrderDetail(model);
                 }
                 catch (Exception e)

@@ -23,9 +23,9 @@ var grid = Html.DevExpress().GridView(settings =>
         column.SetDataItemTemplateContent(c =>
         {
             ViewContext.Writer.Write(
-                Html.Raw("<a href='" + Url.Content("~/Shipment/Edit?Id=") + DataBinder.Eval(c.DataItem, "OrderId") + "&date=" + DataBinder.Eval(c.DataItem, "DeliveryDate") + "'><i class='fa fa-edit'></i></a>")
+                Html.Raw("<a href='" + Url.Content("~/Shipment/Edit?no=") + DataBinder.Eval(c.DataItem, "DeliveryNo") + "&date=" + DataBinder.Eval(c.DataItem, "DeliveryDate") + "'><i class='fa fa-edit'></i></a>")
                     + "&nbsp;" +
-                Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/Shipment/Delete?Id=") + DataBinder.Eval(c.DataItem, "OrderId") + "&date=" + DataBinder.Eval(c.DataItem, "DeliveryDate") + "'><i class='fa fa-trash-o'></i></a>")
+                Html.Raw("<a class='deleteQuestion' href='" + Url.Content("~/Shipment/Delete?no=") + DataBinder.Eval(c.DataItem, "DeliveryNo") + "&date=" + DataBinder.Eval(c.DataItem, "DeliveryDate") + "'><i class='fa fa-trash-o'></i></a>")
             );
         });
 
@@ -34,7 +34,7 @@ var grid = Html.DevExpress().GridView(settings =>
         column.Width = 70;
     });
     settings.Columns.Add("DeliveryDate", "Delivery Date").PropertiesEdit.DisplayFormatString = _360Accounting.Common.Const.DATE_FORMAT;
-    settings.Columns.Add("OrderNo", "Order No.");
+    settings.Columns.Add("DeliveryNo", "Delivery No.");
     settings.Columns.Add("CustomerName", "Customer");
     settings.Columns.Add("CustomerSiteName", "Customer Site");
     settings.Columns.Add("Quantity", "Total Qty.");

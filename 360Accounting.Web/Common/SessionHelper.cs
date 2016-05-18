@@ -222,6 +222,19 @@ namespace _360Accounting.Web
             }
         }
 
+        //For Shipment Grid bhund.. will be resolved..
+        public static long ItemId
+        {
+            get
+            {
+                return HttpContext.Current.Session["ItemId"] == null ? 0 : Convert.ToInt64(HttpContext.Current.Session["ItemId"].ToString());
+            }
+            set
+            {
+                HttpContext.Current.Session["ItemId"] = value;
+            }
+        }
+
         public static long SOBId
         {
             get

@@ -78,6 +78,16 @@ namespace _360Accounting.Service
             return this.repository.GetAll(companyId, sobId, customerId, customerSiteId);
         }
 
+        public IEnumerable<OrderView> GetAll(long companyId, long sobId, long customerId)
+        {
+            return this.repository.GetAll(companyId, sobId, customerId);
+        }
+
+        public OrderView GetSingleOrder(string id, long companyId, long sobId)
+        {
+            return this.repository.GetSingleOrder(id, companyId, sobId);
+        }        
+
         public IEnumerable<Order> GetAllOrdersByOrderType(long sobId, long orderTypeId)
         {
             return this.repository.GetAllOrdersByOrderType(sobId, orderTypeId);

@@ -14,7 +14,7 @@ namespace _360Accounting.Web.Controllers
             TempData["ErrorMessage"] = filterContext.Exception.Message;
             TempData["ErrorSource"] = filterContext.Exception.GetBaseException().Source;
 
-            TempData["LastURL"] = Request.UrlReferrer.AbsolutePath;
+            TempData["LastURL"] = Request.UrlReferrer == null? "/" :Request.UrlReferrer.AbsolutePath;
 
             ViewResult vr = new ViewResult();
             vr.ViewName = "_OnException";

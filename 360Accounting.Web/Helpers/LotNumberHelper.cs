@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace _360Accounting.Web
 {
@@ -130,9 +131,20 @@ namespace _360Accounting.Web
             return service.CheckLotNumAvailability(AuthenticationHelper.CompanyId.Value, lotNum, itemId, sobId);
         }
 
-        public static IEnumerable<SerialNumber> CheckSerialNumAvailability(string lotNum, string serialNum)
+        public static bool CheckSerialNumAvailability(long lotNoId, string serialNum)
         {
-            return service.CheckSerialNumAvailability(AuthenticationHelper.CompanyId.Value, lotNum, serialNum);
+            return service.CheckSerialNumAvailability(AuthenticationHelper.CompanyId.Value, lotNoId, serialNum);
+        }
+
+        public static List<SelectListItem> GetAvailabelLotsCombo(long itemId)
+        {
+            List<SelectListItem> availableLots = service.GetAvailableLots(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, itemId).Select(x => new SelectListItem
+            {
+                Text = x.LotNo,
+                Value = x.Id.ToString()
+            }).ToList();
+
+            return availableLots;
         }
 
         public static string Insert(MoveOrderDetailModel entity)
@@ -165,6 +177,16 @@ namespace _360Accounting.Web
             return service.InsertSerialNum(GetSerialEntityByMiscellaneousTransaction(entity, 0));
         }
 
+        public static string SaveSerial(SerialNumber entity)
+        {
+            return service.InsertSerialNum(entity);
+        }
+
+        public static string SaveLot(LotNumber entity)
+        {
+            return service.Insert(entity);
+        }
+
         public static string UpdateSerialNumber(SerialNumber entity)
         {
             return service.UpdateSerialNum(entity);
@@ -173,6 +195,32 @@ namespace _360Accounting.Web
         public static void DeleteSerialNumber(string id)
         {
             service.DeleteSerialNum(id, AuthenticationHelper.CompanyId.Value);
+        }
+
+        public static SerialNumber GetSerialNo(string serial, long lotNoId)
+        {
+            return service.GetSerialNo(serial, lotNoId, AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId);
+        }
+
+        public static LotNumber GetLotBySourceId(long sourceId)
+        {
+            return service.GetLotBySourceId(sourceId, AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId);
+        }
+
+        public static List<SerialNumber> GetSerialsbyLotNo(long lotNoId)
+        {
+            return service.GetSerialsbyLotNo(lotNoId, AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId);
+        }
+
+        public static LotNumber GetLotNumber(long id)
+        {
+            return service.GetSingle(id.ToString(), AuthenticationHelper.CompanyId.Value);
+        }
+
+        public static List<SerialNumber> GetAvailableSerials(long lotNoId)
+        {
+            LotNumber lot = service.GetSingle(lotNoId.ToString(), AuthenticationHelper.CompanyId.Value);
+            return service.GetAvailableSerials(lot, AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId).ToList();
         }
     }
 }
