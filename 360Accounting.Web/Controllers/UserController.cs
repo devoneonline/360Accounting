@@ -286,14 +286,16 @@ namespace _360Accounting.Web.Controllers
         public ActionResult FeatureSet(long Id, string message = "")
         {
             ViewBag.ErrorMessage = message;
-            int totalRecords = 0;
-
             FeatureSetListModel model = new FeatureSetListModel();
             AuthenticationHelper.CompanyId = Id;
             AuthenticationHelper.CompanyName = AuthenticationHelper.CompanyList.Where(x => x.Id == Id).Select(x => x.Name).FirstOrDefault();
-            model.FeatureSet = featureSetService.GetAll(Id, AuthenticationHelper.UserRole).Select(x => new FeatureSetModel(x)).ToList();
-            model.TotalRecords = totalRecords;
             return View(model);
+        }
+
+        public ActionResult FeatureSetListPartial()
+        {
+            List<FeatureSetModel> modelList = featureSetService.GetAll(AuthenticationHelper.CompanyId.Value, AuthenticationHelper.UserRole).Select(x => new FeatureSetModel(x)).ToList();
+            return PartialView("_ListFeatureSet", modelList);
         }
 
         public ActionResult EditCompanyFeatureList(string id)

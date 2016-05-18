@@ -27,6 +27,7 @@ namespace _360Accounting.Web
         private const string Session_MiscellaneousTransaction = "MiscellaneousTransaction";
         private const string Session_Order = "Order";
         private const string Session_Shipment = "Shipment";
+        private const string Session_Selected_Value = "SelectedValue";
 
         public static MoveOrderModel MoveOrder
         {
@@ -336,6 +337,18 @@ namespace _360Accounting.Web
             set
             {
                 HttpContext.Current.Session[Session_MiscellaneousTransaction] = value;
+            }
+        }
+
+        public static string SelectedValue
+        {
+            get
+            {
+                return HttpContext.Current.Session[Session_Selected_Value] == null ? null : HttpContext.Current.Session[Session_Selected_Value].ToString();
+            }
+            set
+            {
+                HttpContext.Current.Session[Session_Selected_Value] = value;
             }
         }
     }

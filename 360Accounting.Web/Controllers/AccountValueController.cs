@@ -21,7 +21,13 @@ namespace _360Accounting.Web.Controllers
         {
             model.SOBId = SessionHelper.SOBId;
             model.Segments = AccountHelper.GetSegmentList(model.SOBId.ToString());
-            model.Segment = model.Segments[0].Value;
+            if (model.Segments.Any(x => x.Value == SessionHelper.SelectedValue))
+                model.Segment = SessionHelper.SelectedValue;
+            else
+            {
+                model.Segment = model.Segments[0].Value;
+                SessionHelper.SelectedValue = model.Segment;
+            }
         
             return View(model);
         }
@@ -35,8 +41,7 @@ namespace _360Accounting.Web.Controllers
                 model.ChartId = account.Id;
                 model.SetOfBook = SetOfBookHelper.GetSetOfBook(SessionHelper.SOBId.ToString()).Name;
                 model.Segment = segment;
-                //model.StartDate = Const.CurrentDate;
-                //model.EndDate = Const.EndDate;
+                SessionHelper.SelectedValue = segment;
                 model.ValueChar = AccountHelper.GetSegmentCharacters(segment, account);
                 return View("Edit", model);
             }
@@ -73,11 +78,6 @@ namespace _360Accounting.Web.Controllers
                         ModelState.AddModelError("Error", "Invalid Value character length.");
                     else if (model.StartDate != null && model.StartDate > model.EndDate)
                         ModelState.AddModelError("Error", "End Date should be greater than StartDate.");
-
-                    ////else if (model.Id == 0 && model.EndDate != null && model.EndDate < new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day))
-                    ////{
-                    ////    ModelState.AddModelError("Error", "End Date cannot be a back date.");
-                    ////}
                     else
                     {
                         string result = AccountValueHelper.SaveChartOfAccountValue(model);
@@ -103,6 +103,8 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult AccountValuesPartial(string segment)
         {
+            if (string.IsNullOrEmpty(segment))
+                segment = SessionHelper.SelectedValue;
             List<AccountValueViewModel> accountValuesList = AccountValueHelper.GetAccountValues(AccountHelper.GetAccountBySOBId(SessionHelper.SOBId.ToString()).Id, SessionHelper.SOBId, segment);
             return PartialView("_List", accountValuesList);
         }

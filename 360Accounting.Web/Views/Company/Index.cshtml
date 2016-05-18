@@ -1,4 +1,8 @@
-﻿@Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
+﻿@{Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
+                new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
+                new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
+                @Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
+}
 
 @model _360Accounting.Web.Models.CompanyListModel
 @{
@@ -26,64 +30,7 @@
         </div>
     }
     <div class="col-lg-12 cusGridWrapper">
-        @{
-            if (Model.Companies != null)
-            {
-                if (Model.Companies.Count() > 0)
-                {
-                    Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
-                    new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
-                    new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
-
-                    var grid = Html.DevExpress().GridView(settings =>
-                    {
-                        settings.Name = "Companies";
-                        settings.Theme = "Office2010Black";
-                        settings.KeyFieldName = "Id";
-
-                        settings.CallbackRouteValues = new { Controller = "Company", Action = "CompanyListPartial" };
-
-                        settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
-                        settings.SettingsBehavior.ConfirmDelete = true;
-
-                        settings.SettingsPager.Visible = true;
-                        settings.Settings.ShowGroupPanel = false;
-                        settings.Settings.ShowFilterRow = false;
-                        settings.SettingsBehavior.AllowSort = false;
-                        settings.SettingsBehavior.AllowSelectByRowClick = true;
-
-                        settings.Columns.Add(column =>
-                        {
-                            column.SetDataItemTemplateContent(c =>
-                            {
-                                ViewContext.Writer.Write(
-                                    Html.Raw("<a title='Edit Company' href='" + Url.Content("~/Company/Edit/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-edit'></i></a>")
-                            + "&nbsp;" +
-                                    Html.Raw("<a title ='Delete Company' class='deleteQuestion' href='" + Url.Content("~/Company/Delete/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-trash-o'></i></a>")
-                            + "&nbsp;" +
-                                    Html.Raw("<a title='Manage Features' href='" + Url.Content("~/User/FeatureSet/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-cubes'></i></a>")
-                            + "&nbsp;" +
-                                    Html.Raw("<a title='Manage Users' href='" + Url.Content("~/User/Index/") + DataBinder.Eval(c.DataItem, "Id") + "'><i class='fa fa-user-md'></i></a>")
-                                );
-                            });
-
-                            column.Settings.AllowDragDrop = DefaultBoolean.False;
-                            column.Settings.AllowSort = DefaultBoolean.False;
-                            column.Width = 70;
-                        });
-
-                        settings.Columns.Add("Id", "Company Id");
-                        settings.Columns.Add("Name", "Company Name");
-                    });
-                    if (ViewData["EditError"] != null)
-                    {
-                        grid.SetEditErrorText((string)ViewData["EditError"]);
-                    }
-
-                    grid.Bind(Model.Companies).GetHtml();
-                }
-            }
-        }
+        @Html.Action("CompanyListPartial")
     </div>
 </div>
 <script type="text/javascript">

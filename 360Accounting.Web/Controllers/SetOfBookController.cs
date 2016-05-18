@@ -15,17 +15,17 @@ namespace _360Accounting.Web.Controllers
     [Authorize]
     public class SetOfBookController : BaseController
     {
-        public ActionResult SetOfBookPartial()
-        {
-            return PartialView("_List", SetOfBookHelper.GetSetOfBooks());
-        }
-
         public ActionResult Index(string message = "")
         {
             ViewBag.ErrorMessage = message;
             SetOfBookListModel model = new SetOfBookListModel();
             model.SetOfBooks = SetOfBookHelper.GetSetOfBooks();
             return View(model);
+        }
+
+        public ActionResult SetOfBookPartial()
+        {
+            return PartialView("_List", SetOfBookHelper.GetSetOfBooks());
         }
 
         public ActionResult Create()
