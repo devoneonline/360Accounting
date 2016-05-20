@@ -65,6 +65,7 @@
     <Compile Include="Repositories\OrderRepository.cs" />
     <Compile Include="Repositories\OrderTypeRepository.cs" />
     <Compile Include="Repositories\PurchasingPeriodRepository.cs" />
+    <Compile Include="Repositories\RFQRepository.cs" />
     <Compile Include="Repositories\ShipmentRepository.cs" />
     <Compile Include="Repositories\UserSetofBookRepository.cs" />
     <Compile Include="Repositories\InventoryPeriodRepository.cs" />

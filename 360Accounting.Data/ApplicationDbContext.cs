@@ -21,6 +21,10 @@ namespace _360Accounting.Data
 
         #region DbSets
 
+        public DbSet<RFQDetail> RFQDetails { get; set; }
+
+        public DbSet<RFQ> RFQs { get; set; }
+
         public DbSet<Buyer> Buyers { get; set; }
 
         public DbSet<PurchasingPeriod> PurchasingPeriods { get; set; }
@@ -134,6 +138,12 @@ namespace _360Accounting.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ////base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<RFQDetail>().ToTable("tbRFQDetail");
+            modelBuilder.Entity<RFQDetail>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<RFQ>().ToTable("tbRFQ");
+            modelBuilder.Entity<RFQ>().HasKey(t => t.Id);
 
             modelBuilder.Entity<Buyer>().ToTable("tbBuyer");
             modelBuilder.Entity<Buyer>().HasKey(t => t.Id);
