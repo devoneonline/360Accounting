@@ -105,6 +105,8 @@ namespace _360Accounting.Web.Controllers
         {
             if (string.IsNullOrEmpty(segment))
                 segment = SessionHelper.SelectedValue;
+            else
+                SessionHelper.SelectedValue = segment;
             List<AccountValueViewModel> accountValuesList = AccountValueHelper.GetAccountValues(AccountHelper.GetAccountBySOBId(SessionHelper.SOBId.ToString()).Id, SessionHelper.SOBId, segment);
             return PartialView("_List", accountValuesList);
         }

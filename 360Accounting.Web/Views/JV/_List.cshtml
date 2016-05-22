@@ -1,8 +1,4 @@
-﻿
-@{Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
-            new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
-            new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
-
+﻿@{
 var grid = Html.DevExpress().GridView(settings =>
 {
     settings.Name = "JV";
@@ -16,9 +12,10 @@ var grid = Html.DevExpress().GridView(settings =>
 
     settings.SettingsPager.Visible = true;
     settings.Settings.ShowGroupPanel = false;
-    settings.Settings.ShowFilterRow = false;
-    settings.SettingsBehavior.AllowSort = false;
+    settings.SettingsBehavior.AllowSort = true;
     settings.SettingsBehavior.AllowSelectByRowClick = true;
+    settings.Settings.ShowFilterRow = true;
+    settings.Settings.ShowFilterRowMenu = true;
 
     settings.Columns.Add(column =>
     {

@@ -1,4 +1,8 @@
-﻿@Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
+﻿@{Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
+@Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })    
+}
 
 @model _360Accounting.Web.Models.CalendarListModel
 
@@ -27,7 +31,6 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
-        //$.noConflict();
         $('#btnCreate').click(function () {
             var url = '@Url.Content("~/Calendar/Create")';
             window.location.href = url;

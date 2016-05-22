@@ -8,7 +8,7 @@ using System.Web.Mvc;
 namespace _360Accounting.Web.Controllers
 {
     [Authorize]
-    public class HomeController : AsyncController
+    public class HomeController : BaseController
     {
         public ActionResult Index()
         {
