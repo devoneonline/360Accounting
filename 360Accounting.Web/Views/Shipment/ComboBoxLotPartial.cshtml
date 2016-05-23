@@ -1,0 +1,14 @@
+﻿@Html.DevExpress().ComboBox(settings =>
+{
+    settings.CallbackRouteValues = new { Controller = "Home", Action = "ComboBoxLotPartial" };
+    settings.Name = "LotId";
+
+    settings.Properties.TextField = "Text";
+    settings.Properties.ValueField = "Value";
+    settings.Properties.ValueType = typeof(int);
+    settings.Properties.EnableSynchronization = DefaultBoolean.False;
+    settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+    settings.Width = System.Web.UI.WebControls.Unit.Percentage(94);
+
+    settings.Properties.ClientSideEvents.BeginCallback = "LotCombo_BeginCallback";
+}).BindList(Model).GetHtml()

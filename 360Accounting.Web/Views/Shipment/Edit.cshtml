@@ -77,6 +77,10 @@
 </div>
 
 <script type="text/javascript">
+    function LotCombo_BeginCallback(s, e) {
+        e.customArgs['ItemId'] = GridView.GetEditor('ItemId').GetValue();
+    }
+
     $(document).ready(function () {
         $('#OrderId').change(function () {
             jQuery.ajaxSetup({ async: false });

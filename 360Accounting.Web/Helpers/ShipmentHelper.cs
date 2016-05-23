@@ -450,6 +450,7 @@ namespace _360Accounting.Web
         public static OrderShipmentModel GetShipmentEdit(string deliveryNo, DateTime date)
         {
             List<ShipmentModel> shipmentDetail = service.GetDelivery(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, deliveryNo, date).Select(x => new ShipmentModel(x)).ToList();
+
             OrderModel order = OrderHelper.GetOrder(shipmentDetail.First().OrderId.ToString());
 
             //Can be multiple, showing the first one on the header..

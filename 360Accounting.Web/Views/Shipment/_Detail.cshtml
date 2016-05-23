@@ -23,8 +23,8 @@
             settings.CommandColumn.ShowEditButton = true;
             settings.CommandColumn.Width = System.Web.UI.WebControls.Unit.Percentage(7);
 
-            settings.Columns.Add("Id").Width = 0;
-            settings.Columns.Add("ItemId").Width = 0;
+            //settings.Columns.Add("Id").Width = 0;
+            //settings.Columns.Add("ItemId").Width = 0;
             settings.Columns.Add(co =>
             {
                 co.FieldName = "ItemName";
@@ -123,16 +123,23 @@
                 column.Caption = "Lot No.";
                 column.ColumnType = MVCxGridViewColumnType.ComboBox;
                 var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
-                comboBoxProperties.DataSource = LotNumberHelper.GetAvailabelLotsCombo(SessionHelper.ItemId);
+                comboBoxProperties.DataSource = LotNumberHelper.GetAvailabelLotsCombo(0); //Call GetAll.
                 comboBoxProperties.TextField = "Text";
                 comboBoxProperties.ValueField = "Value";
                 comboBoxProperties.ValueType = typeof(int);
                 column.Width = System.Web.UI.WebControls.Unit.Percentage(10);
 
-                //column.SetEditItemTemplateContent(c =>
-                //{
-                //    SessionHelper.ItemId = Convert.ToInt64(c.Grid.GetRowValues(c.Grid.EditingRowVisibleIndex, "ItemId"));
-                //});
+                column.SetEditItemTemplateContent(c =>
+                {
+                    var itemID = c.Grid.GetRowValues(c.Grid.EditingRowVisibleIndex, "ItemId");
+                    ViewData["ItemId"] = itemID;
+
+                    var lots = (itemID == null)
+                        ? LotNumberHelper.GetAvailabelLotsCombo(0)
+                        : LotNumberHelper.GetAvailabelLotsCombo((long)itemID);
+
+                    Html.RenderPartial("ComboBoxLotPartial", lots);
+                });
             });
             settings.Columns.Add(column =>
             {
