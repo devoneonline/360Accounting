@@ -25,6 +25,10 @@ namespace _360Accounting.Data
 
         public DbSet<RequisitionDetail> RequisitionDetails { get; set; }
 
+        public DbSet<RFQDetail> RFQDetails { get; set; }
+
+        public DbSet<RFQ> RFQs { get; set; }
+
         public DbSet<Buyer> Buyers { get; set; }
 
         public DbSet<PurchasingPeriod> PurchasingPeriods { get; set; }
@@ -144,6 +148,12 @@ namespace _360Accounting.Data
 
             modelBuilder.Entity<RequisitionDetail>().ToTable("tbRequisitionDetail");
             modelBuilder.Entity<RequisitionDetail>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<RFQDetail>().ToTable("tbRFQDetail");
+            modelBuilder.Entity<RFQDetail>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<RFQ>().ToTable("tbRFQ");
+            modelBuilder.Entity<RFQ>().HasKey(t => t.Id);
 
             modelBuilder.Entity<Buyer>().ToTable("tbBuyer");
             modelBuilder.Entity<Buyer>().HasKey(t => t.Id);

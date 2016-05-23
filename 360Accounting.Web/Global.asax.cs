@@ -19,5 +19,19 @@ namespace _360Accounting.Web
 
             ModelBinders.Binders.DefaultBinder = new DevExpress.Web.Mvc.DevExpressEditorsBinder();
         }
+
+
+        protected void Application_AuthenticateRequest(object sender, EventArgs e)
+        {
+            //if (User.Identity.IsAuthenticated )
+            //{
+            //    var a= User.Identity.Name;
+            //}
+        }
+
+        protected void Application_AuthorizeRequest(object sender,EventArgs e)
+        {
+
+        }
     }
 }

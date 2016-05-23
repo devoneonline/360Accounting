@@ -1,0 +1,87 @@
+﻿@{
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+
+    var grid = Html.DevExpress().GridView(
+        settings =>
+        {
+            settings.Name = "GridView";
+            settings.KeyFieldName = "Id";
+            settings.CallbackRouteValues = new { Controller = "RFQ", Action = "DetailPartial" };
+            settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "RFQ", Action = "AddNewInLine" };
+            settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "RFQ", Action = "UpdateInLine" };
+            settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "RFQ", Action = "DeleteInLine" };
+            settings.SettingsEditing.Mode = GridViewEditingMode.Inline;
+            settings.SettingsBehavior.ConfirmDelete = true;
+            settings.SettingsPopup.EditForm.Width = 600;
+            settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+            //Client side validation is allowed on Batch Edit mode.
+            //settings.ClientSideEvents.BatchEditStartEditing = String.Format("function() {{ PrintHello(); }}");
+
+            settings.CommandColumn.Visible = true;
+            settings.CommandColumn.ShowNewButton = true;
+            settings.CommandColumn.ShowDeleteButton = true;
+            settings.CommandColumn.ShowEditButton = true;
+            settings.CommandColumn.Width = System.Web.UI.WebControls.Unit.Percentage(20);
+
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "ItemId";
+                column.Caption = "Item";
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(40);
+
+                column.ColumnType = MVCxGridViewColumnType.ComboBox;
+                var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+                comboBoxProperties.DataSource = ItemHelper.GetItems(_360Accounting.Web.SessionHelper.SOBId);
+                comboBoxProperties.TextField = "ItemName";
+                comboBoxProperties.ValueField = "Id";
+                comboBoxProperties.ValueType = typeof(int);
+            });
+
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "Quantity";
+                column.Caption = "Quantity";
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(20);
+
+                column.ColumnType = MVCxGridViewColumnType.SpinEdit;
+                var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
+                spinEditProperties.NumberType = SpinEditNumberType.Float;
+                spinEditProperties.DisplayFormatString = "c";
+                spinEditProperties.NumberFormat = SpinEditNumberFormat.Number;
+                spinEditProperties.DisplayFormatInEditMode = true;
+                spinEditProperties.MinValue = 0;
+                spinEditProperties.MaxValue = 100000000;
+                spinEditProperties.SpinButtons.ShowLargeIncrementButtons = true;
+            });
+
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "TargetPrice";
+                column.Caption = "Target Price";
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(20);
+
+                column.ColumnType = MVCxGridViewColumnType.SpinEdit;
+                var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
+                spinEditProperties.NumberType = SpinEditNumberType.Float;
+                //if (SessionHelper.PrecisionLimit > 0)
+                //    spinEditProperties.NumberType = SpinEditNumberType.Float;
+                //else
+                //    spinEditProperties.NumberType = SpinEditNumberType.Integer;
+                spinEditProperties.NumberType = SpinEditNumberType.Float;
+                spinEditProperties.DecimalPlaces = 2;// SessionHelper.PrecisionLimit;
+                spinEditProperties.DisplayFormatString = "c";
+                spinEditProperties.DisplayFormatInEditMode = true;
+                spinEditProperties.MinValue = 0;
+                spinEditProperties.MaxValue = 100000000;
+                spinEditProperties.SpinButtons.ShowLargeIncrementButtons = true;
+            });
+        });
+
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

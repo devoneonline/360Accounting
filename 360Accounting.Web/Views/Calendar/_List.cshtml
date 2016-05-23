@@ -1,21 +1,20 @@
-@{Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = "Office2010Black" },
-            new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = "Office2010Black" },
-            new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = "Office2010Black" });
+@{
 
 var grid = Html.DevExpress().GridView(settings =>
 {
     settings.Name = "CalendarList";
     settings.Theme = "Office2010Black";
-    settings.CallbackRouteValues = new { Controller = "Calendar", Action = "CurrencyListPartial" };
+    settings.CallbackRouteValues = new { Controller = "Calendar", Action = "CalendarListPartial" };
 
     settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
     settings.SettingsBehavior.ConfirmDelete = true;
 
     settings.SettingsPager.Visible = true;
     settings.Settings.ShowGroupPanel = false;
-    settings.Settings.ShowFilterRow = false;
-    settings.SettingsBehavior.AllowSort = false;
+    settings.SettingsBehavior.AllowSort = true;
     settings.SettingsBehavior.AllowSelectByRowClick = true;
+    settings.Settings.ShowFilterRow = true;
+    settings.Settings.ShowFilterRowMenu = true;
 
     settings.Columns.Add(column =>
     {

@@ -8,7 +8,8 @@ namespace _360Accounting.Web
 {
     public class SessionHelper
     {
-        private const string Sesson_MoveOrder = "MoveOrder";
+        private const string Session_RFQ = "RFQ";
+        private const string Session_MoveOrder = "MoveOrder";
         private const string Sesson_Locator = "Locator";
         private const string Sesson_Item = "Item";
         private const string Session_DocumentDate = "DocumentDate";
@@ -29,16 +30,29 @@ namespace _360Accounting.Web
         private const string Session_Shipment = "Shipment";
         private const string Session_Selected_Value = "SelectedValue";
 
+        public static RFQModel RFQ
+        {
+            get
+            {
+                return HttpContext.Current.Session[Session_RFQ] == null ? null :
+                    (RFQModel)HttpContext.Current.Session[Session_RFQ];
+            }
+            set
+            {
+                HttpContext.Current.Session[Session_RFQ] = value;
+            }
+        }
+
         public static MoveOrderModel MoveOrder
         {
             get
             {
-                return HttpContext.Current.Session[Sesson_MoveOrder] == null ? null :
-                    (MoveOrderModel)HttpContext.Current.Session[Sesson_MoveOrder];
+                return HttpContext.Current.Session[Session_MoveOrder] == null ? null :
+                    (MoveOrderModel)HttpContext.Current.Session[Session_MoveOrder];
             }
             set
             {
-                HttpContext.Current.Session[Sesson_MoveOrder] = value;
+                HttpContext.Current.Session[Session_MoveOrder] = value;
             }
         }
 
@@ -240,7 +254,8 @@ namespace _360Accounting.Web
         {
             get
             {
-                    return Convert.ToInt64(HttpContext.Current.Session["SOBId"].ToString());
+                return HttpContext.Current.Session["SOBId"]==null ? 0 :
+                    Convert.ToInt64(HttpContext.Current.Session["SOBId"].ToString());
             }
             set
             {

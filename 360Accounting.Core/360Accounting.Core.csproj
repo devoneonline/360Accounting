@@ -59,6 +59,7 @@
     <Compile Include="Entities\Requisition.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Entities\RFQ.cs" />
     <Compile Include="Entities\ShipmentView.cs" />
     <Compile Include="Entities\Shipment.cs" />
     <Compile Include="Entities\UserSetofBook.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="IRepository\IOrderRepository.cs" />
     <Compile Include="IRepository\IOrderTypeRepository.cs" />
     <Compile Include="IRepository\IPurchasingPeriodRepository.cs" />
+    <Compile Include="IRepository\IRFQRepository.cs" />
     <Compile Include="IRepository\IShipmentRepository.cs" />
     <Compile Include="IRepository\IUserSetofBookRepository.cs" />
     <Compile Include="IRepository\IInventoryPeriodRepository.cs" />
@@ -167,6 +169,7 @@
     <Compile Include="IService\IOrderService.cs" />
     <Compile Include="IService\IOrderTypeService.cs" />
     <Compile Include="IService\IPurchasingPeriodService.cs" />
+    <Compile Include="IService\IRFQService.cs" />
     <Compile Include="IService\IShipmentService.cs" />
     <Compile Include="IService\IUserSetofBookService.cs" />
     <Compile Include="IService\IInventoryPeriodService.cs" />
@@ -203,7 +206,6 @@
     <Compile Include="IService\IFeatureSetListService.cs" />
     <Compile Include="IService\IFeatureSetService.cs" />
     <Compile Include="IService\IGLLineService.cs" />
-    <Compile Include="IService\IJournalVoucherService.cs" />
     <Compile Include="IService\IGLHeaderService.cs" />
     <Compile Include="IService\ISetOfBookService.cs" />
     <Compile Include="IService\IVendorService.cs" />

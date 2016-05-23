@@ -61,6 +61,7 @@
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\OrderTypeService.cs" />
     <Compile Include="Services\PurchasingPeriodService.cs" />
+    <Compile Include="Services\RFQService.cs" />
     <Compile Include="Services\ShipmentService.cs" />
     <Compile Include="Services\UserSetofBookService.cs" />
     <Compile Include="Services\InventoryPeriodService.cs" />

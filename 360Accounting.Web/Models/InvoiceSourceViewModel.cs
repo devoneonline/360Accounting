@@ -13,8 +13,6 @@ namespace _360Accounting.Web.Models
     {
         public InvoiceSourceViewModel()
         {
-            //this.StartDate = Const.StartDate;
-            //this.EndDate = Const.EndDate;
         }
 
         public InvoiceSourceViewModel(InvoiceSource entity)

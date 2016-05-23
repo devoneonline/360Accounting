@@ -6,9 +6,9 @@
         settings =>
         {
             settings.Name = "ReceivablePeriods";
+            settings.Theme = "Office2010Black";
             settings.KeyFieldName = "Id";
             settings.CallbackRouteValues = new { Controller = "ReceivablePeriod", Action = "ListPartial" };
-            //settings.CustomActionRouteValues = new { Controller = "Editing", Action = "ChangeEditModePartial" };
             settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "ReceivablePeriod", Action = "AddNewInline" };
             settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "ReceivablePeriod", Action = "UpdateInline" };
             settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "ReceivablePeriod", Action = "DeleteInline" };
@@ -17,6 +17,10 @@
             settings.SettingsPopup.EditForm.Width = 500;
             settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
 
+            //settings.SettingsBehavior.AllowSort = true;
+            //settings.Settings.ShowFilterRow = true;
+            //settings.Settings.ShowFilterRowMenu = true;
+            
             settings.CommandColumn.Visible = true;
             settings.CommandColumn.ShowNewButton = true;
             settings.CommandColumn.ShowDeleteButton = true;
