@@ -11,6 +11,23 @@ namespace _360Accounting.Service
 {
     public class RFQService : IRFQService
     {
+        private IRFQRepository repository;
+
+        public RFQService(IRFQRepository repo)
+        {
+            this.repository = repo;
+        }
+
+        public IEnumerable<RFQ> GetAll(long companyId, long sobId)
+        {
+            return this.repository.GetAll(companyId, sobId);
+        }
+
+        public List<RFQView> GetAllRFQs(long companyId, long sobId)
+        {
+            return this.repository.GetAllRFQs(companyId, sobId);
+        }
+
         public IEnumerable<RFQDetail> GetAllRFQDetail(long rfqId)
         {
             return this.repository.GetAllRFQDetail(rfqId);
@@ -29,13 +46,6 @@ namespace _360Accounting.Service
         public void DeleteRFQDetail(long id)
         {
             this.repository.DeleteRFQDetail(id);
-        }
-
-        private IRFQRepository repository;
-
-        public RFQService(IRFQRepository repo)
-        {
-            this.repository = repo;
         }
 
         public RFQ GetSingle(string id, long companyId)

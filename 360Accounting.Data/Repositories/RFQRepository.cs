@@ -11,6 +11,37 @@ namespace _360Accounting.Data.Repositories
 {
     public class RFQRepository : Repository, IRFQRepository
     {
+        public IEnumerable<RFQ> GetAll(long companyId, long sobId)
+        {
+            IEnumerable<RFQ> list = this.Context.RFQs.Where(x => x.CompanyId == companyId && x.SOBId == sobId);
+            return list;
+        }
+        
+        public List<RFQView> GetAllRFQs(long companyId, long sobId)
+        {
+            var query = from a in this.Context.RFQs
+                        join b in this.Context.Buyers on a.BuyerId equals b.Id
+                        where a.CompanyId == companyId && a.SOBId == sobId
+                        select new RFQView
+                        {
+                            BuyerId = a.BuyerId,
+                            BuyerName = b.Name,
+                            CloseDate = a.CloseDate,
+                            CompanyId = a.CompanyId,
+                            CreateBy = a.CreateBy,
+                            CreateDate = a.CreateDate,
+                            Id = a.Id,
+                            RFQDate = a.RFQDate,
+                            RFQNo = a.RFQNo,
+                            SOBId = a.SOBId,
+                            Status = a.Status,
+                            UpdateBy = a.UpdateBy,
+                            UpdateDate = a.UpdateDate
+                        };
+
+            return query.ToList();
+        }
+
         public IEnumerable<RFQDetail> GetAllRFQDetail(long rfqId)
         {
             IEnumerable<RFQDetail> list = this.Context.RFQDetails.Where(x => x.RFQId == rfqId);

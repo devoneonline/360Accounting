@@ -16,6 +16,7 @@ namespace _360Accounting.Web.Models
     public class RFQModel : ModelBase
     {
         #region Properties
+        
         public long Id { get; set; }
 
         public long CompanyId { get; set; }
@@ -42,6 +43,10 @@ namespace _360Accounting.Web.Models
         public string Status { get; set; }
 
         public List<SelectListItem> Buyers { get; set; }
+        public string BuyerName { get; set; }
+
+        public IList<RFQDetailModel> RFQDetail { get; set; }
+
         #endregion
 
         #region Constructors
@@ -67,15 +72,62 @@ namespace _360Accounting.Web.Models
                 this.UpdateDate = entity.UpdateDate;
             }
         }
+
+        public RFQModel(RFQView entityView, bool isForIndex)
+        {
+            if (entityView != null)
+            {
+                this.BuyerId = entityView.BuyerId;
+                this.BuyerName = entityView.BuyerName;
+                this.CloseDate = entityView.CloseDate;
+                this.CompanyId = entityView.CompanyId;
+                this.CreateBy = entityView.CreateBy;
+                this.CreateDate = entityView.CreateDate;
+                this.Id = entityView.Id;
+                this.RFQDate = entityView.RFQDate;
+                this.RFQNo = entityView.RFQNo;
+                this.Status = entityView.Status;
+                this.UpdateBy = entityView.UpdateBy;
+                this.UpdateDate = entityView.UpdateDate;
+            }
+        }
         #endregion
     }
 
     public class RFQDetailModel : ModelBase
     {
+        #region Constructors
+
+        public RFQDetailModel()
+        {
+        }
+
+        public RFQDetailModel(RFQDetail entity)
+        {
+            if (entity != null)
+            {
+                this.CreateBy = entity.CreateBy;
+                this.CreateDate = entity.CreateDate;
+                this.Id = entity.Id;
+                this.ItemId = entity.ItemId;
+                this.Quantity = entity.Quantity;
+                this.RFQId = entity.RFQId;
+                this.TargetPrice = entity.TargetPrice;
+                this.UpdateBy = entity.UpdateBy;
+                this.UpdateDate = entity.UpdateDate;
+            }
+        }
+
+        #endregion
+
+        #region Properties
+
         public long Id { get; set; }
         public long RFQId { get; set; }
         public long ItemId { get; set; }
         public decimal Quantity { get; set; }
         public decimal TargetPrice { get; set; }
+
+        #endregion
     }
 }

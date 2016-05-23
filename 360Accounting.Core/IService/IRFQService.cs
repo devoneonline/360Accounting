@@ -14,5 +14,8 @@ namespace _360Accounting.Core
         string InsertRFQDetail(RFQDetail entity);
         string UpdateRFQDetail(RFQDetail entity);
         void DeleteRFQDetail(long id);
+
+        List<RFQView> GetAllRFQs(long companyId, long sobId);
+        IEnumerable<RFQ> GetAll(long companyId, long sobId);
     }
 }

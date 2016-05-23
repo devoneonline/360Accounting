@@ -36,4 +36,18 @@ namespace _360Accounting.Core.Entities
         public decimal Quantity { get; set; }
         public decimal TargetPrice { get; set; }
     }
+
+    public class RFQView : EntityBase
+    {
+        [Key]
+        public long Id { get; set; }
+        public long CompanyId { get; set; }
+        public long SOBId { get; set; }
+        public long BuyerId { get; set; }
+        public string RFQNo { get; set; }
+        public DateTime RFQDate { get; set; }
+        public DateTime? CloseDate { get; set; }
+        public string Status { get; set; }
+        public string BuyerName { get; set; }
+    }
 }
