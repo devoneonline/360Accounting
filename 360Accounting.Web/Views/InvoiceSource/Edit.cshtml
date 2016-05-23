@@ -33,7 +33,7 @@
             <div class="col-md-2 col-md-offset-1">
                 <div class="form-group">
                     @Html.LabelFor(m => m.StartDate)
-                    @Html.EditorFor(m => m.StartDate, new { @class = "form-control" })
+                    @Html.EditorFor(m => m.StartDate, new { @readonly = "readonly", @class = "form-control" })
                 </div>
             </div>
             <div class="form-group col-md-2">
@@ -57,21 +57,14 @@
                 <input type="button" value="Cancel" class="tstyCus-btn btn btn-default" id="btnCancel" />
             </div>
         </div>
-
-
-        @section Scripts {
-            @Scripts.Render("~/bundles/jqueryval")
-
-            <script type="text/javascript">
-                $(document).ready(function () {
-                    $('[type=date]').attr('class', 'form-control');
-
-                    $('#btnCancel').click(function () {
-                        window.location = '@Url.Content("~/InvoiceSource")'
-                    });
-                });
-            </script>
-
-        }
     }
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('[type=date]').attr('class', 'form-control');
+
+        $('#btnCancel').click(function () {
+            window.location = '@Url.Content("~/InvoiceSource")'
+        });
+    });
+</script>

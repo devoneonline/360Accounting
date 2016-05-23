@@ -123,9 +123,9 @@ namespace _360Accounting.Web.Controllers
             }
         }
 
-        public ActionResult CustomerSiteListPartial()
+        public ActionResult CustomerSiteListPartial(long Id)
         {
-            IEnumerable<CustomerSiteModel> list = CustomerHelper.GetCustomerSites();
+            IEnumerable<CustomerSiteViewModel> list = CustomerHelper.GetCustomerSites(Id);
             return PartialView("_List", list);
         }
     }

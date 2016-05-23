@@ -5,27 +5,31 @@
 }
 
 <div class="container">
-    <div id="dvCriteria">
-        <div class="clearfix">
-            <div class="col-lg-12">
-                <h3 class="page-header">
-                    @ViewBag.Title
-                </h3>
-            </div>
+    <div class="clearfix">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
         </div>
-
-        <div class="clearfix">
-            <div class="col-lg-12">
-                <input type="button" class="navbar-right btn btn-default tstyCus-btn" value="Back" title="Account" onclick="window.location = '@Url.Content("~/Account")'" />
-                <input type="button" id="btnCreate" value="Create New" class="navbar-left btn btn-default tstyCus-btn" />
-            </div>
-        </div>
-
-        @Html.HiddenFor(m => m.SOBId)
-        
     </div>
-    <div id="dvList" class="col-lg-12 cusGridWrapper">
-        @Html.Partial("_List", Model)
+
+    <div class="clearfix">
+        <div class="col-lg-12">
+            <input type="button" class="navbar-right btn btn-default tstyCus-btn" value="Back" title="Account" onclick="window.location = '@Url.Content("~/Account")'" />
+            <input type="button" id="btnCreate" value="Create New" class="navbar-left btn btn-default tstyCus-btn" />
+        </div>
+    </div>
+    <div class="clearfix">
+        <div class="col-lg-12">
+            @Html.HiddenFor(m => m.SOBId)
+        </div>
+    </div>
+
+    <div class="clearfix">
+        <div id="dvList" class="col-lg-12 cusGridWrapper">
+            @Html.Partial("_List", Model)
+
+        </div>
     </div>
 </div>
 
@@ -33,7 +37,7 @@
 
 </div>
 
-            @*//create: function (e, ui) { $(this).css("z-index", "-1"); },*@
+@*//create: function (e, ui) { $(this).css("z-index", "-1"); },*@
 
 <script type="text/javascript">
     var zind = function () {
@@ -66,8 +70,7 @@
         var id = $('#Id').val();
         var url = '@Url.Content("~/Codecombinition/UpdateCodeCombinition")';
         $.post(url, { id: id, segmentValues: segmentValues, allowPosting: posting, startDate: $('#StartDate').val(), endDate: $('#EndDate').val() }, function (result) {
-            if (isNaN(result))
-            {
+            if (isNaN(result)) {
                 $('#combinitionSaveError').text('Combinition already exist');
             }
             else {
@@ -83,7 +86,7 @@
         $('#btnCreate').click(function () {
             $.ajax({
                 url: '@Url.Content("~/CodeCombinition/Create")',
-                data: { },
+                data: {},
                 datatype: 'html',
                 type: 'post',
                 error: function (error) { },

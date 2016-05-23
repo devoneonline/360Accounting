@@ -150,6 +150,7 @@ namespace _360Accounting.Web.Controllers
         {
             FormsAuthentication.SignOut();
             Session.Abandon();
+            FormsAuthentication.RedirectToLoginPage();
             return RedirectToAction("Login");
         }
 

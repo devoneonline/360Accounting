@@ -254,7 +254,8 @@ namespace _360Accounting.Web
         {
             get
             {
-                    return Convert.ToInt64(HttpContext.Current.Session["SOBId"].ToString());
+                return HttpContext.Current.Session["SOBId"]==null ? 0 :
+                    Convert.ToInt64(HttpContext.Current.Session["SOBId"].ToString());
             }
             set
             {
