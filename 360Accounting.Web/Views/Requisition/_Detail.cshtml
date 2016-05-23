@@ -1,0 +1,135 @@
+﻿@{
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+
+    var grid = Html.DevExpress().GridView(
+        settings =>
+        {
+            settings.Name = "GridView";
+            settings.KeyFieldName = "Id";
+            settings.CallbackRouteValues = new { Controller = "Requisition", Action = "DetailPartial" };
+            settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Requisition", Action = "AddNewPartial" };
+            settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Requisition", Action = "UpdatePartial" };
+            settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Requisition", Action = "DeletePartial" };
+            settings.SettingsEditing.Mode = GridViewEditingMode.EditForm;
+            settings.SettingsBehavior.ConfirmDelete = true;
+            settings.SettingsPopup.EditForm.Width = 600;
+            settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+            settings.CommandColumn.Visible = true;
+            settings.CommandColumn.ShowNewButton = true;
+            settings.CommandColumn.ShowDeleteButton = true;
+            settings.CommandColumn.ShowEditButton = true;
+
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "ItemId";
+                column.Caption = "Item";
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(25);
+
+                column.ColumnType = MVCxGridViewColumnType.ComboBox;
+                var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+                comboBoxProperties.DataSource = ItemHelper.GetItems(_360Accounting.Web.SessionHelper.SOBId);
+                comboBoxProperties.TextField = "ItemName";
+                comboBoxProperties.ValueField = "Id";
+                comboBoxProperties.ValueType = typeof(int);
+            });
+
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "Quantity";
+                column.Caption = "Quantity";
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(5);
+
+                column.ColumnType = MVCxGridViewColumnType.SpinEdit;
+                var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
+                spinEditProperties.NumberType = SpinEditNumberType.Float;
+                spinEditProperties.DisplayFormatString = "c";
+                spinEditProperties.NumberFormat = SpinEditNumberFormat.Number;
+                spinEditProperties.DisplayFormatInEditMode = true;
+                spinEditProperties.MinValue = 0;
+                spinEditProperties.MaxValue = 100000000;
+                spinEditProperties.SpinButtons.ShowLargeIncrementButtons = true;
+            });
+            
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "Price";
+                column.Caption = "Price";
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(5);
+                
+                column.ColumnType = MVCxGridViewColumnType.SpinEdit;
+                var spinEditProperties = column.PropertiesEdit as SpinEditProperties;
+                spinEditProperties.NumberType = SpinEditNumberType.Float;
+                spinEditProperties.DecimalPlaces = 2;
+                spinEditProperties.DisplayFormatString = "c";
+                spinEditProperties.DisplayFormatInEditMode = true;
+                spinEditProperties.MinValue = 0;
+                spinEditProperties.MaxValue = 100000000;
+                spinEditProperties.SpinButtons.ShowLargeIncrementButtons = true;
+            });
+
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "NeedByDate";
+                column.Caption = "Need by Date";
+                
+                column.ColumnType = MVCxGridViewColumnType.DateEdit;
+            });
+
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "VendorId";
+                column.Caption = "Vendor";
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(20);
+
+                column.ColumnType = MVCxGridViewColumnType.ComboBox;
+                var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+                comboBoxProperties.DataSource = VendorHelper.GetVendorList(SessionHelper.Requisition.RequisitionDate, SessionHelper.Requisition.RequisitionDate);
+                comboBoxProperties.TextField = "Text";
+                comboBoxProperties.ValueField = "Value";
+                comboBoxProperties.ValueType = typeof(int);
+
+                comboBoxProperties.EnableSynchronization = DefaultBoolean.False;
+                comboBoxProperties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+
+                comboBoxProperties.ClientSideEvents.SelectedIndexChanged = "VendorCombo_SelectedIndexChanged";
+            });
+
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "VendorSiteId";
+                column.Caption = "Vendor Site";
+                column.ColumnType = MVCxGridViewColumnType.ComboBox;
+                var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+                comboBoxProperties.DataSource = VendorHelper.GetVendorSiteList(0);
+                comboBoxProperties.TextField = "Text";
+                comboBoxProperties.ValueField = "Value";
+                comboBoxProperties.ValueType = typeof(int);
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+
+                column.SetEditItemTemplateContent(c =>
+                {
+                    var vendorId = c.Grid.GetRowValues(c.Grid.EditingRowVisibleIndex, "VendorId");
+                    ViewData["VendorId"] = vendorId;
+
+                    var sites = (vendorId == null)
+                        ? VendorHelper.GetVendorSiteList(0)
+                        : VendorHelper.GetVendorSiteList((long)vendorId);
+
+                    Html.RenderPartial("ComboBoxVSitePartial", sites);
+                });
+            });
+
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "Status";
+            });
+        });
+
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

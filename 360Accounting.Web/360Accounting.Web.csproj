@@ -508,6 +508,9 @@
     <Content Include="Views\Receipt\_List.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Views\Requisition\ComboBoxVSitePartial.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Views\UserSetofBook\_SelectSOB.cshtml">
       <SubType>Code</SubType>
     </Content>
@@ -675,6 +678,10 @@
     <Content Include="Views\RFQ\_List.cshtml" />
     <Content Include="Views\RFQ\Edit.cshtml" />
     <Content Include="Views\RFQ\_Detail.cshtml" />
+    <Content Include="Views\Requisition\_Detail.cshtml" />
+    <Content Include="Views\Requisition\_List.cshtml" />
+    <Content Include="Views\Requisition\Edit.cshtml" />
+    <Content Include="Views\Requisition\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

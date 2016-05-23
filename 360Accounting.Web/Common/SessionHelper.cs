@@ -28,6 +28,7 @@ namespace _360Accounting.Web
         private const string Session_MiscellaneousTransaction = "MiscellaneousTransaction";
         private const string Session_Order = "Order";
         private const string Session_Shipment = "Shipment";
+        private const string Session_Requisition = "Requisition";
         private const string Session_Selected_Value = "SelectedValue";
 
         public static RFQModel RFQ
@@ -209,6 +210,19 @@ namespace _360Accounting.Web
             set
             {
                 HttpContext.Current.Session[Session_Shipment] = value;
+            }
+        }
+
+        public static RequisitionModel Requisition
+        {
+            get
+            {
+                return HttpContext.Current.Session[Session_Requisition] == null ? null :
+                    (RequisitionModel)HttpContext.Current.Session[Session_Requisition];
+            }
+            set
+            {
+                HttpContext.Current.Session[Session_Requisition] = value;
             }
         }
 
