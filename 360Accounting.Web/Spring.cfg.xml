@@ -3,6 +3,7 @@
 <objects xmlns="http://www.springframework.net">
   <description>360Accounting Configuration</description>
 
+  <object name="PurchaseOrderRepository" type="_360Accounting.Data.Repositories.PurchaseOrderRepository, 360Accounting.Data"> </object>
   <object name="RequisitionRepository" type="_360Accounting.Data.Repositories.RequisitionRepository, 360Accounting.Data"> </object>
   <object name="RFQRepository" type="_360Accounting.Data.Repositories.RFQRepository, 360Accounting.Data"> </object>
   <object name="BuyerRepository" type="_360Accounting.Data.Repositories.BuyerRepository, 360Accounting.Data"> </object>
@@ -52,6 +53,9 @@
   <object name="UserSetofBookRepository" type="_360Accounting.Data.Repositories.UserSetofBookRepository, 360Accounting.Data"> </object>
 
 
+  <object name="PurchaseOrderService" type="_360Accounting.Service.PurchaseOrderService, 360Accounting.Service" >
+    <constructor-arg name="repo" ref="PurchaseOrderRepository" />
+  </object>
   <object name="RequisitionService" type="_360Accounting.Service.RequisitionService, 360Accounting.Service" >
     <constructor-arg name="repo" ref="RequisitionRepository" />
   </object>

@@ -57,6 +57,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\BuyerService.cs" />
+    <Compile Include="Services\PurchaseOrderService.cs" />
     <Compile Include="Services\RequisitionService.cs" />
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\OrderTypeService.cs" />

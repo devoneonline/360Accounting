@@ -8,21 +8,23 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
-    public class RequisitionListModel
+    public class PurchaseOrderListModel
     {
-        public IList<RequisitionModel> Requisitions { get; set; }
+        public IList<PurchaseOrderModel> PurchaseOrders { get; set; }
     }
 
-    public class RequisitionModel : ModelBase
+    public class PurchaseOrderModel : ModelBase
     {
         #region Constructor
-        public RequisitionModel()
+        public PurchaseOrderModel()
 	    {
             this.Buyers = new List<SelectListItem>();
-            this.RequisitionDetail = new List<RequisitionDetailModel>();
+            this.Vendors = new List<SelectListItem>();
+            this.VendorSites = new List<SelectListItem>();
+            this.PurchaseOrderDetail = new List<PurchaseOrderDetailModel>();
 	    }
 
-        public RequisitionModel(Requisition entity)
+        public PurchaseOrderModel(PurchaseOrder entity)
         {
             if (entity != null)
             {
@@ -32,30 +34,38 @@ namespace _360Accounting.Web.Models
                 this.CreateDate = entity.CreateDate;
                 this.Description = entity.Description;
                 this.Id = entity.Id;
-                this.RequisitionDate = entity.RequisitionDate;
-                this.RequisitionNo = entity.RequisitionNo;
+                this.PODate = entity.PODate;
+                this.PONo = entity.PONo;
                 this.SOBId = entity.SOBId;
+                this.Status = entity.Status;
                 this.UpdateBy = entity.UpdateBy;
                 this.UpdateDate = entity.UpdateDate;
+                this.VendorId = entity.VendorId;
+                this.VendorSiteId = entity.VendorSiteId;
             }
         }
 
-        public RequisitionModel(RequisitionView entityView, bool isForIndex)
+        public PurchaseOrderModel(PurchaseOrderView entityView, bool isForIndex)
         {
             if (entityView != null)
             {
                 this.BuyerId = entityView.BuyerId;
-                this.BuyerName = entityView.BuyerName;
                 this.CompanyId = entityView.CompanyId;
                 this.CreateBy = entityView.CreateBy;
                 this.CreateDate = entityView.CreateDate;
                 this.Description = entityView.Description;
                 this.Id = entityView.Id;
-                this.RequisitionDate = entityView.RequisitionDate;
-                this.RequisitionNo = entityView.RequisitionNo;
+                this.PODate = entityView.PODate;
+                this.PONo = entityView.PONo;
                 this.SOBId = entityView.SOBId;
+                this.Status = entityView.Status;
                 this.UpdateBy = entityView.UpdateBy;
                 this.UpdateDate = entityView.UpdateDate;
+                this.VendorId = entityView.VendorId;
+                this.VendorSiteId = entityView.VendorSiteId;
+                this.VendorName = entityView.VendorName;
+                this.VendorSiteName = entityView.VendorSiteName;
+                this.BuyerName = entityView.BuyerName;
             }
         }
         #endregion
@@ -67,63 +77,69 @@ namespace _360Accounting.Web.Models
         
         public long SOBId { get; set; }
 
+        [Required(ErrorMessage = "Vendor is required")]
+        [Display(Name = "Vendor *")]
+        public long VendorId { get; set; }
+
+        public List<SelectListItem> Vendors { get; set; }
+
+        [Required(ErrorMessage = "Vendor Site is required")]
+        [Display(Name = "Vendor Site *")]
+        public long VendorSiteId { get; set; }
+
+        public List<SelectListItem> VendorSites { get; set; }
+
         [Required(ErrorMessage = "Buyer is required")]
         [Display(Name = "Buyer *")]
         public long BuyerId { get; set; }
 
         public List<SelectListItem> Buyers { get; set; }
 
+        public string VendorName { get; set; }
+        public string VendorSiteName { get; set; }
         public string BuyerName { get; set; }
 
-        [Display(Name="Requisition No.")]
-        public string RequisitionNo { get; set; }
+        [Display(Name="PO No.")]
+        public string PONo { get; set; }
 
-        [Required(ErrorMessage = "Requisition Date is required")]
-        [Display(Name = "Requisition Date *")]
+        [Required(ErrorMessage = "POn Date is required")]
+        [Display(Name = "PO Date *")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime RequisitionDate { get; set; }
+        public DateTime PODate { get; set; }
 
         public string Description { get; set; }
 
-        public IList<RequisitionDetailModel> RequisitionDetail { get; set; }
+        public string Status { get; set; }
+
+        public IList<PurchaseOrderDetailModel> PurchaseOrderDetail { get; set; }
 
         #endregion
     }
 
-    public class RequisitionDetailModel : ModelBase
+    public class PurchaseOrderDetailModel : ModelBase
     {
-        public RequisitionDetailModel()
+        public PurchaseOrderDetailModel()
         { }
 
-        public RequisitionDetailModel(RequisitionDetail entity)
+        public PurchaseOrderDetailModel(PurchaseOrderDetail entity)
         {
             if (entity != null)
             {
-                this.CreateBy = entity.CreateBy;
-                this.CreateDate = entity.CreateDate;
                 this.Id = entity.Id;
+                this.POId = entity.POId;
                 this.ItemId = entity.ItemId;
-                this.NeedByDate = entity.NeedByDate;
-                this.Price = entity.Price;
                 this.Quantity = entity.Quantity;
-                this.RequisitionId = entity.RequisitionId;
-                this.Status = entity.Status;
-                this.UpdateBy = entity.UpdateBy;
-                this.UpdateDate = entity.UpdateDate;
-                this.VendorId = entity.VendorId;
-                this.VendorSiteId = entity.VendorSiteId;
+                this.Price = entity.Price;
+                this.NeedByDate = entity.NeedByDate;
             }
         }
 
         public long Id { get; set; }
-        public long RequisitionId { get; set; }
+        public long POId { get; set; }
         public long ItemId { get; set; }
-        public long VendorId { get; set; }
-        public long VendorSiteId { get; set; }
         public decimal Quantity { get; set; }
         public decimal Price { get; set; }
         public DateTime NeedByDate { get; set; }
-        public string Status { get; set; }
     }
 }

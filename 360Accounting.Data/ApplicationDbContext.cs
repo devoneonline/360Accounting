@@ -21,6 +21,10 @@ namespace _360Accounting.Data
 
         #region DbSets
 
+        public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
+
+        public DbSet<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
+
         public DbSet<Requisition> Requisitions { get; set; }
 
         public DbSet<RequisitionDetail> RequisitionDetails { get; set; }
@@ -142,6 +146,12 @@ namespace _360Accounting.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ////base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<PurchaseOrder>().ToTable("tbPurchaseOrder");
+            modelBuilder.Entity<PurchaseOrder>().HasKey(t => t.Id);
+
+            modelBuilder.Entity<PurchaseOrderDetail>().ToTable("tbPurchaseOrderDetail");
+            modelBuilder.Entity<PurchaseOrderDetail>().HasKey(t => t.Id);
 
             modelBuilder.Entity<Requisition>().ToTable("tbRequisition");
             modelBuilder.Entity<Requisition>().HasKey(t => t.Id);
