@@ -1,4 +1,5 @@
-﻿using _360Accounting.Web.Models;
+﻿using _360Accounting.Common;
+using _360Accounting.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,39 @@ namespace _360Accounting.Web.Controllers
 {
     public class PayableInvoiceController : BaseController
     {
+        private ActionResult CreatePurchasePrintoutReport(DateTime fromDate, DateTime toDate, string invoiceNo, long vendorId, long vendorSiteId)
+        {
+            return View();
+        }
+        
+        public ActionResult PurchasePrintoutReport(DateTime fromDate, DateTime toDate, string invoiceNo, long vendorId, long vendorSiteId)
+        {
+            return View(CreatePurchasePrintoutReport(fromDate, toDate, invoiceNo, vendorId, vendorSiteId));
+        }
+
+        public ActionResult PurchasePrintout()
+        {
+            PurchasePrintoutCriteriaModel model = new PurchasePrintoutCriteriaModel();
+
+            model.FromDate = Const.StartDate;
+            model.ToDate = Const.EndDate;
+
+            model.Vendors = VendorHelper.GetVendorList(model.FromDate, model.ToDate);
+
+            if (model.Vendors != null && model.Vendors.Count() > 0)
+            {
+                model.VendorId = Convert.ToInt64(model.Vendors.FirstOrDefault().Value);
+                model.VendorSites = VendorHelper.GetVendorSiteList(model.VendorId);
+
+                if (model.VendorSites != null && model.VendorSites.Count() > 0)
+                {
+                    model.VendorSiteId = Convert.ToInt64(model.VendorSites.FirstOrDefault().Value);
+                }
+            }
+
+            return View(model);
+        }
+
         public ActionResult SaveInvoice(long periodId, long invoiceTypeId, 
             string invoiceDate, string remarks, long vendorId, long vendorSiteId, 
             long? whTaxId, string amount, string status)

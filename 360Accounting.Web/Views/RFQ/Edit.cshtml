@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.RFQNo)
                     @Html.TextBoxFor(model => model.RFQNo, new { @readonly = "readonly", @class = "form-control" })
@@ -45,26 +45,29 @@
                     @Html.EditorFor(model => model.RFQDate)
                 </div>
             </div>
-            <div class="col-lg-2 col-lg-offset-1">
+            <div class="col-lg-2">
                 <div class="form-group">
                     @Html.LabelFor(model => model.CloseDate)
                     @Html.EditorFor(model => model.CloseDate)
                 </div>
             </div>
+
+            <div class="col-lg-3">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.BuyerId)
+                    @Html.DropDownListFor(model => model.BuyerId, Model.Buyers, new { @class = "form-control" })
+                </div>
+            </div>
+
             <div class="col-lg-3">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Status)
                     @Html.TextBoxFor(model => model.Status, new { @class = "form-control" })
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.BuyerId)
-                    @Html.DropDownListFor(model => model.BuyerId, Model.Buyers, new { @class = "form-control" })
-                </div>
-            </div>
+        @*</div>
+        <div class="row">*@
+            
         </div>
         <div class="row">
             <div class="col-lg-12">

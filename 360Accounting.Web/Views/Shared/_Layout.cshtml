@@ -119,12 +119,15 @@
         var lookupModelField = '';
 
         function SetMultiselect(combo, data) {
-            jQuery.noConflict();
+            //jQuery.noConflict();
             var values = [];
             for (var i = 0; i < data.length; i++) {
                 if (typeof data[i].Text != 'undefined' && typeof data[i].Value != 'undefined')
                     values.push({ label: data[i].Text, value: data[i].Value });
             }
+            if (typeof $('#' + combo).multiselect == 'undefined')
+                jQuery.noConflict();
+
             $('#' + combo).multiselect('dataprovider', values);
         }
 

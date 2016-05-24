@@ -76,5 +76,15 @@ namespace _360Accounting.Data.Repositories
         {
             return this.Context.SaveChanges();
         }
+
+
+
+
+
+
+        public List<PurchasePrintout> PurchasePrintout(long companyId, long sobId, DateTime fromDate, DateTime toDate, string invoiceNo, long vendorId, long vendorSiteId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

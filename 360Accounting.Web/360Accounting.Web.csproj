@@ -670,6 +670,7 @@
     <Content Include="Views\RFQ\_List.cshtml" />
     <Content Include="Views\RFQ\Edit.cshtml" />
     <Content Include="Views\RFQ\_Detail.cshtml" />
+    <Content Include="Views\PayableInvoice\PurchasePrintout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

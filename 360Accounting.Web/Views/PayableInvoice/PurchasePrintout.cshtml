@@ -1,0 +1,133 @@
+﻿@model _360Accounting.Web.Models.PurchasePrintoutCriteriaModel
+
+@{
+    ViewBag.Title = "Purchase Printout";
+}
+
+<div class="container">
+    <div class="clearfix">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
+        </div>
+    </div>
+
+    <div class="clearfix">
+        <div class="col-lg-6">
+            <div id="dvError" class="form-group">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix">
+        <div class="col-lg-2">
+            <div class="form-group">
+                @Html.LabelFor(m => m.FromDate)
+                @Html.EditorFor(m => m.FromDate, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="form-group">
+                @Html.LabelFor(m => m.ToDate)
+                @Html.EditorFor(m => m.ToDate, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="form-group">
+                @Html.LabelFor(model => model.InvoiceNo)
+                @Html.TextBoxFor(model => model.InvoiceNo, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix">
+        <div class="col-lg-3">
+            <div class="form-group customDropDownWrapper">
+                @Html.LabelFor(model => model.VendorId)
+                @Html.DropDownListFor(model => model.VendorId, Model.Vendors, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group customDropDownWrapper">
+                @Html.LabelFor(model => model.VendorSiteId)
+                @Html.DropDownListFor(model => model.VendorSiteId, Model.VendorSites, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix">
+        <div class="col-lg-12">
+            <div class="form-group">
+                <input type="submit" value="Show" id="btnShow" class="btn btn-default tstyCus-btn" />
+                <input type="button" value="Cancel" class="btn btn-default tstyCus-btn" onclick="javascript: window.location.href='@Url.Content("~/Home/Index")'" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#FromDate').attr('class', 'form-control');
+        $('#ToDate').attr('class', 'form-control');
+    });
+
+    $('#VendorId').change(function () {
+        SetMultiselect('VendorSiteId', GetData('@Url.Content("~/PayableInvoice/VendorSiteList")', { vendorId: $(this).val() }));
+    });
+
+    function GetData(url, data) {
+        var returnedData = [];
+        $('#dvList').html("Please wait..");
+        $.ajax({
+            url: url,
+            data: data,
+            datatype: 'json',
+            type: 'get',
+            async: false,
+            error: function (data) { alert(data); },
+            success: function (rtnData) {
+                returnedData = rtnData;
+            }
+        });
+
+        return returnedData;
+    }
+
+    $('#btnShow').click(function () {
+        var errList = "";
+
+        var fromDate = new Date($('#FromDate').val());
+        var toDate = new Date($('#ToDate').val());
+
+        if (fromDate == 'Invalid Date') {
+            errList += "- Please enter valid From Date.<br>";
+        }
+
+        if (toDate == 'Invalid Date') {
+            errList += "- Please enter valid To Date.<br>";
+        }
+
+
+        if (fromDate > toDate) {
+            errList += "- From date must be less than To Date.<br>";
+        }
+
+        if (errList != "") {
+            errList = "<strong>Errors:</strong><br>" + errList;
+            $('#dvError').empty().html(errList);
+        }
+        else {
+            var url = '@Url.Content("~/PayableInvoice/PurchasePrintoutReport?fromDate=")' +
+            $('#FromDate').val() +
+            "&toDate=" + $('#ToDate').val() +
+            "&invoiceNo=" + $('#InvoiceNo').val() +
+            "&vendorId=" + $('#VendorId').val() +
+            "&vendorSiteId=" + $('#VendorSiteId').val();
+
+            window.location.href = url;
+        }
+    })
+
+</script>

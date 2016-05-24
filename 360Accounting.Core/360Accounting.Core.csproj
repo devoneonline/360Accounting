@@ -54,6 +54,7 @@
     <Compile Include="Entities\OrderView.cs" />
     <Compile Include="Entities\Order.cs" />
     <Compile Include="Entities\OrderType.cs" />
+    <Compile Include="Entities\PurchasePrintout.cs" />
     <Compile Include="Entities\PurchasingPeriod.cs" />
     <Compile Include="Entities\RFQ.cs" />
     <Compile Include="Entities\ShipmentView.cs" />

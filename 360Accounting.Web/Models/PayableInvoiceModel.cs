@@ -8,6 +8,47 @@ using System.Web.Mvc;
 
 namespace _360Accounting.Web.Models
 {
+    public class PurchasePrintoutCriteriaModel
+    {
+        #region Constructors
+
+        public PurchasePrintoutCriteriaModel()
+        {
+            this.Vendors = new List<SelectListItem>();
+            this.VendorSites = new List<SelectListItem>();
+        }
+
+        #endregion
+
+        #region Properties
+
+        [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "From Date")]
+        public DateTime FromDate { get; set; }
+
+        [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "To Date")]
+        public DateTime ToDate { get; set; }
+
+        [Display(Name = "Invoice #")]
+        public string InvoiceNo { get; set; }
+
+        [Display(Name = "Vendor")]
+        public long VendorId { get; set; }
+
+        [Display(Name = "Vendor Site")]
+        public long VendorSiteId { get; set; }
+
+        public List<SelectListItem> Vendors { get; set; }
+        public List<SelectListItem> VendorSites { get; set; }
+
+        #endregion
+    }
+
     public class PayableInvoiceListModel
     {
         public long SOBId { get; set; }
