@@ -1,0 +1,130 @@
+﻿@Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView })
+@Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
+
+@model _360Accounting.Web.Models.RequisitionModel
+
+@{
+    ViewBag.Title = "Requisition";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
+        </div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(m => m.CreateBy)
+        @Html.HiddenFor(m => m.CreateDate)
+        @Html.HiddenFor(m => m.UpdateBy)
+        @Html.HiddenFor(m => m.UpdateDate)
+        @Html.HiddenFor(m => m.CompanyId)
+        @Html.HiddenFor(m => m.SOBId)
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="navbar-right">
+                    <input type="button" value="Save" id="btnSave" class="btn btn-default tstyCus-btn" />
+                    <input type="button" value="Cancel" id="btnCancel" class="btn btn-default tstyCus-btn" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.RequisitionNo)
+                    @Html.TextBoxFor(model => model.RequisitionNo, new { @readonly = "readonly", @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.RequisitionDate)
+                    @Html.EditorFor(model => model.RequisitionDate)
+                </div>
+            </div>
+            <div class="col-lg-offset-2 col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.BuyerId)
+                    @Html.DropDownListFor(model => model.BuyerId, Model.Buyers, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description)
+                    @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                @Html.Partial("_Detail", Model.RequisitionDetail)
+            </div>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+
+    function VendorCombo_SelectedIndexChanged(s, e) {
+        VendorSiteId.PerformCallback();
+    }
+
+    function VendorSiteCombo_BeginCallback(s, e) {
+        e.customArgs['VendorId'] = GridView.GetEditor('VendorId').GetValue();
+    }
+
+    $(document).ready(function () {
+        $('#RequisitionDate').attr('class', 'form-control');
+
+        $('#RequisitionDate').blur(function () {
+            $.ajax({
+                url: '@Url.Content("~/Requisition/ChangeDate")',
+                data: { requisitionDate: $(this).val() },
+                type: 'post',
+                datatype: 'json',
+                success: function (data) {
+                    if (data == "Requisition date cannot be the past date!")
+                        alert(data);
+                },
+                error: function () { }
+            })
+        })
+
+        $('#btnCancel').click(function () {
+            if (confirm('Do you want to leave this page?')) {
+                window.location.href = '@Url.Content("~/Requisition")';
+            }
+        });
+
+        $('#btnSave').click(function () {
+            var id = $('#Id').val();
+            var requisitionNo = $('#RequisitionNo').val();
+            var requisitionDate = $('#RequisitionDate').val();
+            var buyerId = $('#BuyerId').val();
+            var description = $('#Description').val();
+            var companyId = $('#CompanyId').val();
+            var sobId = $('#SOBId').val();
+
+            if (requisitionDate == null || requisitionDate == '' || buyerId == null || buyerId == 0 )
+                alert('Please fill out the required fields');
+
+            else {
+                var url = '@Url.Content("~/Requisition/Save")';
+                $.post(url, {
+                    id: id, requisitionNo: requisitionNo, requisitionDate:requisitionDate, buyerId: buyerId, description:description, companyId:companyId, sobId:sobId
+                },
+                    function (result) {
+                        alert(result);
+                        window.location.href = '@Url.Content("~/Requisition")';
+                    });
+            }
+        });
+    });
+</script>

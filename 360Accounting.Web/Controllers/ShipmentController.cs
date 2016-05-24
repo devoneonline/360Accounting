@@ -244,5 +244,11 @@ namespace _360Accounting.Web.Controllers
             customerList.Add(new SelectListItem { Text = "-- Select --", Value = "0" });
             return Json(customerList);
         }
+
+        public ActionResult ComboBoxLotPartial()
+        {
+            int itemID = (Request.Params["ItemID"] != null) ? int.Parse(Request.Params["ItemID"]) : -1;
+            return PartialView(LotNumberHelper.GetAvailabelLotsCombo(itemID));
+        }
     }
 }

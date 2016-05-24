@@ -192,6 +192,10 @@
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\OrderTypeController.cs" />
     <Compile Include="Controllers\PurchasingPeriodController.cs" />
+    <Compile Include="Controllers\PurchaseOrderController.cs" />
+    <Compile Include="Controllers\RequisitionController.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Controllers\RFQController.cs" />
     <Compile Include="Controllers\ShipmentController.cs" />
     <Compile Include="Controllers\UserSetofBookController.cs" />
@@ -275,6 +279,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\BuyerModel.cs" />
+    <Compile Include="Models\PurchaseOrderModel.cs" />
+    <Compile Include="Models\RequisitionModel.cs" />
     <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\OrderTypeModel.cs" />
     <Compile Include="Models\PurchasingPeriodModel.cs" />
@@ -504,6 +510,9 @@
     <Content Include="Views\Receipt\_List.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Views\Requisition\ComboBoxVSitePartial.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Views\UserSetofBook\_SelectSOB.cshtml">
       <SubType>Code</SubType>
     </Content>
@@ -666,10 +675,19 @@
     <Content Include="Views\Buyer\_List.cshtml" />
     <Content Include="Views\Buyer\Create.cshtml" />
     <Content Include="Views\Buyer\Edit.cshtml" />
+    <Content Include="Views\Shipment\ComboBoxLotPartial.cshtml" />
     <Content Include="Views\RFQ\Index.cshtml" />
     <Content Include="Views\RFQ\_List.cshtml" />
     <Content Include="Views\RFQ\Edit.cshtml" />
     <Content Include="Views\RFQ\_Detail.cshtml" />
+    <Content Include="Views\Requisition\_Detail.cshtml" />
+    <Content Include="Views\Requisition\_List.cshtml" />
+    <Content Include="Views\Requisition\Edit.cshtml" />
+    <Content Include="Views\Requisition\Index.cshtml" />
+    <Content Include="Views\PurchaseOrder\_Detail.cshtml" />
+    <Content Include="Views\PurchaseOrder\_List.cshtml" />
+    <Content Include="Views\PurchaseOrder\Edit.cshtml" />
+    <Content Include="Views\PurchaseOrder\Index.cshtml" />
     <Content Include="Views\PayableInvoice\PurchasePrintout.cshtml" />
   </ItemGroup>
   <ItemGroup>

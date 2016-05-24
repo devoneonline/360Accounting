@@ -1,0 +1,14 @@
+﻿@Html.DevExpress().ComboBox(settings =>
+{
+    settings.CallbackRouteValues = new { Controller = "Requisition", Action = "ComboBoxVSitePartial" };
+    settings.Name = "VendorSiteId";
+
+    settings.Properties.TextField = "Text";
+    settings.Properties.ValueField = "Value";
+    settings.Properties.ValueType = typeof(int);
+    settings.Properties.EnableSynchronization = DefaultBoolean.False;
+    settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+    settings.Width = System.Web.UI.WebControls.Unit.Percentage(94);
+
+    settings.Properties.ClientSideEvents.BeginCallback = "VendorSiteCombo_BeginCallback";
+}).BindList(Model).GetHtml()

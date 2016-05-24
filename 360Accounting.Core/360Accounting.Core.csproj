@@ -54,8 +54,14 @@
     <Compile Include="Entities\OrderView.cs" />
     <Compile Include="Entities\Order.cs" />
     <Compile Include="Entities\OrderType.cs" />
+    <Compile Include="Entities\PurchaseOrderView.cs" />
     <Compile Include="Entities\PurchasePrintout.cs" />
     <Compile Include="Entities\PurchasingPeriod.cs" />
+    <Compile Include="Entities\PurchaseOrder.cs" />
+    <Compile Include="Entities\RequisitionView.cs" />
+    <Compile Include="Entities\Requisition.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Entities\RFQ.cs" />
     <Compile Include="Entities\ShipmentView.cs" />
     <Compile Include="Entities\Shipment.cs" />
@@ -110,6 +116,8 @@
     <Compile Include="Interfaces\ICore360.cs" />
     <Compile Include="IoC.cs" />
     <Compile Include="IRepository\IBuyerRepository.cs" />
+    <Compile Include="IRepository\IPurchaseOrderRepository.cs" />
+    <Compile Include="IRepository\IRequisitionRepository.cs" />
     <Compile Include="IRepository\IOrderRepository.cs" />
     <Compile Include="IRepository\IOrderTypeRepository.cs" />
     <Compile Include="IRepository\IPurchasingPeriodRepository.cs" />
@@ -161,6 +169,8 @@
     <Compile Include="IService\IBankService.cs" />
     <Compile Include="IService\IBankAccountService.cs" />
     <Compile Include="IService\IBuyerService.cs" />
+    <Compile Include="IService\IPurchaseOrderService.cs" />
+    <Compile Include="IService\IRequisitionService.cs" />
     <Compile Include="IService\IOrderService.cs" />
     <Compile Include="IService\IOrderTypeService.cs" />
     <Compile Include="IService\IPurchasingPeriodService.cs" />
