@@ -56,7 +56,7 @@ namespace _360Accounting.Web.Controllers
 
         private PurchasePrintoutReport CreatePurchasePrintoutReport(DateTime fromDate, DateTime toDate, string invoiceNo, long vendorId, long vendorSiteId)
         {
-            List<PurchasePrintoutModel> modelList = mapPurchasePrintoutModel(service.PurchasePrintout(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, fromDate, toDate, invoiceNo, vendorId, vendorId));
+            List<PurchasePrintoutModel> modelList = mapPurchasePrintoutModel(service.PurchasePrintout(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, fromDate, toDate, invoiceNo, vendorId, vendorSiteId));
             PurchasePrintoutReport report = new PurchasePrintoutReport();
             report.Parameters["FromDate"].Value = fromDate;
             report.Parameters["ToDate"].Value = toDate;

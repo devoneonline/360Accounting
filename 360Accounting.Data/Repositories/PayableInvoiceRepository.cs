@@ -89,7 +89,7 @@ namespace _360Accounting.Data.Repositories
                             join c in this.Context.CodeCombinitions on b.CodeCombinationId equals c.Id
                             join d in this.Context.Vendors on a.VendorId equals d.Id
                             join e in this.Context.VendorSites on a.VendorSiteId equals e.Id
-                            join f in this.Context.Withholdings on a.WHTaxId equals f.Id
+                            //join f in this.Context.Withholdings on a.WHTaxId equals f.Id
                             where a.CompanyId == companyId && a.SOBId == sobId &&
                             a.InvoiceDate >= fromDate && a.InvoiceDate <= toDate
                             select new PurchasePrintout
@@ -110,10 +110,11 @@ namespace _360Accounting.Data.Repositories
                                 VendorName = d.Name,
                                 VendorSite = e.Name,
                                 VendorSiteId = a.VendorSiteId,
-                                WHTaxName = f.Description
+                                WHTaxName = ""
+                                //WHTaxName = f.Description
                             }).ToList();
 
-            if (invoiceNo != "")
+            if (invoiceNo != "" && invoiceNo != null)
                 data = data.Where(x => x.InvoiceNo == invoiceNo).ToList();
 
             if (vendorId != 0)
