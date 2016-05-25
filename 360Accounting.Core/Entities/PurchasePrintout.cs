@@ -14,6 +14,9 @@ namespace _360Accounting.Core.Entities
         public string VendorSite { get; set; }
         public string WHTaxName { get; set; }
 
+        public long VendorId { get; set; }
+        public long VendorSiteId { get; set; }
+
         public string CCSegment1 { get; set; }
         public string CCSegment2 { get; set; }
         public string CCSegment3 { get; set; }

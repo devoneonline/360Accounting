@@ -1,5 +1,9 @@
 ﻿using _360Accounting.Common;
+using _360Accounting.Core;
+using _360Accounting.Core.Entities;
 using _360Accounting.Web.Models;
+using _360Accounting.Web.Reports;
+using DevExpress.Web.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +14,64 @@ namespace _360Accounting.Web.Controllers
 {
     public class PayableInvoiceController : BaseController
     {
-        private ActionResult CreatePurchasePrintoutReport(DateTime fromDate, DateTime toDate, string invoiceNo, long vendorId, long vendorSiteId)
+        private IPayableInvoiceService service;
+
+        public PayableInvoiceController()
         {
-            return View();
+            service = IoC.Resolve<IPayableInvoiceService>("PayableInvoiceService");
         }
-        
+
+        #region Private Methods
+
+        private List<PurchasePrintoutModel> mapPurchasePrintoutModel(List<PurchasePrintout> list)
+        {
+            List<PurchasePrintoutModel> reportModel = new List<PurchasePrintoutModel>();
+            foreach (var record in list)
+            {
+                reportModel.Add(new PurchasePrintoutModel
+                {
+                    AccountCode = Utility.Stringize(".", record.CCSegment1,
+                    record.CCSegment2, record.CCSegment3, record.CCSegment4,
+                    record.CCSegment5, record.CCSegment6, record.CCSegment7,
+                    record.CCSegment8),
+                    Amount = record.Amount,
+                    Description = record.Description,
+                    InvoiceDate = record.InvoiceDate,
+                    InvoiceNo = record.InvoiceNo,
+                    VendorName = record.VendorName,
+                    VendorSite = record.VendorSite,
+                    WHTaxName = record.WHTaxName
+                });
+            }
+
+            return reportModel;
+        }
+
+        #endregion
+
+        public ActionResult PurchasePrintoutPartialExport(DateTime fromDate, DateTime toDate, string invoiceNo, long vendorId, long vendorSiteId)
+        {
+            return DocumentViewerExtension.ExportTo(CreatePurchasePrintoutReport(fromDate, toDate, invoiceNo, vendorId, vendorSiteId), Request);
+        }
+
+        private PurchasePrintoutReport CreatePurchasePrintoutReport(DateTime fromDate, DateTime toDate, string invoiceNo, long vendorId, long vendorSiteId)
+        {
+            List<PurchasePrintoutModel> modelList = mapPurchasePrintoutModel(service.PurchasePrintout(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, fromDate, toDate, invoiceNo, vendorId, vendorId));
+            PurchasePrintoutReport report = new PurchasePrintoutReport();
+            report.Parameters["FromDate"].Value = fromDate;
+            report.Parameters["ToDate"].Value = toDate;
+            report.Parameters["InvoiceNo"].Value = invoiceNo;
+            report.Parameters["VendorId"].Value = vendorId;
+            report.Parameters["VendorSiteId"].Value = vendorSiteId;
+            report.DataSource = modelList;
+            return report;
+        }
+
+        public ActionResult PurchasePrintoutPartial(DateTime fromDate, DateTime toDate, string invoiceNo, long vendorId, long vendorSiteId)
+        {
+            return PartialView("_PurchasePrintout", CreatePurchasePrintoutReport(fromDate, toDate, invoiceNo, vendorId, vendorSiteId));
+        }
+
         public ActionResult PurchasePrintoutReport(DateTime fromDate, DateTime toDate, string invoiceNo, long vendorId, long vendorSiteId)
         {
             return View(CreatePurchasePrintoutReport(fromDate, toDate, invoiceNo, vendorId, vendorSiteId));

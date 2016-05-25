@@ -63,5 +63,13 @@ namespace _360Accounting.Service
         {
             return this.repository.Count(companyId);
         }
+
+
+
+
+        public List<PurchasePrintout> PurchasePrintout(long companyId, long sobId, DateTime fromDate, DateTime toDate, string invoiceNo, long vendorId, long vendorSiteId)
+        {
+            return this.repository.PurchasePrintout(companyId, sobId, fromDate, toDate, invoiceNo, vendorId, vendorSiteId);
+        }
     }
 }

@@ -84,7 +84,45 @@ namespace _360Accounting.Data.Repositories
 
         public List<PurchasePrintout> PurchasePrintout(long companyId, long sobId, DateTime fromDate, DateTime toDate, string invoiceNo, long vendorId, long vendorSiteId)
         {
-            throw new NotImplementedException();
+            var data = (from a in this.Context.PayableInvoices
+                            join b in this.Context.PayableInvoiceDetails on a.Id equals b.InvoiceId
+                            join c in this.Context.CodeCombinitions on b.CodeCombinationId equals c.Id
+                            join d in this.Context.Vendors on a.VendorId equals d.Id
+                            join e in this.Context.VendorSites on a.VendorSiteId equals e.Id
+                            join f in this.Context.Withholdings on a.WHTaxId equals f.Id
+                            where a.CompanyId == companyId && a.SOBId == sobId &&
+                            a.InvoiceDate >= fromDate && a.InvoiceDate <= toDate
+                            select new PurchasePrintout
+                            {
+                                Amount = b.Amount,
+                                CCSegment1 = c.Segment1,
+                                CCSegment2 = c.Segment2,
+                                CCSegment3 = c.Segment3,
+                                CCSegment4 = c.Segment4,
+                                CCSegment5 = c.Segment5,
+                                CCSegment6 = c.Segment6,
+                                CCSegment7 = c.Segment7,
+                                CCSegment8 = c.Segment8,
+                                Description = b.Description,
+                                InvoiceDate = a.InvoiceDate,
+                                InvoiceNo = a.InvoiceNo,
+                                VendorId = a.VendorId,
+                                VendorName = d.Name,
+                                VendorSite = e.Name,
+                                VendorSiteId = a.VendorSiteId,
+                                WHTaxName = f.Description
+                            }).ToList();
+
+            if (invoiceNo != "")
+                data = data.Where(x => x.InvoiceNo == invoiceNo).ToList();
+
+            if (vendorId != 0)
+                data = data.Where(x => x.VendorId == vendorId).ToList();
+
+            if (vendorSiteId != 0)
+                data = data.Where(x => x.VendorSiteId == vendorSiteId).ToList();
+
+            return data;
         }
     }
 }

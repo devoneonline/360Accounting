@@ -356,6 +356,12 @@
     <Compile Include="Reports\LedgerReport.Designer.cs">
       <DependentUpon>LedgerReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Reports\PurchasePrintoutReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PurchasePrintoutReport.Designer.cs">
+      <DependentUpon>PurchasePrintoutReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Reports\TrialBalanceReport.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -689,6 +695,8 @@
     <Content Include="Views\PurchaseOrder\Edit.cshtml" />
     <Content Include="Views\PurchaseOrder\Index.cshtml" />
     <Content Include="Views\PayableInvoice\PurchasePrintout.cshtml" />
+    <Content Include="Views\PayableInvoice\PurchasePrintoutReport.cshtml" />
+    <Content Include="Views\PayableInvoice\_PurchasePrintout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">
@@ -722,6 +730,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\LedgerReport.resx">
       <DependentUpon>LedgerReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PurchasePrintoutReport.resx">
+      <DependentUpon>PurchasePrintoutReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\TrialBalanceReport.resx">
       <DependentUpon>TrialBalanceReport.cs</DependentUpon>
