@@ -52,6 +52,7 @@ namespace _360Accounting.Web.Models
             this.PeriodId = receipt.PeriodId;
             this.CustomerSiteId = receipt.CustomerSiteId;
             this.CustomerId = receipt.CustomerId;
+            this.CompanyId = receipt.CompanyId;
             this.Id = receipt.Id;
             this.CurrencyId = receipt.CurrencyId;
             this.ConversionRate = receipt.ConversionRate;

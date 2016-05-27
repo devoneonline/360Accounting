@@ -42,4 +42,16 @@ namespace _360Accounting.Core.Entities
 
         public long PeriodId { get; set; }
     }
+
+    public class ReceiptAuditTrial
+    {
+        public string ReceiptNo { get; set; }
+        public DateTime ReceiptDate { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerSiteName { get; set; }
+        public string BankName { get; set; }
+        public string BankAccountName { get; set; }
+        public decimal Amount { get; set; }
+        public string Status { get; set; }
+    }
 }

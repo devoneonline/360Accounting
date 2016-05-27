@@ -2,6 +2,8 @@
 using _360Accounting.Core;
 using _360Accounting.Core.Entities;
 using _360Accounting.Web.Models;
+using _360Accounting.Web.Reports;
+using DevExpress.Web.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +16,7 @@ namespace _360Accounting.Web.Controllers
     public class ReceiptController : BaseController
     {
         private ICalendarService calendarService;
-        //private IReceiptService service;
+        private IReceiptService service;
         private ISetOfBookService sobService;
         private ICustomerService customerService;
         private ICustomerSiteService customerSiteService;
@@ -24,7 +26,7 @@ namespace _360Accounting.Web.Controllers
 
         public ReceiptController()
         {
-            //service = IoC.Resolve<IReceiptService>("ReceiptService");
+            service = IoC.Resolve<IReceiptService>("ReceiptService");
             calendarService = IoC.Resolve<ICalendarService>("CalendarService");
             sobService = IoC.Resolve<ISetOfBookService>("SetOfBookService");
             customerService = IoC.Resolve<ICustomerService>("CustomerService");
@@ -32,6 +34,63 @@ namespace _360Accounting.Web.Controllers
             bankService = IoC.Resolve<IBankService>("BankService");
             bankAccountService = IoC.Resolve<IBankAccountService>("BankAccountService");
             currencyService = IoC.Resolve<ICurrencyService>("CurrencyService");
+        }
+
+        #region Private Methods
+
+        private ReceiptAuditTrialReport createReceiptAuditTrialReport(DateTime fromDate, DateTime toDate)
+        {
+            List<ReceiptAuditTrialModel> modelList = mapReceiptAuditTrialModel(service.ReceiptAuditTrial(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, fromDate, toDate));
+            ReceiptAuditTrialReport report = new ReceiptAuditTrialReport();
+            report.Parameters["FromDate"].Value = fromDate;
+            report.Parameters["ToDate"].Value = toDate;
+            report.DataSource = modelList;
+            return report;
+        }
+
+        private List<ReceiptAuditTrialModel> mapReceiptAuditTrialModel(List<ReceiptAuditTrial> entityList)
+        {
+            List<ReceiptAuditTrialModel> reportModel = new List<ReceiptAuditTrialModel>();
+
+            foreach (var record in entityList)
+            {
+                reportModel.Add(new ReceiptAuditTrialModel
+                    {
+                        Amount = record.Amount,
+                        BankAccountName = record.BankAccountName,
+                        BankName = record.BankName,
+                        CustomerName = record.CustomerName,
+                        CustomerSiteName = record.CustomerSiteName,
+                        ReceiptDate = record.ReceiptDate,
+                        ReceiptNo = record.ReceiptNo,
+                        Status = record.Status
+                    });
+            }
+
+            return reportModel;
+        }
+
+        #endregion
+
+        public ActionResult ReceiptAuditTrialPartialExport(DateTime fromDate, DateTime toDate)
+        {
+            return DocumentViewerExtension.ExportTo(createReceiptAuditTrialReport(fromDate, toDate), Request);
+        }
+
+        public ActionResult ReceiptAuditTrialPartial(DateTime fromDate, DateTime toDate)
+        {
+            return PartialView("_ReceiptAuditTrial", createReceiptAuditTrialReport(fromDate, toDate));
+        }
+        
+        public ActionResult ReceiptAuditTrialReport(DateTime fromDate, DateTime toDate)
+        {
+            return View(createReceiptAuditTrialReport(fromDate, toDate));
+        }
+
+        public ActionResult ReceiptAuditTrial()
+        {
+            ReceiptAuditTrialCriteriaModel model = new ReceiptAuditTrialCriteriaModel();
+            return View(model);
         }
 
         public ActionResult Index(string message = "")
@@ -217,27 +276,6 @@ namespace _360Accounting.Web.Controllers
 
             return View(receipt);
         }
-
-        //private ReceiptViewModel ReceiptViewtoReceipt(Receipt receipt)
-        //{
-        //    return new ReceiptViewModel
-        //    {
-        //        BankAccountId = receipt.BankAccountId,
-        //        ReceiptAmount = receipt.ReceiptAmount,
-        //        ReceiptDate = receipt.ReceiptDate,
-        //        ReceiptNumber = receipt.ReceiptNumber,
-        //        PeriodId = receipt.PeriodId,
-        //        CustomerSiteId = receipt.CustomerSiteId,
-        //        CustomerId = receipt.CustomerId,
-        //        Id = receipt.Id,
-        //        CurrencyId = receipt.CurrencyId,
-        //        ConversionRate = receipt.ConversionRate,
-        //        BankId = receipt.BankId,
-        //        Remarks = receipt.Remarks,
-        //        SOBId = receipt.SOBId,
-        //        Status = receipt.Status
-        //    };
-        //}
 
         public JsonResult CheckReceiptDate(DateTime receiptDate, long periodId)
         {

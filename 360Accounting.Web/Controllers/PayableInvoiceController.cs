@@ -23,6 +23,19 @@ namespace _360Accounting.Web.Controllers
 
         #region Private Methods
 
+        private PurchasePrintoutReport createPurchasePrintoutReport(DateTime fromDate, DateTime toDate, string invoiceNo, long vendorId, long vendorSiteId)
+        {
+            List<PurchasePrintoutModel> modelList = mapPurchasePrintoutModel(service.PurchasePrintout(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, fromDate, toDate, invoiceNo, vendorId, vendorSiteId));
+            PurchasePrintoutReport report = new PurchasePrintoutReport();
+            report.Parameters["FromDate"].Value = fromDate;
+            report.Parameters["ToDate"].Value = toDate;
+            report.Parameters["InvoiceNo"].Value = invoiceNo;
+            report.Parameters["VendorId"].Value = vendorId;
+            report.Parameters["VendorSiteId"].Value = vendorSiteId;
+            report.DataSource = modelList;
+            return report;
+        }
+
         private List<PurchasePrintoutModel> mapPurchasePrintoutModel(List<PurchasePrintout> list)
         {
             List<PurchasePrintoutModel> reportModel = new List<PurchasePrintoutModel>();
@@ -51,30 +64,17 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult PurchasePrintoutPartialExport(DateTime fromDate, DateTime toDate, string invoiceNo, long vendorId, long vendorSiteId)
         {
-            return DocumentViewerExtension.ExportTo(CreatePurchasePrintoutReport(fromDate, toDate, invoiceNo, vendorId, vendorSiteId), Request);
-        }
-
-        private PurchasePrintoutReport CreatePurchasePrintoutReport(DateTime fromDate, DateTime toDate, string invoiceNo, long vendorId, long vendorSiteId)
-        {
-            List<PurchasePrintoutModel> modelList = mapPurchasePrintoutModel(service.PurchasePrintout(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, fromDate, toDate, invoiceNo, vendorId, vendorSiteId));
-            PurchasePrintoutReport report = new PurchasePrintoutReport();
-            report.Parameters["FromDate"].Value = fromDate;
-            report.Parameters["ToDate"].Value = toDate;
-            report.Parameters["InvoiceNo"].Value = invoiceNo;
-            report.Parameters["VendorId"].Value = vendorId;
-            report.Parameters["VendorSiteId"].Value = vendorSiteId;
-            report.DataSource = modelList;
-            return report;
+            return DocumentViewerExtension.ExportTo(createPurchasePrintoutReport(fromDate, toDate, invoiceNo, vendorId, vendorSiteId), Request);
         }
 
         public ActionResult PurchasePrintoutPartial(DateTime fromDate, DateTime toDate, string invoiceNo, long vendorId, long vendorSiteId)
         {
-            return PartialView("_PurchasePrintout", CreatePurchasePrintoutReport(fromDate, toDate, invoiceNo, vendorId, vendorSiteId));
+            return PartialView("_PurchasePrintout", createPurchasePrintoutReport(fromDate, toDate, invoiceNo, vendorId, vendorSiteId));
         }
 
         public ActionResult PurchasePrintoutReport(DateTime fromDate, DateTime toDate, string invoiceNo, long vendorId, long vendorSiteId)
         {
-            return View(CreatePurchasePrintoutReport(fromDate, toDate, invoiceNo, vendorId, vendorSiteId));
+            return View(createPurchasePrintoutReport(fromDate, toDate, invoiceNo, vendorId, vendorSiteId));
         }
 
         public ActionResult PurchasePrintout()

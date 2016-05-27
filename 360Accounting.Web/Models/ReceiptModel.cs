@@ -1,4 +1,5 @@
-﻿using _360Accounting.Core.Entities;
+﻿using _360Accounting.Common;
+using _360Accounting.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -74,5 +75,46 @@ namespace _360Accounting.Web.Models
         public long PeriodId { get; set; }
 
         #endregion
+    }
+
+    public class ReceiptAuditTrialCriteriaModel
+    {
+        #region Constructors
+
+        public ReceiptAuditTrialCriteriaModel()
+        {
+            this.FromDate = Const.StartDate;
+            this.ToDate = Const.EndDate;
+        }
+
+        #endregion
+
+        #region Properties
+
+        [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "From Date")]
+        public DateTime FromDate { get; set; }
+
+        [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "To Date")]
+        public DateTime ToDate { get; set; }
+
+        #endregion
+    }
+
+    public class ReceiptAuditTrialModel
+    {
+        public string ReceiptNo { get; set; }
+        public DateTime ReceiptDate { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerSiteName { get; set; }
+        public string BankName { get; set; }
+        public string BankAccountName { get; set; }
+        public decimal Amount { get; set; }
+        public string Status { get; set; }
     }
 }

@@ -73,5 +73,13 @@ namespace _360Accounting.Service
         {
             return this.GetByCurrencyId(companyId, sobId, currencyId);
         }
+
+
+
+
+        public List<ReceiptAuditTrial> ReceiptAuditTrial(long companyId, long sobId, DateTime fromDate, DateTime toDate)
+        {
+            return this.repository.ReceiptAuditTrial(companyId, sobId, fromDate, toDate);
+        }
     }
 }

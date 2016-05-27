@@ -18,5 +18,7 @@ namespace _360Accounting.Core
         Receipt GetSingle(long companyId, long sobId, long periodId, long currencyId, long customerId);
 
         IEnumerable<Receipt> GetByCurrencyId(long companyId, long sobId, long currencyId);
+
+        List<ReceiptAuditTrial> ReceiptAuditTrial(long companyId, long sobId, DateTime fromDate, DateTime toDate);
     }
 }
