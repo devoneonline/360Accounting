@@ -56,4 +56,14 @@ namespace _360Accounting.Core.Entities
         public decimal Quantity { get; set; }
         public decimal Rate { get; set; }
     }
+
+    public class CustomerSales
+    {
+        public string CustomerName { get; set; }
+        public string ItemName { get; set; }
+        public decimal Quantity { get; set; }
+        public decimal Amount { get; set; }
+        public decimal TaxAmount { get; set; }
+        public decimal TotalAmount { get; set; }
+    }
 }
