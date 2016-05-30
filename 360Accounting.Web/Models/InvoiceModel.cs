@@ -147,6 +147,51 @@ namespace _360Accounting.Web.Models
         #endregion
     }
 
+    public class InvoiceAuditTrailModel
+    {
+        public string InvoiceNo { get; set; }
+        public DateTime InvoiceDate { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerSiteName { get; set; }
+        public string ItemName { get; set; }
+        public string UOM { get; set; }
+        public decimal Quantity { get; set; }
+        public decimal Rate { get; set; }
+        public decimal Amount { get; set; }
+        public string TaxName { get; set; }
+        public decimal TaxAmount { get; set; }
+        public decimal TotalAmount { get; set; }
+    }
+
+    public class InvoiceAuditTrailCriteriaModel
+    {
+        #region Constructors
+
+        public InvoiceAuditTrailCriteriaModel()
+        {
+            this.FromDate = Const.StartDate;
+            this.ToDate = Const.EndDate;
+        }
+
+        #endregion
+
+        #region Properties
+
+        [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "From Date")]
+        public DateTime FromDate { get; set; }
+
+        [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "To Date")]
+        public DateTime ToDate { get; set; }
+
+        #endregion
+    }
+
     public class CustomerSalesCriteriaModel
     {
         public CustomerSalesCriteriaModel()

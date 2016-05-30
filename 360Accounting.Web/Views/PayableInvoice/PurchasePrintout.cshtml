@@ -97,7 +97,7 @@
 
     $('#btnShow').click(function () {
         var errList = "";
-
+        debugger;
         var fromDate = new Date($('#FromDate').val());
         var toDate = new Date($('#ToDate').val());
 
@@ -119,12 +119,24 @@
             $('#dvError').empty().html(errList);
         }
         else {
-            var url = '@Url.Content("~/PayableInvoice/PurchasePrintoutReport?fromDate=")' +
-            $('#FromDate').val() +
-            "&toDate=" + $('#ToDate').val() +
-            "&invoiceNo=" + $('#InvoiceNo').val() +
-            "&vendorId=" + $('#VendorId').val() +
-            "&vendorSiteId=" + $('#VendorSiteId').val();
+            if ($('#VendorSiteId').val() == null)
+            {
+                var url = '@Url.Content("~/PayableInvoice/PurchasePrintoutReport?fromDate=")' +
+                    $('#FromDate').val() +
+                    "&toDate=" + $('#ToDate').val() +
+                    "&invoiceNo=" + $('#InvoiceNo').val() +
+                    "&vendorId=" + $('#VendorId').val() +
+                    "&vendorSiteId=0";
+            }
+            else
+            {
+                var url = '@Url.Content("~/PayableInvoice/PurchasePrintoutReport?fromDate=")' +
+                    $('#FromDate').val() +
+                    "&toDate=" + $('#ToDate').val() +
+                    "&invoiceNo=" + $('#InvoiceNo').val() +
+                    "&vendorId=" + $('#VendorId').val() +
+                    "&vendorSiteId=" + $('#VendorSiteId').val();
+            }
 
             window.location.href = url;
         }

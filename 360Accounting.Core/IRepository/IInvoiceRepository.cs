@@ -18,5 +18,6 @@ namespace _360Accounting.Core.Interfaces
         IEnumerable<Invoice> GetByCurrencyId(long companyId, long sobId, long currencyId);
 
         List<CustomerSales> CustomerSales(long companyId, long sobId, DateTime fromDate, DateTime toDate, long customerId);
+        List<InvoiceAuditTrail> InvoiceAuditTrail(long companyId, long sobId, DateTime fromDate, DateTime toDate);
     }
 }

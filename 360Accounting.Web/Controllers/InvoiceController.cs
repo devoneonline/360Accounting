@@ -23,6 +23,41 @@ namespace _360Accounting.Web.Controllers
 
         #region Private Methods
 
+        private InvoiceAuditTrailReport createInvoiceAuditTrailReport(DateTime fromDate, DateTime toDate)
+        {
+            List<InvoiceAuditTrailModel> modelList = mapInvoiceAuditTrailModel(service.InvoiceAuditTrail(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, fromDate, toDate));
+            InvoiceAuditTrailReport report = new InvoiceAuditTrailReport();
+            report.Parameters["FromDate"].Value = fromDate;
+            report.Parameters["ToDate"].Value = toDate;
+            report.DataSource = modelList;
+            return report;
+        }
+
+        private List<InvoiceAuditTrailModel> mapInvoiceAuditTrailModel(List<InvoiceAuditTrail> list)
+        {
+            List<InvoiceAuditTrailModel> reportModel = new List<InvoiceAuditTrailModel>();
+            foreach (var record in list)
+            {
+                reportModel.Add(new InvoiceAuditTrailModel
+                {
+                    Amount = record.Amount,
+                    CustomerName = record.CustomerName,
+                    CustomerSiteName = record.CustomerSiteName,
+                    InvoiceDate = record.InvoiceDate,
+                    InvoiceNo = record.InvoiceNo,
+                    ItemName = record.ItemName,
+                    Quantity = record.Quantity,
+                    Rate = record.Rate,
+                    TaxAmount = record.TaxAmount,
+                    TaxName = record.TaxName,
+                    TotalAmount = record.TotalAmount,
+                    UOM = record.UOM
+                });
+            }
+
+            return reportModel;
+        }
+
         private CustomerSalesReport createCustomerSalesReport(DateTime fromDate, DateTime toDate, long customerId)
         {
             List<CustomerSalesModel> modelList = mapCustomerSalesModel(service.CustomerSales(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, fromDate, toDate, customerId));
@@ -56,6 +91,27 @@ namespace _360Accounting.Web.Controllers
 
         #endregion
 
+        public ActionResult InvoiceAuditTrailPartialExport(DateTime fromDate, DateTime toDate)
+        {
+            return DocumentViewerExtension.ExportTo(createInvoiceAuditTrailReport(fromDate, toDate), Request);
+        }
+
+        public ActionResult InvoiceAuditTrailPartial(DateTime fromDate, DateTime toDate)
+        {
+            return PartialView("_InvoiceAuditTrail", createInvoiceAuditTrailReport(fromDate, toDate));
+        }
+
+        public ActionResult InvoiceAuditTrailReport(DateTime fromDate, DateTime toDate)
+        {
+            return View(createInvoiceAuditTrailReport(fromDate, toDate));
+        }
+
+        public ActionResult InvoiceAuditTrail()
+        {
+            InvoiceAuditTrailCriteriaModel model = new InvoiceAuditTrailCriteriaModel();
+            return View(model);
+        }
+
         public ActionResult CustomerSalesPartialExport(DateTime fromDate, DateTime toDate, long customerId)
         {
             return DocumentViewerExtension.ExportTo(createCustomerSalesReport(fromDate, toDate, customerId), Request);
@@ -75,15 +131,35 @@ namespace _360Accounting.Web.Controllers
         {
             CustomerSalesCriteriaModel model = new CustomerSalesCriteriaModel();
 
-            model.Customers = CustomerHelper.GetCustomersCombo(model.FromDate, model.ToDate);
-
-            if (model.Customers != null && model.Customers.Count() > 0)
+            model.Customers.Add(new SelectListItem
             {
-                model.CustomerId = Convert.ToInt64(model.Customers.FirstOrDefault().Value);
+                Text = "All Customers",
+                Value = "0"
+            });
+
+            foreach (var customer in CustomerHelper.GetCustomers())
+            {
+                model.Customers.Add(new SelectListItem
+                {
+                    Text = customer.CustomerName,
+                    Value = customer.Id.ToString()
+                });
             }
+
+            //model.Customers = CustomerHelper.GetCustomers().Select(x => new SelectListItem
+            //{
+            //    Text = x.CustomerName,
+            //    Value = x.Id.ToString()
+            //}).ToList();
+
+            //if (model.Customers != null && model.Customers.Count() > 0)
+            //{
+            //    model.CustomerId = Convert.ToInt64(model.Customers.FirstOrDefault().Value);
+            //}
 
             return View(model);
         }
+
 
 
         public JsonResult CustomerList()

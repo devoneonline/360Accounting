@@ -204,7 +204,7 @@
             // xrLabel8
             // 
             this.xrLabel8.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
-            new DevExpress.XtraReports.UI.XRBinding("Text", null, "Amount")});
+            new DevExpress.XtraReports.UI.XRBinding("Text", null, "Amount", "{0:#.00}")});
             this.xrLabel8.LocationFloat = new DevExpress.Utils.PointFloat(748.3333F, 6.00001F);
             this.xrLabel8.Name = "xrLabel8";
             this.xrLabel8.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);

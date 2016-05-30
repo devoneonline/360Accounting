@@ -84,7 +84,12 @@ namespace _360Accounting.Web.Controllers
             model.FromDate = Const.StartDate;
             model.ToDate = Const.EndDate;
 
-            model.Vendors = VendorHelper.GetVendorList(model.FromDate, model.ToDate);
+            model.Vendors.Add(new SelectListItem { Text = "All Vendors", Value = "0" });
+
+            foreach (var vendor in VendorHelper.GetAll())
+            {
+                model.Vendors.Add(new SelectListItem { Text = vendor.Name, Value = vendor.Id.ToString() });
+            }
 
             if (model.Vendors != null && model.Vendors.Count() > 0)
             {

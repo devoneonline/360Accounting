@@ -1,0 +1,22 @@
+﻿@model _360Accounting.Web.Reports.InvoiceAuditTrailReport
+
+@Html.DevExpress().DocumentViewer(r =>
+{
+    r.Name = "DocumentViewer";
+    r.Report = (XtraReport)Model;
+    r.CallbackRouteValues = new
+    {
+        Controller = "Invoice",
+        Action = "InvoiceAuditTrailPartial",
+        fromDate = r.Report.Parameters["FromDate"].Value,
+        toDate = r.Report.Parameters["ToDate"].Value
+    };
+    r.ExportRouteValues = new
+    {
+        Controller = "Invoice",
+        Action = "InvoiceAuditTrailPartialExport",
+        fromDate = r.Report.Parameters["FromDate"].Value,
+        toDate = r.Report.Parameters["ToDate"].Value
+    };
+    r.ToolbarMode = DocumentViewerToolbarMode.StandardToolbar;
+}).GetHtml()
