@@ -350,6 +350,12 @@
     <Compile Include="Reports\AuditTrailReport.Designer.cs">
       <DependentUpon>AuditTrailReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Reports\CustomerSalesReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\CustomerSalesReport.Designer.cs">
+      <DependentUpon>CustomerSalesReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Reports\LedgerReport.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -706,6 +712,9 @@
     <Content Include="Views\Receipt\ReceiptAuditTrial.cshtml" />
     <Content Include="Views\Receipt\ReceiptAuditTrialReport.cshtml" />
     <Content Include="Views\Receipt\_ReceiptAuditTrial.cshtml" />
+    <Content Include="Views\Invoice\_CustomerSales.cshtml" />
+    <Content Include="Views\Invoice\CustomerSales.cshtml" />
+    <Content Include="Views\Invoice\CustomerSalesReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">
@@ -736,6 +745,9 @@
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Reports\AuditTrailReport.resx">
       <DependentUpon>AuditTrailReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\CustomerSalesReport.resx">
+      <DependentUpon>CustomerSalesReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\LedgerReport.resx">
       <DependentUpon>LedgerReport.cs</DependentUpon>

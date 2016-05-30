@@ -22,8 +22,6 @@ namespace _360Accounting.Core.Entities
         public string InvoiceNo { get; set; }
         public decimal? ConversionRate { get; set; }
         public string Remarks { get; set; }
-        ///TODO: Order Id to be added later.
-        ////public long OrderId { get; set; }
     }
 
     public class InvoiceView : EntityBase
@@ -60,6 +58,7 @@ namespace _360Accounting.Core.Entities
     public class CustomerSales
     {
         public string CustomerName { get; set; }
+        public string InvoiceSourceName { get; set; }
         public string ItemName { get; set; }
         public decimal Quantity { get; set; }
         public decimal Amount { get; set; }

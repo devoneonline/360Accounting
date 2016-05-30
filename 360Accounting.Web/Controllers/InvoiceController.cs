@@ -1,5 +1,9 @@
-﻿using _360Accounting.Web;
+﻿using _360Accounting.Core;
+using _360Accounting.Core.Entities;
+using _360Accounting.Web;
 using _360Accounting.Web.Models;
+using _360Accounting.Web.Reports;
+using DevExpress.Web.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +14,78 @@ namespace _360Accounting.Web.Controllers
 {
     public class InvoiceController : BaseController
     {
+        private IInvoiceService service;
+
+        public InvoiceController()
+        {
+            service = IoC.Resolve<IInvoiceService>("InvoiceService");
+        }
+
+        #region Private Methods
+
+        private CustomerSalesReport createCustomerSalesReport(DateTime fromDate, DateTime toDate, long customerId)
+        {
+            List<CustomerSalesModel> modelList = mapCustomerSalesModel(service.CustomerSales(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, fromDate, toDate, customerId));
+            CustomerSalesReport report = new CustomerSalesReport();
+            report.Parameters["FromDate"].Value = fromDate;
+            report.Parameters["ToDate"].Value = toDate;
+            report.Parameters["CustomerId"].Value = customerId;
+            report.DataSource = modelList;
+            return report;
+        }
+
+        private List<CustomerSalesModel> mapCustomerSalesModel(List<CustomerSales> list)
+        {
+            List<CustomerSalesModel> reportModel = new List<CustomerSalesModel>();
+            foreach (var record in list)
+            {
+                reportModel.Add(new CustomerSalesModel
+                {
+                    Amount = record.Amount,
+                    CustomerName = record.CustomerName,
+                    InvoiceSourceName = record.InvoiceSourceName,
+                    ItemName = record.ItemName,
+                    Quantity = record.Quantity,
+                    TaxAmount = record.TaxAmount,
+                    TotalAmount = record.TotalAmount
+                });
+            }
+
+            return reportModel;
+        }
+
+        #endregion
+
+        public ActionResult CustomerSalesPartialExport(DateTime fromDate, DateTime toDate, long customerId)
+        {
+            return DocumentViewerExtension.ExportTo(createCustomerSalesReport(fromDate, toDate, customerId), Request);
+        }
+
+        public ActionResult CustomerSalesPartial(DateTime fromDate, DateTime toDate, long customerId)
+        {
+            return PartialView("_CustomerSales", createCustomerSalesReport(fromDate, toDate, customerId));
+        }
+
+        public ActionResult CustomerSalesReport(DateTime fromDate, DateTime toDate, long customerId)
+        {
+            return View(createCustomerSalesReport(fromDate, toDate, customerId));
+        }
+
+        public ActionResult CustomerSales()
+        {
+            CustomerSalesCriteriaModel model = new CustomerSalesCriteriaModel();
+
+            model.Customers = CustomerHelper.GetCustomersCombo(model.FromDate, model.ToDate);
+
+            if (model.Customers != null && model.Customers.Count() > 0)
+            {
+                model.CustomerId = Convert.ToInt64(model.Customers.FirstOrDefault().Value);
+            }
+
+            return View(model);
+        }
+
+
         public JsonResult CustomerList()
         {
             List<SelectListItem> customerList = CustomerHelper.GetCustomers(SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate)

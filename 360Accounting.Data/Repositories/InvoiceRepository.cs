@@ -108,5 +108,33 @@ namespace _360Accounting.Data.Repositories
         {
             return this.Context.Invoices.Where(rec => rec.CompanyId == companyId && rec.SOBId == sobId && rec.CurrencyId == currencyId);
         }
+
+
+
+
+        public List<CustomerSales> CustomerSales(long companyId, long sobId, DateTime fromDate, DateTime toDate, long customerId)
+        {
+            var data = (from a in this.Context.Invoices
+                        join b in this.Context.InvoiceDetails on a.Id equals b.InvoiceId
+                        join c in this.Context.Customers on a.CustomerId equals c.Id
+                        join d in this.Context.Items on b.ItemId equals d.Id into e
+                        from f in e.DefaultIfEmpty()
+                        join g in this.Context.InvoiceSources on b.InvoiceSourceId equals g.Id into h
+                        from i in h.DefaultIfEmpty()
+                        where a.CompanyId == companyId && a.SOBId == sobId &&
+                        a.InvoiceDate >= fromDate && a.InvoiceDate <= toDate &&
+                        a.CustomerId == customerId
+                        select new CustomerSales
+                        {
+                            Amount = b.Quantity * b.Rate,
+                            CustomerName = c.CustomerName,
+                            InvoiceSourceName = i.Description,
+                            ItemName = f.ItemName,
+                            Quantity = b.Quantity,
+                            TaxAmount = 0,
+                            TotalAmount = (b.Quantity * b.Rate) + 0
+                        }).ToList();
+            return data;
+        }
     }
 }
