@@ -62,6 +62,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Repositories\BuyerRepository.cs" />
+    <Compile Include="Repositories\ReceivingRepository.cs" />
     <Compile Include="Repositories\PurchaseOrderRepository.cs" />
     <Compile Include="Repositories\RequisitionRepository.cs" />
     <Compile Include="Repositories\OrderRepository.cs" />

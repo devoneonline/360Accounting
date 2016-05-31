@@ -191,6 +191,7 @@
     <Compile Include="Controllers\BuyerController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\OrderTypeController.cs" />
+    <Compile Include="Controllers\ReceivingController.cs" />
     <Compile Include="Controllers\PurchasingPeriodController.cs" />
     <Compile Include="Controllers\PurchaseOrderController.cs" />
     <Compile Include="Controllers\RequisitionController.cs">
@@ -279,6 +280,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\BuyerModel.cs" />
+    <Compile Include="Models\ReceivingModel.cs" />
     <Compile Include="Models\PurchaseOrderModel.cs" />
     <Compile Include="Models\RequisitionModel.cs" />
     <Compile Include="Models\OrderModel.cs" />
@@ -688,6 +690,10 @@
     <Content Include="Views\PurchaseOrder\_List.cshtml" />
     <Content Include="Views\PurchaseOrder\Edit.cshtml" />
     <Content Include="Views\PurchaseOrder\Index.cshtml" />
+    <Content Include="Views\Receiving\_Detail.cshtml" />
+    <Content Include="Views\Receiving\_List.cshtml" />
+    <Content Include="Views\Receiving\Edit.cshtml" />
+    <Content Include="Views\Receiving\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

@@ -48,6 +48,11 @@ namespace _360Accounting.Service
             return this.repository.GetAll(companyId);
         }
 
+        public IEnumerable<LotNumber> GetAllbyLotNo(long companyId, long sobId, string lotNo, long itemId)
+        {
+            return this.repository.GetAllbyLotNo(companyId, sobId, lotNo, itemId);
+        }
+
         public IEnumerable<LotNumber> CheckLotNumAvailability(long companyId, string lotNum, long itemId, long sobId)
         {
             return this.repository.CheckLotNumAvailability(companyId, lotNum, itemId, sobId);

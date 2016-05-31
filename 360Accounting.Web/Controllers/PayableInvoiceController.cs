@@ -194,6 +194,7 @@ namespace _360Accounting.Web.Controllers
                     Vendors = new List<SelectListItem>(),
                     VendorSites = new List<SelectListItem>(),
                     WHTaxes = new List<SelectListItem>(),
+                     InvoiceTypes = new List<SelectListItem>(),
                     InvoiceNo = "New",
                     SOBId = SessionHelper.SOBId                    
                 };

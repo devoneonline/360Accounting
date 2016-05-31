@@ -1,0 +1,134 @@
+﻿@Html.DevExpress().GetStyleSheets(new StyleSheet { ExtensionSuite = ExtensionSuite.GridView })
+@Html.DevExpress().GetScripts(new Script { ExtensionSuite = ExtensionSuite.GridView })
+
+@model _360Accounting.Web.Models.ReceivingModel
+
+@{
+    ViewBag.Title = "Receiving";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header">
+                @ViewBag.Title
+            </h3>
+        </div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(m => m.CreateBy)
+        @Html.HiddenFor(m => m.CreateDate)
+        @Html.HiddenFor(m => m.UpdateBy)
+        @Html.HiddenFor(m => m.UpdateDate)
+        @Html.HiddenFor(m => m.CompanyId)
+        @Html.HiddenFor(m => m.SOBId)
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="navbar-right">
+                    <input type="button" value="Save" id="btnSave" class="btn btn-default tstyCus-btn" />
+                    <input type="button" value="Cancel" id="btnCancel" class="btn btn-default tstyCus-btn" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ReceiptNo)
+                    @Html.TextBoxFor(model => model.ReceiptNo, new { @readonly = "readonly", @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Date)
+                    @Html.EditorFor(model => model.Date)
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.POId)
+                    @Html.DropDownListFor(model => model.POId, Model.POs, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DCNo)
+                    @Html.TextBoxFor(model => model.DCNo, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div id="dvDetail" class="col-lg-12">
+                @Html.Partial("_Detail", Model.ReceivingDetail)
+            </div>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#Date').attr('class', 'form-control');
+
+        $('#Date').blur(function () {
+            $.ajax({
+                url: '@Url.Content("~/Receiving/ChangeDate")',
+                data: { date: $(this).val() },
+                type: 'post',
+                datatype: 'json',
+                success: function (data) {
+                    if (data == "Date cannot be the past date!")
+                        alert(data);
+                },
+                error: function () { }
+            })
+        })
+
+        $('#POId').change(function () {
+            GetPOs($(this).val())
+        });
+
+        function GetPOs(poId) {
+            var url = '@Url.Content("~/Receiving/DetailPartialParams")';
+            $.get(url, { poId: poId },
+                function (data) {
+                    $('#dvDetail').html(data);
+                });
+        }
+
+        $('#btnCancel').click(function () {
+            if (confirm('Do you want to leave this page?')) {
+                window.location.href = '@Url.Content("~/Receiving")';
+            }
+        });
+
+        $('#btnSave').click(function () {
+            var id = $('#Id').val();
+            var receiptNo = $('#ReceiptNo').val();
+            var date = $('#Date').val();
+            var poId = $('#POId').val();
+            var dcNo = $('#DCNo').val();
+            var companyId = $('#CompanyId').val();
+            var sobId = $('#SOBId').val();
+
+            if (date == null || date == '' || poId == null || poId == 0 || dcNo == null || dcNo == 0)
+                alert('Please fill out the required fields');
+
+            else {
+                var url = '@Url.Content("~/Receiving/Save")';
+                $.post(url, {
+                    id:id, receiptNo:receiptNo, date:date, poId:poId, dcNo:dcNo, companyId:companyId, sobId:sobId
+                },
+                    function (result) {
+                        alert(result);
+                        window.location.href = '@Url.Content("~/Receiving")';
+                    });
+            }
+        });
+    });
+</script>

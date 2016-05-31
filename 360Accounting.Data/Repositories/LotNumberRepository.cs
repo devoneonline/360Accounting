@@ -48,6 +48,12 @@ namespace _360Accounting.Data.Repositories
             return entityList;
         }
 
+        public IEnumerable<LotNumber> GetAllbyLotNo(long companyId, long sobId, string lotNo, long itemId)
+        {
+            IEnumerable<LotNumber> entityList = this.Context.LotNumbers.Where(x => x.CompanyId == companyId && x.SOBId == sobId && x.LotNo == lotNo && x.ItemId == itemId);
+            return entityList;
+        }
+
         public IEnumerable<LotNumber> CheckLotNumAvailability(long companyId, string lotNum, long itemId, long sobId)
         {
             return this.Context.LotNumbers.Where(rec => rec.CompanyId == companyId && rec.LotNo == lotNum && rec.ItemId == itemId && rec.SOBId == sobId);

@@ -30,6 +30,7 @@ namespace _360Accounting.Web
         private const string Session_Shipment = "Shipment";
         private const string Session_Requisition = "Requisition";
         private const string Session_PurchaseOrder = "PurchaseOrder";
+        private const string Session_Receiving = "Receiving";
         private const string Session_Selected_Value = "SelectedValue";
 
         public static RFQModel RFQ
@@ -240,6 +241,19 @@ namespace _360Accounting.Web
             }
         }
 
+        public static ReceivingModel Receiving
+        {
+            get
+            {
+                return HttpContext.Current.Session[Session_Receiving] == null ? null :
+                    (ReceivingModel)HttpContext.Current.Session[Session_Receiving];
+            }
+            set
+            {
+                HttpContext.Current.Session[Session_Receiving] = value;
+            }
+        }
+
         public static PaymentViewModel Payment
         {
             get
@@ -348,7 +362,7 @@ namespace _360Accounting.Web
         {
             get
             {
-                return Convert.ToInt32(HttpContext.Current.Session["PrecisionLimit"].ToString());
+                return HttpContext.Current.Session["PrecisionLimit"] == null ? 0 : Convert.ToInt32(HttpContext.Current.Session["PrecisionLimit"].ToString());
             }
             set
             {

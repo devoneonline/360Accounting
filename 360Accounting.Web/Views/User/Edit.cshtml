@@ -16,7 +16,7 @@
         @using (Html.BeginForm("Edit", "User", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             @Html.ValidationSummary()
-
+            @Html.HiddenFor(model => model.CompanyId)
             <div class="form-group customDropDownWrapper">
                 @Html.LabelFor(model => model.RoleName)
                 @Html.DropDownListFor(model => model.RoleName, Model.RoleList, "-- select --", new { @class = "form-control" })

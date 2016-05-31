@@ -31,5 +31,7 @@ namespace _360Accounting.Core
         List<SerialNumber> GetSerialsbyLotNo(long lotNoId, long companyId, long sobId);
 
         LotNumber GetLotBySourceId(long sourceId, long companyId, long sobId);
+
+        IEnumerable<LotNumber> GetAllbyLotNo(long companyId, long sobId, string lotNo, long itemId);
     }
 }
