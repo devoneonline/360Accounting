@@ -1,0 +1,28 @@
+﻿@model _360Accounting.Web.Reports.InvoicePrintoutReport
+
+@Html.DevExpress().DocumentViewer(r =>
+{
+    r.Name = "DocumentViewer";
+    r.Report = (XtraReport)Model;
+    r.CallbackRouteValues = new
+    {
+        Controller = "Invoice",
+        Action = "InvoicePrintoutPartial",
+        fromDate = r.Report.Parameters["FromDate"].Value,
+        toDate = r.Report.Parameters["ToDate"].Value,
+        invoiceNo = r.Report.Parameters["InvoiceNo"].Value,
+        customerId = r.Report.Parameters["CustomerId"].Value,
+        customerSiteId = r.Report.Parameters["CustomerSiteId"].Value
+    };
+    r.ExportRouteValues = new
+    {
+        Controller = "Invoice",
+        Action = "InvoicePrintoutPartial",
+        fromDate = r.Report.Parameters["FromDate"].Value,
+        toDate = r.Report.Parameters["ToDate"].Value,
+        invoiceNo = r.Report.Parameters["InvoiceNo"].Value,
+        customerId = r.Report.Parameters["CustomerId"].Value,
+        customerSiteId = r.Report.Parameters["CustomerSiteId"].Value
+    };
+    r.ToolbarMode = DocumentViewerToolbarMode.StandardToolbar;
+}).GetHtml()

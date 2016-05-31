@@ -103,7 +103,7 @@ namespace _360Accounting.Data.Repositories
             var query = from a in this.Context.Receipts
                         join b in this.Context.SetOfBooks on a.SOBId equals b.Id
                         join c in this.Context.Companies on b.CompanyId equals c.Id
-                        where c.Id == companyId
+                        where a.CompanyId == companyId
                         select a;
             return query;
         }
@@ -152,6 +152,33 @@ namespace _360Accounting.Data.Repositories
         public IEnumerable<Receipt> GetByCurrencyId(long companyId, long sobId, long currencyId)
         {
             return this.Context.Receipts.Where(rec => rec.CompanyId == companyId && rec.SOBId == sobId && rec.CurrencyId == currencyId);
+        }
+
+
+
+
+        public List<ReceiptAuditTrial> ReceiptAuditTrial(long companyId, long sobId, DateTime fromDate, DateTime toDate)
+        {
+            var data = (from a in this.Context.Receipts
+                        join b in this.Context.BankAccounts on a.BankAccountId equals b.Id
+                        join c in this.Context.Banks on a.BankId equals c.Id
+                        join d in this.Context.Customers on a.CustomerId equals d.Id
+                        join e in this.Context.CustomerSites on a.CustomerSiteId equals e.Id
+                        where a.CompanyId == companyId && a.SOBId == sobId &&
+                        a.ReceiptDate >= fromDate && a.ReceiptDate <= toDate
+                        select new ReceiptAuditTrial
+                        {
+                            Amount = a.ReceiptAmount,
+                            BankAccountName = b.AccountName,
+                            BankName = c.BankName,
+                            CustomerName = d.CustomerName,
+                            CustomerSiteName = e.SiteName,
+                            ReceiptDate = a.ReceiptDate,
+                            ReceiptNo = a.ReceiptNumber,
+                            Status = a.Status
+                        }).ToList();
+
+            return data;
         }
     }
 }

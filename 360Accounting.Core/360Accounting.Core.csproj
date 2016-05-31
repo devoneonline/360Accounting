@@ -57,6 +57,7 @@
     <Compile Include="Entities\ReceivingView.cs" />
     <Compile Include="Entities\Receiving.cs" />
     <Compile Include="Entities\PurchaseOrderView.cs" />
+    <Compile Include="Entities\PurchasePrintout.cs" />
     <Compile Include="Entities\PurchasingPeriod.cs" />
     <Compile Include="Entities\PurchaseOrder.cs" />
     <Compile Include="Entities\RequisitionView.cs" />

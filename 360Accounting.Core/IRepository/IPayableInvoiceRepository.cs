@@ -12,5 +12,7 @@ namespace _360Accounting.Core.Interfaces
         IEnumerable<PayableInvoice> GetAll(long companyId, long sobId);
 
         PayableInvoice GetSingle(long companyId, long sobId, long periodId);
+
+        List<PurchasePrintout> PurchasePrintout(long companyId, long sobId, DateTime fromDate, DateTime toDate, string invoiceNo, long vendorId, long vendorSiteId);
     }
 }

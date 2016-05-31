@@ -1,0 +1,22 @@
+﻿@model _360Accounting.Web.Reports.ReceiptAuditTrialReport
+
+@Html.DevExpress().DocumentViewer(r =>
+{
+    r.Name = "DocumentViewer";
+    r.Report = (XtraReport)Model;
+    r.CallbackRouteValues = new
+    {
+        Controller = "Receipt",
+        Action = "ReceiptAuditTrialPartial",
+        fromDate = r.Report.Parameters["FromDate"].Value,
+        toDate = r.Report.Parameters["ToDate"].Value
+    };
+    r.ExportRouteValues = new
+    {
+        Controller = "Receipt",
+        Action = "ReceiptAuditTrialPartialExport",
+        fromDate = r.Report.Parameters["FromDate"].Value,
+        toDate = r.Report.Parameters["ToDate"].Value
+    };
+    r.ToolbarMode = DocumentViewerToolbarMode.StandardToolbar;
+}).GetHtml()

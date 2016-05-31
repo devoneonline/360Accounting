@@ -67,5 +67,21 @@ namespace _360Accounting.Service
         {
             return this.GetByCurrencyId(companyId, sobId, currencyId);
         }
+
+
+        public List<CustomerSales> CustomerSales(long companyId, long sobId, DateTime fromDate, DateTime toDate, long customerId)
+        {
+            return this.repository.CustomerSales(companyId, sobId, fromDate, toDate, customerId);
+        }
+
+        public List<InvoiceAuditTrail> InvoiceAuditTrail(long companyId, long sobId, DateTime fromDate, DateTime toDate)
+        {
+            return this.repository.InvoiceAuditTrail(companyId, sobId, fromDate, toDate);
+        }
+
+        public List<InvoicePrintout> InvoicePrintout(long companyId, long sobId, DateTime fromDate, DateTime toDate, string invoiceNo, long customerId, long customerSiteId)
+        {
+            return this.repository.InvoicePrintout(companyId, sobId, fromDate, toDate, invoiceNo, customerId, customerSiteId);
+        }
     }
 }

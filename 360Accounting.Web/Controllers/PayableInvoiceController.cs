@@ -1,4 +1,9 @@
-﻿using _360Accounting.Web.Models;
+﻿using _360Accounting.Common;
+using _360Accounting.Core;
+using _360Accounting.Core.Entities;
+using _360Accounting.Web.Models;
+using _360Accounting.Web.Reports;
+using DevExpress.Web.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +14,97 @@ namespace _360Accounting.Web.Controllers
 {
     public class PayableInvoiceController : BaseController
     {
+        private IPayableInvoiceService service;
+
+        public PayableInvoiceController()
+        {
+            service = IoC.Resolve<IPayableInvoiceService>("PayableInvoiceService");
+        }
+
+        #region Private Methods
+
+        private PurchasePrintoutReport createPurchasePrintoutReport(DateTime fromDate, DateTime toDate, string invoiceNo, long vendorId, long vendorSiteId)
+        {
+            List<PurchasePrintoutModel> modelList = mapPurchasePrintoutModel(service.PurchasePrintout(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, fromDate, toDate, invoiceNo, vendorId, vendorSiteId));
+            PurchasePrintoutReport report = new PurchasePrintoutReport();
+            report.Parameters["FromDate"].Value = fromDate;
+            report.Parameters["ToDate"].Value = toDate;
+            report.Parameters["InvoiceNo"].Value = invoiceNo;
+            report.Parameters["VendorId"].Value = vendorId;
+            report.Parameters["VendorSiteId"].Value = vendorSiteId;
+            report.DataSource = modelList;
+            return report;
+        }
+
+        private List<PurchasePrintoutModel> mapPurchasePrintoutModel(List<PurchasePrintout> list)
+        {
+            List<PurchasePrintoutModel> reportModel = new List<PurchasePrintoutModel>();
+            foreach (var record in list)
+            {
+                reportModel.Add(new PurchasePrintoutModel
+                {
+                    AccountCode = Utility.Stringize(".", record.CCSegment1,
+                    record.CCSegment2, record.CCSegment3, record.CCSegment4,
+                    record.CCSegment5, record.CCSegment6, record.CCSegment7,
+                    record.CCSegment8),
+                    Amount = record.Amount,
+                    Description = record.Description,
+                    InvoiceDate = record.InvoiceDate,
+                    InvoiceNo = record.InvoiceNo,
+                    VendorName = record.VendorName,
+                    VendorSite = record.VendorSite,
+                    WHTaxName = record.WHTaxName
+                });
+            }
+
+            return reportModel;
+        }
+
+        #endregion
+
+        public ActionResult PurchasePrintoutPartialExport(DateTime fromDate, DateTime toDate, string invoiceNo, long vendorId, long vendorSiteId)
+        {
+            return DocumentViewerExtension.ExportTo(createPurchasePrintoutReport(fromDate, toDate, invoiceNo, vendorId, vendorSiteId), Request);
+        }
+
+        public ActionResult PurchasePrintoutPartial(DateTime fromDate, DateTime toDate, string invoiceNo, long vendorId, long vendorSiteId)
+        {
+            return PartialView("_PurchasePrintout", createPurchasePrintoutReport(fromDate, toDate, invoiceNo, vendorId, vendorSiteId));
+        }
+
+        public ActionResult PurchasePrintoutReport(DateTime fromDate, DateTime toDate, string invoiceNo, long vendorId, long vendorSiteId)
+        {
+            return View(createPurchasePrintoutReport(fromDate, toDate, invoiceNo, vendorId, vendorSiteId));
+        }
+
+        public ActionResult PurchasePrintout()
+        {
+            PurchasePrintoutCriteriaModel model = new PurchasePrintoutCriteriaModel();
+
+            model.FromDate = Const.StartDate;
+            model.ToDate = Const.EndDate;
+
+            model.Vendors.Add(new SelectListItem { Text = "All Vendors", Value = "0" });
+
+            foreach (var vendor in VendorHelper.GetAll())
+            {
+                model.Vendors.Add(new SelectListItem { Text = vendor.Name, Value = vendor.Id.ToString() });
+            }
+
+            if (model.Vendors != null && model.Vendors.Count() > 0)
+            {
+                model.VendorId = Convert.ToInt64(model.Vendors.FirstOrDefault().Value);
+                model.VendorSites = VendorHelper.GetVendorSiteList(model.VendorId);
+
+                if (model.VendorSites != null && model.VendorSites.Count() > 0)
+                {
+                    model.VendorSiteId = Convert.ToInt64(model.VendorSites.FirstOrDefault().Value);
+                }
+            }
+
+            return View(model);
+        }
+
         public ActionResult SaveInvoice(long periodId, long invoiceTypeId, 
             string invoiceDate, string remarks, long vendorId, long vendorSiteId, 
             long? whTaxId, string amount, string status)
