@@ -29,16 +29,6 @@
         private void InitializeComponent()
         {
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
-            this.xrLine23 = new DevExpress.XtraReports.UI.XRLine();
-            this.xrLine22 = new DevExpress.XtraReports.UI.XRLine();
-            this.xrLine21 = new DevExpress.XtraReports.UI.XRLine();
-            this.xrLine20 = new DevExpress.XtraReports.UI.XRLine();
-            this.xrLine19 = new DevExpress.XtraReports.UI.XRLine();
-            this.xrLine18 = new DevExpress.XtraReports.UI.XRLine();
-            this.xrLine17 = new DevExpress.XtraReports.UI.XRLine();
-            this.xrLine16 = new DevExpress.XtraReports.UI.XRLine();
-            this.xrLine15 = new DevExpress.XtraReports.UI.XRLine();
-            this.xrLine14 = new DevExpress.XtraReports.UI.XRLine();
             this.xrLabel9 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel8 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel7 = new DevExpress.XtraReports.UI.XRLabel();
@@ -50,19 +40,8 @@
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.pageHeaderBand1 = new DevExpress.XtraReports.UI.PageHeaderBand();
-            this.xrLine13 = new DevExpress.XtraReports.UI.XRLine();
-            this.xrLine12 = new DevExpress.XtraReports.UI.XRLine();
             this.xrLine11 = new DevExpress.XtraReports.UI.XRLine();
             this.xrLine10 = new DevExpress.XtraReports.UI.XRLine();
-            this.xrLine9 = new DevExpress.XtraReports.UI.XRLine();
-            this.xrLine8 = new DevExpress.XtraReports.UI.XRLine();
-            this.xrLine7 = new DevExpress.XtraReports.UI.XRLine();
-            this.xrLine6 = new DevExpress.XtraReports.UI.XRLine();
-            this.xrLine5 = new DevExpress.XtraReports.UI.XRLine();
-            this.xrLine4 = new DevExpress.XtraReports.UI.XRLine();
-            this.xrLine3 = new DevExpress.XtraReports.UI.XRLine();
-            this.xrLine2 = new DevExpress.XtraReports.UI.XRLine();
-            this.xrLine1 = new DevExpress.XtraReports.UI.XRLine();
             this.xrLabel19 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel18 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel16 = new DevExpress.XtraReports.UI.XRLabel();
@@ -92,6 +71,22 @@
             this.DataField = new DevExpress.XtraReports.UI.XRControlStyle();
             this.FromDate = new DevExpress.XtraReports.Parameters.Parameter();
             this.ToDate = new DevExpress.XtraReports.Parameters.Parameter();
+            this.xrCrossBandBox1 = new DevExpress.XtraReports.UI.XRCrossBandBox();
+            this.xrCrossBandLine1 = new DevExpress.XtraReports.UI.XRCrossBandLine();
+            this.xrCrossBandLine2 = new DevExpress.XtraReports.UI.XRCrossBandLine();
+            this.xrCrossBandLine3 = new DevExpress.XtraReports.UI.XRCrossBandLine();
+            this.xrCrossBandLine4 = new DevExpress.XtraReports.UI.XRCrossBandLine();
+            this.xrCrossBandLine5 = new DevExpress.XtraReports.UI.XRCrossBandLine();
+            this.xrCrossBandLine6 = new DevExpress.XtraReports.UI.XRCrossBandLine();
+            this.xrCrossBandLine7 = new DevExpress.XtraReports.UI.XRCrossBandLine();
+            this.xrLine1 = new DevExpress.XtraReports.UI.XRLine();
+            this.xrLine2 = new DevExpress.XtraReports.UI.XRLine();
+            this.xrLine3 = new DevExpress.XtraReports.UI.XRLine();
+            this.xrLine4 = new DevExpress.XtraReports.UI.XRLine();
+            this.xrLine5 = new DevExpress.XtraReports.UI.XRLine();
+            this.xrLine6 = new DevExpress.XtraReports.UI.XRLine();
+            this.xrLine7 = new DevExpress.XtraReports.UI.XRLine();
+            this.xrLine8 = new DevExpress.XtraReports.UI.XRLine();
             this.objectDataSource1 = new DevExpress.DataAccess.ObjectBinding.ObjectDataSource();
             ((System.ComponentModel.ISupportInitialize)(this.objectDataSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
@@ -99,16 +94,6 @@
             // Detail
             // 
             this.Detail.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.xrLine23,
-            this.xrLine22,
-            this.xrLine21,
-            this.xrLine20,
-            this.xrLine19,
-            this.xrLine18,
-            this.xrLine17,
-            this.xrLine16,
-            this.xrLine15,
-            this.xrLine14,
             this.xrLabel9,
             this.xrLabel8,
             this.xrLabel7,
@@ -117,79 +102,10 @@
             this.xrLabel4,
             this.xrLabel3,
             this.xrLabel2});
-            this.Detail.HeightF = 31.82989F;
+            this.Detail.HeightF = 32F;
             this.Detail.Name = "Detail";
             this.Detail.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.Detail.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
-            // 
-            // xrLine23
-            // 
-            this.xrLine23.LineDirection = DevExpress.XtraReports.UI.LineDirection.Vertical;
-            this.xrLine23.LocationFloat = new DevExpress.Utils.PointFloat(888.493F, 0F);
-            this.xrLine23.Name = "xrLine23";
-            this.xrLine23.SizeF = new System.Drawing.SizeF(2F, 29.82989F);
-            // 
-            // xrLine22
-            // 
-            this.xrLine22.LineDirection = DevExpress.XtraReports.UI.LineDirection.Vertical;
-            this.xrLine22.LocationFloat = new DevExpress.Utils.PointFloat(823.4583F, 0F);
-            this.xrLine22.Name = "xrLine22";
-            this.xrLine22.SizeF = new System.Drawing.SizeF(2F, 29.82989F);
-            // 
-            // xrLine21
-            // 
-            this.xrLine21.LineDirection = DevExpress.XtraReports.UI.LineDirection.Vertical;
-            this.xrLine21.LocationFloat = new DevExpress.Utils.PointFloat(744.3334F, 0.05209446F);
-            this.xrLine21.Name = "xrLine21";
-            this.xrLine21.SizeF = new System.Drawing.SizeF(2F, 29.77779F);
-            // 
-            // xrLine20
-            // 
-            this.xrLine20.LineDirection = DevExpress.XtraReports.UI.LineDirection.Vertical;
-            this.xrLine20.LocationFloat = new DevExpress.Utils.PointFloat(641.7084F, 0F);
-            this.xrLine20.Name = "xrLine20";
-            this.xrLine20.SizeF = new System.Drawing.SizeF(2F, 29.82989F);
-            // 
-            // xrLine19
-            // 
-            this.xrLine19.LineDirection = DevExpress.XtraReports.UI.LineDirection.Vertical;
-            this.xrLine19.LocationFloat = new DevExpress.Utils.PointFloat(497.4166F, 0F);
-            this.xrLine19.Name = "xrLine19";
-            this.xrLine19.SizeF = new System.Drawing.SizeF(2F, 29.82989F);
-            // 
-            // xrLine18
-            // 
-            this.xrLine18.LineDirection = DevExpress.XtraReports.UI.LineDirection.Vertical;
-            this.xrLine18.LocationFloat = new DevExpress.Utils.PointFloat(349.3333F, 0F);
-            this.xrLine18.Name = "xrLine18";
-            this.xrLine18.SizeF = new System.Drawing.SizeF(2F, 29.82989F);
-            // 
-            // xrLine17
-            // 
-            this.xrLine17.LineDirection = DevExpress.XtraReports.UI.LineDirection.Vertical;
-            this.xrLine17.LocationFloat = new DevExpress.Utils.PointFloat(203.9167F, 0F);
-            this.xrLine17.Name = "xrLine17";
-            this.xrLine17.SizeF = new System.Drawing.SizeF(2F, 29.82989F);
-            // 
-            // xrLine16
-            // 
-            this.xrLine16.LineDirection = DevExpress.XtraReports.UI.LineDirection.Vertical;
-            this.xrLine16.LocationFloat = new DevExpress.Utils.PointFloat(115F, 0F);
-            this.xrLine16.Name = "xrLine16";
-            this.xrLine16.SizeF = new System.Drawing.SizeF(2F, 29.82989F);
-            // 
-            // xrLine15
-            // 
-            this.xrLine15.LineDirection = DevExpress.XtraReports.UI.LineDirection.Vertical;
-            this.xrLine15.LocationFloat = new DevExpress.Utils.PointFloat(9.999963F, 0F);
-            this.xrLine15.Name = "xrLine15";
-            this.xrLine15.SizeF = new System.Drawing.SizeF(2F, 29.82989F);
-            // 
-            // xrLine14
-            // 
-            this.xrLine14.LocationFloat = new DevExpress.Utils.PointFloat(9.99999F, 29.82989F);
-            this.xrLine14.Name = "xrLine14";
-            this.xrLine14.SizeF = new System.Drawing.SizeF(880.493F, 2F);
             // 
             // xrLabel9
             // 
@@ -209,7 +125,9 @@
             this.xrLabel8.Name = "xrLabel8";
             this.xrLabel8.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel8.SizeF = new System.Drawing.SizeF(71.875F, 23F);
+            this.xrLabel8.StylePriority.UseTextAlignment = false;
             this.xrLabel8.Text = "xrLabel8";
+            this.xrLabel8.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopRight;
             // 
             // xrLabel7
             // 
@@ -288,11 +206,6 @@
             // pageHeaderBand1
             // 
             this.pageHeaderBand1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.xrLine13,
-            this.xrLine12,
-            this.xrLine11,
-            this.xrLine10,
-            this.xrLine9,
             this.xrLine8,
             this.xrLine7,
             this.xrLine6,
@@ -301,6 +214,8 @@
             this.xrLine3,
             this.xrLine2,
             this.xrLine1,
+            this.xrLine11,
+            this.xrLine10,
             this.xrLabel19,
             this.xrLabel18,
             this.xrLabel16,
@@ -311,95 +226,20 @@
             this.xrLabel12,
             this.xrLabel11,
             this.xrLabel10});
-            this.pageHeaderBand1.HeightF = 80.45834F;
+            this.pageHeaderBand1.HeightF = 81.00001F;
             this.pageHeaderBand1.Name = "pageHeaderBand1";
-            // 
-            // xrLine13
-            // 
-            this.xrLine13.LineDirection = DevExpress.XtraReports.UI.LineDirection.Vertical;
-            this.xrLine13.LocationFloat = new DevExpress.Utils.PointFloat(641.7084F, 50.61111F);
-            this.xrLine13.Name = "xrLine13";
-            this.xrLine13.SizeF = new System.Drawing.SizeF(2F, 27.84723F);
-            // 
-            // xrLine12
-            // 
-            this.xrLine12.LineDirection = DevExpress.XtraReports.UI.LineDirection.Vertical;
-            this.xrLine12.LocationFloat = new DevExpress.Utils.PointFloat(349.3333F, 50.61431F);
-            this.xrLine12.Name = "xrLine12";
-            this.xrLine12.SizeF = new System.Drawing.SizeF(2F, 27.82986F);
             // 
             // xrLine11
             // 
             this.xrLine11.LocationFloat = new DevExpress.Utils.PointFloat(205.9167F, 48.61111F);
             this.xrLine11.Name = "xrLine11";
-            this.xrLine11.SizeF = new System.Drawing.SizeF(288.9999F, 2.003204F);
+            this.xrLine11.SizeF = new System.Drawing.SizeF(291.9999F, 2.003204F);
             // 
             // xrLine10
             // 
             this.xrLine10.LocationFloat = new DevExpress.Utils.PointFloat(499.4166F, 48.61111F);
             this.xrLine10.Name = "xrLine10";
-            this.xrLine10.SizeF = new System.Drawing.SizeF(244.9168F, 2F);
-            // 
-            // xrLine9
-            // 
-            this.xrLine9.LineDirection = DevExpress.XtraReports.UI.LineDirection.Vertical;
-            this.xrLine9.LocationFloat = new DevExpress.Utils.PointFloat(888.493F, 21.87499F);
-            this.xrLine9.Name = "xrLine9";
-            this.xrLine9.SizeF = new System.Drawing.SizeF(2F, 56.58335F);
-            // 
-            // xrLine8
-            // 
-            this.xrLine8.LineDirection = DevExpress.XtraReports.UI.LineDirection.Vertical;
-            this.xrLine8.LocationFloat = new DevExpress.Utils.PointFloat(823.4583F, 22.08333F);
-            this.xrLine8.Name = "xrLine8";
-            this.xrLine8.SizeF = new System.Drawing.SizeF(2F, 56.35764F);
-            // 
-            // xrLine7
-            // 
-            this.xrLine7.LineDirection = DevExpress.XtraReports.UI.LineDirection.Vertical;
-            this.xrLine7.LocationFloat = new DevExpress.Utils.PointFloat(744.3334F, 21.87499F);
-            this.xrLine7.Name = "xrLine7";
-            this.xrLine7.SizeF = new System.Drawing.SizeF(2F, 56.58335F);
-            // 
-            // xrLine6
-            // 
-            this.xrLine6.LineDirection = DevExpress.XtraReports.UI.LineDirection.Vertical;
-            this.xrLine6.LocationFloat = new DevExpress.Utils.PointFloat(497.4166F, 21.87499F);
-            this.xrLine6.Name = "xrLine6";
-            this.xrLine6.SizeF = new System.Drawing.SizeF(2F, 56.58335F);
-            // 
-            // xrLine5
-            // 
-            this.xrLine5.LineDirection = DevExpress.XtraReports.UI.LineDirection.Vertical;
-            this.xrLine5.LocationFloat = new DevExpress.Utils.PointFloat(203.9167F, 21.87499F);
-            this.xrLine5.Name = "xrLine5";
-            this.xrLine5.SizeF = new System.Drawing.SizeF(2F, 56.58335F);
-            // 
-            // xrLine4
-            // 
-            this.xrLine4.LineDirection = DevExpress.XtraReports.UI.LineDirection.Vertical;
-            this.xrLine4.LocationFloat = new DevExpress.Utils.PointFloat(115F, 21.87499F);
-            this.xrLine4.Name = "xrLine4";
-            this.xrLine4.SizeF = new System.Drawing.SizeF(2F, 56.58335F);
-            // 
-            // xrLine3
-            // 
-            this.xrLine3.LineDirection = DevExpress.XtraReports.UI.LineDirection.Vertical;
-            this.xrLine3.LocationFloat = new DevExpress.Utils.PointFloat(9.999963F, 21.87499F);
-            this.xrLine3.Name = "xrLine3";
-            this.xrLine3.SizeF = new System.Drawing.SizeF(2F, 56.58335F);
-            // 
-            // xrLine2
-            // 
-            this.xrLine2.LocationFloat = new DevExpress.Utils.PointFloat(9.999963F, 78.45834F);
-            this.xrLine2.Name = "xrLine2";
-            this.xrLine2.SizeF = new System.Drawing.SizeF(880.493F, 2F);
-            // 
-            // xrLine1
-            // 
-            this.xrLine1.LocationFloat = new DevExpress.Utils.PointFloat(9.99999F, 19.87499F);
-            this.xrLine1.Name = "xrLine1";
-            this.xrLine1.SizeF = new System.Drawing.SizeF(880.493F, 2F);
+            this.xrLine10.SizeF = new System.Drawing.SizeF(245.4167F, 2F);
             // 
             // xrLabel19
             // 
@@ -673,6 +513,135 @@
             this.ToDate.ValueInfo = "2016-05-27";
             this.ToDate.Visible = false;
             // 
+            // xrCrossBandBox1
+            // 
+            this.xrCrossBandBox1.BorderWidth = 2F;
+            this.xrCrossBandBox1.EndBand = this.Detail;
+            this.xrCrossBandBox1.EndPointFloat = new DevExpress.Utils.PointFloat(9.375F, 32.29167F);
+            this.xrCrossBandBox1.LocationFloat = new DevExpress.Utils.PointFloat(9.375F, 18.75F);
+            this.xrCrossBandBox1.Name = "xrCrossBandBox1";
+            this.xrCrossBandBox1.StartBand = this.pageHeaderBand1;
+            this.xrCrossBandBox1.StartPointFloat = new DevExpress.Utils.PointFloat(9.375F, 18.75F);
+            this.xrCrossBandBox1.WidthF = 883.3333F;
+            // 
+            // xrCrossBandLine1
+            // 
+            this.xrCrossBandLine1.EndBand = this.Detail;
+            this.xrCrossBandLine1.EndPointFloat = new DevExpress.Utils.PointFloat(115.5F, 29.25F);
+            this.xrCrossBandLine1.LocationFloat = new DevExpress.Utils.PointFloat(115.5F, 20.875F);
+            this.xrCrossBandLine1.Name = "xrCrossBandLine1";
+            this.xrCrossBandLine1.StartBand = this.pageHeaderBand1;
+            this.xrCrossBandLine1.StartPointFloat = new DevExpress.Utils.PointFloat(115.5F, 20.875F);
+            this.xrCrossBandLine1.WidthF = 1.041667F;
+            // 
+            // xrCrossBandLine2
+            // 
+            this.xrCrossBandLine2.EndBand = this.Detail;
+            this.xrCrossBandLine2.EndPointFloat = new DevExpress.Utils.PointFloat(204.25F, 30F);
+            this.xrCrossBandLine2.LocationFloat = new DevExpress.Utils.PointFloat(204.25F, 20.83333F);
+            this.xrCrossBandLine2.Name = "xrCrossBandLine2";
+            this.xrCrossBandLine2.StartBand = this.pageHeaderBand1;
+            this.xrCrossBandLine2.StartPointFloat = new DevExpress.Utils.PointFloat(204.25F, 20.83333F);
+            this.xrCrossBandLine2.WidthF = 1.041667F;
+            // 
+            // xrCrossBandLine3
+            // 
+            this.xrCrossBandLine3.EndBand = this.Detail;
+            this.xrCrossBandLine3.EndPointFloat = new DevExpress.Utils.PointFloat(350F, 30.20833F);
+            this.xrCrossBandLine3.LocationFloat = new DevExpress.Utils.PointFloat(350F, 51.04167F);
+            this.xrCrossBandLine3.Name = "xrCrossBandLine3";
+            this.xrCrossBandLine3.StartBand = this.pageHeaderBand1;
+            this.xrCrossBandLine3.StartPointFloat = new DevExpress.Utils.PointFloat(350F, 51.04167F);
+            this.xrCrossBandLine3.WidthF = 1.041667F;
+            // 
+            // xrCrossBandLine4
+            // 
+            this.xrCrossBandLine4.EndBand = this.Detail;
+            this.xrCrossBandLine4.EndPointFloat = new DevExpress.Utils.PointFloat(498F, 30.20833F);
+            this.xrCrossBandLine4.LocationFloat = new DevExpress.Utils.PointFloat(498F, 20.83333F);
+            this.xrCrossBandLine4.Name = "xrCrossBandLine4";
+            this.xrCrossBandLine4.StartBand = this.pageHeaderBand1;
+            this.xrCrossBandLine4.StartPointFloat = new DevExpress.Utils.PointFloat(498F, 20.83333F);
+            this.xrCrossBandLine4.WidthF = 1.041667F;
+            // 
+            // xrCrossBandLine5
+            // 
+            this.xrCrossBandLine5.EndBand = this.Detail;
+            this.xrCrossBandLine5.EndPointFloat = new DevExpress.Utils.PointFloat(642.7917F, 29.25F);
+            this.xrCrossBandLine5.LocationFloat = new DevExpress.Utils.PointFloat(642.7917F, 51.04167F);
+            this.xrCrossBandLine5.Name = "xrCrossBandLine5";
+            this.xrCrossBandLine5.StartBand = this.pageHeaderBand1;
+            this.xrCrossBandLine5.StartPointFloat = new DevExpress.Utils.PointFloat(642.7917F, 51.04167F);
+            this.xrCrossBandLine5.WidthF = 1.041667F;
+            // 
+            // xrCrossBandLine6
+            // 
+            this.xrCrossBandLine6.EndBand = this.Detail;
+            this.xrCrossBandLine6.EndPointFloat = new DevExpress.Utils.PointFloat(744.8333F, 28.29167F);
+            this.xrCrossBandLine6.LocationFloat = new DevExpress.Utils.PointFloat(744.8333F, 21.79167F);
+            this.xrCrossBandLine6.Name = "xrCrossBandLine6";
+            this.xrCrossBandLine6.StartBand = this.pageHeaderBand1;
+            this.xrCrossBandLine6.StartPointFloat = new DevExpress.Utils.PointFloat(744.8333F, 21.79167F);
+            this.xrCrossBandLine6.WidthF = 1.041667F;
+            // 
+            // xrCrossBandLine7
+            // 
+            this.xrCrossBandLine7.EndBand = this.Detail;
+            this.xrCrossBandLine7.EndPointFloat = new DevExpress.Utils.PointFloat(823.9583F, 30F);
+            this.xrCrossBandLine7.LocationFloat = new DevExpress.Utils.PointFloat(823.9583F, 21.79167F);
+            this.xrCrossBandLine7.Name = "xrCrossBandLine7";
+            this.xrCrossBandLine7.StartBand = this.pageHeaderBand1;
+            this.xrCrossBandLine7.StartPointFloat = new DevExpress.Utils.PointFloat(823.9583F, 21.79167F);
+            this.xrCrossBandLine7.WidthF = 1.041667F;
+            // 
+            // xrLine1
+            // 
+            this.xrLine1.LocationFloat = new DevExpress.Utils.PointFloat(11.45833F, 76.04166F);
+            this.xrLine1.Name = "xrLine1";
+            this.xrLine1.SizeF = new System.Drawing.SizeF(103.1667F, 2F);
+            // 
+            // xrLine2
+            // 
+            this.xrLine2.LocationFloat = new DevExpress.Utils.PointFloat(116.7083F, 76.04166F);
+            this.xrLine2.Name = "xrLine2";
+            this.xrLine2.SizeF = new System.Drawing.SizeF(87.54166F, 2F);
+            // 
+            // xrLine3
+            // 
+            this.xrLine3.LocationFloat = new DevExpress.Utils.PointFloat(205.2917F, 76.04166F);
+            this.xrLine3.Name = "xrLine3";
+            this.xrLine3.SizeF = new System.Drawing.SizeF(144.7083F, 2F);
+            // 
+            // xrLine4
+            // 
+            this.xrLine4.LocationFloat = new DevExpress.Utils.PointFloat(351.0417F, 76.04166F);
+            this.xrLine4.Name = "xrLine4";
+            this.xrLine4.SizeF = new System.Drawing.SizeF(146.9583F, 2F);
+            // 
+            // xrLine5
+            // 
+            this.xrLine5.LocationFloat = new DevExpress.Utils.PointFloat(499.0417F, 76.04166F);
+            this.xrLine5.Name = "xrLine5";
+            this.xrLine5.SizeF = new System.Drawing.SizeF(143.75F, 2F);
+            // 
+            // xrLine6
+            // 
+            this.xrLine6.LocationFloat = new DevExpress.Utils.PointFloat(643.8334F, 76.04166F);
+            this.xrLine6.Name = "xrLine6";
+            this.xrLine6.SizeF = new System.Drawing.SizeF(100.9999F, 2F);
+            // 
+            // xrLine7
+            // 
+            this.xrLine7.LocationFloat = new DevExpress.Utils.PointFloat(745.875F, 76.04166F);
+            this.xrLine7.Name = "xrLine7";
+            this.xrLine7.SizeF = new System.Drawing.SizeF(78.08331F, 2F);
+            // 
+            // xrLine8
+            // 
+            this.xrLine8.LocationFloat = new DevExpress.Utils.PointFloat(825F, 76.04166F);
+            this.xrLine8.Name = "xrLine8";
+            this.xrLine8.SizeF = new System.Drawing.SizeF(65.62494F, 2F);
+            // 
             // objectDataSource1
             // 
             this.objectDataSource1.DataSource = typeof(_360Accounting.Web.Models.ReceiptAuditTrialModel);
@@ -692,6 +661,18 @@
             this.ComponentStorage.Add(this.objectDataSource1);
             this.ComponentStorage.Add(this.objectDataSource1);
             this.ComponentStorage.Add(this.objectDataSource1);
+            this.ComponentStorage.Add(this.objectDataSource1);
+            this.ComponentStorage.Add(this.objectDataSource1);
+            this.ComponentStorage.Add(this.objectDataSource1);
+            this.CrossBandControls.AddRange(new DevExpress.XtraReports.UI.XRCrossBandControl[] {
+            this.xrCrossBandLine7,
+            this.xrCrossBandLine6,
+            this.xrCrossBandLine5,
+            this.xrCrossBandLine4,
+            this.xrCrossBandLine3,
+            this.xrCrossBandLine2,
+            this.xrCrossBandLine1,
+            this.xrCrossBandBox1});
             this.DataSource = this.objectDataSource1;
             this.Landscape = true;
             this.Margins = new System.Drawing.Printing.Margins(99, 100, 0, 0);
@@ -753,30 +734,25 @@
         private DevExpress.XtraReports.UI.XRLabel xrLabel12;
         private DevExpress.XtraReports.UI.XRLabel xrLabel11;
         private DevExpress.XtraReports.UI.XRLabel xrLabel10;
-        private DevExpress.XtraReports.UI.XRLine xrLine2;
-        private DevExpress.XtraReports.UI.XRLine xrLine1;
-        private DevExpress.XtraReports.UI.XRLine xrLine8;
-        private DevExpress.XtraReports.UI.XRLine xrLine7;
-        private DevExpress.XtraReports.UI.XRLine xrLine6;
-        private DevExpress.XtraReports.UI.XRLine xrLine5;
-        private DevExpress.XtraReports.UI.XRLine xrLine4;
-        private DevExpress.XtraReports.UI.XRLine xrLine3;
-        private DevExpress.XtraReports.UI.XRLine xrLine9;
         private DevExpress.XtraReports.UI.XRLine xrLine11;
         private DevExpress.XtraReports.UI.XRLine xrLine10;
-        private DevExpress.XtraReports.UI.XRLine xrLine12;
-        private DevExpress.XtraReports.UI.XRLine xrLine13;
-        private DevExpress.XtraReports.UI.XRLine xrLine16;
-        private DevExpress.XtraReports.UI.XRLine xrLine15;
-        private DevExpress.XtraReports.UI.XRLine xrLine14;
-        private DevExpress.XtraReports.UI.XRLine xrLine23;
-        private DevExpress.XtraReports.UI.XRLine xrLine22;
-        private DevExpress.XtraReports.UI.XRLine xrLine21;
-        private DevExpress.XtraReports.UI.XRLine xrLine20;
-        private DevExpress.XtraReports.UI.XRLine xrLine19;
-        private DevExpress.XtraReports.UI.XRLine xrLine18;
-        private DevExpress.XtraReports.UI.XRLine xrLine17;
         private DevExpress.XtraReports.Parameters.Parameter FromDate;
         private DevExpress.XtraReports.Parameters.Parameter ToDate;
+        private DevExpress.XtraReports.UI.XRCrossBandBox xrCrossBandBox1;
+        private DevExpress.XtraReports.UI.XRCrossBandLine xrCrossBandLine1;
+        private DevExpress.XtraReports.UI.XRCrossBandLine xrCrossBandLine2;
+        private DevExpress.XtraReports.UI.XRCrossBandLine xrCrossBandLine3;
+        private DevExpress.XtraReports.UI.XRCrossBandLine xrCrossBandLine4;
+        private DevExpress.XtraReports.UI.XRCrossBandLine xrCrossBandLine5;
+        private DevExpress.XtraReports.UI.XRCrossBandLine xrCrossBandLine6;
+        private DevExpress.XtraReports.UI.XRCrossBandLine xrCrossBandLine7;
+        private DevExpress.XtraReports.UI.XRLine xrLine4;
+        private DevExpress.XtraReports.UI.XRLine xrLine3;
+        private DevExpress.XtraReports.UI.XRLine xrLine2;
+        private DevExpress.XtraReports.UI.XRLine xrLine1;
+        private DevExpress.XtraReports.UI.XRLine xrLine5;
+        private DevExpress.XtraReports.UI.XRLine xrLine7;
+        private DevExpress.XtraReports.UI.XRLine xrLine6;
+        private DevExpress.XtraReports.UI.XRLine xrLine8;
     }
 }

@@ -78,5 +78,10 @@ namespace _360Accounting.Service
         {
             return this.repository.InvoiceAuditTrail(companyId, sobId, fromDate, toDate);
         }
+
+        public List<InvoicePrintout> InvoicePrintout(long companyId, long sobId, DateTime fromDate, DateTime toDate, string invoiceNo, long customerId, long customerSiteId)
+        {
+            return this.repository.InvoicePrintout(companyId, sobId, fromDate, toDate, invoiceNo, customerId, customerSiteId);
+        }
     }
 }

@@ -82,4 +82,23 @@ namespace _360Accounting.Core.Entities
         public decimal TaxAmount { get; set; }
         public decimal TotalAmount { get; set; }
     }
+
+    public class InvoicePrintout
+    {
+        public long CustomerId { get; set; }
+        public long CustomerSiteId { get; set; }
+
+        public string CustomerName { get; set; }
+        public string CustomerSiteName { get; set; }
+        public string InvoiceNo { get; set; }
+        public DateTime InvoiceDate { get; set; }
+        public string OrderReferenceNo { get; set; }
+        public string Remarks { get; set; }
+        public string ItemName { get; set; }
+        public string UOM { get; set; }
+        public decimal Quantity { get; set; }
+        public decimal Rate { get; set; }
+        public decimal Amount { get; set; }
+        public decimal SalesTaxVAT { get; set; }
+    }
 }

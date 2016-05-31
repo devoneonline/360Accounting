@@ -1,0 +1,22 @@
+﻿@Html.DevExpress().GetStyleSheets(
+    new StyleSheet { ExtensionSuite = ExtensionSuite.Report }
+)
+
+
+@Html.DevExpress().GetScripts(
+    new Script { ExtensionSuite = ExtensionSuite.Report }
+)
+
+@model _360Accounting.Web.Reports.InvoicePrintoutReport
+
+<div class="container">
+    <div class="col-lg-12">
+        <div class="form-control">
+            &nbsp;
+        </div>
+        <div class="clearfix col-lg-12 ">
+            @Html.Partial("_InvoicePrintout", Model)
+        </div>
+    </div>
+</div>
+

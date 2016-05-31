@@ -147,6 +147,65 @@ namespace _360Accounting.Web.Models
         #endregion
     }
 
+    public class InvoicePrintoutModel
+    {
+        public string CustomerName { get; set; }
+        public string CustomerSiteName { get; set; }
+        public string InvoiceNo { get; set; }
+        public DateTime InvoiceDate { get; set; }
+        public string OrderReferenceNo { get; set; }
+        public string Remarks { get; set; }
+        public string ItemName { get; set; }
+        public string UOM { get; set; }
+        public decimal Quantity { get; set; }
+        public decimal Rate { get; set; }
+        public decimal Amount { get; set; }
+        public decimal SalesTaxVAT { get; set; }
+    }
+
+    public class InvoicePrintoutCriteriaModel
+    {
+        #region Constructors
+
+        public InvoicePrintoutCriteriaModel()
+        {
+            this.Customers = new List<SelectListItem>();
+            this.CustomerSites = new List<SelectListItem>();
+            this.FromDate = Const.StartDate;
+            this.ToDate = Const.EndDate;
+        }
+
+        #endregion
+
+        #region Properties
+
+        [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "From Date")]
+        public DateTime FromDate { get; set; }
+
+        [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "To Date")]
+        public DateTime ToDate { get; set; }
+
+        [Display(Name = "Invoice #")]
+        public string InvoiceNo { get; set; }
+
+        [Display(Name = "Customer")]
+        public long CustomerId { get; set; }
+
+        [Display(Name = "Customer Site")]
+        public long CustomerSiteId { get; set; }
+
+        public List<SelectListItem> Customers { get; set; }
+        public List<SelectListItem> CustomerSites { get; set; }
+
+        #endregion
+    }
+
     public class InvoiceAuditTrailModel
     {
         public string InvoiceNo { get; set; }
@@ -194,12 +253,18 @@ namespace _360Accounting.Web.Models
 
     public class CustomerSalesCriteriaModel
     {
+        #region Constructors
+
         public CustomerSalesCriteriaModel()
         {
             this.Customers = new List<SelectListItem>();
             this.FromDate = Const.StartDate;
             this.ToDate = Const.EndDate;
         }
+
+        #endregion
+
+        #region Properties
 
         [Required]
         [DataType(DataType.Date)]
@@ -217,6 +282,8 @@ namespace _360Accounting.Web.Models
         public long CustomerId { get; set; }
 
         public List<SelectListItem> Customers { get; set; }
+
+        #endregion
     }
 
     public class CustomerSalesModel

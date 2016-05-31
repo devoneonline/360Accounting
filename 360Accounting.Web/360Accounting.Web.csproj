@@ -362,6 +362,12 @@
     <Compile Include="Reports\InvoiceAuditTrailReport.Designer.cs">
       <DependentUpon>InvoiceAuditTrailReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Reports\InvoicePrintoutReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\InvoicePrintoutReport.Designer.cs">
+      <DependentUpon>InvoicePrintoutReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Reports\LedgerReport.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -724,6 +730,9 @@
     <Content Include="Views\Invoice\_InvoiceAuditTrail.cshtml" />
     <Content Include="Views\Invoice\InvoiceAuditTrail.cshtml" />
     <Content Include="Views\Invoice\InvoiceAuditTrailReport.cshtml" />
+    <Content Include="Views\Invoice\InvoicePrintout.cshtml" />
+    <Content Include="Views\Invoice\InvoicePrintoutReport.cshtml" />
+    <Content Include="Views\Invoice\_InvoicePrintout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">
@@ -760,6 +769,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\InvoiceAuditTrailReport.resx">
       <DependentUpon>InvoiceAuditTrailReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\InvoicePrintoutReport.resx">
+      <DependentUpon>InvoicePrintoutReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\LedgerReport.resx">
       <DependentUpon>LedgerReport.cs</DependentUpon>

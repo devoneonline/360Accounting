@@ -173,5 +173,47 @@ namespace _360Accounting.Data.Repositories
 
             return data;
         }
+
+        public List<InvoicePrintout> InvoicePrintout(long companyId, long sobId, DateTime fromDate, DateTime toDate, string invoiceNo, long customerId, long customerSiteId)
+        {
+            var data = (from a in this.Context.Invoices
+                        join b in this.Context.InvoiceDetails on a.Id equals b.InvoiceId
+                        join c in this.Context.Customers on a.CustomerId equals c.Id
+                        join d in this.Context.CustomerSites on a.CustomerSiteId equals d.Id
+                        join e in this.Context.Items on b.ItemId equals e.Id into f
+                        from g in f.DefaultIfEmpty()
+                        join h in this.Context.InvoiceSources on b.InvoiceSourceId equals h.Id into i
+                        from j in i.DefaultIfEmpty()
+                        where a.CompanyId == companyId && a.SOBId == sobId &&
+                        a.InvoiceDate >= fromDate && a.InvoiceDate <= toDate
+                        select new InvoicePrintout
+                        {
+                            Amount = b.Quantity * b.Rate,
+                            CustomerId = a.CustomerId,
+                            CustomerName = c.CustomerName,
+                            CustomerSiteId = a.CustomerSiteId,
+                            CustomerSiteName = d.SiteName,
+                            InvoiceDate = a.InvoiceDate,
+                            InvoiceNo = a.InvoiceNo,
+                            ItemName = b.ItemId == null ? j.Description : g.ItemName,
+                            OrderReferenceNo = "",
+                            Quantity = b.Quantity,
+                            Rate = b.Rate,
+                            Remarks = a.Remarks,
+                            SalesTaxVAT = 0,
+                            UOM = ""
+                        }).ToList();
+
+            if (customerId != 0)
+                data = data.Where(x => x.CustomerId == customerId).ToList();
+
+            if (customerSiteId != 0)
+                data = data.Where(x => x.CustomerSiteId == customerSiteId).ToList();
+
+            if (invoiceNo != "" && invoiceNo != null)
+                data = data.Where(x => x.InvoiceNo == invoiceNo).ToList();
+
+            return data;
+        }
     }
 }

@@ -23,6 +23,44 @@ namespace _360Accounting.Web.Controllers
 
         #region Private Methods
 
+        private InvoicePrintoutReport createInvoicePrintoutReport(DateTime fromDate, DateTime toDate, string invoiceNo, long customerId, long customerSiteId)
+        {
+            List<InvoicePrintoutModel> modelList = mapInvoicePrintoutModel(service.InvoicePrintout(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, fromDate, toDate, invoiceNo, customerId, customerSiteId));
+            InvoicePrintoutReport report = new InvoicePrintoutReport();
+            report.Parameters["FromDate"].Value = fromDate;
+            report.Parameters["ToDate"].Value = toDate;
+            report.Parameters["InvoiceNo"].Value = invoiceNo;
+            report.Parameters["CustomerId"].Value = customerId;
+            report.Parameters["CustomerSiteId"].Value = customerSiteId;
+            report.DataSource = modelList;
+            return report;
+        }
+
+        private List<InvoicePrintoutModel> mapInvoicePrintoutModel(List<InvoicePrintout> list)
+        {
+            List<InvoicePrintoutModel> reportModel = new List<InvoicePrintoutModel>();
+            foreach (var record in list)
+            {
+                reportModel.Add(new InvoicePrintoutModel
+                {
+                    Amount = record.Amount,
+                    CustomerName = record.CustomerName,
+                    CustomerSiteName = record.CustomerSiteName,
+                    InvoiceDate = record.InvoiceDate,
+                    InvoiceNo = record.InvoiceNo,
+                    ItemName = record.ItemName,
+                    OrderReferenceNo = record.OrderReferenceNo,
+                    Quantity = record.Quantity,
+                    Rate = record.Rate,
+                    Remarks = record.Remarks,
+                    SalesTaxVAT = record.SalesTaxVAT,
+                    UOM = record.UOM
+                });
+            }
+
+            return reportModel;
+        }
+
         private InvoiceAuditTrailReport createInvoiceAuditTrailReport(DateTime fromDate, DateTime toDate)
         {
             List<InvoiceAuditTrailModel> modelList = mapInvoiceAuditTrailModel(service.InvoiceAuditTrail(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, fromDate, toDate));
@@ -90,6 +128,46 @@ namespace _360Accounting.Web.Controllers
         }
 
         #endregion
+
+        public ActionResult InvoicePrintoutPartialExport(DateTime fromDate, DateTime toDate, string invoiceNo, long customerId, long customerSiteId)
+        {
+            return DocumentViewerExtension.ExportTo(createInvoicePrintoutReport(fromDate, toDate, invoiceNo, customerId, customerSiteId), Request);
+        }
+
+        public ActionResult InvoicePrintoutPartial(DateTime fromDate, DateTime toDate, string invoiceNo, long customerId, long customerSiteId)
+        {
+            return PartialView("_InvoicePrintout", createInvoicePrintoutReport(fromDate, toDate, invoiceNo, customerId, customerSiteId));
+        }
+
+        public ActionResult InvoicePrintoutReport(DateTime fromDate, DateTime toDate, string invoiceNo, long customerId, long customerSiteId)
+        {
+            return View(createInvoicePrintoutReport(fromDate, toDate, invoiceNo, customerId, customerSiteId));
+        }
+
+        public ActionResult InvoicePrintout()
+        {
+            InvoicePrintoutCriteriaModel model = new InvoicePrintoutCriteriaModel();
+
+            model.Customers.Add(new SelectListItem { Text = "All Customers", Value = "0" });
+
+            foreach (var customer in CustomerHelper.GetCustomers())
+            {
+                model.Customers.Add(new SelectListItem { Text = customer.CustomerName, Value = customer.Id.ToString() });
+            }
+
+            if (model.Customers != null && model.Customers.Count() > 0)
+            {
+                model.CustomerId = Convert.ToInt64(model.Customers.FirstOrDefault().Value);
+                model.CustomerSites = CustomerHelper.GetCustomerSitesCombo(model.CustomerId);
+
+                if (model.CustomerSites != null && model.CustomerSites.Count() > 0)
+                {
+                    model.CustomerSiteId = Convert.ToInt64(model.CustomerSites.FirstOrDefault().Value);
+                }
+            }
+
+            return View(model);
+        }
 
         public ActionResult InvoiceAuditTrailPartialExport(DateTime fromDate, DateTime toDate)
         {
