@@ -15,7 +15,8 @@ namespace _360Accounting.Data.Repositories
         {
             var query = from a in this.Context.ReceivingDetails
                         join b in this.Context.Items on a.ItemId equals b.Id
-                        join c in this.Context.LotNumbers on a.LotNoId equals c.Id
+                        join c in this.Context.LotNumbers on a.LotNoId equals c.Id into leftLot
+                        from left in leftLot.DefaultIfEmpty()
                         where a.ReceiptId == receivingId
                         select new ReceivingDetailView
                         {
@@ -25,7 +26,7 @@ namespace _360Accounting.Data.Repositories
                             ItemId = a.ItemId,
                             ItemName = b.ItemName,
                             LocatorId = a.LocatorId,
-                            LotNo = c.LotNo,
+                            LotNo = left.LotNo,
                             LotNoId = a.LotNoId,
                             Quantity = a.Quantity,
                             ReceiptId = a.ReceiptId,
