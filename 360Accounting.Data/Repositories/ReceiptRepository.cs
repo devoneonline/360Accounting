@@ -180,5 +180,35 @@ namespace _360Accounting.Data.Repositories
 
             return data;
         }
+
+
+        public List<ReceiptPrintout> ReceiptPrintout(long companyId, long sobId, DateTime fromDate, DateTime toDate, string receiptNo, long customerId, long customerSiteId)
+        {
+            var data = (from a in this.Context.Receipts
+                        join b in this.Context.Customers on a.CustomerId equals b.Id
+                        where a.CompanyId == companyId && a.SOBId == sobId &&
+                        a.ReceiptDate >= fromDate && a.ReceiptDate <= toDate
+                        select new ReceiptPrintout
+                        {
+                            AmountInWords = "",
+                            CustomerId = a.CustomerId,
+                            CustomerName = b.CustomerName,
+                            CustomerSiteId = a.CustomerSiteId,
+                            ReceiptAmount = a.ReceiptAmount,
+                            ReceiptNo = a.ReceiptNumber,
+                            Remarks = a.Remarks                            
+                        }).ToList();
+
+            if (receiptNo != null)
+                data = data.Where(a => a.ReceiptNo == receiptNo).ToList();
+
+            if (customerId != 0)
+                data = data.Where(x => x.CustomerId == customerId).ToList();
+
+            if (customerSiteId != 0)
+                data = data.Where(x => x.CustomerSiteId == customerSiteId).ToList();
+
+            return data;
+        }
     }
 }
