@@ -54,4 +54,16 @@ namespace _360Accounting.Core.Entities
         public decimal Amount { get; set; }
         public string Status { get; set; }
     }
+
+    public class ReceiptPrintout
+    {
+        public long CustomerId { get; set; }
+        public long CustomerSiteId { get; set; }
+        public string ReceiptNo { get; set; }
+
+        public decimal ReceiptAmount { get; set; }
+        public string AmountInWords { get; set; }
+        public string CustomerName { get; set; }
+        public string Remarks { get; set; }
+    }
 }

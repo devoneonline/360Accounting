@@ -70,7 +70,78 @@ namespace _360Accounting.Web.Controllers
             return reportModel;
         }
 
+        private ReceiptPrintoutReport createReceiptPrintoutReport(DateTime fromDate, DateTime toDate, string receiptNo, long customerId, long customerSiteId)
+        {
+            List<ReceiptPrintoutModel> modelList = mapReceiptPrintoutModel(service.ReceiptPrintout(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, fromDate, toDate, receiptNo, customerId, customerSiteId));
+            ReceiptPrintoutReport report = new ReceiptPrintoutReport();
+            report.Parameters["FromDate"].Value = fromDate;
+            report.Parameters["ToDate"].Value = toDate;
+            report.Parameters["ReceiptNo"].Value = receiptNo;
+            report.Parameters["CustomerId"].Value = customerId;
+            report.Parameters["CustomerSiteId"].Value = customerSiteId;
+            report.DataSource = modelList;
+            return report;
+        }
+
+        private List<ReceiptPrintoutModel> mapReceiptPrintoutModel(List<ReceiptPrintout> entityList)
+        {
+            List<ReceiptPrintoutModel> reportModel = new List<ReceiptPrintoutModel>();
+
+            foreach (var record in entityList)
+            {
+                reportModel.Add(new ReceiptPrintoutModel
+                {
+                    AmountInWords = record.AmountInWords,
+                    CustomerName = record.CustomerName,
+                    ReceiptAmount = record.ReceiptAmount,
+                    Remarks = record.Remarks,
+                });
+            }
+
+            return reportModel;
+        }
+
         #endregion
+
+        public ActionResult ReceiptPrintoutPartialExport(DateTime fromDate, DateTime toDate, string receiptNo, long customerId, long customerSiteId)
+        {
+            return DocumentViewerExtension.ExportTo(createReceiptPrintoutReport(fromDate, toDate, receiptNo, customerId, customerSiteId), Request);
+        }
+
+        public ActionResult ReceiptPrintoutPartial(DateTime fromDate, DateTime toDate, string receiptNo, long customerId, long customerSiteId)
+        {
+            return PartialView("_ReceiptPrintout", createReceiptPrintoutReport(fromDate, toDate, receiptNo, customerId, customerSiteId));
+        }
+
+        public ActionResult ReceiptPrintoutReport(DateTime fromDate, DateTime toDate, string receiptNo, long customerId, long customerSiteId)
+        {
+            return View(createReceiptPrintoutReport(fromDate, toDate, receiptNo, customerId, customerSiteId));
+        }
+
+        public ActionResult ReceiptPrintout()
+        {
+            ReceiptPrintoutCriteriaModel model = new ReceiptPrintoutCriteriaModel();
+
+            model.Customers.Add(new SelectListItem { Text = "All Customers", Value = "0" });
+
+            foreach (var customer in CustomerHelper.GetCustomers())
+            {
+                model.Customers.Add(new SelectListItem { Text = customer.CustomerName, Value = customer.Id.ToString() });
+            }
+
+            if (model.Customers != null && model.Customers.Count() > 0)
+            {
+                model.CustomerId = Convert.ToInt64(model.Customers.FirstOrDefault().Value);
+                model.CustomerSites = CustomerHelper.GetCustomerSitesCombo(model.CustomerId);
+
+                if (model.CustomerSites != null && model.CustomerSites.Count() > 0)
+                {
+                    model.CustomerSiteId = Convert.ToInt64(model.CustomerSites.FirstOrDefault().Value);
+                }
+            }
+
+            return View(model);
+        }
 
         public ActionResult ReceiptAuditTrialPartialExport(DateTime fromDate, DateTime toDate)
         {
@@ -314,6 +385,17 @@ namespace _360Accounting.Web.Controllers
                 Value = x.Id.ToString()
             }).ToList();
             return Json(customerList, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult CustomerSiteList(long customerId)
+        {
+            List<SelectListItem> customerSiteList = CustomerHelper.GetCustomerSites(customerId)
+                    .Select(x => new SelectListItem
+                    {
+                        Text = x.SiteName,
+                        Value = x.Id.ToString()
+                    }).ToList();
+            return Json(customerSiteList, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult BankAccountList(long bankId)
