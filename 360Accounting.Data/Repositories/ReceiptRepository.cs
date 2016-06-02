@@ -156,7 +156,6 @@ namespace _360Accounting.Data.Repositories
 
 
 
-
         public List<ReceiptAuditTrial> ReceiptAuditTrial(long companyId, long sobId, DateTime fromDate, DateTime toDate)
         {
             var data = (from a in this.Context.Receipts
@@ -190,7 +189,6 @@ namespace _360Accounting.Data.Repositories
                         a.ReceiptDate >= fromDate && a.ReceiptDate <= toDate
                         select new ReceiptPrintout
                         {
-                            AmountInWords = "",
                             CustomerId = a.CustomerId,
                             CustomerName = b.CustomerName,
                             CustomerSiteId = a.CustomerSiteId,
@@ -199,7 +197,7 @@ namespace _360Accounting.Data.Repositories
                             Remarks = a.Remarks                            
                         }).ToList();
 
-            if (receiptNo != null)
+            if (receiptNo != "" && receiptNo != null)
                 data = data.Where(a => a.ReceiptNo == receiptNo).ToList();
 
             if (customerId != 0)

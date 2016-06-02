@@ -91,7 +91,7 @@ namespace _360Accounting.Web.Controllers
             {
                 reportModel.Add(new ReceiptPrintoutModel
                 {
-                    AmountInWords = record.AmountInWords,
+                    AmountInWords = Utility.AmountinWords(Convert.ToDouble(record.ReceiptAmount)),
                     CustomerName = record.CustomerName,
                     ReceiptAmount = record.ReceiptAmount,
                     Remarks = record.Remarks,

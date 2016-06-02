@@ -62,7 +62,6 @@ namespace _360Accounting.Core.Entities
         public string ReceiptNo { get; set; }
 
         public decimal ReceiptAmount { get; set; }
-        public string AmountInWords { get; set; }
         public string CustomerName { get; set; }
         public string Remarks { get; set; }
     }
