@@ -17,6 +17,7 @@ namespace _360Accounting.Core.Entities
         public string DCNo { get; set; }
         public long CompanyId { get; set; }
         public long SOBId { get; set; }
+        public bool Confirmed { get; set; }
     }
 
     public class ReceivingDetail : EntityBase

@@ -744,6 +744,10 @@
     <Content Include="Views\Receipt\ReceiptPrintout.cshtml" />
     <Content Include="Views\Receipt\ReceiptPrintoutReport.cshtml" />
     <Content Include="Views\Receipt\_ReceiptPrintout.cshtml" />
+    <Content Include="Views\Receiving\Edit.cshtml" />
+    <Content Include="Views\Receiving\Index.cshtml" />
+    <Content Include="Views\Receiving\_Detail.cshtml" />
+    <Content Include="Views\Receiving\_List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

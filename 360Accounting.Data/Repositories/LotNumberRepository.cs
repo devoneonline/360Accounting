@@ -128,6 +128,11 @@ namespace _360Accounting.Data.Repositories
             return new List<SerialNumber>();
         }
 
+        public LotNumber GetLotbyItem(long companyId, long sobId, long itemId, string lotNo)
+        {
+            return this.Context.LotNumbers.FirstOrDefault(rec => rec.CompanyId == companyId && rec.SOBId == sobId && rec.ItemId == itemId && rec.LotNo == lotNo);
+        }
+
         public string Insert(LotNumber entity)
         {
             this.Context.LotNumbers.Add(entity);
