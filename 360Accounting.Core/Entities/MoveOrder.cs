@@ -43,6 +43,7 @@ namespace _360Accounting.Core.Entities
         public string LotNo { get; set; }
         public string SourceType { get; set; }
         public long SourceId { get; set; }
+        public decimal Qty { get; set; }
     }
 
     public class SerialNumber : EntityBase

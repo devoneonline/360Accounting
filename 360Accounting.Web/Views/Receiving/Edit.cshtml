@@ -34,34 +34,45 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-2">
+        if (Model.Confirmed)
+        {
+            <div class="col-lg-12">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.ReceiptNo)
-                    @Html.TextBoxFor(model => model.ReceiptNo, new { @readonly = "readonly", @class = "form-control" })
+                    Receipt #: @Model.ReceiptNo / Date: @Model.Date / @ViewBag.PO / DC #: @Model.DCNo
                 </div>
             </div>
-            <div class="col-lg-3">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Date)
-                    @Html.EditorFor(model => model.Date)
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ReceiptNo)
+                        @Html.TextBoxFor(model => model.ReceiptNo, new { @readonly = "readonly", @class = "form-control" })
+                    </div>
                 </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.POId)
-                    @Html.DropDownListFor(model => model.POId, Model.POs, new { @class = "form-control" })
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Date)
+                        @Html.EditorFor(model => model.Date)
+                    </div>
                 </div>
-            </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.POId)
+                        @Html.DropDownListFor(model => model.POId, Model.POs, new { @class = "form-control" })
+                    </div>
+                </div>
 
-            <div class="col-lg-3">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.DCNo)
-                    @Html.TextBoxFor(model => model.DCNo, new { @class = "form-control" })
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DCNo)
+                        @Html.TextBoxFor(model => model.DCNo, new { @class = "form-control" })
+                    </div>
                 </div>
             </div>
-        </div>
-        
+        }
+
         <div class="row">
             <div id="dvDetail" class="col-lg-12">
                 @Html.Partial("_Detail", Model.ReceivingDetail)
@@ -122,11 +133,15 @@
             else {
                 var url = '@Url.Content("~/Receiving/Save")';
                 $.post(url, {
-                    id:id, receiptNo:receiptNo, date:date, poId:poId, dcNo:dcNo, companyId:companyId, sobId:sobId
+                    id: id, receiptNo: receiptNo, date: date, poId: poId, dcNo: dcNo, companyId: companyId, sobId: sobId
                 },
                     function (result) {
-                        alert(result);
-                        window.location.href = '@Url.Content("~/Receiving")';
+                        if (result == "Saved Successfully") {
+                            alert(result);
+                            window.location.href = '@Url.Content("~/Receiving")';
+                        }
+                        else
+                            alert(result);
                     });
             }
         });

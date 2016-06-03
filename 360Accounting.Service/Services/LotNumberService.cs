@@ -73,6 +73,11 @@ namespace _360Accounting.Service
             return this.repository.GetAvailableSerials(entity, companyId, sobId);
         }
 
+        public LotNumber GetLotbyItem(long companyId, long sobId, long itemId, string lotNo)
+        {
+            return this.repository.GetLotbyItem(companyId, sobId, itemId, lotNo);
+        }
+
         public string Insert(LotNumber entity)
         {
             return this.repository.Insert(entity);

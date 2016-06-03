@@ -37,6 +37,7 @@ namespace _360Accounting.Web.Models
                 this.SOBId = entity.SOBId;
                 this.UpdateBy = entity.UpdateBy;
                 this.UpdateDate = entity.UpdateDate;
+                this.Confirmed = entity.Confirmed;
             }
         }
 
@@ -56,6 +57,7 @@ namespace _360Accounting.Web.Models
                 this.UpdateBy = entityView.UpdateBy;
                 this.UpdateDate = entityView.UpdateDate;
                 this.PONo = entityView.PONo;
+                this.Confirmed = entityView.Confirmed;
             }
         }
         #endregion
@@ -87,6 +89,8 @@ namespace _360Accounting.Web.Models
         public long CompanyId { get; set; }
 
         public long SOBId { get; set; }
+
+        public bool Confirmed { get; set; }
 
         #endregion
     }

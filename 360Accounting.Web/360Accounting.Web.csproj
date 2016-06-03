@@ -756,12 +756,16 @@
     <Content Include="Views\Receipt\ReceiptPrintout.cshtml" />
     <Content Include="Views\Receipt\ReceiptPrintoutReport.cshtml" />
     <Content Include="Views\Receipt\_ReceiptPrintout.cshtml" />
-    <Content Include="Views\Invoice\PeriodwiseActivity.cshtml" />
-    <Content Include="Views\Invoice\PeriodwiseActivityReport.cshtml" />
-    <Content Include="Views\Invoice\_PeriodwiseActivity.cshtml" />
-    <Content Include="Views\Receipt\CustomerwiseReceiptClearance.cshtml" />
+    <Content Include="Views\Receiving\Edit.cshtml" />
+    <Content Include="Views\Receiving\Index.cshtml" />
+    <Content Include="Views\Receiving\_Detail.cshtml" />
+    <Content Include="Views\Receiving\_List.cshtml" />
     <Content Include="Views\Receipt\CustomerwiseReceiptClearanceReport.cshtml" />
     <Content Include="Views\Receipt\_CustomerwiseReceiptClearance.cshtml" />
+    <Content Include="Views\Invoice\_PeriodwiseActivity.cshtml" />
+    <Content Include="Views\Invoice\PeriodwiseActivity.cshtml" />
+    <Content Include="Views\Invoice\PeriodwiseActivityReport.cshtml" />
+    <Content Include="Views\Receipt\CustomerwiseReceiptClearance.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">

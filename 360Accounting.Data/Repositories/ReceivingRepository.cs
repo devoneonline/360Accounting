@@ -113,7 +113,7 @@ namespace _360Accounting.Data.Repositories
 
         public ReceivingDetail GetSingleReceivingDetail(long id)
         {
-            return this.Context.ReceivingDetails.FirstOrDefault(rec => rec.Id == Convert.ToInt64(id));
+            return this.Context.ReceivingDetails.FirstOrDefault(rec => rec.Id == id);
         }
 
         public string Insert(Receiving entity)

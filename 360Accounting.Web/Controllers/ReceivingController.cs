@@ -124,141 +124,342 @@ namespace _360Accounting.Web.Controllers
             }
         }
 
-        //Pending..
+        private string deleteLot(ReceivingDetailModel model)
+        {
+            LotNumber lot = lotService.GetSingle(model.LotNoId.Value.ToString(), AuthenticationHelper.CompanyId.Value);
+            List<LotNumber> savedLots = lotService.GetAllbyLotNo(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, lot.LotNo, lot.ItemId).ToList();
+            if (model.LotNoId != null)
+            {
+                if (savedLots.Count() > 1)
+                {
+                    return "Record can not be deleted!";
+                }
+                else
+                    lotService.Delete(model.LotNoId.Value.ToString(), AuthenticationHelper.CompanyId.Value);
+            }
+
+            return "";
+        }
+
         private string updateLot(ReceivingDetailModel model)
         {
-            string lotNoId = null;
-            ReceivingDetail savedDetail = service.GetSingleReceivingDetail(model.Id);
             if (!string.IsNullOrEmpty(model.LotNo))
             {
-                if (savedDetail.LotNoId > 0)
+                if (model.Id > 0)
                 {
-                    LotNumber lot = lotService.GetSingle(savedDetail.LotNoId.ToString(), AuthenticationHelper.CompanyId.Value);
-                    if (lot.LotNo == model.LotNo)
-                        lotNoId = lot.Id.ToString();
+                    ReceivingDetail savedDetail = service.GetSingleReceivingDetail(model.Id);
+                    LotNumber savedLot = lotService.GetSingle(model.LotNoId.ToString(), AuthenticationHelper.CompanyId.Value);
+                    if (savedLot.LotNo == model.LotNo)
+                    {
+                        savedLot.Qty = savedLot.Qty - savedDetail.Quantity + model.ThisPurchaseQty;
+                        return lotService.Update(savedLot);
+                    }
                     else
                     {
-                        lot.LotNo = model.LotNo;
-                        List<LotNumber> lots = lotService.GetAllbyLotNo(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, lot.LotNo, lot.ItemId).ToList();
-                        if (lots.Any(rec => rec.SourceType == "Shipment"))
-                            return "Lot Number can not be edited";
+                        List<LotNumber> savedLots = lotService.GetAllbyLotNo(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, savedLot.LotNo, savedLot.ItemId).ToList();
+                        if (savedLots.Count() > 1)
+                            return "Lot can not be edited!";
                         else
-                            lotService.Update(lot);
+                        {
+                            savedLot.Qty = savedLot.Qty - savedDetail.Quantity + model.ThisPurchaseQty;
+                            savedLot.LotNo = model.LotNo;
+                            return lotService.Update(savedLot);
+                        }
                     }
                 }
                 else
                 {
-                    lotNoId = lotService.Insert(new LotNumber
+                    return lotService.Insert(new LotNumber
                     {
                         CompanyId = AuthenticationHelper.CompanyId.Value,
-                        CreateBy = model.CreateBy,
+                        CreateBy = AuthenticationHelper.UserId,
                         CreateDate = DateTime.Now,
                         ItemId = model.ItemId,
                         LotNo = model.LotNo,
+                        Qty = model.ThisPurchaseQty,
                         SOBId = SessionHelper.SOBId,
-                        SourceId = model.Id,
-                        SourceType = "Receiving"
+                        SourceId = 0,
+                        SourceType = "Receiving",
+                        UpdateBy = null,
+                        UpdateDate = null
                     });
                 }
             }
             else
             {
-                LotNumber lot = lotService.GetSingle(savedDetail.LotNoId.ToString(), AuthenticationHelper.CompanyId.Value);
-                if (lot != null)
+                if (model.Id > 0)
                 {
-                    List<LotNumber> lots = lotService.GetAllbyLotNo(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, lot.LotNo, lot.ItemId).ToList();
-                    if (lots.Any(rec => rec.SourceType == "Shipment"))
-                        return "Lot Number can not be deleted";
-                    else
-                        lotService.Delete(lot.Id.ToString(), AuthenticationHelper.CompanyId.Value);
+                    ReceivingDetail savedDetail = service.GetSingleReceivingDetail(model.Id);
+                    LotNumber lot = lotService.GetSingle(savedDetail.LotNoId.Value.ToString(), AuthenticationHelper.CompanyId.Value);
+                    List<LotNumber> savedLots = lotService.GetAllbyLotNo(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, lot.LotNo, lot.ItemId).ToList();
+                    if (savedDetail.LotNoId != null)
+                    {
+                        if (savedLots.Count() > 1)
+                        {
+                            return "Lot can not be deleted!";
+                        }
+                        else
+                            lotService.Delete(savedDetail.LotNoId.Value.ToString(), AuthenticationHelper.CompanyId.Value);
+                    }
+                    return "";
                 }
+                return "";
             }
-
-            return lotNoId;
         }
 
-        //Pending..
-        private string updateSerials(ReceivingDetailModel model)
+        private string deleteSerials(ReceivingDetailModel model)
         {
-            string result = "";
-            if (model.SerialNo != null)
+            ReceivingDetail savedDetail = service.GetSingleReceivingDetail(model.Id);
+
+            if (!string.IsNullOrEmpty(savedDetail.SerialNo))
             {
-                List<string> serials = model.SerialNo.Split(new char[] { ',' }).ToList();
-                if (model.LotNo == null)
-                    return "Serials can not be defined without lot!";
-
-                if (serials.Count() > model.ThisPurchaseQty)
-                    return "Serials can not be more than quantity!";
-
-                if (model.LotNoId != null && model.LotNoId.Value > 0)
+                List<string> savedSerials = savedDetail.SerialNo.Split(new char[] { ',' }).ToList();
+                bool isAllowed = true;
+                List<SerialNumber> tobeDeleted = new List<SerialNumber>();
+                foreach (var serial in savedSerials)
                 {
-                    List<SerialNumber> savedSerials = lotService.GetSerialsbyLotNo(model.LotNoId.Value, AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId).ToList();
-                    if (savedSerials != null && savedSerials.Count() > 0)
-                    {
-
-                    }
+                    isAllowed = lotService.CheckSerialNumAvailability(AuthenticationHelper.CompanyId.Value, savedDetail.LotNoId.Value, serial);
+                    if (!isAllowed)
+                        return "Record can not be deleted!";
                     else
+                        tobeDeleted.Add(lotService.GetSerialNo(serial, savedDetail.LotNoId.Value, AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId));
+                }
+                if (isAllowed)
+                {
+                    if (tobeDeleted.Count() > 0)
                     {
-                        foreach (var serial in serials)
+                        foreach (var item in tobeDeleted)
                         {
-                            lotService.InsertSerialNum(new SerialNumber
-                                {
-                                    CompanyId = AuthenticationHelper.CompanyId.Value,
-                                    CreateBy = model.CreateBy,
-                                    CreateDate = DateTime.Now,
-                                    LotNo = model.LotNo,
-                                    SerialNo = serial
-                                });
+                            lotService.DeleteSerialNum(item.Id.ToString(), AuthenticationHelper.CompanyId.Value);
                         }
                     }
                 }
             }
-            return result;
+            return "";
         }
 
-        private void save(ReceivingModel model)
+        private string updateSerials(ReceivingDetailModel model)
+        {
+            if (!string.IsNullOrEmpty(model.SerialNo))
+            {
+                List<string> newSerials = model.SerialNo.Trim().Split(new char[] { ',' }).ToList();
+                if (newSerials.Count() != model.ThisPurchaseQty)
+                    return "Serials must be according to the Quantity";
+            }
+            if (model.Id > 0)
+            {
+                ReceivingDetail savedDetail = service.GetSingleReceivingDetail(model.Id);
+                if (!string.IsNullOrEmpty(model.SerialNo))
+                {
+                    List<string> unsavedSerials = model.SerialNo.Trim().Split(new char[] { ',' }).ToList();
+                    if (!string.IsNullOrEmpty(savedDetail.SerialNo))
+                    {
+                        List<string> savedSerials = savedDetail.SerialNo.Split(new char[] { ',' }).ToList();
+                        bool isAvailable = true;
+                        foreach (var serial in savedSerials)
+                        {
+                            isAvailable = lotService.CheckSerialNumAvailability(AuthenticationHelper.CompanyId.Value, savedDetail.LotNoId.Value, serial);
+                            if (!isAvailable)
+                                return "Serial is in use!";
+                        }
+
+                        if (isAvailable)
+                        {
+                            if (savedSerials.Count() > unsavedSerials.Count())
+                            {
+                                List<string> tobeDeleted = savedSerials.Take(savedSerials.Count() - unsavedSerials.Count()).ToList();
+                                if (tobeDeleted != null && tobeDeleted.Count() > 0)
+                                {
+                                    foreach (var item in tobeDeleted)
+                                    {
+                                        SerialNumber serialNum = lotService.GetSerialNo(item, savedDetail.LotNoId.Value, AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId);
+                                        if (serialNum != null)
+                                            lotService.DeleteSerialNum(serialNum.Id.ToString(), AuthenticationHelper.CompanyId.Value);
+                                    }
+                                }
+                            }
+                            foreach (var serial in unsavedSerials)
+                            {
+                                SerialNumber entity = lotService.GetSerialNo(serial, savedDetail.LotNoId.Value, AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId);
+                                if (entity != null)
+                                {
+                                    entity.LotNo = model.LotNo;
+                                    entity.SerialNo = serial;
+                                    lotService.UpdateSerialNum(entity);
+                                }
+                                else
+                                {
+                                    lotService.InsertSerialNum(new SerialNumber
+                                    {
+                                        CompanyId = AuthenticationHelper.CompanyId.Value,
+                                        CreateBy = AuthenticationHelper.UserId,
+                                        CreateDate = DateTime.Now,
+                                        LotNo = model.LotNo,
+                                        LotNoId = savedDetail.LotNoId.Value,
+                                        SerialNo = serial,
+                                        UpdateBy = null,
+                                        UpdateDate = null
+                                    });
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var serial in unsavedSerials)
+                        {
+                            lotService.InsertSerialNum(new SerialNumber
+                            {
+                                CompanyId = AuthenticationHelper.CompanyId.Value,
+                                CreateBy = AuthenticationHelper.UserId,
+                                CreateDate = DateTime.Now,
+                                LotNo = model.LotNo,
+                                LotNoId = savedDetail.Id,
+                                SerialNo = serial,
+                                UpdateBy = null,
+                                UpdateDate = null
+                            });
+                        }
+                    }
+                }
+            }
+            else 
+            {
+                if (!string.IsNullOrEmpty(model.SerialNo))
+                {
+                    if (!string.IsNullOrEmpty(model.LotNo))
+                    {
+                        LotNumber lot = lotService.GetLotbyItem(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, model.ItemId, model.LotNo);
+                        if (lot != null)
+                        {
+                            List<string> serials = model.SerialNo.Trim().Split(new char[] { ',' }).ToList();
+                            foreach (var serial in serials)
+                            {
+                                bool notAvailable = lotService.CheckSerialNumAvailability(AuthenticationHelper.CompanyId.Value, lot.Id, serial);
+                                if (!notAvailable)
+                                {
+                                    lotService.InsertSerialNum(new SerialNumber
+                                    {
+                                        CompanyId = AuthenticationHelper.CompanyId.Value,
+                                        CreateBy = AuthenticationHelper.UserId,
+                                        CreateDate = DateTime.Now,
+                                        LotNo = lot.LotNo,
+                                        LotNoId = lot.Id,
+                                        SerialNo = serial,
+                                        UpdateBy = null,
+                                        UpdateDate = null
+                                    });
+                                }
+                                else
+                                    return "Serial # " + serial + " is already defined";
+                            }
+                        }
+                        else
+                            return "Lot not found!";
+                    }
+                    else
+                        return "Serials can not be defined without lot!";
+                }
+            }
+
+            return "";
+        }
+
+        private string save(ReceivingModel model)
         {
             Receiving entity = getEntityByModel(model);
 
             string result = string.Empty;
             if (entity.IsValid())
             {
-                if (model.Id > 0)
-                    result = service.Update(entity);
-                else
-                    result = service.Insert(entity);
-
-                if (!string.IsNullOrEmpty(result))
+                bool goodToSave = false;
+                foreach (var item in model.ReceivingDetail)
                 {
-                    var savedLines = getReceivingDetail(result);
-                    if (savedLines.Count() > model.ReceivingDetail.Count())
+                    ReceivingDetailModel updatedModel = item;
+                    string lotResult = updateLot(updatedModel);
+                    int outVal;
+                    bool isNumeric = int.TryParse(lotResult, out outVal);
+                    if (isNumeric || string.IsNullOrEmpty(lotResult))
                     {
-                        var tobeDeleted = savedLines.Take(savedLines.Count() - model.ReceivingDetail.Count());
-                        foreach (var item in tobeDeleted)
+                        string serialResult = updateSerials(updatedModel);
+                        if (string.IsNullOrEmpty(serialResult))
                         {
-                            service.DeleteReceivingDetail(item.Id);
+                            item.LotNoId = isNumeric ? (long?)Convert.ToInt64(lotResult) : null;
+                            goodToSave = true;
                         }
-                        savedLines = getReceivingDetail(result);
+                        else
+                            return serialResult;
                     }
+                    else
+                        return lotResult;
+                }
+                if (goodToSave)
+                {
+                    if (model.Id > 0)
+                        result = service.Update(entity);
+                    else
+                        result = service.Insert(entity);
 
-                    foreach (var detail in model.ReceivingDetail)
+                    if (!string.IsNullOrEmpty(result))
                     {
-                        ReceivingDetail detailEntity = getEntityByModel(detail);
-                        if (detailEntity.IsValid())
+                        var savedLines = getReceivingDetail(result);
+                        if (savedLines.Count() > model.ReceivingDetail.Count())
                         {
-                            detailEntity.ReceiptId = Convert.ToInt64(result);
-                            if (savedLines.Count() > 0)
+                            var tobeDeleted = savedLines.Take(savedLines.Count() - model.ReceivingDetail.Count());
+                            foreach (var item in tobeDeleted)
                             {
-                                detailEntity.Id = savedLines.FirstOrDefault().Id;
-                                savedLines.Remove(savedLines.FirstOrDefault(rec => rec.Id == detailEntity.Id));
-                                service.Update(detailEntity);
+                                string lotResult = deleteLot(item);
+                                if (string.IsNullOrEmpty(lotResult))
+                                {
+                                    string serialResult = deleteSerials(item);
+                                    if (string.IsNullOrEmpty(serialResult))
+                                        service.DeleteReceivingDetail(item.Id);
+                                }
+
+                                else
+                                    return "Record can not be deleted";
                             }
-                            else
-                                service.Insert(detailEntity);
+                            savedLines = getReceivingDetail(result);
+                        }
+
+                        foreach (var detail in model.ReceivingDetail)
+                        {
+                            ReceivingDetail detailEntity = getEntityByModel(detail);
+                            if (detailEntity.IsValid())
+                            {
+                                detailEntity.ReceiptId = Convert.ToInt64(result);
+                                if (savedLines.Count() > 0)
+                                {
+                                    detailEntity.Id = savedLines.FirstOrDefault().Id;
+                                    savedLines.Remove(savedLines.FirstOrDefault(rec => rec.Id == detailEntity.Id));
+
+                                    string receivingDetailId = service.Update(detailEntity);
+
+                                    if (detailEntity.LotNoId != null)
+                                    {
+                                        LotNumber lottobeUpdated = lotService.GetSingle(detailEntity.LotNoId.ToString(), AuthenticationHelper.CompanyId.Value);
+                                        lottobeUpdated.SourceId = Convert.ToInt64(receivingDetailId);
+                                        lotService.Update(lottobeUpdated);
+                                    }
+                                }
+                                else
+                                {
+                                    string receivingDetailId = service.Insert(detailEntity);
+
+                                    if (detailEntity.LotNoId != null)
+                                    {
+                                        LotNumber lottobeUpdated = lotService.GetSingle(detailEntity.LotNoId.ToString(), AuthenticationHelper.CompanyId.Value);
+                                        lottobeUpdated.SourceId = Convert.ToInt64(receivingDetailId);
+                                        lotService.Update(lottobeUpdated);
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
+
+            return "";
         }
 
         private ReceivingDetailModel fromPODetailtoReceivingDetail(PurchaseOrderDetail poDetail, List<ReceivingDetailView> receivings)
@@ -371,15 +572,15 @@ namespace _360Accounting.Web.Controllers
                 foreach (var detail in receiving.ReceivingDetail)
                 {
                     PurchaseOrderDetail currentPODetail = poService.GetSinglePODetail(detail.PODetailId);
-                    List<ReceivingDetail> totalReceived = service.GetAllByPODetailId(detail.PODetailId).ToList();
+                    List<ReceivingDetail> totalReceived = service.GetAllByPODetailId(detail.PODetailId).Where(rec => rec.ReceiptId != Convert.ToInt64(id)).ToList();
 
-                    detail.BalanceQty = currentPODetail.Quantity - (totalReceived.Sum(rec => rec.Quantity) - detail.ThisPurchaseQty);
+                    detail.BalanceQty = currentPODetail.Quantity - (totalReceived.Count() > 0 ? totalReceived.Sum(rec => rec.Quantity) - detail.ThisPurchaseQty : detail.ThisPurchaseQty);
                     detail.OrderQty = currentPODetail.Quantity;
-                    detail.PurchaseQty = totalReceived.Sum(rec => rec.Quantity) - detail.ThisPurchaseQty;
+                    detail.PurchaseQty = totalReceived.Count() > 0 ? totalReceived.Sum(rec => rec.Quantity) - detail.ThisPurchaseQty : 0;
                     detail.ThisPurchaseQty = detail.ThisPurchaseQty;
                 }
             }
-            
+
             SessionHelper.Receiving = receiving;
 
             receiving.POs = poService.GetAllPO(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId).
@@ -388,6 +589,8 @@ namespace _360Accounting.Web.Controllers
                     Text = x.PONo,
                     Value = x.Id.ToString()
                 }).ToList();
+
+            ViewBag.PO = poService.GetSingle(receiving.POId.ToString(), AuthenticationHelper.CompanyId.Value);
 
             return View("Edit", receiving);
         }
@@ -416,9 +619,14 @@ namespace _360Accounting.Web.Controllers
                 if (SessionHelper.Receiving.ReceiptNo == "New")
                     SessionHelper.Receiving.ReceiptNo = generateReceiptNum(SessionHelper.Receiving);
 
-                save(SessionHelper.Receiving);
-                SessionHelper.Receiving = null;
-                return Json("Saved Successfully");
+                string saveResult = save(SessionHelper.Receiving);
+                if (string.IsNullOrEmpty(saveResult))
+                {
+                    SessionHelper.Receiving = null;
+                    return Json("Saved Successfully");
+                }
+                else
+                    return Json(saveResult);
             }
 
             return Json("No information available to save!");
@@ -482,6 +690,51 @@ namespace _360Accounting.Web.Controllers
             {
                 try
                 {
+                    ReceivingDetailModel completeModel = SessionHelper.Receiving.ReceivingDetail.FirstOrDefault(x => x.Id == model.Id);
+
+                    Item item = itemService.GetSingle(completeModel.ItemId.ToString(), AuthenticationHelper.CompanyId.Value);
+                    if (item.LotControl)
+                    {
+                        if (string.IsNullOrEmpty(model.LotNo))
+                        {
+                            ViewData["EditError"] = "Please provide Lot #!";
+                            return PartialView("_Detail", getReceivingDetail());
+                        }
+                    }
+                    else 
+                    {
+                        if(!string.IsNullOrEmpty(model.LotNo))
+                        {
+                            ViewData["EditError"] = "Item does not support Lot!";
+                            return PartialView("_Detail", getReceivingDetail());
+                        }
+                    }
+
+                    if (item.SerialControl)
+                    {
+                        if (string.IsNullOrEmpty(model.SerialNo))
+                        {
+                            ViewData["EditError"] = "Please provide Serial #!";
+                            return PartialView("_Detail", getReceivingDetail());
+                        }
+                        else
+                        {
+                            if (string.IsNullOrEmpty(model.LotNo))
+                            {
+                                ViewData["EditError"] = "Please provide Lot #!";
+                                return PartialView("_Detail", getReceivingDetail());
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(model.SerialNo))
+                        {
+                            ViewData["EditError"] = "Item does not support Serials!";
+                            return PartialView("_Detail", getReceivingDetail());
+                        }
+                    }
+
                     if (model.WarehouseId == 0)
                     {
                         ViewData["EditError"] = "Please select Warehouse!";
@@ -493,8 +746,7 @@ namespace _360Accounting.Web.Controllers
                         return PartialView("_Detail", getReceivingDetail());
                     }
 
-                    ReceivingDetailModel completeModel = SessionHelper.Receiving.ReceivingDetail.FirstOrDefault(x => x.Id == model.Id);
-                    if (model.ThisPurchaseQty > completeModel.BalanceQty)
+                    if (model.ThisPurchaseQty > completeModel.BalanceQty+model.ThisPurchaseQty)
                     {
                         ViewData["EditError"] = "Quantity can not be more than balance!";
                         return PartialView("_Detail", getReceivingDetail());
@@ -506,20 +758,34 @@ namespace _360Accounting.Web.Controllers
                             ViewData["EditError"] = "Serials can not be defined without Lot!";
                             return PartialView("_Detail", getReceivingDetail());
                         }
+                        else
+                        {
+                            List<string> serials = model.SerialNo.Split(new char[] { ',' }).ToList();
+                            if (serials.Count() != model.ThisPurchaseQty)
+                            {
+                                ViewData["EditError"] = "Serials must be according to the Quantity!";
+                                return PartialView("_Detail", getReceivingDetail());
+                            }
+                        }
                     }
-                    else
-                    {
-                        SessionHelper.Receiving.ReceivingDetail.FirstOrDefault(rec => rec.Id == model.Id).Id = model.Id;
-                        SessionHelper.Receiving.ReceivingDetail.FirstOrDefault(rec => rec.Id == model.Id).LocatorId = model.LocatorId;
-                        SessionHelper.Receiving.ReceivingDetail.FirstOrDefault(rec => rec.Id == model.Id).LotNo = model.LotNo;
-                        SessionHelper.Receiving.ReceivingDetail.FirstOrDefault(rec => rec.Id == model.Id).LotNoId = model.LotNoId;
-                        SessionHelper.Receiving.ReceivingDetail.FirstOrDefault(rec => rec.Id == model.Id).SerialNo = model.SerialNo;
-                        SessionHelper.Receiving.ReceivingDetail.FirstOrDefault(rec => rec.Id == model.Id).WarehouseId = model.WarehouseId;
-                        SessionHelper.Receiving.ReceivingDetail.FirstOrDefault(rec => rec.Id == model.Id).ThisPurchaseQty = model.ThisPurchaseQty;
-                        SessionHelper.Receiving.ReceivingDetail.FirstOrDefault(rec => rec.Id == model.Id).BalanceQty = completeModel.BalanceQty - model.ThisPurchaseQty;
-                        SessionHelper.Receiving.ReceivingDetail.FirstOrDefault(rec => rec.Id == model.Id).PurchaseQty = completeModel.PurchaseQty;
-                        SessionHelper.Receiving.ReceivingDetail.FirstOrDefault(rec => rec.Id == model.Id).OrderQty = completeModel.OrderQty;
-                    }
+                    ReceivingDetailModel currentModel = SessionHelper.Receiving.ReceivingDetail.FirstOrDefault(rec => rec.Id == model.Id);
+
+                    currentModel.Id = model.Id;
+                    currentModel.LocatorId = model.LocatorId;
+                    currentModel.LotNo = model.LotNo;
+                    currentModel.SerialNo = model.SerialNo;
+                    currentModel.WarehouseId = model.WarehouseId;
+                    currentModel.ThisPurchaseQty = model.ThisPurchaseQty;
+                    currentModel.BalanceQty = completeModel.BalanceQty + completeModel.ThisPurchaseQty - model.ThisPurchaseQty;
+                    currentModel.OrderQty = completeModel.OrderQty;
+                    currentModel.LotNoId = completeModel.LotNoId;
+                    currentModel.ItemId = completeModel.ItemId;
+                    currentModel.ItemName = completeModel.ItemName;
+                    currentModel.PODetailId = completeModel.PODetailId;
+                    currentModel.ReceiptId = completeModel.ReceiptId;
+
+                    SessionHelper.Receiving.ReceivingDetail.Remove(SessionHelper.Receiving.ReceivingDetail.FirstOrDefault(rec => rec.Id == model.Id));
+                    SessionHelper.Receiving.ReceivingDetail.Add(currentModel);
                 }
                 catch (Exception e)
                 {
