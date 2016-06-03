@@ -127,6 +127,36 @@ namespace _360Accounting.Web.Controllers
             return reportModel;
         }
 
+        private PeriodwiseActivityReport createPeriodwiseActivityReport(DateTime fromDate, DateTime toDate, long customerId)
+        {
+            List<PeriodwiseActivityModel> modelList = mapPeriodwiseActivityModel(service.PeriodwiseActivity(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, fromDate, toDate, customerId));
+            PeriodwiseActivityReport report = new PeriodwiseActivityReport();
+            report.Parameters["FromDate"].Value = fromDate;
+            report.Parameters["ToDate"].Value = toDate;
+            report.Parameters["CustomerId"].Value = customerId;
+            report.DataSource = modelList;
+            return report;
+        }
+
+        private List<PeriodwiseActivityModel> mapPeriodwiseActivityModel(List<PeriodwiseActivity> list)
+        {
+            List<PeriodwiseActivityModel> reportModel = new List<PeriodwiseActivityModel>();
+            foreach (var record in list)
+            {
+                reportModel.Add(new PeriodwiseActivityModel
+                {
+                    ClosingAmount = record.ClosingAmount,
+                    CustomerName = record.CustomerName,
+                    OpeningBalance = record.OpeningBalance,
+                    ReceiptAmount = record.ReceiptAmount,
+                    SalesAmount = record.SalesAmount,
+                    SiteName = record.SiteName
+                });
+            }
+
+            return reportModel;
+        }
+
         #endregion
 
         public ActionResult InvoicePrintoutPartialExport(DateTime fromDate, DateTime toDate, string invoiceNo, long customerId, long customerSiteId)
@@ -234,6 +264,43 @@ namespace _360Accounting.Web.Controllers
             //{
             //    model.CustomerId = Convert.ToInt64(model.Customers.FirstOrDefault().Value);
             //}
+
+            return View(model);
+        }
+
+        public ActionResult PeriodwiseActivityPartialExport(DateTime fromDate, DateTime toDate, long customerId)
+        {
+            return DocumentViewerExtension.ExportTo(createPeriodwiseActivityReport(fromDate, toDate, customerId), Request);
+        }
+
+        public ActionResult PeriodwiseActivityPartial(DateTime fromDate, DateTime toDate, long customerId)
+        {
+            return PartialView("_PeriodwiseActivity", createPeriodwiseActivityReport(fromDate, toDate, customerId));
+        }
+
+        public ActionResult PeriodwiseActivityReport(DateTime fromDate, DateTime toDate, long customerId)
+        {
+            return View(createPeriodwiseActivityReport(fromDate, toDate, customerId));
+        }
+
+        public ActionResult PeriodwiseActivity()
+        {
+            CustomerSalesCriteriaModel model = new CustomerSalesCriteriaModel();
+
+            model.Customers.Add(new SelectListItem
+            {
+                Text = "All Customers",
+                Value = "0"
+            });
+
+            foreach (var customer in CustomerHelper.GetCustomers())
+            {
+                model.Customers.Add(new SelectListItem
+                {
+                    Text = customer.CustomerName,
+                    Value = customer.Id.ToString()
+                });
+            }
 
             return View(model);
         }

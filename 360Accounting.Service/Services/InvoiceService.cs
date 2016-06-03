@@ -83,5 +83,10 @@ namespace _360Accounting.Service
         {
             return this.repository.InvoicePrintout(companyId, sobId, fromDate, toDate, invoiceNo, customerId, customerSiteId);
         }
+
+        public List<PeriodwiseActivity> PeriodwiseActivity(long companyId, long sobId, DateTime fromDate, DateTime toDate, long customerId)
+        {
+            return this.repository.PeriodwiseActivity(companyId, sobId, fromDate, toDate, customerId);
+        }
     }
 }

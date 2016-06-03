@@ -296,4 +296,14 @@ namespace _360Accounting.Web.Models
         public decimal TaxAmount { get; set; }
         public decimal TotalAmount { get; set; }
     }
+
+    public class PeriodwiseActivityModel
+    {
+        public string CustomerName { get; set; }
+        public string SiteName { get; set; }
+        public decimal OpeningBalance { get; set; }
+        public decimal SalesAmount { get; set; }
+        public decimal ReceiptAmount { get; set; }
+        public decimal ClosingAmount { get; set; }
+    }
 }

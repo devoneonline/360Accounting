@@ -118,6 +118,15 @@ namespace _360Accounting.Web.Models
         public string Status { get; set; }
     }
 
+    public class CustomerwiseReceiptClearanceModel
+    {
+        public string ReceiptNo { get; set; }
+        public string CustomerName { get; set; }
+        public string BankName { get; set; }
+        public string BankAccountName { get; set; }
+        public decimal Amount { get; set; }
+    }
+
     public class ReceiptPrintoutModel
     {
         public decimal ReceiptAmount { get; set; }
