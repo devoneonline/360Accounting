@@ -180,7 +180,6 @@ namespace _360Accounting.Data.Repositories
             return data;
         }
 
-
         public List<ReceiptPrintout> ReceiptPrintout(long companyId, long sobId, DateTime fromDate, DateTime toDate, string receiptNo, long customerId, long customerSiteId)
         {
             var data = (from a in this.Context.Receipts
@@ -205,6 +204,31 @@ namespace _360Accounting.Data.Repositories
 
             if (customerSiteId != 0)
                 data = data.Where(x => x.CustomerSiteId == customerSiteId).ToList();
+
+            return data;
+        }
+        
+        public List<CustomerwiseReceiptClearance> CustomerwiseReceiptClearance(long companyId, long sobId, DateTime fromDate, DateTime toDate, long customerId)
+        {
+            var data = (from a in this.Context.Receipts
+                        join b in this.Context.Customers on a.CustomerId equals b.Id
+                        join c in this.Context.Banks on a.BankId equals c.Id
+                        join d in this.Context.BankAccounts on a.BankAccountId equals d.Id
+                        where a.CompanyId == companyId && a.SOBId == sobId &&
+                        a.ReceiptDate >= fromDate && a.ReceiptDate <= toDate
+                        //&& a.Status.ToUpper() == "CLEAR"
+                        select new CustomerwiseReceiptClearance
+                        {
+                            Amount = a.ReceiptAmount,
+                            BankAccountName = d.AccountName,
+                            BankName = c.BankName,
+                            CustomerId = a.CustomerId,
+                            CustomerName = b.CustomerName,
+                            ReceiptNo = a.ReceiptNumber
+                        }).ToList();
+
+            if (customerId != 0)
+                data = data.Where(x => x.CustomerId == customerId).ToList();
 
             return data;
         }

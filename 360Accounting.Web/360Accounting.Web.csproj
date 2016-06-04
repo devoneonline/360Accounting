@@ -358,6 +358,12 @@
     <Compile Include="Reports\CustomerSalesReport.Designer.cs">
       <DependentUpon>CustomerSalesReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Reports\CustomerwiseReceiptClearanceReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\CustomerwiseReceiptClearanceReport.Designer.cs">
+      <DependentUpon>CustomerwiseReceiptClearanceReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Reports\InvoiceAuditTrailReport.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -375,6 +381,12 @@
     </Compile>
     <Compile Include="Reports\LedgerReport.Designer.cs">
       <DependentUpon>LedgerReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PeriodwiseActivityReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PeriodwiseActivityReport.Designer.cs">
+      <DependentUpon>PeriodwiseActivityReport.cs</DependentUpon>
     </Compile>
     <Compile Include="Reports\PurchasePrintoutReport.cs">
       <SubType>Component</SubType>
@@ -748,6 +760,12 @@
     <Content Include="Views\Receiving\Index.cshtml" />
     <Content Include="Views\Receiving\_Detail.cshtml" />
     <Content Include="Views\Receiving\_List.cshtml" />
+    <Content Include="Views\Receipt\CustomerwiseReceiptClearanceReport.cshtml" />
+    <Content Include="Views\Receipt\_CustomerwiseReceiptClearance.cshtml" />
+    <Content Include="Views\Invoice\_PeriodwiseActivity.cshtml" />
+    <Content Include="Views\Invoice\PeriodwiseActivity.cshtml" />
+    <Content Include="Views\Invoice\PeriodwiseActivityReport.cshtml" />
+    <Content Include="Views\Receipt\CustomerwiseReceiptClearance.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\360Accounting.Common\360Accounting.Common.csproj">
@@ -782,6 +800,9 @@
     <EmbeddedResource Include="Reports\CustomerSalesReport.resx">
       <DependentUpon>CustomerSalesReport.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\CustomerwiseReceiptClearanceReport.resx">
+      <DependentUpon>CustomerwiseReceiptClearanceReport.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\InvoiceAuditTrailReport.resx">
       <DependentUpon>InvoiceAuditTrailReport.cs</DependentUpon>
     </EmbeddedResource>
@@ -790,6 +811,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\LedgerReport.resx">
       <DependentUpon>LedgerReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PeriodwiseActivityReport.resx">
+      <DependentUpon>PeriodwiseActivityReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\PurchasePrintoutReport.resx">
       <DependentUpon>PurchasePrintoutReport.cs</DependentUpon>

@@ -127,6 +127,36 @@ namespace _360Accounting.Web.Controllers
             return reportModel;
         }
 
+        private PeriodwiseActivityReport createPeriodwiseActivityReport(DateTime fromDate, DateTime toDate, long customerId)
+        {
+            List<PeriodwiseActivityModel> modelList = mapPeriodwiseActivityModel(service.PeriodwiseActivity(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, fromDate, toDate, customerId));
+            PeriodwiseActivityReport report = new PeriodwiseActivityReport();
+            report.Parameters["FromDate"].Value = fromDate;
+            report.Parameters["ToDate"].Value = toDate;
+            report.Parameters["CustomerId"].Value = customerId;
+            report.DataSource = modelList;
+            return report;
+        }
+
+        private List<PeriodwiseActivityModel> mapPeriodwiseActivityModel(List<PeriodwiseActivity> list)
+        {
+            List<PeriodwiseActivityModel> reportModel = new List<PeriodwiseActivityModel>();
+            foreach (var record in list)
+            {
+                reportModel.Add(new PeriodwiseActivityModel
+                {
+                    ClosingAmount = record.ClosingAmount,
+                    CustomerName = record.CustomerName,
+                    OpeningBalance = record.OpeningBalance,
+                    ReceiptAmount = record.ReceiptAmount,
+                    SalesAmount = record.SalesAmount,
+                    SiteName = record.SiteName
+                });
+            }
+
+            return reportModel;
+        }
+
         #endregion
 
         public ActionResult InvoicePrintoutPartialExport(DateTime fromDate, DateTime toDate, string invoiceNo, long customerId, long customerSiteId)
@@ -238,6 +268,43 @@ namespace _360Accounting.Web.Controllers
             return View(model);
         }
 
+        public ActionResult PeriodwiseActivityPartialExport(DateTime fromDate, DateTime toDate, long customerId)
+        {
+            return DocumentViewerExtension.ExportTo(createPeriodwiseActivityReport(fromDate, toDate, customerId), Request);
+        }
+
+        public ActionResult PeriodwiseActivityPartial(DateTime fromDate, DateTime toDate, long customerId)
+        {
+            return PartialView("_PeriodwiseActivity", createPeriodwiseActivityReport(fromDate, toDate, customerId));
+        }
+
+        public ActionResult PeriodwiseActivityReport(DateTime fromDate, DateTime toDate, long customerId)
+        {
+            return View(createPeriodwiseActivityReport(fromDate, toDate, customerId));
+        }
+
+        public ActionResult PeriodwiseActivity()
+        {
+            CustomerSalesCriteriaModel model = new CustomerSalesCriteriaModel();
+
+            model.Customers.Add(new SelectListItem
+            {
+                Text = "All Customers",
+                Value = "0"
+            });
+
+            foreach (var customer in CustomerHelper.GetCustomers())
+            {
+                model.Customers.Add(new SelectListItem
+                {
+                    Text = customer.CustomerName,
+                    Value = customer.Id.ToString()
+                });
+            }
+
+            return View(model);
+        }
+
 
 
         public JsonResult CustomerList()
@@ -335,12 +402,24 @@ namespace _360Accounting.Web.Controllers
                         SessionHelper.Invoice.PeriodId = periodId;
                         SessionHelper.Invoice.CurrencyId = currencyId;
 
-
                         if (SessionHelper.Invoice.InvoiceDate >= SessionHelper.Calendar.StartDate && SessionHelper.Invoice.InvoiceDate <= SessionHelper.Calendar.EndDate)
                         {
                             if (SessionHelper.Invoice.InvoiceNo == "New")
                             {
                                 SessionHelper.Invoice.InvoiceNo = InvoiceHelper.GetInvoiceNo(AuthenticationHelper.CompanyId.Value, SessionHelper.Invoice.SOBId, SessionHelper.Invoice.PeriodId, SessionHelper.Invoice.CurrencyId);
+                            }
+
+                            foreach (InvoiceDetailModel invoiceDetail in SessionHelper.Invoice.InvoiceDetail)
+                            {
+                                invoiceDetail.Amount = invoiceDetail.Quantity * invoiceDetail.Rate;
+
+                                TaxDetailModel taxDetail = TaxHelper.GetTaxDetail(invoiceDetail.TaxId.ToString()).FirstOrDefault(x => x.StartDate<= SessionHelper.Invoice.InvoiceDate && x.EndDate >= SessionHelper.Invoice.InvoiceDate);
+
+                                if (taxDetail != null)
+                                    invoiceDetail.TaxAmount = invoiceDetail.Amount * taxDetail.Rate / 100;
+                                else
+                                    invoiceDetail.TaxAmount = 0;
+
                             }
 
                             InvoiceHelper.Update(SessionHelper.Invoice);
@@ -477,10 +556,21 @@ namespace _360Accounting.Web.Controllers
             if (customerId > 0)
             {
                 CustomerModel customer = CustomerHelper.GetCustomer(customerId.ToString());
-                if (invoiceDate >= customer.StartDate && invoiceDate <= customer.EndDate)
+
+                if (customer.StartDate == null || invoiceDate >= customer.StartDate)
                     result = true;
                 else
                     result = false;
+
+                if (customer.EndDate == null || invoiceDate <= customer.EndDate)
+                    result = true;
+                else
+                    result = false;
+
+                //if (invoiceDate >= customer.StartDate && invoiceDate <= customer.EndDate)
+                //    result = true;
+                //else
+                //    result = false;
             }
 
             if (customerSiteId > 0)
@@ -522,7 +612,8 @@ namespace _360Accounting.Web.Controllers
             if (model.Periods != null && model.Periods.Count() > 0)
             {
                 model.PeriodId = Convert.ToInt64(model.Periods.FirstOrDefault().Value);
-                SessionHelper.Calendar = CalendarHelper.GetCalendar(model.PeriodId.ToString());
+                //SessionHelper.Calendar = CalendarHelper.GetCalendar(model.PeriodId.ToString());
+                SessionHelper.Calendar = CalendarHelper.GetCalendar(ReceivablePeriodHelper.GetReceivablePeriod(model.PeriodId.ToString()).CalendarId.ToString());
                 model.InvoiceDate = SessionHelper.Calendar.StartDate;
                 
                 model.Customers = CustomerHelper.GetCustomersCombo(SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);

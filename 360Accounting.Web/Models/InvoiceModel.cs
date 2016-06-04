@@ -132,6 +132,8 @@ namespace _360Accounting.Web.Models
             this.Quantity = entity.Quantity;
             this.Rate = entity.Rate;
             this.TaxId = entity.TaxId;
+            this.Amount = entity.Amount;
+            this.TaxAmount = entity.TaxAmount;
         }
         #endregion
 
@@ -143,7 +145,8 @@ namespace _360Accounting.Web.Models
         public long? TaxId { get; set; }
         public decimal Quantity { get; set; }
         public decimal Rate { get; set; }
-        public decimal Amount { get; set; }
+        public decimal? Amount { get; set; }
+        public decimal? TaxAmount { get; set; }
         #endregion
     }
 
@@ -295,5 +298,15 @@ namespace _360Accounting.Web.Models
         public decimal Amount { get; set; }
         public decimal TaxAmount { get; set; }
         public decimal TotalAmount { get; set; }
+    }
+
+    public class PeriodwiseActivityModel
+    {
+        public string CustomerName { get; set; }
+        public string SiteName { get; set; }
+        public decimal OpeningBalance { get; set; }
+        public decimal SalesAmount { get; set; }
+        public decimal ReceiptAmount { get; set; }
+        public decimal ClosingAmount { get; set; }
     }
 }

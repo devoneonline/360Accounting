@@ -38,6 +38,36 @@ namespace _360Accounting.Web.Controllers
 
         #region Private Methods
 
+        private CustomerwiseReceiptClearanceReport createCustomerwiseReceiptClearanceReport(DateTime fromDate, DateTime toDate, long customerId)
+        {
+            List<CustomerwiseReceiptClearanceModel> modelList = mapCustomerwiseReceiptClearnaceModel(service.CustomerwiseReceiptClearance(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, fromDate, toDate, customerId));
+            CustomerwiseReceiptClearanceReport report = new CustomerwiseReceiptClearanceReport();
+            report.Parameters["FromDate"].Value = fromDate;
+            report.Parameters["ToDate"].Value = toDate;
+            report.Parameters["CustomerId"].Value = customerId;
+            report.DataSource = modelList;
+            return report;
+        }
+
+        private List<CustomerwiseReceiptClearanceModel> mapCustomerwiseReceiptClearnaceModel(List<CustomerwiseReceiptClearance> entityList)
+        {
+            List<CustomerwiseReceiptClearanceModel> reportModel = new List<CustomerwiseReceiptClearanceModel>();
+
+            foreach (var record in entityList)
+            {
+                reportModel.Add(new CustomerwiseReceiptClearanceModel
+                {
+                    Amount = record.Amount,
+                    BankAccountName = record.BankAccountName,
+                    BankName = record.BankName,
+                    CustomerName = record.CustomerName,
+                    ReceiptNo = record.ReceiptNo
+                });
+            }
+
+            return reportModel;
+        }
+
         private ReceiptAuditTrialReport createReceiptAuditTrialReport(DateTime fromDate, DateTime toDate)
         {
             List<ReceiptAuditTrialModel> modelList = mapReceiptAuditTrialModel(service.ReceiptAuditTrial(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, fromDate, toDate));
@@ -163,6 +193,46 @@ namespace _360Accounting.Web.Controllers
             ReceiptAuditTrialCriteriaModel model = new ReceiptAuditTrialCriteriaModel();
             return View(model);
         }
+
+        public ActionResult CustomerwiseReceiptClearancePartialExport(DateTime fromDate, DateTime toDate, long customerId)
+        {
+            return DocumentViewerExtension.ExportTo(createCustomerwiseReceiptClearanceReport(fromDate, toDate, customerId), Request);
+        }
+
+        public ActionResult CustomerwiseReceiptClearancePartial(DateTime fromDate, DateTime toDate, long customerId)
+        {
+            return PartialView("_CustomerwiseReceiptClearance", createCustomerwiseReceiptClearanceReport(fromDate, toDate, customerId));
+        }
+
+        public ActionResult CustomerwiseReceiptClearanceReport(DateTime fromDate, DateTime toDate, long customerId)
+        {
+            return View(createCustomerwiseReceiptClearanceReport(fromDate, toDate, customerId));
+        }
+
+        public ActionResult CustomerwiseReceiptClearance()
+        {
+            CustomerSalesCriteriaModel model = new CustomerSalesCriteriaModel();
+
+            model.Customers.Add(new SelectListItem
+            {
+                Text = "All Customers",
+                Value = "0"
+            });
+
+            foreach (var customer in CustomerHelper.GetCustomers())
+            {
+                model.Customers.Add(new SelectListItem
+                {
+                    Text = customer.CustomerName,
+                    Value = customer.Id.ToString()
+                });
+            }
+
+            return View(model);
+        }
+
+
+
 
         public ActionResult Index(string message = "")
         {

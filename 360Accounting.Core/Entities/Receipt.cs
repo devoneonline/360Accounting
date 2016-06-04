@@ -65,4 +65,15 @@ namespace _360Accounting.Core.Entities
         public string CustomerName { get; set; }
         public string Remarks { get; set; }
     }
+
+    public class CustomerwiseReceiptClearance
+    {
+        public long CustomerId { get; set; }
+
+        public string ReceiptNo { get; set; }
+        public string CustomerName { get; set; }
+        public string BankName { get; set; }
+        public string BankAccountName { get; set; }
+        public decimal Amount { get; set; }
+    }
 }
