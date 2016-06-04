@@ -144,6 +144,15 @@ namespace _360Accounting.Web
 
         public static void Insert(InvoiceDetailModel model)
         {
+            model.Amount = model.Quantity * model.Rate;
+
+            TaxDetailModel taxDetail = TaxHelper.GetTaxDetail(model.TaxId.ToString()).FirstOrDefault(x => x.StartDate <= SessionHelper.Invoice.InvoiceDate && x.EndDate >= SessionHelper.Invoice.InvoiceDate);
+
+            if (taxDetail != null)
+                model.TaxAmount = model.Amount * taxDetail.Rate / 100;
+            else
+                model.TaxAmount = 0;
+
             InvoiceModel invoice = SessionHelper.Invoice;
             invoice.InvoiceDetail.Add(model);
         }
@@ -162,6 +171,14 @@ namespace _360Accounting.Web
             invoice.InvoiceDetail.FirstOrDefault(x => x.Id == model.Id).Quantity = model.Quantity;
             invoice.InvoiceDetail.FirstOrDefault(x => x.Id == model.Id).Rate = model.Rate;
             invoice.InvoiceDetail.FirstOrDefault(x => x.Id == model.Id).TaxId = model.TaxId;
+            invoice.InvoiceDetail.FirstOrDefault(x => x.Id == model.Id).Amount = model.Quantity * model.Rate;
+
+            TaxDetailModel taxDetail = TaxHelper.GetTaxDetail(invoice.InvoiceDetail.FirstOrDefault(x => x.Id == model.Id).TaxId.ToString()).FirstOrDefault(x => x.StartDate <= SessionHelper.Invoice.InvoiceDate && x.EndDate >= SessionHelper.Invoice.InvoiceDate);
+
+            if (taxDetail != null)
+                invoice.InvoiceDetail.FirstOrDefault(x => x.Id == model.Id).TaxAmount = invoice.InvoiceDetail.FirstOrDefault(x => x.Id == model.Id).Amount * taxDetail.Rate / 100;
+            else
+                invoice.InvoiceDetail.FirstOrDefault(x => x.Id == model.Id).TaxAmount = 0;
         }
 
         public static void DeleteInvoiceDetail(InvoiceDetailModel model)

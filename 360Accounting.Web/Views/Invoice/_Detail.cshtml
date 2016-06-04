@@ -25,12 +25,13 @@
             settings.CommandColumn.ShowNewButton = true;
             settings.CommandColumn.ShowDeleteButton = true;
             settings.CommandColumn.ShowEditButton = true;
+            settings.CommandColumn.Width = System.Web.UI.WebControls.Unit.Percentage(20);
 
             settings.Columns.Add(column =>
             {
                 column.FieldName = "InvoiceSourceId";
                 column.Caption = "Invoice Source";
-                column.Width = System.Web.UI.WebControls.Unit.Percentage(25);
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(20);
                 
                 column.ColumnType = MVCxGridViewColumnType.ComboBox;
                 var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
@@ -46,7 +47,7 @@
             {
                 column.FieldName = "ItemId";
                 column.Caption = "Item";
-                column.Width = System.Web.UI.WebControls.Unit.Percentage(25);
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(20);
 
                 column.ColumnType = MVCxGridViewColumnType.ComboBox;
                 var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
@@ -95,13 +96,22 @@
             });
 
             settings.Columns.Add(column =>
-                {
-                    column.FieldName = "Amount";
-                    column.Caption = "Amount";
-                    column.ReadOnly = true;
-                    column.Width = System.Web.UI.WebControls.Unit.Percentage(7);
-                    column.EditFormSettings.Visible = DefaultBoolean.False;
-                });
+            {
+                column.FieldName = "Amount";
+                column.Caption = "Amount";
+                column.ReadOnly = true;
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(5);
+                column.EditFormSettings.Visible = DefaultBoolean.False;
+            });
+
+            settings.Columns.Add(column =>
+            {
+                column.FieldName = "TaxAmount";
+                column.Caption = "Tax Amount";
+                column.ReadOnly = true;
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(5);
+                column.EditFormSettings.Visible = DefaultBoolean.False;
+            });
 
             settings.Columns.Add(column =>
             {
