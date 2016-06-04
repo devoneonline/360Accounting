@@ -53,6 +53,8 @@ namespace _360Accounting.Core.Entities
         public long? TaxId { get; set; }
         public decimal Quantity { get; set; }
         public decimal Rate { get; set; }
+        public decimal? Amount { get; set; }
+        public decimal? TaxAmount { get; set; }
     }
 
     public class CustomerSales

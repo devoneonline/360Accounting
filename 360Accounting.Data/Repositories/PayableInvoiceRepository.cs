@@ -91,19 +91,36 @@ namespace _360Accounting.Data.Repositories
                             join e in this.Context.VendorSites on a.VendorSiteId equals e.Id
                             join f in this.Context.Withholdings on a.WHTaxId equals f.Id into g
                             from h in g.DefaultIfEmpty()
+                            join i in this.Context.AccountValues on c.Segment1 equals i.Value into segment1_join
+                            from j in segment1_join.DefaultIfEmpty()
+                            join k in this.Context.AccountValues on c.Segment2 equals k.Value into segment2_join
+                            from l in segment2_join.DefaultIfEmpty()
+                            join m in this.Context.AccountValues on c.Segment3 equals m.Value into segment3_join
+                            from n in segment3_join.DefaultIfEmpty()
+                            join o in this.Context.AccountValues on c.Segment4 equals o.Value into segment4_join
+                            from p in segment4_join.DefaultIfEmpty()
+                            join q in this.Context.AccountValues on c.Segment5 equals q.Value into segment5_join
+                            from r in segment5_join.DefaultIfEmpty()
+                            join s in this.Context.AccountValues on c.Segment6 equals s.Value into segment6_join
+                            from t in segment6_join.DefaultIfEmpty()
+                            join u in this.Context.AccountValues on c.Segment7 equals u.Value into segment7_join
+                            from v in segment7_join.DefaultIfEmpty()
+                            join w in this.Context.AccountValues on c.Segment8 equals w.Value into segment8_join
+                            from x in segment8_join.DefaultIfEmpty()
+
                             where a.CompanyId == companyId && a.SOBId == sobId &&
                             a.InvoiceDate >= fromDate && a.InvoiceDate <= toDate
                             select new PurchasePrintout
                             {
                                 Amount = b.Amount,
-                                CCSegment1 = c.Segment1,
-                                CCSegment2 = c.Segment2,
-                                CCSegment3 = c.Segment3,
-                                CCSegment4 = c.Segment4,
-                                CCSegment5 = c.Segment5,
-                                CCSegment6 = c.Segment6,
-                                CCSegment7 = c.Segment7,
-                                CCSegment8 = c.Segment8,
+                                CCSegment1 = j.ValueName,
+                                CCSegment2 = l.ValueName,
+                                CCSegment3 = n.ValueName,
+                                CCSegment4 = p.ValueName,
+                                CCSegment5 = r.ValueName,
+                                CCSegment6 = t.ValueName,
+                                CCSegment7 = v.ValueName,
+                                CCSegment8 = x.ValueName,
                                 Description = b.Description,
                                 InvoiceDate = a.InvoiceDate,
                                 InvoiceNo = a.InvoiceNo,

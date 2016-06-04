@@ -218,96 +218,126 @@ namespace _360Accounting.Data.Repositories
 
         public List<PeriodwiseActivity> PeriodwiseActivity(long companyId, long sobId, DateTime fromDate, DateTime toDate, long customerId)
         {
-            var mainInvoiceQuery = (from a in this.Context.InvoiceDetails
-                                    join b in this.Context.Invoices on a.InvoiceId equals b.Id
-                                    where b.CompanyId == companyId && b.SOBId == sobId && b.CustomerId == customerId
-                                    select a).ToList();
+            throw new NotImplementedException();
 
-            var mainReceiptQuery = this.Context.Receipts.Where(rec => rec.CompanyId == companyId &&
-                rec.SOBId == sobId && rec.CustomerId == customerId).ToList();
+            //var query = from a in this.Context.Customers
+            //            join b in this.Context.CustomerSites on a.Id equals b.CustomerId
+            //            where a.CompanyId == companyId && a.SOBId == sobId && a.Id == (customerId == 0 ? a.Id : customerId)
+            //            select new PeriodwiseActivity
+            //            {
+            //                CustomerId = a.Id,
+            //                CustomerName = a.CustomerName,
+            //                SiteName = b.SiteName,
+            //                OpeningBalance = ((from x in this.Context.InvoiceDetails
+            //                                  join y in this.Context.Invoices on x.InvoiceId equals y.Id
+            //                                  where y.CompanyId == companyId && y.SOBId == sobId && y.InvoiceDate < fromDate).AsEnumerable().Sum()
 
-            var data = from a in mainInvoiceQuery
-                       join b in this.Context.Invoices on a.InvoiceId equals b.Id
-                       where (Convert.ToDateTime(b.InvoiceDate.ToShortDateString()) >= Convert.ToDateTime(fromDate.ToShortDateString()) &&
-                       Convert.ToDateTime(b.InvoiceDate.ToShortDateString()) <= Convert.ToDateTime(toDate.ToShortDateString()))
-                       group a by new { b.CustomerId, b.CustomerSiteId } into g
-                       join c in this.Context.Customers on g.Key.CustomerId equals c.Id
-                       join d in this.Context.CustomerSites on g.Key.CustomerSiteId equals d.Id
-                       select new PeriodwiseActivity
-                       {
-                           CustomerId = c.Id,
-                           CustomerName = c.CustomerName,
-                           SiteName = d.SiteName,
-                           OpeningBalance = (from aa in mainInvoiceQuery
-                                             join ab in this.Context.Invoices on aa.InvoiceId equals ab.Id
-                                             where (Convert.ToDateTime(ab.InvoiceDate.ToShortDateString()) < Convert.ToDateTime(fromDate.ToShortDateString()))
-                                             && ab.CustomerSiteId == g.Key.CustomerSiteId
-                                             group aa by ab.CustomerSiteId into i
-                                             select i.Sum(x => x.Quantity * x.Rate)).FirstOrDefault() != null ?
+            //                                  select (Convert.ToDecimal(x.Quantity)*Convert.ToDecimal(x.Rate))
+            //                                      ).Sum<decimal>(z=> z) - 
+            //                                      (from r in this.Context.Receipts
+            //                                           where r.CompanyId == companyId && r.SOBId == sobId && r.ReceiptDate<fromDate
+            //                                           select (Convert.ToDecimal(r.ReceiptAmount))).Sum(p=> p)),
+            //                ReceiptAmount =(from r in this.Context.Receipts
+            //                                           where r.CompanyId == companyId && r.SOBId == sobId && r.ReceiptDate >= fromDate && r.ReceiptDate<=toDate
+            //                                           select (Convert.ToDecimal(r.ReceiptAmount))).Sum(p=> p),
+            //                SalesAmount = (from x in this.Context.InvoiceDetails
+            //                               join y in this.Context.Invoices on x.InvoiceId equals y.Id
+            //                               where y.CompanyId == companyId && y.SOBId == sobId && y.InvoiceDate >= fromDate && y.InvoiceDate<=toDate
+            //                               select (Convert.ToDecimal(x.Quantity) * Convert.ToDecimal(x.Rate))
+            //                                      ).Sum<decimal>(z => z)                                              
+            //            };
+            //return query.ToList();
 
-                               (from aa in mainInvoiceQuery
-                                join ab in this.Context.Invoices on aa.InvoiceId equals ab.Id
-                                where (Convert.ToDateTime(ab.InvoiceDate.ToShortDateString()) < Convert.ToDateTime(fromDate.ToShortDateString()))
-                                && ab.CustomerSiteId == g.Key.CustomerSiteId
-                                group aa by ab.CustomerSiteId into i
-                                select i.Sum(x => x.Quantity * x.Rate)).FirstOrDefault() : 0
-                               -
-                               (from ba in mainReceiptQuery
-                                where (Convert.ToDateTime(ba.ReceiptDate.ToShortDateString()) < Convert.ToDateTime(fromDate.ToShortDateString()))
-                                && ba.CustomerSiteId == g.Key.CustomerSiteId
-                                group ba by ba.CustomerSiteId into h
-                                select h.Sum(x => x.ReceiptAmount)).FirstOrDefault() != null ?
+            //var mainInvoiceQuery = (from a in this.Context.InvoiceDetails
+            //                        join b in this.Context.Invoices on a.InvoiceId equals b.Id
+            //                        where b.CompanyId == companyId && b.SOBId == sobId && b.CustomerId == customerId
+            //                        select a).ToList();
 
-                               (from ba in mainReceiptQuery
-                                where (Convert.ToDateTime(ba.ReceiptDate.ToShortDateString()) < Convert.ToDateTime(fromDate.ToShortDateString()))
-                                && ba.CustomerSiteId == g.Key.CustomerSiteId
-                                group ba by ba.CustomerSiteId into h
-                                select h.Sum(x => x.ReceiptAmount)).FirstOrDefault() : 0,
+            //var mainReceiptQuery = this.Context.Receipts.Where(rec => rec.CompanyId == companyId &&
+            //    rec.SOBId == sobId && rec.CustomerId == customerId).ToList();
 
-                           SalesAmount = g.Sum(x => x.Quantity * x.Rate),
-                           ReceiptAmount = (from ba in mainReceiptQuery
-                                            where (Convert.ToDateTime(ba.ReceiptDate.ToShortDateString()) >= Convert.ToDateTime(fromDate.ToShortDateString()) &&
-                                            Convert.ToDateTime(ba.ReceiptDate.ToShortDateString()) <= Convert.ToDateTime(toDate.ToShortDateString()))
-                                            && ba.CustomerSiteId == g.Key.CustomerSiteId
-                                            group ba by ba.CustomerSiteId into h
-                                            select h.Sum(x => x.ReceiptAmount)).FirstOrDefault(),
+            //var data = from a in mainInvoiceQuery
+            //           join b in this.Context.Invoices on a.InvoiceId equals b.Id
+            //           where (Convert.ToDateTime(b.InvoiceDate.ToShortDateString()) >= Convert.ToDateTime(fromDate.ToShortDateString()) &&
+            //           Convert.ToDateTime(b.InvoiceDate.ToShortDateString()) <= Convert.ToDateTime(toDate.ToShortDateString()))
+            //           group a by new { b.CustomerId, b.CustomerSiteId } into g
+            //           join c in this.Context.Customers on g.Key.CustomerId equals c.Id
+            //           join d in this.Context.CustomerSites on g.Key.CustomerSiteId equals d.Id
+            //           select new PeriodwiseActivity
+            //           {
+            //               CustomerId = c.Id,
+            //               CustomerName = c.CustomerName,
+            //               SiteName = d.SiteName,
+            //               OpeningBalance = (from aa in mainInvoiceQuery
+            //                                 join ab in this.Context.Invoices on aa.InvoiceId equals ab.Id
+            //                                 where (Convert.ToDateTime(ab.InvoiceDate.ToShortDateString()) < Convert.ToDateTime(fromDate.ToShortDateString()))
+            //                                 && ab.CustomerSiteId == g.Key.CustomerSiteId
+            //                                 group aa by ab.CustomerSiteId into i
+            //                                 select i.Sum(x => x.Quantity * x.Rate)).FirstOrDefault() != null ?
 
-                           ClosingAmount = ((from aa in mainInvoiceQuery
-                                             join ab in this.Context.Invoices on aa.InvoiceId equals ab.Id
-                                             where (Convert.ToDateTime(ab.InvoiceDate.ToShortDateString()) < Convert.ToDateTime(fromDate.ToShortDateString()))
-                                             && ab.CustomerSiteId == g.Key.CustomerSiteId
-                                             group aa by ab.CustomerSiteId into i
-                                             select i.Sum(x => x.Quantity * x.Rate)).FirstOrDefault() != null ?
+            //                   (from aa in mainInvoiceQuery
+            //                    join ab in this.Context.Invoices on aa.InvoiceId equals ab.Id
+            //                    where (Convert.ToDateTime(ab.InvoiceDate.ToShortDateString()) < Convert.ToDateTime(fromDate.ToShortDateString()))
+            //                    && ab.CustomerSiteId == g.Key.CustomerSiteId
+            //                    group aa by ab.CustomerSiteId into i
+            //                    select i.Sum(x => x.Quantity * x.Rate)).FirstOrDefault() : 0
+            //                   -
+            //                   (from ba in mainReceiptQuery
+            //                    where (Convert.ToDateTime(ba.ReceiptDate.ToShortDateString()) < Convert.ToDateTime(fromDate.ToShortDateString()))
+            //                    && ba.CustomerSiteId == g.Key.CustomerSiteId
+            //                    group ba by ba.CustomerSiteId into h
+            //                    select h.Sum(x => x.ReceiptAmount)).FirstOrDefault() != null ?
 
-                                 (from aa in mainInvoiceQuery
-                                  join ab in this.Context.Invoices on aa.InvoiceId equals ab.Id
-                                  where (Convert.ToDateTime(ab.InvoiceDate.ToShortDateString()) < Convert.ToDateTime(fromDate.ToShortDateString()))
-                                  && ab.CustomerSiteId == g.Key.CustomerSiteId
-                                  group aa by ab.CustomerSiteId into i
-                                  select i.Sum(x => x.Quantity * x.Rate)).FirstOrDefault() : 0
-                                 -
-                                 (from ba in mainReceiptQuery
-                                  where (Convert.ToDateTime(ba.ReceiptDate.ToShortDateString()) < Convert.ToDateTime(fromDate.ToShortDateString()))
-                                  && ba.CustomerSiteId == g.Key.CustomerSiteId
-                                  group ba by ba.CustomerSiteId into h
-                                  select h.Sum(x => x.ReceiptAmount)).FirstOrDefault() != null ?
+            //                   (from ba in mainReceiptQuery
+            //                    where (Convert.ToDateTime(ba.ReceiptDate.ToShortDateString()) < Convert.ToDateTime(fromDate.ToShortDateString()))
+            //                    && ba.CustomerSiteId == g.Key.CustomerSiteId
+            //                    group ba by ba.CustomerSiteId into h
+            //                    select h.Sum(x => x.ReceiptAmount)).FirstOrDefault() : 0,
 
-                                 (from ba in mainReceiptQuery
-                                  where (Convert.ToDateTime(ba.ReceiptDate.ToShortDateString()) < Convert.ToDateTime(fromDate.ToShortDateString()))
-                                  && ba.CustomerSiteId == g.Key.CustomerSiteId
-                                  group ba by ba.CustomerSiteId into h
-                                  select h.Sum(x => x.ReceiptAmount)).FirstOrDefault() : 0 + g.Sum(x => x.Quantity * x.Rate) - (from ba in mainReceiptQuery
-                                                                                                                                where (Convert.ToDateTime(ba.ReceiptDate.ToShortDateString()) >= Convert.ToDateTime(fromDate.ToShortDateString()) &&
-                                                                                                                                Convert.ToDateTime(ba.ReceiptDate.ToShortDateString()) <= Convert.ToDateTime(toDate.ToShortDateString()))
-                                                                                                                                && ba.CustomerSiteId == g.Key.CustomerSiteId
-                                                                                                                                group ba by ba.CustomerSiteId into h
-                                                                                                                                select h.Sum(x => x.ReceiptAmount)).FirstOrDefault())
-                       };
+            //               SalesAmount = g.Sum(x => x.Quantity * x.Rate),
+            //               ReceiptAmount = (from ba in mainReceiptQuery
+            //                                where (Convert.ToDateTime(ba.ReceiptDate.ToShortDateString()) >= Convert.ToDateTime(fromDate.ToShortDateString()) &&
+            //                                Convert.ToDateTime(ba.ReceiptDate.ToShortDateString()) <= Convert.ToDateTime(toDate.ToShortDateString()))
+            //                                && ba.CustomerSiteId == g.Key.CustomerSiteId
+            //                                group ba by ba.CustomerSiteId into h
+            //                                select h.Sum(x => x.ReceiptAmount)).FirstOrDefault(),
 
-            if (customerId != 0)
-                data = data.Where(x => x.CustomerId == customerId);
+            //               ClosingAmount = ((from aa in mainInvoiceQuery
+            //                                 join ab in this.Context.Invoices on aa.InvoiceId equals ab.Id
+            //                                 where (Convert.ToDateTime(ab.InvoiceDate.ToShortDateString()) < Convert.ToDateTime(fromDate.ToShortDateString()))
+            //                                 && ab.CustomerSiteId == g.Key.CustomerSiteId
+            //                                 group aa by ab.CustomerSiteId into i
+            //                                 select i.Sum(x => x.Quantity * x.Rate)).FirstOrDefault() != null ?
 
-            return data.ToList();
+            //                     (from aa in mainInvoiceQuery
+            //                      join ab in this.Context.Invoices on aa.InvoiceId equals ab.Id
+            //                      where (Convert.ToDateTime(ab.InvoiceDate.ToShortDateString()) < Convert.ToDateTime(fromDate.ToShortDateString()))
+            //                      && ab.CustomerSiteId == g.Key.CustomerSiteId
+            //                      group aa by ab.CustomerSiteId into i
+            //                      select i.Sum(x => x.Quantity * x.Rate)).FirstOrDefault() : 0
+            //                     -
+            //                     (from ba in mainReceiptQuery
+            //                      where (Convert.ToDateTime(ba.ReceiptDate.ToShortDateString()) < Convert.ToDateTime(fromDate.ToShortDateString()))
+            //                      && ba.CustomerSiteId == g.Key.CustomerSiteId
+            //                      group ba by ba.CustomerSiteId into h
+            //                      select h.Sum(x => x.ReceiptAmount)).FirstOrDefault() != null ?
+
+            //                     (from ba in mainReceiptQuery
+            //                      where (Convert.ToDateTime(ba.ReceiptDate.ToShortDateString()) < Convert.ToDateTime(fromDate.ToShortDateString()))
+            //                      && ba.CustomerSiteId == g.Key.CustomerSiteId
+            //                      group ba by ba.CustomerSiteId into h
+            //                      select h.Sum(x => x.ReceiptAmount)).FirstOrDefault() : 0 + g.Sum(x => x.Quantity * x.Rate) - (from ba in mainReceiptQuery
+            //                                                                                                                    where (Convert.ToDateTime(ba.ReceiptDate.ToShortDateString()) >= Convert.ToDateTime(fromDate.ToShortDateString()) &&
+            //                                                                                                                    Convert.ToDateTime(ba.ReceiptDate.ToShortDateString()) <= Convert.ToDateTime(toDate.ToShortDateString()))
+            //                                                                                                                    && ba.CustomerSiteId == g.Key.CustomerSiteId
+            //                                                                                                                    group ba by ba.CustomerSiteId into h
+            //                                                                                                                    select h.Sum(x => x.ReceiptAmount)).FirstOrDefault())
+            //           };
+
+            //if (customerId != 0)
+            //    data = data.Where(x => x.CustomerId == customerId);
+
+            //return data.ToList();
         }
     }
 }

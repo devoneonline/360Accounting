@@ -402,12 +402,24 @@ namespace _360Accounting.Web.Controllers
                         SessionHelper.Invoice.PeriodId = periodId;
                         SessionHelper.Invoice.CurrencyId = currencyId;
 
-
                         if (SessionHelper.Invoice.InvoiceDate >= SessionHelper.Calendar.StartDate && SessionHelper.Invoice.InvoiceDate <= SessionHelper.Calendar.EndDate)
                         {
                             if (SessionHelper.Invoice.InvoiceNo == "New")
                             {
                                 SessionHelper.Invoice.InvoiceNo = InvoiceHelper.GetInvoiceNo(AuthenticationHelper.CompanyId.Value, SessionHelper.Invoice.SOBId, SessionHelper.Invoice.PeriodId, SessionHelper.Invoice.CurrencyId);
+                            }
+
+                            foreach (InvoiceDetailModel invoiceDetail in SessionHelper.Invoice.InvoiceDetail)
+                            {
+                                invoiceDetail.Amount = invoiceDetail.Quantity * invoiceDetail.Rate;
+
+                                TaxDetailModel taxDetail = TaxHelper.GetTaxDetail(invoiceDetail.TaxId.ToString()).FirstOrDefault(x => x.StartDate<= SessionHelper.Invoice.InvoiceDate && x.EndDate >= SessionHelper.Invoice.InvoiceDate);
+
+                                if (taxDetail != null)
+                                    invoiceDetail.TaxAmount = invoiceDetail.Amount * taxDetail.Rate / 100;
+                                else
+                                    invoiceDetail.TaxAmount = 0;
+
                             }
 
                             InvoiceHelper.Update(SessionHelper.Invoice);
@@ -544,10 +556,21 @@ namespace _360Accounting.Web.Controllers
             if (customerId > 0)
             {
                 CustomerModel customer = CustomerHelper.GetCustomer(customerId.ToString());
-                if (invoiceDate >= customer.StartDate && invoiceDate <= customer.EndDate)
+
+                if (customer.StartDate == null || invoiceDate >= customer.StartDate)
                     result = true;
                 else
                     result = false;
+
+                if (customer.EndDate == null || invoiceDate <= customer.EndDate)
+                    result = true;
+                else
+                    result = false;
+
+                //if (invoiceDate >= customer.StartDate && invoiceDate <= customer.EndDate)
+                //    result = true;
+                //else
+                //    result = false;
             }
 
             if (customerSiteId > 0)
@@ -589,7 +612,8 @@ namespace _360Accounting.Web.Controllers
             if (model.Periods != null && model.Periods.Count() > 0)
             {
                 model.PeriodId = Convert.ToInt64(model.Periods.FirstOrDefault().Value);
-                SessionHelper.Calendar = CalendarHelper.GetCalendar(model.PeriodId.ToString());
+                //SessionHelper.Calendar = CalendarHelper.GetCalendar(model.PeriodId.ToString());
+                SessionHelper.Calendar = CalendarHelper.GetCalendar(ReceivablePeriodHelper.GetReceivablePeriod(model.PeriodId.ToString()).CalendarId.ToString());
                 model.InvoiceDate = SessionHelper.Calendar.StartDate;
                 
                 model.Customers = CustomerHelper.GetCustomersCombo(SessionHelper.Calendar.StartDate, SessionHelper.Calendar.EndDate);
