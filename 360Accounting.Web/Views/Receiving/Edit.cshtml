@@ -106,7 +106,7 @@
 
         function GetPOs(poId) {
             var url = '@Url.Content("~/Receiving/DetailPartialParams")';
-            $.get(url, { poId: poId },
+            $.get(url, { poId: poId, receiptId:$('#Id').val() },
                 function (data) {
                     $('#dvDetail').html(data);
                 });

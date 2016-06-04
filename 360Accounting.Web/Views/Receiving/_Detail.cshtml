@@ -28,7 +28,7 @@
                 co.FieldName = "ItemName";
                 co.Caption = "Item";
                 co.ReadOnly = true;
-                co.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+                co.Width = System.Web.UI.WebControls.Unit.Percentage(13);
                 co.EditFormSettings.Visible = DefaultBoolean.False; 
             });
             settings.Columns.Add(co =>
@@ -84,7 +84,7 @@
                 comboBoxProperties.TextField = "Text";
                 comboBoxProperties.ValueField = "Value";
                 comboBoxProperties.ValueType = typeof(int);
-                column.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(13);
             });
             settings.Columns.Add(column =>
             {
@@ -97,19 +97,20 @@
                 comboBoxProperties.TextField = "Text";
                 comboBoxProperties.ValueField = "Value";
                 comboBoxProperties.ValueType = typeof(int);
-                column.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(13);
             });
             settings.Columns.Add(column =>
             {
                 column.FieldName = "LotNo";
                 column.Caption = "Lot No.";
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(10);
             });
             settings.Columns.Add(column =>
             {
                 column.FieldName = "SerialNo";
                 column.Caption = "Serial No.";
                 column.ToolTip = "Please enter comma separated values e.g (1,2,....,6)";
-                column.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+                column.Width = System.Web.UI.WebControls.Unit.Percentage(15);
             });
         });
 

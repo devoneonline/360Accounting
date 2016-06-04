@@ -130,9 +130,27 @@ namespace _360Accounting.Web.Controllers
             List<LotNumber> savedLots = lotService.GetAllbyLotNo(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, lot.LotNo, lot.ItemId).ToList();
             if (model.LotNoId != null)
             {
-                if (savedLots.Count() > 1)
+                List<SerialNumber> savedSerials = lotService.GetSerialsbyLotNo(model.LotNoId.Value, AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId);
+                if (savedSerials != null && savedSerials.Count() > 0)
                 {
-                    return "Record can not be deleted!";
+                    if (!string.IsNullOrEmpty(model.SerialNo))
+                    {
+                        List<string> currentSerials = model.SerialNo.Trim().Split(new char[] { ',' }).ToList();
+                        if (savedSerials.Any(rec => rec.SerialNo != currentSerials.FirstOrDefault(x => x == rec.SerialNo)))
+                        {
+                            lot.Qty = lot.Qty - model.ThisPurchaseQty;
+                            lotService.Update(lot);
+                            return "";
+                        }
+                        else
+                            lotService.Delete(model.LotNoId.Value.ToString(), AuthenticationHelper.CompanyId.Value);
+                    }
+                    else
+                    {
+                        lot.Qty = lot.Qty - model.ThisPurchaseQty;
+                        lotService.Update(lot);
+                        return "";
+                    }
                 }
                 else
                     lotService.Delete(model.LotNoId.Value.ToString(), AuthenticationHelper.CompanyId.Value);
@@ -169,20 +187,29 @@ namespace _360Accounting.Web.Controllers
                 }
                 else
                 {
-                    return lotService.Insert(new LotNumber
+                    LotNumber savedLot = lotService.GetLotbyItem(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, model.ItemId, model.LotNo);
+                    if (savedLot != null)
                     {
-                        CompanyId = AuthenticationHelper.CompanyId.Value,
-                        CreateBy = AuthenticationHelper.UserId,
-                        CreateDate = DateTime.Now,
-                        ItemId = model.ItemId,
-                        LotNo = model.LotNo,
-                        Qty = model.ThisPurchaseQty,
-                        SOBId = SessionHelper.SOBId,
-                        SourceId = 0,
-                        SourceType = "Receiving",
-                        UpdateBy = null,
-                        UpdateDate = null
-                    });
+                        savedLot.Qty = savedLot.Qty + model.ThisPurchaseQty;
+                        return lotService.Update(savedLot);
+                    }
+                    else
+                    {
+                        return lotService.Insert(new LotNumber
+                        {
+                            CompanyId = AuthenticationHelper.CompanyId.Value,
+                            CreateBy = AuthenticationHelper.UserId,
+                            CreateDate = DateTime.Now,
+                            ItemId = model.ItemId,
+                            LotNo = model.LotNo,
+                            Qty = model.ThisPurchaseQty,
+                            SOBId = SessionHelper.SOBId,
+                            SourceId = 0,
+                            SourceType = "Receiving",
+                            UpdateBy = null,
+                            UpdateDate = null
+                        });
+                    }
                 }
             }
             else
@@ -218,11 +245,15 @@ namespace _360Accounting.Web.Controllers
                 List<SerialNumber> tobeDeleted = new List<SerialNumber>();
                 foreach (var serial in savedSerials)
                 {
-                    isAllowed = lotService.CheckSerialNumAvailability(AuthenticationHelper.CompanyId.Value, savedDetail.LotNoId.Value, serial);
-                    if (!isAllowed)
-                        return "Record can not be deleted!";
-                    else
-                        tobeDeleted.Add(lotService.GetSerialNo(serial, savedDetail.LotNoId.Value, AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId));
+                    SerialNumber currentSerial = lotService.GetSerialNo(serial, savedDetail.LotNoId.Value, AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId);
+                    if (currentSerial != null)
+                    {
+                        isAllowed = lotService.CheckSerialNumAvailability(AuthenticationHelper.CompanyId.Value, savedDetail.LotNoId.Value, serial);
+                        if (!isAllowed)
+                            return "Record can not be deleted!";
+                        else
+                            tobeDeleted.Add(lotService.GetSerialNo(serial, savedDetail.LotNoId.Value, AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId));
+                    }
                 }
                 if (isAllowed)
                 {
@@ -323,7 +354,7 @@ namespace _360Accounting.Web.Controllers
                     }
                 }
             }
-            else 
+            else
             {
                 if (!string.IsNullOrEmpty(model.SerialNo))
                 {
@@ -333,10 +364,16 @@ namespace _360Accounting.Web.Controllers
                         if (lot != null)
                         {
                             List<string> serials = model.SerialNo.Trim().Split(new char[] { ',' }).ToList();
+                            bool notAvailable = true;
                             foreach (var serial in serials)
                             {
-                                bool notAvailable = lotService.CheckSerialNumAvailability(AuthenticationHelper.CompanyId.Value, lot.Id, serial);
-                                if (!notAvailable)
+                                notAvailable = lotService.CheckSerialNumAvailability(AuthenticationHelper.CompanyId.Value, lot.Id, serial);
+                                if (notAvailable)
+                                    return "Serial # " + serial + " is already defined";
+                            }
+                            if (!notAvailable)
+                            {
+                                foreach (var serial in serials)
                                 {
                                     lotService.InsertSerialNum(new SerialNumber
                                     {
@@ -350,8 +387,6 @@ namespace _360Accounting.Web.Controllers
                                         UpdateDate = null
                                     });
                                 }
-                                else
-                                    return "Serial # " + serial + " is already defined";
                             }
                         }
                         else
@@ -369,11 +404,13 @@ namespace _360Accounting.Web.Controllers
         {
             Receiving entity = getEntityByModel(model);
 
+            List<ReceivingDetailModel> tobeUpdatedDetail = model.ReceivingDetail.Where(rec => rec.LocatorId > 0 && rec.WarehouseId > 0).ToList();
+
             string result = string.Empty;
             if (entity.IsValid())
             {
                 bool goodToSave = false;
-                foreach (var item in model.ReceivingDetail)
+                foreach (var item in tobeUpdatedDetail)
                 {
                     ReceivingDetailModel updatedModel = item;
                     string lotResult = updateLot(updatedModel);
@@ -381,14 +418,20 @@ namespace _360Accounting.Web.Controllers
                     bool isNumeric = int.TryParse(lotResult, out outVal);
                     if (isNumeric || string.IsNullOrEmpty(lotResult))
                     {
+                        item.LotNoId = isNumeric ? (long?)Convert.ToInt64(lotResult) : null;
                         string serialResult = updateSerials(updatedModel);
                         if (string.IsNullOrEmpty(serialResult))
-                        {
-                            item.LotNoId = isNumeric ? (long?)Convert.ToInt64(lotResult) : null;
                             goodToSave = true;
-                        }
                         else
+                        {
+                            if (item.LotNoId != null)
+                            {
+                                LotNumber lot = lotService.GetSingle(item.LotNoId.Value.ToString(), AuthenticationHelper.CompanyId.Value);
+                                lot.Qty = lot.Qty - item.ThisPurchaseQty;
+                                lotService.Update(lot);
+                            }
                             return serialResult;
+                        }
                     }
                     else
                         return lotResult;
@@ -403,26 +446,27 @@ namespace _360Accounting.Web.Controllers
                     if (!string.IsNullOrEmpty(result))
                     {
                         var savedLines = getReceivingDetail(result);
-                        if (savedLines.Count() > model.ReceivingDetail.Count())
+                        if (savedLines.Count() > tobeUpdatedDetail.Count())
                         {
-                            var tobeDeleted = savedLines.Take(savedLines.Count() - model.ReceivingDetail.Count());
+                            var tobeDeleted = savedLines.Take(savedLines.Count() - tobeUpdatedDetail.Count());
                             foreach (var item in tobeDeleted)
                             {
-                                string lotResult = deleteLot(item);
-                                if (string.IsNullOrEmpty(lotResult))
+                                string serialResult = deleteSerials(item);
+                                if (string.IsNullOrEmpty(serialResult))
                                 {
-                                    string serialResult = deleteSerials(item);
-                                    if (string.IsNullOrEmpty(serialResult))
+                                    string lotResult = deleteLot(item);
+                                    if (string.IsNullOrEmpty(lotResult))
                                         service.DeleteReceivingDetail(item.Id);
+                                    else
+                                        return "Record can not be deleted";
                                 }
-
                                 else
                                     return "Record can not be deleted";
                             }
                             savedLines = getReceivingDetail(result);
                         }
 
-                        foreach (var detail in model.ReceivingDetail)
+                        foreach (var detail in tobeUpdatedDetail)
                         {
                             ReceivingDetail detailEntity = getEntityByModel(detail);
                             if (detailEntity.IsValid())
@@ -462,55 +506,37 @@ namespace _360Accounting.Web.Controllers
             return "";
         }
 
-        private ReceivingDetailModel fromPODetailtoReceivingDetail(PurchaseOrderDetail poDetail, List<ReceivingDetailView> receivings)
-        {
-            return new ReceivingDetailModel
-            {
-                CreateBy = AuthenticationHelper.UserId,
-                CreateDate = DateTime.Now,
-                ItemId = poDetail.ItemId,
-                ItemName = itemService.GetSingle(poDetail.ItemId.ToString(), AuthenticationHelper.CompanyId.Value).ItemName,
-                BalanceQty = receivings == null ? poDetail.Quantity : poDetail.Quantity - receivings.Sum(rec => rec.Quantity),
-                OrderQty = poDetail.Quantity,
-                PurchaseQty = receivings == null ? 0 : receivings.Sum(rec => rec.Quantity),
-                ThisPurchaseQty = receivings == null ? poDetail.Quantity : poDetail.Quantity - receivings.Sum(rec => rec.Quantity),
-                PODetailId = poDetail.Id,
-                Id = -poDetail.Id
-            };
-        }
-
         private List<ReceivingDetailModel> getPendingReceivingDetail(long poId)
         {
             List<ReceivingDetailModel> pendingReceivings = new List<ReceivingDetailModel>();
-
             List<PurchaseOrderDetail> poDetails = poService.GetAllPODetail(poId).ToList();
-
             List<Receiving> receivings = service.GetAllByPOId(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, poId).ToList();
+
+            List<ReceivingDetailView> receivingDetails = new List<ReceivingDetailView>();
+            foreach (var receiving in receivings)
+            {
+                receivingDetails.AddRange(service.GetAllReceivingDetail(receiving.Id).ToList());
+            }
 
             foreach (var poDetail in poDetails)
             {
-                if (receivings != null && receivings.Count() > 0)
-                {
-                    foreach (var receiving in receivings)
-                    {
-                        List<ReceivingDetailView> receivingDetails = service.GetAllReceivingDetail(receiving.Id).ToList();
-                        if (receivingDetails != null && receivingDetails.Count() > 0)
-                        {
-                            List<ReceivingDetailView> receivedItem = receivingDetails.Where(rec => rec.PODetailId == poDetail.Id).ToList();
-                            if (receivedItem != null && receivedItem.Count() > 0)
-                            {
-                                if (receivedItem.Sum(rec => rec.Quantity) < poDetail.Quantity)
-                                    pendingReceivings.Add(fromPODetailtoReceivingDetail(poDetail, receivedItem));
-                            }
-                            else
-                                pendingReceivings.Add(fromPODetailtoReceivingDetail(poDetail, null));
-                        }
-                        else
-                            pendingReceivings.Add(fromPODetailtoReceivingDetail(poDetail, null));
-                    }
-                }
+                List<ReceivingDetailView> currentPODetailReceiving = receivingDetails.Where(rec => rec.PODetailId == poDetail.Id).ToList();
+                if (currentPODetailReceiving.Sum(rec => rec.Quantity) >= poDetail.Quantity)
+                    continue;
                 else
-                    pendingReceivings.Add(fromPODetailtoReceivingDetail(poDetail, null));
+                {
+                    pendingReceivings.Add(new ReceivingDetailModel
+                        {
+                            BalanceQty = poDetail.Quantity - currentPODetailReceiving.Sum(rec => rec.Quantity),
+                            Id = -poDetail.Id,
+                            ItemId = poDetail.ItemId,
+                            ItemName = itemService.GetSingle(poDetail.ItemId.ToString(), AuthenticationHelper.CompanyId.Value).ItemName,
+                            OrderQty = poDetail.Quantity,
+                            PODetailId = poDetail.Id,
+                            PurchaseQty = currentPODetailReceiving.Sum(rec => rec.Quantity),
+                            ThisPurchaseQty = poDetail.Quantity - currentPODetailReceiving.Sum(rec => rec.Quantity)
+                        });
+                }
             }
 
             return pendingReceivings;
@@ -572,11 +598,11 @@ namespace _360Accounting.Web.Controllers
                 foreach (var detail in receiving.ReceivingDetail)
                 {
                     PurchaseOrderDetail currentPODetail = poService.GetSinglePODetail(detail.PODetailId);
-                    List<ReceivingDetail> totalReceived = service.GetAllByPODetailId(detail.PODetailId).Where(rec => rec.ReceiptId != Convert.ToInt64(id)).ToList();
+                    List<ReceivingDetail> totalReceived = service.GetAllByPODetailId(detail.PODetailId).Where(rec => rec.ReceiptId < Convert.ToInt64(id)).ToList();
 
-                    detail.BalanceQty = currentPODetail.Quantity - (totalReceived.Count() > 0 ? totalReceived.Sum(rec => rec.Quantity) - detail.ThisPurchaseQty : detail.ThisPurchaseQty);
+                    detail.BalanceQty = currentPODetail.Quantity - (totalReceived.Count() > 0 ? (totalReceived.Sum(rec => rec.Quantity) + detail.ThisPurchaseQty) : detail.ThisPurchaseQty);
                     detail.OrderQty = currentPODetail.Quantity;
-                    detail.PurchaseQty = totalReceived.Count() > 0 ? totalReceived.Sum(rec => rec.Quantity) - detail.ThisPurchaseQty : 0;
+                    detail.PurchaseQty = totalReceived.Count() > 0 ? totalReceived.Sum(rec => rec.Quantity) : 0;
                     detail.ThisPurchaseQty = detail.ThisPurchaseQty;
                 }
             }
@@ -619,14 +645,19 @@ namespace _360Accounting.Web.Controllers
                 if (SessionHelper.Receiving.ReceiptNo == "New")
                     SessionHelper.Receiving.ReceiptNo = generateReceiptNum(SessionHelper.Receiving);
 
-                string saveResult = save(SessionHelper.Receiving);
-                if (string.IsNullOrEmpty(saveResult))
+                if (SessionHelper.Receiving.ReceivingDetail.Any(rec => rec.WarehouseId > 0 && rec.LocatorId > 0))
                 {
-                    SessionHelper.Receiving = null;
-                    return Json("Saved Successfully");
+                    string saveResult = save(SessionHelper.Receiving);
+                    if (string.IsNullOrEmpty(saveResult))
+                    {
+                        SessionHelper.Receiving = null;
+                        return Json("Saved Successfully");
+                    }
+                    else
+                        return Json(saveResult);
                 }
                 else
-                    return Json(saveResult);
+                    return Json("No detail information available to save!");
             }
 
             return Json("No information available to save!");
@@ -637,9 +668,27 @@ namespace _360Accounting.Web.Controllers
             return PartialView("_Detail", getReceivingDetail());
         }
 
-        public ActionResult DetailPartialParams(long poId)
+        public ActionResult DetailPartialParams(long poId, long receiptId)
         {
-            return PartialView("_Detail", getPendingReceivingDetail(poId));
+            List<ReceivingDetailModel> savedDetails = new List<ReceivingDetailModel>();
+            if (receiptId > 0)
+                savedDetails = SessionHelper.Receiving.ReceivingDetail.Where(rec => rec.ReceiptId == receiptId).ToList();
+
+            SessionHelper.Receiving.ReceivingDetail = getPendingReceivingDetail(poId);
+
+            if (savedDetails.Any())
+            {
+                foreach (var item in savedDetails)
+                {
+                    if (SessionHelper.Receiving.ReceivingDetail.Any(rec => rec.PODetailId == item.PODetailId))
+                    {
+                        SessionHelper.Receiving.ReceivingDetail.Remove(SessionHelper.Receiving.ReceivingDetail.FirstOrDefault(rec => rec.PODetailId == item.PODetailId && rec.Id <= 0));
+                    }
+                    SessionHelper.Receiving.ReceivingDetail.Add(item);
+                }
+            }
+
+            return PartialView("_Detail", SessionHelper.Receiving.ReceivingDetail);
         }
 
         [HttpPost, ValidateInput(false)]
@@ -701,9 +750,9 @@ namespace _360Accounting.Web.Controllers
                             return PartialView("_Detail", getReceivingDetail());
                         }
                     }
-                    else 
+                    else
                     {
-                        if(!string.IsNullOrEmpty(model.LotNo))
+                        if (!string.IsNullOrEmpty(model.LotNo))
                         {
                             ViewData["EditError"] = "Item does not support Lot!";
                             return PartialView("_Detail", getReceivingDetail());
@@ -746,7 +795,7 @@ namespace _360Accounting.Web.Controllers
                         return PartialView("_Detail", getReceivingDetail());
                     }
 
-                    if (model.ThisPurchaseQty > completeModel.BalanceQty+model.ThisPurchaseQty)
+                    if (model.ThisPurchaseQty > completeModel.BalanceQty + model.ThisPurchaseQty)
                     {
                         ViewData["EditError"] = "Quantity can not be more than balance!";
                         return PartialView("_Detail", getReceivingDetail());
@@ -776,7 +825,7 @@ namespace _360Accounting.Web.Controllers
                     currentModel.SerialNo = model.SerialNo;
                     currentModel.WarehouseId = model.WarehouseId;
                     currentModel.ThisPurchaseQty = model.ThisPurchaseQty;
-                    currentModel.BalanceQty = completeModel.BalanceQty + completeModel.ThisPurchaseQty - model.ThisPurchaseQty;
+                    currentModel.BalanceQty = completeModel.OrderQty - (completeModel.PurchaseQty + model.ThisPurchaseQty);
                     currentModel.OrderQty = completeModel.OrderQty;
                     currentModel.LotNoId = completeModel.LotNoId;
                     currentModel.ItemId = completeModel.ItemId;
@@ -803,6 +852,7 @@ namespace _360Accounting.Web.Controllers
             {
                 ReceivingModel receiving = SessionHelper.Receiving;
                 ReceivingDetailModel receivingDetail = receiving.ReceivingDetail.FirstOrDefault(rec => rec.Id == model.Id);
+
                 SessionHelper.Receiving.ReceivingDetail.Remove(receivingDetail);
             }
             catch (Exception ex)
