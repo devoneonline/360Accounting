@@ -109,6 +109,7 @@ namespace _360Accounting.Core.Entities
         public long CustomerId { get; set; }
 
         public string CustomerName { get; set; }
+        public long SiteId { get; set; }
         public string SiteName { get; set; }
         public decimal OpeningBalance { get; set; }
         public decimal SalesAmount { get; set; }

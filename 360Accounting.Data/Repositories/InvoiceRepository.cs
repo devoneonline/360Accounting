@@ -216,37 +216,90 @@ namespace _360Accounting.Data.Repositories
             return data;
         }
 
+        private decimal CalculateReceipt(DateTime fromDate, DateTime toDate, long companyId, long sobId, long customerId, long customerSiteId)
+        {
+            var ReceiptTransaction = from a in this.Context.Receipts
+                                     where a.CustomerId == customerId && a.CustomerSiteId == customerSiteId && a.CompanyId == companyId
+                                        && a.SOBId == sobId && a.ReceiptDate >= fromDate && a.ReceiptDate<=toDate
+                                     select new
+                                     {
+                                         CustomerId = a.CustomerId,
+                                         CustomerSiteId = a.CustomerSiteId,
+                                         Amount = a.ReceiptAmount,
+                                         TaxAmount = 0
+                                     };
+
+            return ReceiptTransaction.AsEnumerable().Sum(x => Convert.ToDecimal(x.Amount) + Convert.ToDecimal(x.TaxAmount));
+        }
+
+        private decimal CalculateInvoiceAmount(DateTime fromDate, DateTime toDate, long companyId, long sobId, long customerId, long customerSiteId)
+        {
+            var InvoiceTransaction = from a in this.Context.InvoiceDetails
+                                     join b in this.Context.Invoices on a.InvoiceId equals b.Id
+                                     where b.CompanyId == companyId && b.SOBId == sobId && b.InvoiceDate < fromDate
+                                         && b.CustomerId == customerId && b.CustomerSiteId == customerSiteId
+                                     select new
+                                     {
+                                         CustomerId = b.CustomerId,
+                                         CustomerSiteId = b.CustomerSiteId,
+                                         Amount = a.Amount,
+                                         TaxAmount = a.TaxAmount
+                                     };
+            return InvoiceTransaction.AsEnumerable().Sum(x => Convert.ToDecimal(x.Amount) + Convert.ToDecimal(x.TaxAmount));
+        }
+
+        private decimal OpeningBalance(DateTime fromDate, long companyId, long sobId, long customerId, long customerSiteId)
+        {
+            var InvoiceTransaction = from a in this.Context.InvoiceDetails
+                        join b in this.Context.Invoices on a.InvoiceId equals b.Id
+                        where b.CompanyId == companyId && b.SOBId == sobId && b.InvoiceDate < fromDate
+                            && b.CustomerId == customerId && b.CustomerSiteId == customerSiteId
+                        select new
+                        {
+                            CustomerId =b.CustomerId,
+                            CustomerSiteId = b.CustomerSiteId,
+                            Amount = a.Amount,
+                            TaxAmount = a.TaxAmount
+                        };
+            var ReceiptTransaction = from a in this.Context.Receipts
+                                     where a.CustomerId == customerId && a.CustomerSiteId == customerSiteId && a.CompanyId == companyId
+                                        && a.SOBId == sobId && a.ReceiptDate < fromDate
+                                     select new
+                                     {
+                                         CustomerId = a.CustomerId,
+                                         CustomerSiteId = a.CustomerSiteId,
+                                         Amount = a.ReceiptAmount,
+                                         TaxAmount =0
+                                     };
+
+            decimal invAmount = InvoiceTransaction.AsEnumerable().Sum(x=> Convert.ToDecimal(x.Amount) + Convert.ToDecimal( x.TaxAmount));
+            decimal RecptAmount = ReceiptTransaction.AsEnumerable().Sum(x=> Convert.ToDecimal(x.Amount) + Convert.ToDecimal(x.TaxAmount) );
+            decimal result = invAmount - RecptAmount;
+            return result;
+        }
+
         public List<PeriodwiseActivity> PeriodwiseActivity(long companyId, long sobId, DateTime fromDate, DateTime toDate, long customerId)
         {
-            throw new NotImplementedException();
-
-            //var query = from a in this.Context.Customers
-            //            join b in this.Context.CustomerSites on a.Id equals b.CustomerId
-            //            where a.CompanyId == companyId && a.SOBId == sobId && a.Id == (customerId == 0 ? a.Id : customerId)
-            //            select new PeriodwiseActivity
-            //            {
-            //                CustomerId = a.Id,
-            //                CustomerName = a.CustomerName,
-            //                SiteName = b.SiteName,
-            //                OpeningBalance = ((from x in this.Context.InvoiceDetails
-            //                                  join y in this.Context.Invoices on x.InvoiceId equals y.Id
-            //                                  where y.CompanyId == companyId && y.SOBId == sobId && y.InvoiceDate < fromDate).AsEnumerable().Sum()
-
-            //                                  select (Convert.ToDecimal(x.Quantity)*Convert.ToDecimal(x.Rate))
-            //                                      ).Sum<decimal>(z=> z) - 
-            //                                      (from r in this.Context.Receipts
-            //                                           where r.CompanyId == companyId && r.SOBId == sobId && r.ReceiptDate<fromDate
-            //                                           select (Convert.ToDecimal(r.ReceiptAmount))).Sum(p=> p)),
-            //                ReceiptAmount =(from r in this.Context.Receipts
-            //                                           where r.CompanyId == companyId && r.SOBId == sobId && r.ReceiptDate >= fromDate && r.ReceiptDate<=toDate
-            //                                           select (Convert.ToDecimal(r.ReceiptAmount))).Sum(p=> p),
-            //                SalesAmount = (from x in this.Context.InvoiceDetails
-            //                               join y in this.Context.Invoices on x.InvoiceId equals y.Id
-            //                               where y.CompanyId == companyId && y.SOBId == sobId && y.InvoiceDate >= fromDate && y.InvoiceDate<=toDate
-            //                               select (Convert.ToDecimal(x.Quantity) * Convert.ToDecimal(x.Rate))
-            //                                      ).Sum<decimal>(z => z)                                              
-            //            };
-            //return query.ToList();
+            var query = from a in this.Context.Customers
+                        join b in this.Context.CustomerSites on a.Id equals b.CustomerId
+                        where a.CompanyId == companyId && a.SOBId == sobId && a.Id == (customerId == 0 ? a.Id : customerId)
+                        select new PeriodwiseActivity
+                        {
+                            CustomerId = a.Id,
+                            CustomerName = a.CustomerName,
+                            SiteName = b.SiteName,
+                            OpeningBalance = 0,
+                            ReceiptAmount = 0,
+                            SalesAmount = 0
+                        };
+            List<PeriodwiseActivity> Items=query.ToList();
+           foreach(var item in Items)
+           {
+               item.OpeningBalance = OpeningBalance(fromDate, companyId, sobId, item.CustomerId, item.SiteId);
+               item.ReceiptAmount = CalculateReceipt(fromDate, toDate, companyId, sobId, item.CustomerId, item.SiteId);
+               item.SalesAmount = CalculateInvoiceAmount(fromDate, toDate, companyId, sobId, item.CustomerId, item.SiteId);
+           }
+           return Items;
 
             //var mainInvoiceQuery = (from a in this.Context.InvoiceDetails
             //                        join b in this.Context.Invoices on a.InvoiceId equals b.Id
