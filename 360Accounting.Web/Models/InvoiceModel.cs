@@ -219,10 +219,10 @@ namespace _360Accounting.Web.Models
         public string UOM { get; set; }
         public decimal Quantity { get; set; }
         public decimal Rate { get; set; }
-        public decimal Amount { get; set; }
+        public decimal? Amount { get; set; }
         public string TaxName { get; set; }
-        public decimal TaxAmount { get; set; }
-        public decimal TotalAmount { get; set; }
+        public decimal? TaxAmount { get; set; }
+        public decimal? TotalAmount { get; set; }
     }
 
     public class InvoiceAuditTrailCriteriaModel
@@ -295,9 +295,9 @@ namespace _360Accounting.Web.Models
         public string InvoiceSourceName { get; set; }
         public string ItemName { get; set; }
         public decimal Quantity { get; set; }
-        public decimal Amount { get; set; }
-        public decimal TaxAmount { get; set; }
-        public decimal TotalAmount { get; set; }
+        public decimal? Amount { get; set; }
+        public decimal? TaxAmount { get; set; }
+        public decimal? TotalAmount { get; set; }
     }
 
     public class PeriodwiseActivityModel

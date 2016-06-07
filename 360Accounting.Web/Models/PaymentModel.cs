@@ -147,16 +147,7 @@ namespace _360Accounting.Web.Models
         #endregion
 
         #region Properties
-
-        [Display(Name="Vendor")]
-        public List<SelectListItem> Vendor { get; set; }
-
-        [Display(Name = "Bank")]
-        public List<SelectListItem> Bank { get; set; }
-
-        [Display(Name = "Period")]
-        public List<SelectListItem> Period { get; set; }
-
+        
         public IEnumerable<PaymentViewModel> Payments { get; set; }
 
         #endregion
@@ -198,6 +189,15 @@ namespace _360Accounting.Web.Models
         #endregion
 
         #region Properties
+
+        [Display(Name = "Vendor")]
+        public List<SelectListItem> Vendor { get; set; }
+
+        [Display(Name = "Bank")]
+        public List<SelectListItem> Bank { get; set; }
+
+        [Display(Name = "Period")]
+        public List<SelectListItem> Period { get; set; }
 
         public string VendorSiteName { get; set; }
 

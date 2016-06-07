@@ -125,14 +125,14 @@ namespace _360Accounting.Data.Repositories
                         a.InvoiceDate >= fromDate && a.InvoiceDate <= toDate
                         select new CustomerSales
                         {
-                            Amount = b.Quantity * b.Rate,
+                            Amount = b.Amount.Value,   //b.Quantity * b.Rate,
                             CustomerId = a.CustomerId,
                             CustomerName = c.CustomerName,
                             InvoiceSourceName = i.Description,
                             ItemName = f.ItemName,
                             Quantity = b.Quantity,
-                            TaxAmount = 0,
-                            TotalAmount = (b.Quantity * b.Rate) + 0
+                            TaxAmount = b.TaxAmount.Value,
+                            TotalAmount = b.Amount.Value + b.TaxAmount.Value
                         }).ToList();
 
             if (customerId != 0)
@@ -157,7 +157,7 @@ namespace _360Accounting.Data.Repositories
                         a.InvoiceDate >= fromDate && a.InvoiceDate <= toDate
                         select new InvoiceAuditTrail
                         {
-                            Amount = b.Quantity * b.Rate,
+                            Amount = b.Amount.Value,
                             CustomerName = c.CustomerName,
                             CustomerSiteName = d.SiteName,
                             InvoiceDate = a.InvoiceDate,
@@ -165,9 +165,9 @@ namespace _360Accounting.Data.Repositories
                             ItemName = b.ItemId == null ? j.Description : g.ItemName,
                             Quantity = b.Quantity,
                             Rate = b.Rate,
-                            TaxAmount = 0,
+                            TaxAmount = b.TaxAmount.Value,
                             TaxName = m.TaxName,
-                            TotalAmount = (b.Quantity * b.Rate) + 0,
+                            TotalAmount = b.TaxAmount.Value + b.Amount.Value,
                             UOM = ""
                         }).ToList();
 
