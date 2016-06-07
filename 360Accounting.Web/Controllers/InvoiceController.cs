@@ -413,13 +413,15 @@ namespace _360Accounting.Web.Controllers
                             {
                                 invoiceDetail.Amount = invoiceDetail.Quantity * invoiceDetail.Rate;
 
-                                TaxDetailModel taxDetail = TaxHelper.GetTaxDetail(invoiceDetail.TaxId.ToString()).FirstOrDefault(x => x.StartDate<= SessionHelper.Invoice.InvoiceDate && x.EndDate >= SessionHelper.Invoice.InvoiceDate);
+                                if (invoiceDetail.TaxId != null)
+                                {
+                                    TaxDetailModel taxDetail = TaxHelper.GetTaxDetail(invoiceDetail.TaxId.ToString()).FirstOrDefault(x => x.StartDate <= SessionHelper.Invoice.InvoiceDate && x.EndDate >= SessionHelper.Invoice.InvoiceDate);
 
-                                if (taxDetail != null)
-                                    invoiceDetail.TaxAmount = invoiceDetail.Amount * taxDetail.Rate / 100;
-                                else
-                                    invoiceDetail.TaxAmount = 0;
-
+                                    if (taxDetail != null)
+                                        invoiceDetail.TaxAmount = invoiceDetail.Amount * taxDetail.Rate / 100;
+                                    else
+                                        invoiceDetail.TaxAmount = 0;
+                                }
                             }
 
                             InvoiceHelper.Update(SessionHelper.Invoice);
