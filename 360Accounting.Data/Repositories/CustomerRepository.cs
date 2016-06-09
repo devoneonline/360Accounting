@@ -34,8 +34,10 @@ namespace _360Accounting.Data.Repositories
 
         public IEnumerable<Customer> GetAll(long companyId, long sobId, DateTime startDate, DateTime endDate)
         {
+            //IEnumerable<Customer> customerList = this.Context.Customers
+            //    .Where(x => x.CompanyId == companyId && x.SOBId == sobId && (x.StartDate <= startDate || x.StartDate == null) && (x.EndDate >= endDate || x.EndDate == null));
             IEnumerable<Customer> customerList = this.Context.Customers
-                .Where(x => x.CompanyId == companyId && x.SOBId == sobId && (x.StartDate <= startDate || x.StartDate == null) && (x.EndDate >= endDate || x.EndDate == null));
+                  .Where(x => x.CompanyId == companyId && x.SOBId == sobId && (x.EndDate >= endDate || x.EndDate == null));
             return customerList;
         }
 

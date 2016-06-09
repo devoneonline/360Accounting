@@ -404,6 +404,28 @@ namespace _360Accounting.Web.Controllers
         {
             Receiving entity = getEntityByModel(model);
 
+            if (model.Id > 0)
+            {
+                List<ReceivingDetailModel> receivingDetail = service.GetAllReceivingDetail(model.Id).Select(rec => new ReceivingDetailModel(rec, true)).ToList();
+                if (receivingDetail != null && receivingDetail.Count() > 0)
+                {
+                    foreach (var item in receivingDetail)
+                    {
+                        if (!model.ReceivingDetail.Any(rec => rec.PODetailId == item.PODetailId))
+                        {
+                            string serialResult = deleteSerials(item);
+                            if (string.IsNullOrEmpty(serialResult))
+                            {
+                                service.DeleteReceivingDetail(item.Id);
+                                deleteLot(item);
+                            }
+                            else
+                                return serialResult;
+                        }
+                    }
+                }
+            }
+
             List<ReceivingDetailModel> tobeUpdatedDetail = model.ReceivingDetail.Where(rec => rec.LocatorId > 0 && rec.WarehouseId > 0).ToList();
 
             string result = string.Empty;
@@ -512,15 +534,13 @@ namespace _360Accounting.Web.Controllers
             List<PurchaseOrderDetail> poDetails = poService.GetAllPODetail(poId).ToList();
             List<Receiving> receivings = service.GetAllByPOId(AuthenticationHelper.CompanyId.Value, SessionHelper.SOBId, poId).ToList();
 
-            List<ReceivingDetailView> receivingDetails = new List<ReceivingDetailView>();
-            foreach (var receiving in receivings)
-            {
-                receivingDetails.AddRange(service.GetAllReceivingDetail(receiving.Id).ToList());
-            }
-
+            List<ReceivingDetail> receivingDetails = new List<ReceivingDetail>();
+            
             foreach (var poDetail in poDetails)
             {
-                List<ReceivingDetailView> currentPODetailReceiving = receivingDetails.Where(rec => rec.PODetailId == poDetail.Id).ToList();
+                receivingDetails.AddRange(service.GetAllByPODetailId(poDetail.Id).ToList());
+
+                List<ReceivingDetail> currentPODetailReceiving = receivingDetails.Where(rec => rec.PODetailId == poDetail.Id).ToList();
                 if (currentPODetailReceiving.Sum(rec => rec.Quantity) >= poDetail.Quantity)
                     continue;
                 else
@@ -623,6 +643,14 @@ namespace _360Accounting.Web.Controllers
 
         public ActionResult Delete(string id)
         {
+            List<ReceivingDetailModel> receivingDetail = service.GetAllReceivingDetail(Convert.ToInt64(id)).Select(re => new ReceivingDetailModel(re, true)).ToList();
+            foreach (var item in receivingDetail)
+            {
+                service.DeleteReceivingDetail(item.Id);
+                deleteSerials(item);
+                deleteLot(item);
+            }
+
             service.Delete(id, AuthenticationHelper.CompanyId.Value);
             return RedirectToAction("Index");
         }
