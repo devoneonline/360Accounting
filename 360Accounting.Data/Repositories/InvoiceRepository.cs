@@ -339,5 +339,10 @@ namespace _360Accounting.Data.Repositories
 
             //return data.ToList();
         }
+
+        public List<SalesRegister> SalesRegister(long companyId, long sobId, DateTime fromDate, DateTime toDate)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -88,5 +88,10 @@ namespace _360Accounting.Service
         {
             return this.repository.PeriodwiseActivity(companyId, sobId, fromDate, toDate, customerId);
         }
+        
+        public List<SalesRegister> SalesRegister(long companyId, long sobId, DateTime fromDate, DateTime toDate)
+        {
+            return this.repository.SalesRegister(companyId, sobId, fromDate, toDate);
+        }
     }
 }

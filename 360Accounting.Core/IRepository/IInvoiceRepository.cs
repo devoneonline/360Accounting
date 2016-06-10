@@ -21,5 +21,6 @@ namespace _360Accounting.Core.Interfaces
         List<InvoiceAuditTrail> InvoiceAuditTrail(long companyId, long sobId, DateTime fromDate, DateTime toDate);
         List<InvoicePrintout> InvoicePrintout(long companyId, long sobId, DateTime fromDate, DateTime toDate, string invoiceNo, long customerId, long customerSiteId);
         List<PeriodwiseActivity> PeriodwiseActivity(long companyId, long sobId, DateTime fromDate, DateTime toDate, long customerId);
+        List<SalesRegister> SalesRegister(long companyId, long sobId, DateTime fromDate, DateTime toDate);
     }
 }
